@@ -19,8 +19,9 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity {
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player,
                                         boolean wasRestored) {
+        player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
         if (!wasRestored) {
-            player.cueVideo("wKJ9KzGQq0w");
+            player.loadVideo("wKJ9KzGQq0w");
         }
     }
 
