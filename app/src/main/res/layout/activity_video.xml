@@ -5,23 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.atsushi.youtubesync.MainActivity">
+    tools:context="com.example.atsushi.youtubesync.VideoActivity">
 
     <TextView
         android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="離れた人と同時に同じ動画を閲覧できます。"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="20dp" />
+        android:text="video activity" />
 
-
-    <Button
-        android:id="@+id/startButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:width="150dp"
-        android:text="Start" />
 </LinearLayout>
