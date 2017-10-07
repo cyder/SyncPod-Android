@@ -6,8 +6,10 @@ import android.util.Log;
 
 import com.example.atsushi.youtubesync.channels.RoomChannel;
 import com.example.atsushi.youtubesync.channels.RoomChannelInterface;
+import com.example.atsushi.youtubesync.json_data.JsonData;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 public class VideoActivity extends YouTubeFailureRecoveryActivity implements RoomChannelInterface {
@@ -51,7 +53,21 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
 
     @Override
     public void onReceived(JsonElement data) {
-        Log.d("App", "received");
+        Gson gson = new Gson();
+        JsonData jsonData = gson.fromJson(data.getAsString(), JsonData.class);
+
+        switch (jsonData.data_type) {
+            case "now_playing_video":
+                break;
+            case "add_video":
+                break;
+            case "start_video":
+                break;
+            default:
+                break;
+        }
+
+        Log.d("App", jsonData.data_type);
     }
 
     @Override
