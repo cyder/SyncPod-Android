@@ -6,12 +6,15 @@ import android.util.Log;
 
 import com.example.atsushi.youtubesync.channels.RoomChannel;
 import com.example.atsushi.youtubesync.channels.RoomChannelInterface;
+import com.example.atsushi.youtubesync.json_data.JsonData;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 public class VideoActivity extends YouTubeFailureRecoveryActivity implements RoomChannelInterface {
     RoomChannel roomChannel;
+    YouTubePlayer player;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,11 +34,11 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player,
                                         boolean wasRestored) {
-        player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
         roomChannel = new RoomChannel();
         roomChannel.setListener(this);
         if (!wasRestored) {
-            player.loadVideo("wKJ9KzGQq0w");
+            player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
+            this.player = player;
         }
     }
 
@@ -51,7 +54,21 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
 
     @Override
     public void onReceived(JsonElement data) {
-        Log.d("App", "received");
+        Gson gson = new Gson();
+        JsonData jsonData = gson.fromJson(data.getAsString(), JsonData.class);
+
+        switch (jsonData.data_type) {
+            case "now_playing_video":
+                player.loadVideo(jsonData.data.video.youtube_video_id, jsonData.data.video.current_time * 1000);
+                break;
+            case "add_video":
+                break;
+            case "start_video":
+                player.loadVideo(jsonData.data.video.youtube_video_id);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
