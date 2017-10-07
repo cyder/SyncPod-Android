@@ -13,18 +13,21 @@ import com.hosopy.actioncable.Subscription;
  */
 
 public class RoomChannel {
-    public RoomChannel() {
-        Consumer consumer = Cable.getCunsumer();
+    private RoomChannelInterface listener = null;
+    private Channel roomChannel;
+    private Consumer consumer;
+    private Subscription subscription;
 
-        Channel roomChannel = new Channel("RoomChannel");
-        Subscription subscription = consumer.getSubscriptions().create(roomChannel);
+    public RoomChannel() {
+        consumer = Cable.getCunsumer();
+        roomChannel = new Channel("RoomChannel");
+        subscription = consumer.getSubscriptions().create(roomChannel);
 
         subscription
             .onConnected(new Subscription.ConnectedCallback() {
                 @Override
                 public void call() {
-                    Log.d("App", "connected");
-                    // Called when the subscription has been successfully completed
+                    listener.onConnected();
                 }
             }).onRejected(new Subscription.RejectedCallback() {
             @Override
@@ -34,19 +37,28 @@ public class RoomChannel {
             }).onReceived(new Subscription.ReceivedCallback() {
                 @Override
                 public void call(JsonElement data) {
+                    listener.onReceived(data);
                     // Called when the subscription receives data from the server
                 }
             }).onDisconnected(new Subscription.DisconnectedCallback() {
                 @Override
                 public void call() {
-                    // Called when the subscription has been closed
+                    listener.onDisconnected();
                 }
             }).onFailed(new Subscription.FailedCallback() {
                 @Override
                 public void call(ActionCableException e) {
-                    Log.d("App", "failed");
-                    // Called when the subscription encounters any error
+                    listener.onFailed();
                 }
             });
+    }
+
+    public void setListener(RoomChannelInterface listener){
+        this.listener = listener;
+    }
+
+    public void removeListener(){
+        consumer.getSubscriptions().remove(subscription);
+        this.listener = null;
     }
 }
