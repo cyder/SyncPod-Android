@@ -2,11 +2,17 @@ package com.example.atsushi.youtubesync;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.example.atsushi.youtubesync.channels.RoomChannel;
+import com.example.atsushi.youtubesync.channels.RoomChannelInterface;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.gson.JsonElement;
 
-public class VideoActivity extends YouTubeFailureRecoveryActivity {
+public class VideoActivity extends YouTubeFailureRecoveryActivity implements RoomChannelInterface {
+    RoomChannel roomChannel;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,9 +23,17 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        roomChannel.removeListener();
+    }
+
+    @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player,
                                         boolean wasRestored) {
         player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
+        roomChannel = new RoomChannel();
+        roomChannel.setListener(this);
         if (!wasRestored) {
             player.loadVideo("wKJ9KzGQq0w");
         }
@@ -28,5 +42,25 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity {
     @Override
     protected YouTubePlayer.Provider getYouTubePlayerProvider() {
         return (YouTubePlayerView) findViewById(R.id.youtube_view);
+    }
+
+    @Override
+    public void onConnected() {
+        Log.d("App", "connected");
+    }
+
+    @Override
+    public void onReceived(JsonElement data) {
+        Log.d("App", "received");
+    }
+
+    @Override
+    public void onDisconnected() {
+        Log.d("App", "disconnected");
+    }
+
+    @Override
+    public void onFailed() {
+        Log.d("App", "failed");
     }
 }
