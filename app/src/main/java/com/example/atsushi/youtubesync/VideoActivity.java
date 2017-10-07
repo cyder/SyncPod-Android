@@ -14,6 +14,7 @@ import com.google.gson.JsonElement;
 
 public class VideoActivity extends YouTubeFailureRecoveryActivity implements RoomChannelInterface {
     RoomChannel roomChannel;
+    YouTubePlayer player;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,11 +34,11 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player,
                                         boolean wasRestored) {
-        player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
         roomChannel = new RoomChannel();
         roomChannel.setListener(this);
         if (!wasRestored) {
-            player.loadVideo("wKJ9KzGQq0w");
+            player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
+            this.player = player;
         }
     }
 
@@ -58,16 +59,16 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
 
         switch (jsonData.data_type) {
             case "now_playing_video":
+                player.loadVideo(jsonData.data.video.youtube_video_id, jsonData.data.video.current_time * 1000);
                 break;
             case "add_video":
                 break;
             case "start_video":
+                player.loadVideo(jsonData.data.video.youtube_video_id);
                 break;
             default:
                 break;
         }
-
-        Log.d("App", jsonData.data_type);
     }
 
     @Override
