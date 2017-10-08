@@ -26,8 +26,15 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onRestart() {
+        super.onRestart();
+        roomChannel = new RoomChannel();
+        roomChannel.setListener(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
         roomChannel.removeListener();
     }
 
