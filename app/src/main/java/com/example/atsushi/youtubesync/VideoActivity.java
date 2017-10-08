@@ -3,6 +3,8 @@ package com.example.atsushi.youtubesync;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.atsushi.youtubesync.channels.RoomChannel;
@@ -12,6 +14,8 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+
+import java.util.ArrayList;
 
 public class VideoActivity extends YouTubeFailureRecoveryActivity implements RoomChannelInterface {
     RoomChannel roomChannel;
@@ -81,6 +85,9 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
                     startVideo(jsonData.data.video);
                 }
                 break;
+            case "play_list":
+                initPlayList(jsonData.data.play_list);
+                break;
             default:
                 break;
         }
@@ -101,6 +108,21 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         runOnUiThread(new Runnable() {
             public void run() {
                 videoTitleText.setText(video.title);
+            }
+        });
+    }
+
+    private void initPlayList(final ArrayList<Video> videos) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                LinearLayout layout = (LinearLayout) findViewById(R.id.play_list);
+                layout.removeAllViews();
+                for(Video video : videos) {
+                    View playListItem = getLayoutInflater().inflate(R.layout.play_list_item, null);
+                    TextView title = (TextView) playListItem.findViewById(R.id.title);
+                    title.setText(video.title);
+                    layout.addView(playListItem);
+                }
             }
         });
     }
