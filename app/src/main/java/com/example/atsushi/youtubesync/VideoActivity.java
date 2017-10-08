@@ -3,10 +3,11 @@ package com.example.atsushi.youtubesync;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.atsushi.youtubesync.channels.RoomChannel;
 import com.example.atsushi.youtubesync.channels.RoomChannelInterface;
-import com.example.atsushi.youtubesync.json_data.JsonData;
+import com.example.atsushi.youtubesync.json_data.*;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.gson.Gson;
@@ -15,6 +16,7 @@ import com.google.gson.JsonElement;
 public class VideoActivity extends YouTubeFailureRecoveryActivity implements RoomChannelInterface {
     RoomChannel roomChannel;
     YouTubePlayer player;
+    TextView videoTitleText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,8 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
 
         YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         youTubeView.initialize(DeveloperKey.DEVELOPER_KEY, this);
+
+        videoTitleText = (TextView) findViewById(R.id.video_title);
     }
 
     @Override
@@ -67,14 +71,14 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         switch (jsonData.data_type) {
             case "now_playing_video":
                 if(jsonData.data != null) {
-                    player.loadVideo(jsonData.data.video.youtube_video_id, jsonData.data.video.current_time * 1000);
+                    startVideo(jsonData.data.video);
                 }
                 break;
             case "add_video":
                 break;
             case "start_video":
                 if(jsonData.data != null) {
-                    player.loadVideo(jsonData.data.video.youtube_video_id);
+                    startVideo(jsonData.data.video);
                 }
                 break;
             default:
@@ -90,5 +94,14 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     @Override
     public void onFailed() {
         Log.d("App", "failed");
+    }
+
+    private void startVideo(final Video video) {
+        player.loadVideo(video.youtube_video_id, video.current_time * 1000);
+        runOnUiThread(new Runnable() {
+            public void run() {
+                videoTitleText.setText(video.title);
+            }
+        });
     }
 }
