@@ -79,6 +79,7 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
                 }
                 break;
             case "add_video":
+                addPlayList(jsonData.data.video);
                 break;
             case "start_video":
                 if(jsonData.data != null) {
@@ -123,6 +124,18 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
                     title.setText(video.title);
                     layout.addView(playListItem);
                 }
+            }
+        });
+    }
+
+    private void addPlayList(final Video video) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                LinearLayout layout = (LinearLayout) findViewById(R.id.play_list);
+                View playListItem = getLayoutInflater().inflate(R.layout.play_list_item, null);
+                TextView title = (TextView) playListItem.findViewById(R.id.title);
+                title.setText(video.title);
+                layout.addView(playListItem);
             }
         });
     }
