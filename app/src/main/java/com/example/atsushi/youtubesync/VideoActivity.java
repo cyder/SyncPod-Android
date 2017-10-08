@@ -16,11 +16,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class VideoActivity extends YouTubeFailureRecoveryActivity implements RoomChannelInterface {
     RoomChannel roomChannel;
     YouTubePlayer player;
     TextView videoTitleText;
+    LinearLayout playList;
+    HashMap<String, View> playListMap = new HashMap<String, View>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,7 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         youTubeView.initialize(DeveloperKey.DEVELOPER_KEY, this);
 
         videoTitleText = (TextView) findViewById(R.id.video_title);
+        playList = (LinearLayout) findViewById(R.id.play_list);
     }
 
     @Override
@@ -109,6 +113,9 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         runOnUiThread(new Runnable() {
             public void run() {
                 videoTitleText.setText(video.title);
+                if(playListMap.get(String.valueOf(video.id)) != null) {
+                    playList.removeView(playListMap.get(String.valueOf(video.id)));
+                }
             }
         });
     }
@@ -116,13 +123,9 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     private void initPlayList(final ArrayList<Video> videos) {
         runOnUiThread(new Runnable() {
             public void run() {
-                LinearLayout layout = (LinearLayout) findViewById(R.id.play_list);
-                layout.removeAllViews();
+                playList.removeAllViews();
                 for(Video video : videos) {
-                    View playListItem = getLayoutInflater().inflate(R.layout.play_list_item, null);
-                    TextView title = (TextView) playListItem.findViewById(R.id.title);
-                    title.setText(video.title);
-                    layout.addView(playListItem);
+                    addPlayListItem(video);
                 }
             }
         });
@@ -131,12 +134,16 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     private void addPlayList(final Video video) {
         runOnUiThread(new Runnable() {
             public void run() {
-                LinearLayout layout = (LinearLayout) findViewById(R.id.play_list);
-                View playListItem = getLayoutInflater().inflate(R.layout.play_list_item, null);
-                TextView title = (TextView) playListItem.findViewById(R.id.title);
-                title.setText(video.title);
-                layout.addView(playListItem);
+                addPlayListItem(video);
             }
         });
+    }
+
+    private void addPlayListItem(final Video video) {
+        View playListItem = getLayoutInflater().inflate(R.layout.play_list_item, null);
+        playListMap.put(String.valueOf(video.id), playListItem);
+        TextView title = (TextView) playListItem.findViewById(R.id.title);
+        title.setText(video.title);
+        playList.addView(playListItem);
     }
 }
