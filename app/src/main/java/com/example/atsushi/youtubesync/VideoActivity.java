@@ -59,12 +59,16 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
 
         switch (jsonData.data_type) {
             case "now_playing_video":
-                player.loadVideo(jsonData.data.video.youtube_video_id, jsonData.data.video.current_time * 1000);
+                if(jsonData.data != null) {
+                    player.loadVideo(jsonData.data.video.youtube_video_id, jsonData.data.video.current_time * 1000);
+                }
                 break;
             case "add_video":
                 break;
             case "start_video":
-                player.loadVideo(jsonData.data.video.youtube_video_id);
+                if(jsonData.data != null) {
+                    player.loadVideo(jsonData.data.video.youtube_video_id);
+                }
                 break;
             default:
                 break;
