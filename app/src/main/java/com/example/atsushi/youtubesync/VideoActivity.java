@@ -33,6 +33,9 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         youTubeView.initialize(DeveloperKey.DEVELOPER_KEY, this);
 
+        roomChannel = new RoomChannel();
+        roomChannel.setListener(this);
+
         videoTitleText = (TextView) findViewById(R.id.video_title);
         playList = (LinearLayout) findViewById(R.id.play_list);
     }
@@ -57,8 +60,6 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
             player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
             this.player = player;
         }
-        roomChannel = new RoomChannel();
-        roomChannel.setListener(this);
         roomChannel.getNowPlayingVideo();
         roomChannel.getPlayList();
     }
