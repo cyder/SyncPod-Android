@@ -1,5 +1,7 @@
 package com.example.atsushi.youtubesync;
 
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class VideoActivity extends YouTubeFailureRecoveryActivity implements RoomChannelInterface {
+    final int searchVideoRequestCode = 1000;
+
     RoomChannel roomChannel;
     YouTubePlayer player;
     TextView videoTitleText;
@@ -33,8 +37,20 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         youTubeView.initialize(DeveloperKey.DEVELOPER_KEY, this);
 
+        roomChannel = new RoomChannel();
+        roomChannel.setListener(this);
+
         videoTitleText = (TextView) findViewById(R.id.video_title);
         playList = (LinearLayout) findViewById(R.id.play_list);
+
+        ((FloatingActionButton) findViewById(R.id.add_video_action_button))
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v){
+                        Intent varIntent = new Intent(VideoActivity.this, SearchVideoActivity.class);
+                        startActivityForResult(varIntent, searchVideoRequestCode);
+                    }
+                });
     }
 
     @Override
@@ -51,14 +67,23 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     }
 
     @Override
+    protected void onActivityResult( int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if(resultCode == RESULT_OK && requestCode == searchVideoRequestCode && null != intent) {
+            String res = intent.getStringExtra("youtube_video_id");
+            if(res != null) {
+                roomChannel.addVideo(res);
+            }
+        }
+    }
+
+    @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player,
                                         boolean wasRestored) {
         if (!wasRestored) {
             player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
             this.player = player;
         }
-        roomChannel = new RoomChannel();
-        roomChannel.setListener(this);
         roomChannel.getNowPlayingVideo();
         roomChannel.getPlayList();
     }
