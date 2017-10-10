@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class VideoActivity extends YouTubeFailureRecoveryActivity implements RoomChannelInterface {
+    final int searchVideoRequestCode = 1000;
+
     RoomChannel roomChannel;
     YouTubePlayer player;
     TextView videoTitleText;
@@ -46,7 +48,7 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
                     @Override
                     public void onClick(View v){
                         Intent varIntent = new Intent(VideoActivity.this, SearchVideoActivity.class);
-                        startActivity(varIntent);
+                        startActivityForResult(varIntent, searchVideoRequestCode);
                     }
                 });
     }
@@ -62,6 +64,17 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     public void onDestroy() {
         super.onDestroy();
         roomChannel.removeListener();
+    }
+
+    @Override
+    protected void onActivityResult( int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if(resultCode == RESULT_OK && requestCode == searchVideoRequestCode && null != intent) {
+            String res = intent.getStringExtra("youtube_video_id");
+            if(res != null) {
+                roomChannel.addVideo(res);
+            }
+        }
     }
 
     @Override
