@@ -3,6 +3,8 @@ package com.example.atsushi.youtubesync;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.atsushi.youtubesync.channels.RoomChannel;
@@ -13,10 +15,15 @@ import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class VideoActivity extends YouTubeFailureRecoveryActivity implements RoomChannelInterface {
     RoomChannel roomChannel;
     YouTubePlayer player;
     TextView videoTitleText;
+    LinearLayout playList;
+    HashMap<String, View> playListMap = new HashMap<String, View>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,6 +34,7 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         youTubeView.initialize(DeveloperKey.DEVELOPER_KEY, this);
 
         videoTitleText = (TextView) findViewById(R.id.video_title);
+        playList = (LinearLayout) findViewById(R.id.play_list);
     }
 
     @Override
@@ -75,11 +83,15 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
                 }
                 break;
             case "add_video":
+                addPlayList(jsonData.data.video);
                 break;
             case "start_video":
                 if(jsonData.data != null) {
                     startVideo(jsonData.data.video);
                 }
+                break;
+            case "play_list":
+                initPlayList(jsonData.data.play_list);
                 break;
             default:
                 break;
@@ -101,7 +113,37 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         runOnUiThread(new Runnable() {
             public void run() {
                 videoTitleText.setText(video.title);
+                if(playListMap.get(String.valueOf(video.id)) != null) {
+                    playList.removeView(playListMap.get(String.valueOf(video.id)));
+                }
             }
         });
+    }
+
+    private void initPlayList(final ArrayList<Video> videos) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                playList.removeAllViews();
+                for(Video video : videos) {
+                    addPlayListItem(video);
+                }
+            }
+        });
+    }
+
+    private void addPlayList(final Video video) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                addPlayListItem(video);
+            }
+        });
+    }
+
+    private void addPlayListItem(final Video video) {
+        View playListItem = getLayoutInflater().inflate(R.layout.play_list_item, null);
+        playListMap.put(String.valueOf(video.id), playListItem);
+        TextView title = (TextView) playListItem.findViewById(R.id.title);
+        title.setText(video.title);
+        playList.addView(playListItem);
     }
 }
