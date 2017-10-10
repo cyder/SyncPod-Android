@@ -57,6 +57,14 @@ public class RoomChannel {
         this.listener = listener;
     }
 
+    public void getPlayList() {
+        subscription.perform("play_list");
+    }
+
+    public void getNowPlayingVideo() {
+        subscription.perform("now_playing_video");
+    }
+
     public void removeListener(){
         consumer.getSubscriptions().remove(subscription);
         this.listener = null;

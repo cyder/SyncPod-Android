@@ -40,25 +40,27 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     @Override
     public void onRestart() {
         super.onRestart();
-        roomChannel = new RoomChannel();
-        roomChannel.setListener(this);
+        roomChannel.getNowPlayingVideo();
+        roomChannel.getPlayList();
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
+        super.onDestroy();
         roomChannel.removeListener();
     }
 
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player,
                                         boolean wasRestored) {
-        roomChannel = new RoomChannel();
-        roomChannel.setListener(this);
         if (!wasRestored) {
             player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
             this.player = player;
         }
+        roomChannel = new RoomChannel();
+        roomChannel.setListener(this);
+        roomChannel.getNowPlayingVideo();
+        roomChannel.getPlayList();
     }
 
     @Override
