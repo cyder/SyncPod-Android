@@ -3,6 +3,7 @@ package com.example.atsushi.youtubesync.channels;
 import android.util.Log;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.hosopy.actioncable.ActionCableException;
 import com.hosopy.actioncable.Channel;
 import com.hosopy.actioncable.Consumer;
@@ -63,6 +64,12 @@ public class RoomChannel {
 
     public void getNowPlayingVideo() {
         subscription.perform("now_playing_video");
+    }
+
+    public void addVideo(String youtubeVideoId) {
+        JsonObject params = new JsonObject();
+        params.addProperty("youtube_video_id", youtubeVideoId);
+        subscription.perform("add_video", params);
     }
 
     public void removeListener(){
