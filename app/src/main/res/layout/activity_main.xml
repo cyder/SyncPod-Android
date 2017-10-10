@@ -24,4 +24,6 @@
         android:layout_gravity="center_horizontal"
         android:width="150dp"
         android:text="Start" />
+
+
 </LinearLayout>
