@@ -1,5 +1,6 @@
 package com.example.atsushi.youtubesync.youtube;
 
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.example.atsushi.youtubesync.DeveloperKey;
@@ -15,6 +16,8 @@ import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -28,7 +31,7 @@ public class Search {
     private static YouTube youtube;
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
-    private static final long maxResult = 20;
+    private static final long maxResult = 10;
     private YouTube.Search.List search;
     private String nextPageToken = null;
     private String nowPageToken = null;
@@ -83,13 +86,13 @@ public class Search {
         ArrayList<Video> resultList = new ArrayList<Video>();
         try {
             SearchListResponse searchResponse = search.execute();
-            nextPageToken = searchResponse.getNextPageToken();
             List<SearchResult> searchResultList = searchResponse.getItems();
             Iterator<SearchResult> iterator = searchResultList.iterator();
             while (iterator.hasNext()) {
                 Video video = convert(iterator.next());
                 resultList.add(video);
             }
+            nextPageToken = searchResponse.getNextPageToken();
         } catch (IOException e) {
             Log.e("App", "There was an IO error: " + e.getCause() + " : " + e.getMessage());
         }
@@ -100,8 +103,16 @@ public class Search {
         Video video = new Video();
         video.youtube_video_id = result.getId().getVideoId();
         video.title = result.getSnippet().getTitle();
-        video.thumbnail = result.getSnippet().getThumbnails().getMedium().getUrl();
         video.channel_title = result.getSnippet().getChannelTitle();
+
+        try {
+            URL url = new URL(result.getSnippet().getThumbnails().getMedium().getUrl());
+            InputStream stream = url.openStream();
+            video.thumbnail = BitmapFactory.decodeStream(stream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return video;
     }
 }
