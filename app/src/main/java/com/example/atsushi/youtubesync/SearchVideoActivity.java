@@ -5,10 +5,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import com.example.atsushi.youtubesync.youtube.Search;
 
 /**
  * Created by atsushi on 2017/10/11.
@@ -16,6 +21,8 @@ import android.widget.EditText;
 
 public class SearchVideoActivity extends AppCompatActivity {
     private EditText youtubeVideoIdForm;
+    private EditText youtubeSearchForm;
+    private Search search = new Search();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,20 +39,18 @@ public class SearchVideoActivity extends AppCompatActivity {
                 finish();
             }
         });
-        youtubeVideoIdForm = (EditText) findViewById(R.id.youtube_video_id_form);
+        youtubeSearchForm = (EditText) findViewById(R.id.youtube_search_form);
 
-        ((Button) findViewById(R.id.submit))
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent();
-                        if(youtubeVideoIdForm.getText() != null) {
-                            String str = youtubeVideoIdForm.getText().toString();
-                            intent.putExtra("youtube_video_id", str);
-                        }
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
-                });
+        youtubeSearchForm.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                Log.d("App", "Submit");
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    search.get(youtubeSearchForm.getText().toString());
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 }

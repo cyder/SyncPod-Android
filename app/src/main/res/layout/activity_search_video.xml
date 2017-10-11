@@ -24,18 +24,4 @@
         </EditText>
 
     </android.support.v7.widget.Toolbar>
-
-    <EditText
-        android:id="@+id/youtube_video_id_form"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="youtube video id"
-        android:inputType="text" />
-
-    <Button
-        android:id="@+id/submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="送信" />
 </LinearLayout>
