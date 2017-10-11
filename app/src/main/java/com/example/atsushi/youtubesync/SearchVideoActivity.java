@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,9 +20,7 @@ import android.widget.TextView;
 import com.example.atsushi.youtubesync.json_data.Video;
 import com.example.atsushi.youtubesync.youtube.Search;
 import com.example.atsushi.youtubesync.youtube.SearchInterface;
-import com.google.api.services.youtube.model.SearchListResponse;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -35,6 +33,7 @@ public class SearchVideoActivity extends AppCompatActivity implements SearchInte
     private Search search;
     private SearchAdapter adapter;
     private ListView listView;
+    private View listFooter;
 
 
     @Override
@@ -70,6 +69,18 @@ public class SearchVideoActivity extends AppCompatActivity implements SearchInte
             }
         });
 
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (totalItemCount != 0 && (totalItemCount - visibleItemCount - 5) < firstVisibleItem) {
+                    search.next();
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(AbsListView arg0, int arg1) {}
+        });
+
 
         youtubeSearchForm.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -92,6 +103,19 @@ public class SearchVideoActivity extends AppCompatActivity implements SearchInte
             public void run() {
                 adapter.setVideoList(result);
                 listView.setAdapter(adapter);
+                if(listFooter == null) {
+                    listFooter = getLayoutInflater().inflate(R.layout.search_result_video_list_footer, null);
+                    listView.addFooterView(listFooter);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onLoaded(final ArrayList result) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                adapter.addVideoList(result);
             }
         });
     }

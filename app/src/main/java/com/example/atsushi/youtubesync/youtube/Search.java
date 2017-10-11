@@ -28,8 +28,10 @@ public class Search {
     private static YouTube youtube;
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
-    private static final long maxResult = 25;
+    private static final long maxResult = 20;
     private YouTube.Search.List search;
+    private String nextPageToken = null;
+    private String nowPageToken = null;
 
     public Search() {
         try {
@@ -47,29 +49,51 @@ public class Search {
     }
 
     public void get(final String keyword) {
+        nextPageToken = null;
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    ArrayList<Video> resultList = new ArrayList<Video>();
-                    search.setQ(keyword);
-                    SearchListResponse searchResponse = search.execute();
-                    List<SearchResult> searchResultList = searchResponse.getItems();
-                    Iterator<SearchResult> iterator = searchResultList.iterator();
-                    while (iterator.hasNext()) {
-                        Video video = convert(iterator.next());
-                        resultList.add(video);
-                    }
-                    listener.onReceived(resultList);
-                } catch (IOException e) {
-                    Log.e("App", "There was an IO error: " + e.getCause() + " : " + e.getMessage());
-                }
+                search.setQ(keyword);
+                search.setPageToken("");
+                ArrayList<Video> resultList = getResult();
+                listener.onReceived(resultList);
             }
         }).start();
     }
 
+    public void next() {
+        if(nextPageToken != null && !nextPageToken.equals(nowPageToken)) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    search.setPageToken(nextPageToken);
+                    nowPageToken = nextPageToken;
+                    ArrayList<Video> resultList = getResult();
+                    listener.onLoaded(resultList);
+                }
+            }).start();
+        }
+    }
+
     public void setListener(SearchInterface listener){
         this.listener = listener;
+    }
+
+    private ArrayList<Video> getResult() {
+        ArrayList<Video> resultList = new ArrayList<Video>();
+        try {
+            SearchListResponse searchResponse = search.execute();
+            nextPageToken = searchResponse.getNextPageToken();
+            List<SearchResult> searchResultList = searchResponse.getItems();
+            Iterator<SearchResult> iterator = searchResultList.iterator();
+            while (iterator.hasNext()) {
+                Video video = convert(iterator.next());
+                resultList.add(video);
+            }
+        } catch (IOException e) {
+            Log.e("App", "There was an IO error: " + e.getCause() + " : " + e.getMessage());
+        }
+        return resultList;
     }
 
     private Video convert(SearchResult result) {

@@ -10,4 +10,5 @@ import java.util.ArrayList;
 
 public interface SearchInterface {
     void onReceived(ArrayList<Video> result);
+    void onLoaded(ArrayList<Video> result);
 }

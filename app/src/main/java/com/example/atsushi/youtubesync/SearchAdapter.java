@@ -36,6 +36,11 @@ public class SearchAdapter extends BaseAdapter {
         this.videoList = videoList;
     }
 
+    public void addVideoList(ArrayList<Video> videolist) {
+        this.videoList.addAll(videolist);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return videoList.size();
