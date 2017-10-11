@@ -35,7 +35,7 @@ public class SearchAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Video getItem(int position) {
         return videoList.get(position);
     }
 

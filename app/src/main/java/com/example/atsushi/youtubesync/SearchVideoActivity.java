@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -55,6 +56,18 @@ public class SearchVideoActivity extends AppCompatActivity implements SearchInte
         search.setListener(this);
         listView = (ListView)findViewById(R.id.result_list);
         adapter = new SearchAdapter(SearchVideoActivity.this);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Video target = adapter.getItem(position);
+                Intent intent = new Intent();
+                intent.putExtra("youtube_video_id", target.youtube_video_id);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+
 
         youtubeSearchForm.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

@@ -41,6 +41,7 @@ public class Search {
             search = youtube.search().list("id,snippet");
             search.setKey(DeveloperKey.DEVELOPER_KEY);
             search.setMaxResults(maxResult);
+            search.setType("video");
         } catch (IOException e) {
             Log.e("App", "There was an IO error: " + e.getCause() + " : " + e.getMessage());
         }
