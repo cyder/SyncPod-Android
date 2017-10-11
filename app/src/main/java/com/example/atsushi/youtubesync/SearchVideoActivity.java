@@ -11,18 +11,28 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.atsushi.youtubesync.json_data.Video;
 import com.example.atsushi.youtubesync.youtube.Search;
+import com.example.atsushi.youtubesync.youtube.SearchInterface;
+import com.google.api.services.youtube.model.SearchListResponse;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by atsushi on 2017/10/11.
  */
 
-public class SearchVideoActivity extends AppCompatActivity {
+public class SearchVideoActivity extends AppCompatActivity implements SearchInterface {
     private EditText youtubeVideoIdForm;
     private EditText youtubeSearchForm;
-    private Search search = new Search();
+    private Search search;
+    private SearchAdapter adapter;
+    private ListView listView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +51,11 @@ public class SearchVideoActivity extends AppCompatActivity {
         });
         youtubeSearchForm = (EditText) findViewById(R.id.youtube_search_form);
 
+        search = new Search();
+        search.setListener(this);
+        listView = (ListView)findViewById(R.id.result_list);
+        adapter = new SearchAdapter(SearchVideoActivity.this);
+
         youtubeSearchForm.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -50,6 +65,16 @@ public class SearchVideoActivity extends AppCompatActivity {
                     return true;
                 }
                 return false;
+            }
+        });
+    }
+
+    @Override
+    public void onReceived(final ArrayList result) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                adapter.setVideoList(result);
+                listView.setAdapter(adapter);
             }
         });
     }
