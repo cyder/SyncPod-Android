@@ -11,7 +11,6 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
-import com.google.api.services.youtube.model.ResourceId;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
 
@@ -77,6 +76,8 @@ public class Search {
         Video video = new Video();
         video.youtube_video_id = result.getId().getVideoId();
         video.title = result.getSnippet().getTitle();
+        video.thumbnail = result.getSnippet().getThumbnails().getMedium().getUrl();
+        video.channel_title = result.getSnippet().getChannelTitle();
         return video;
     }
 }
