@@ -1,6 +1,6 @@
 package com.example.atsushi.youtubesync;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
@@ -21,6 +21,12 @@ public class PlayListFragment extends Fragment {
     private ListView playList;
     private PlayListAdapter adapter;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        adapter = new PlayListAdapter(getActivity());
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,7 +38,6 @@ public class PlayListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         playList = (ListView) view.findViewById(R.id.play_list);
-        adapter = new PlayListAdapter(getActivity());
         playList.setAdapter(adapter);
         View listHeader = getActivity().getLayoutInflater().inflate(R.layout.play_list_header, null);
         playList.addHeaderView(listHeader, null, false);
@@ -41,9 +46,9 @@ public class PlayListFragment extends Fragment {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v){
-                        VideoActivity activity = (VideoActivity)getActivity();
+                        VideoActivity activity = (VideoActivity)getContext();
                         activity.startSearchVideoActivity();
-                    }
+                }
                 });
     }
 

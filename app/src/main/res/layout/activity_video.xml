@@ -10,10 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <fragment
-        android:id="@+id/play_list_fragment"
-        android:name="com.example.atsushi.youtubesync.PlayListFragment"
+    <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:id="@+id/view_pager"/>
 
 </LinearLayout>

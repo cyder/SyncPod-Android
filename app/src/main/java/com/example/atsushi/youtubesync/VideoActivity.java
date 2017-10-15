@@ -1,9 +1,10 @@
 package com.example.atsushi.youtubesync;
 
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,8 +37,11 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
                 (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_fragment);
         frag.initialize(DeveloperKey.DEVELOPER_KEY, this);
 
-        FragmentManager fragmentManager = getFragmentManager();
-        playListFragment = (PlayListFragment) fragmentManager.findFragmentById(R.id.play_list_fragment);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        RoomFragmentPagerAdapter adapter = new RoomFragmentPagerAdapter(fragmentManager);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager.setAdapter(adapter);
+        playListFragment = (PlayListFragment) adapter.getItem(0);
 
         roomChannel = new RoomChannel();
         roomChannel.setListener(this);
