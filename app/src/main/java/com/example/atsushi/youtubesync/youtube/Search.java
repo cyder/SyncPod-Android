@@ -104,14 +104,7 @@ public class Search {
         video.youtube_video_id = result.getId().getVideoId();
         video.title = result.getSnippet().getTitle();
         video.channel_title = result.getSnippet().getChannelTitle();
-
-        try {
-            URL url = new URL(result.getSnippet().getThumbnails().getMedium().getUrl());
-            InputStream stream = url.openStream();
-            video.thumbnail = BitmapFactory.decodeStream(stream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        video.thumbnail_url = result.getSnippet().getThumbnails().getMedium().getUrl();
 
         return video;
     }
