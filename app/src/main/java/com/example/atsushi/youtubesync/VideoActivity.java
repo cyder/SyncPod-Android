@@ -1,11 +1,9 @@
 package com.example.atsushi.youtubesync;
 
+import android.app.FragmentManager;
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.atsushi.youtubesync.channels.RoomChannel;
@@ -23,8 +21,7 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
 
     RoomChannel roomChannel;
     YouTubePlayer player;
-    ListView playList;
-    private PlayListAdapter adapter;
+    PlayListFragment playListFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,23 +31,11 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         youTubeView.initialize(DeveloperKey.DEVELOPER_KEY, this);
 
+        FragmentManager fragmentManager = getFragmentManager();
+        playListFragment = (PlayListFragment) fragmentManager.findFragmentById(R.id.play_list_fragment);
+
         roomChannel = new RoomChannel();
         roomChannel.setListener(this);
-
-        playList = (ListView)findViewById(R.id.play_list);
-        adapter = new PlayListAdapter(VideoActivity.this);
-        playList.setAdapter(adapter);
-        View listHeader = getLayoutInflater().inflate(R.layout.play_list_header, null);
-        playList.addHeaderView(listHeader, null, false);
-
-        ((FloatingActionButton) findViewById(R.id.add_video_action_button))
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v){
-                        Intent varIntent = new Intent(VideoActivity.this, SearchVideoActivity.class);
-                        startActivityForResult(varIntent, searchVideoRequestCode);
-                    }
-                });
     }
 
     @Override
@@ -135,6 +120,11 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         Log.d("App", "failed");
     }
 
+    public void startSearchVideoActivity() {
+        Intent varIntent = new Intent(VideoActivity.this, SearchVideoActivity.class);
+        startActivityForResult(varIntent, searchVideoRequestCode);
+    }
+
     private void startVideo(final Video video) {
         player.loadVideo(video.youtube_video_id, video.current_time * 1000);
         runOnUiThread(new Runnable() {
@@ -143,10 +133,7 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
                 title.setText(video.title);
                 TextView channelTitle = (TextView) findViewById(R.id.now_channel_title);
                 channelTitle.setText(video.channel_title);
-
-                if(adapter.getCount() > 0 && adapter.getItemId(0) == video.id) {
-                    adapter.deleteVideo(0);
-                }
+                playListFragment.startVideo(video);
             }
         });
     }
@@ -154,7 +141,7 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     private void initPlayList(final ArrayList<Video> videos) {
         runOnUiThread(new Runnable() {
             public void run() {
-                adapter.setVideoList(videos);
+                playListFragment.initPlayList(videos);
             }
         });
     }
@@ -162,7 +149,7 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     private void addPlayList(final Video video) {
         runOnUiThread(new Runnable() {
             public void run() {
-                adapter.addVideo(video);
+                playListFragment.addPlayList(video);
             }
         });
     }
