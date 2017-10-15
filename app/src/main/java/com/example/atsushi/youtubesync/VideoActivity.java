@@ -5,7 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.atsushi.youtubesync.channels.RoomChannel;
@@ -17,16 +17,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class VideoActivity extends YouTubeFailureRecoveryActivity implements RoomChannelInterface {
     final int searchVideoRequestCode = 1000;
 
     RoomChannel roomChannel;
     YouTubePlayer player;
-    TextView videoTitleText;
-    LinearLayout playList;
-    HashMap<String, View> playListMap = new HashMap<String, View>();
+    ListView playList;
+    private PlayListAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,8 +37,11 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         roomChannel = new RoomChannel();
         roomChannel.setListener(this);
 
-        videoTitleText = (TextView) findViewById(R.id.video_title);
-        playList = (LinearLayout) findViewById(R.id.play_list);
+        playList = (ListView)findViewById(R.id.play_list);
+        adapter = new PlayListAdapter(VideoActivity.this);
+        playList.setAdapter(adapter);
+        View listHeader = getLayoutInflater().inflate(R.layout.play_list_header, null);
+        playList.addHeaderView(listHeader, null, false);
 
         ((FloatingActionButton) findViewById(R.id.add_video_action_button))
                 .setOnClickListener(new View.OnClickListener() {
@@ -138,9 +139,13 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         player.loadVideo(video.youtube_video_id, video.current_time * 1000);
         runOnUiThread(new Runnable() {
             public void run() {
-                videoTitleText.setText(video.title);
-                if(playListMap.get(String.valueOf(video.id)) != null) {
-                    playList.removeView(playListMap.get(String.valueOf(video.id)));
+                TextView title = (TextView) findViewById(R.id.now_title);
+                title.setText(video.title);
+                TextView channelTitle = (TextView) findViewById(R.id.now_channel_title);
+                channelTitle.setText(video.channel_title);
+
+                if(adapter.getCount() > 0 && adapter.getItemId(0) == video.id) {
+                    adapter.deleteVideo(0);
                 }
             }
         });
@@ -149,10 +154,7 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     private void initPlayList(final ArrayList<Video> videos) {
         runOnUiThread(new Runnable() {
             public void run() {
-                playList.removeAllViews();
-                for(Video video : videos) {
-                    addPlayListItem(video);
-                }
+                adapter.setVideoList(videos);
             }
         });
     }
@@ -160,16 +162,8 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     private void addPlayList(final Video video) {
         runOnUiThread(new Runnable() {
             public void run() {
-                addPlayListItem(video);
+                adapter.addVideo(video);
             }
         });
-    }
-
-    private void addPlayListItem(final Video video) {
-        View playListItem = getLayoutInflater().inflate(R.layout.play_list_item, null);
-        playListMap.put(String.valueOf(video.id), playListItem);
-        TextView title = (TextView) playListItem.findViewById(R.id.title);
-        title.setText(video.title);
-        playList.addView(playListItem);
     }
 }

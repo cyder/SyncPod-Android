@@ -13,31 +13,40 @@ import com.example.atsushi.youtubesync.json_data.Video;
 import java.util.ArrayList;
 
 /**
- * Created by atsushi on 2017/10/12.
+ * Created by atsushi on 2017/10/16.
  */
 
-public class SearchAdapter extends BaseAdapter {
+public class PlayListAdapter extends BaseAdapter {
     Context context;
     LayoutInflater layoutInflater = null;
     ArrayList<Video> videoList;
 
-    public SearchAdapter(Context context) {
+    public PlayListAdapter(Context context) {
         this.context = context;
         this.layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public void setVideoList(ArrayList<Video> videoList) {
         this.videoList = videoList;
+        notifyDataSetChanged();
     }
 
-    public void addVideoList(ArrayList<Video> videolist) {
-        this.videoList.addAll(videolist);
+    public void addVideo(Video video) {
+        videoList.add(video);
+        notifyDataSetChanged();
+    }
+
+    public void deleteVideo(int position) {
+        videoList.remove(position);
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return videoList.size();
+        if(videoList != null) {
+            return videoList.size();
+        }
+        return 0;
     }
 
     @Override
@@ -52,7 +61,7 @@ public class SearchAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
-        final View convertView = layoutInflater.inflate(R.layout.search_result_video_list,parent,false);
+        final View convertView = layoutInflater.inflate(R.layout.play_list_item,parent,false);
         final Video video = videoList.get(position);
         ((TextView)convertView.findViewById(R.id.title)).setText(video.title);
         ((TextView)convertView.findViewById(R.id.channel_title)).setText(video.channel_title);
