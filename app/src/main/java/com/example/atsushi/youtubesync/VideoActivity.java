@@ -5,7 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.atsushi.youtubesync.channels.RoomChannel;
@@ -25,7 +25,8 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     RoomChannel roomChannel;
     YouTubePlayer player;
     TextView videoTitleText;
-    LinearLayout playList;
+    ListView playList;
+    private PlayListAdapter adapter;
     HashMap<String, View> playListMap = new HashMap<String, View>();
 
     @Override
@@ -39,8 +40,13 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         roomChannel = new RoomChannel();
         roomChannel.setListener(this);
 
+        playList = (ListView)findViewById(R.id.play_list);
+        adapter = new PlayListAdapter(VideoActivity.this);
+        playList.setAdapter(adapter);
+        View listHeader = getLayoutInflater().inflate(R.layout.play_list_header, null);
+        playList.addHeaderView(listHeader, null, false);
+
         videoTitleText = (TextView) findViewById(R.id.video_title);
-        playList = (LinearLayout) findViewById(R.id.play_list);
 
         ((FloatingActionButton) findViewById(R.id.add_video_action_button))
                 .setOnClickListener(new View.OnClickListener() {
@@ -109,7 +115,7 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
                 }
                 break;
             case "add_video":
-                addPlayList(jsonData.data.video);
+//                addPlayList(jsonData.data.video);
                 break;
             case "start_video":
                 if(jsonData.data != null) {
@@ -117,7 +123,7 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
                 }
                 break;
             case "play_list":
-                initPlayList(jsonData.data.play_list);
+//                initPlayList(jsonData.data.play_list);
                 break;
             default:
                 break;
