@@ -115,7 +115,7 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
                 }
                 break;
             case "add_video":
-//                addPlayList(jsonData.data.video);
+                addPlayList(jsonData.data.video);
                 break;
             case "start_video":
                 if(jsonData.data != null) {
@@ -123,7 +123,7 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
                 }
                 break;
             case "play_list":
-//                initPlayList(jsonData.data.play_list);
+                initPlayList(jsonData.data.play_list);
                 break;
             default:
                 break;
@@ -155,10 +155,7 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     private void initPlayList(final ArrayList<Video> videos) {
         runOnUiThread(new Runnable() {
             public void run() {
-                playList.removeAllViews();
-                for(Video video : videos) {
-                    addPlayListItem(video);
-                }
+                adapter.setVideoList(videos);
             }
         });
     }
@@ -166,7 +163,7 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     private void addPlayList(final Video video) {
         runOnUiThread(new Runnable() {
             public void run() {
-                addPlayListItem(video);
+                adapter.addVideo(video);
             }
         });
     }

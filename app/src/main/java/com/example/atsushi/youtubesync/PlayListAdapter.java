@@ -28,6 +28,7 @@ public class PlayListAdapter extends BaseAdapter {
 
     public void setVideoList(ArrayList<Video> videoList) {
         this.videoList = videoList;
+        notifyDataSetChanged();
     }
 
     public void addVideo(Video video) {
@@ -55,7 +56,7 @@ public class PlayListAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
-        final View convertView = layoutInflater.inflate(R.layout.search_result_video_list,parent,false);
+        final View convertView = layoutInflater.inflate(R.layout.play_list_item,parent,false);
         ((TextView)convertView.findViewById(R.id.title)).setText(videoList.get(position).title);
         ((TextView)convertView.findViewById(R.id.channel_title)).setText(videoList.get(position).channel_title);
 
