@@ -3,21 +3,25 @@ package com.example.atsushi.youtubesync;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.atsushi.youtubesync.channels.RoomChannel;
 import com.example.atsushi.youtubesync.channels.RoomChannelInterface;
 import com.example.atsushi.youtubesync.json_data.*;
+import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 
-public class VideoActivity extends YouTubeFailureRecoveryActivity implements RoomChannelInterface {
+public class VideoActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener, RoomChannelInterface {
     final int searchVideoRequestCode = 1000;
+    private static final int RECOVERY_DIALOG_REQUEST = 1;
 
     RoomChannel roomChannel;
     YouTubePlayer player;
@@ -28,8 +32,9 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
 
-        YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
-        youTubeView.initialize(DeveloperKey.DEVELOPER_KEY, this);
+        YouTubePlayerFragment frag =
+                (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_fragment);
+        frag.initialize(DeveloperKey.DEVELOPER_KEY, this);
 
         FragmentManager fragmentManager = getFragmentManager();
         playListFragment = (PlayListFragment) fragmentManager.findFragmentById(R.id.play_list_fragment);
@@ -74,8 +79,13 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     }
 
     @Override
-    protected YouTubePlayer.Provider getYouTubePlayerProvider() {
-        return (YouTubePlayerView) findViewById(R.id.youtube_view);
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult errorReason) {
+        if (errorReason.isUserRecoverableError()) {
+            errorReason.getErrorDialog(this, RECOVERY_DIALOG_REQUEST).show();
+        } else {
+            String errorMessage = String.format(getString(R.string.error_player), errorReason.toString());
+            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
