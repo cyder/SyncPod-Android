@@ -36,6 +36,11 @@ public class PlayListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void deleteVideo(int position) {
+        videoList.remove(position);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         if(videoList != null) {

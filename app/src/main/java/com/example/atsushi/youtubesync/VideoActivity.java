@@ -17,7 +17,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class VideoActivity extends YouTubeFailureRecoveryActivity implements RoomChannelInterface {
     final int searchVideoRequestCode = 1000;
@@ -27,7 +26,6 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     TextView videoTitleText;
     ListView playList;
     private PlayListAdapter adapter;
-    HashMap<String, View> playListMap = new HashMap<String, View>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -145,8 +143,8 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         runOnUiThread(new Runnable() {
             public void run() {
                 videoTitleText.setText(video.title);
-                if(playListMap.get(String.valueOf(video.id)) != null) {
-                    playList.removeView(playListMap.get(String.valueOf(video.id)));
+                if(adapter.getCount() > 0 && adapter.getItemId(0) == video.id) {
+                    adapter.deleteVideo(0);
                 }
             }
         });
@@ -166,13 +164,5 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
                 adapter.addVideo(video);
             }
         });
-    }
-
-    private void addPlayListItem(final Video video) {
-        View playListItem = getLayoutInflater().inflate(R.layout.play_list_item, null);
-        playListMap.put(String.valueOf(video.id), playListItem);
-        TextView title = (TextView) playListItem.findViewById(R.id.title);
-        title.setText(video.title);
-        playList.addView(playListItem);
     }
 }
