@@ -28,6 +28,7 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
     RoomChannel roomChannel;
     YouTubePlayer player;
     PlayListFragment playListFragment;
+    ChatFragment chatFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(adapter);
         playListFragment = (PlayListFragment) adapter.getItem(0);
+        chatFragment = (ChatFragment) adapter.getItem(1);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
@@ -56,6 +58,7 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
         super.onRestart();
         roomChannel.getNowPlayingVideo();
         roomChannel.getPlayList();
+        roomChannel.getChatList();
     }
 
     @Override
@@ -84,6 +87,7 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
         }
         roomChannel.getNowPlayingVideo();
         roomChannel.getPlayList();
+        roomChannel.getChatList();
     }
 
     @Override
@@ -122,6 +126,12 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
                 break;
             case "play_list":
                 initPlayList(jsonData.data.play_list);
+                break;
+            case "add_chat":
+                addChat(jsonData.data.chat);
+                break;
+            case "past_chats":
+                initChatList(jsonData.data.past_chats);
                 break;
             default:
                 break;
@@ -168,6 +178,22 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
         runOnUiThread(new Runnable() {
             public void run() {
                 playListFragment.addPlayList(video);
+            }
+        });
+    }
+
+    private void initChatList(final ArrayList<Chat> chats) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                chatFragment.initChatList(chats);
+            }
+        });
+    }
+
+    private void addChat(final Chat chat) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                chatFragment.addChat(chat);
             }
         });
     }

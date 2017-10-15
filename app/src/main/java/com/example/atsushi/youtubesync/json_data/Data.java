@@ -8,5 +8,7 @@ import java.util.ArrayList;
 
 public class Data {
     public Video video;
+    public Chat chat;
     public ArrayList<Video> play_list;
+    public ArrayList<Chat> past_chats;
 }
