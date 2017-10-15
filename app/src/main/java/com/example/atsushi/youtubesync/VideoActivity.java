@@ -23,7 +23,6 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
 
     RoomChannel roomChannel;
     YouTubePlayer player;
-    TextView videoTitleText;
     ListView playList;
     private PlayListAdapter adapter;
 
@@ -43,8 +42,6 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         playList.setAdapter(adapter);
         View listHeader = getLayoutInflater().inflate(R.layout.play_list_header, null);
         playList.addHeaderView(listHeader, null, false);
-
-        videoTitleText = (TextView) findViewById(R.id.video_title);
 
         ((FloatingActionButton) findViewById(R.id.add_video_action_button))
                 .setOnClickListener(new View.OnClickListener() {
@@ -142,7 +139,11 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         player.loadVideo(video.youtube_video_id, video.current_time * 1000);
         runOnUiThread(new Runnable() {
             public void run() {
-                videoTitleText.setText(video.title);
+                TextView title = (TextView) findViewById(R.id.now_title);
+                title.setText(video.title);
+                TextView channelTitle = (TextView) findViewById(R.id.now_channel_title);
+                channelTitle.setText(video.channel_title);
+
                 if(adapter.getCount() > 0 && adapter.getItemId(0) == video.id) {
                     adapter.deleteVideo(0);
                 }
