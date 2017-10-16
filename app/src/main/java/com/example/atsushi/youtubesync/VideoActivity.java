@@ -1,56 +1,56 @@
 package com.example.atsushi.youtubesync;
 
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.atsushi.youtubesync.channels.RoomChannel;
 import com.example.atsushi.youtubesync.channels.RoomChannelInterface;
 import com.example.atsushi.youtubesync.json_data.*;
+import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 
-public class VideoActivity extends YouTubeFailureRecoveryActivity implements RoomChannelInterface {
+public class VideoActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener, RoomChannelInterface {
     final int searchVideoRequestCode = 1000;
+    private static final int RECOVERY_DIALOG_REQUEST = 1;
 
     RoomChannel roomChannel;
     YouTubePlayer player;
-    ListView playList;
-    private PlayListAdapter adapter;
+    PlayListFragment playListFragment;
+    ChatFragment chatFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
 
-        YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
-        youTubeView.initialize(DeveloperKey.DEVELOPER_KEY, this);
+        YouTubePlayerFragment frag =
+                (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_fragment);
+        frag.initialize(DeveloperKey.DEVELOPER_KEY, this);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        RoomFragmentPagerAdapter adapter = new RoomFragmentPagerAdapter(fragmentManager);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager.setAdapter(adapter);
+        playListFragment = (PlayListFragment) adapter.getItem(0);
+        chatFragment = (ChatFragment) adapter.getItem(1);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
 
         roomChannel = new RoomChannel();
         roomChannel.setListener(this);
-
-        playList = (ListView)findViewById(R.id.play_list);
-        adapter = new PlayListAdapter(VideoActivity.this);
-        playList.setAdapter(adapter);
-        View listHeader = getLayoutInflater().inflate(R.layout.play_list_header, null);
-        playList.addHeaderView(listHeader, null, false);
-
-        ((FloatingActionButton) findViewById(R.id.add_video_action_button))
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v){
-                        Intent varIntent = new Intent(VideoActivity.this, SearchVideoActivity.class);
-                        startActivityForResult(varIntent, searchVideoRequestCode);
-                    }
-                });
     }
 
     @Override
@@ -58,6 +58,7 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         super.onRestart();
         roomChannel.getNowPlayingVideo();
         roomChannel.getPlayList();
+        roomChannel.getChatList();
     }
 
     @Override
@@ -86,11 +87,17 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         }
         roomChannel.getNowPlayingVideo();
         roomChannel.getPlayList();
+        roomChannel.getChatList();
     }
 
     @Override
-    protected YouTubePlayer.Provider getYouTubePlayerProvider() {
-        return (YouTubePlayerView) findViewById(R.id.youtube_view);
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult errorReason) {
+        if (errorReason.isUserRecoverableError()) {
+            errorReason.getErrorDialog(this, RECOVERY_DIALOG_REQUEST).show();
+        } else {
+            String errorMessage = String.format(getString(R.string.error_player), errorReason.toString());
+            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -120,6 +127,12 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
             case "play_list":
                 initPlayList(jsonData.data.play_list);
                 break;
+            case "add_chat":
+                addChat(jsonData.data.chat);
+                break;
+            case "past_chats":
+                initChatList(jsonData.data.past_chats);
+                break;
             default:
                 break;
         }
@@ -135,6 +148,15 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
         Log.d("App", "failed");
     }
 
+    public void startSearchVideoActivity() {
+        Intent varIntent = new Intent(VideoActivity.this, SearchVideoActivity.class);
+        startActivityForResult(varIntent, searchVideoRequestCode);
+    }
+
+    public void sendChat(String message) {
+        roomChannel.sendChat(message);
+    }
+
     private void startVideo(final Video video) {
         player.loadVideo(video.youtube_video_id, video.current_time * 1000);
         runOnUiThread(new Runnable() {
@@ -143,10 +165,7 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
                 title.setText(video.title);
                 TextView channelTitle = (TextView) findViewById(R.id.now_channel_title);
                 channelTitle.setText(video.channel_title);
-
-                if(adapter.getCount() > 0 && adapter.getItemId(0) == video.id) {
-                    adapter.deleteVideo(0);
-                }
+                playListFragment.startVideo(video);
             }
         });
     }
@@ -154,7 +173,7 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     private void initPlayList(final ArrayList<Video> videos) {
         runOnUiThread(new Runnable() {
             public void run() {
-                adapter.setVideoList(videos);
+                playListFragment.initPlayList(videos);
             }
         });
     }
@@ -162,7 +181,23 @@ public class VideoActivity extends YouTubeFailureRecoveryActivity implements Roo
     private void addPlayList(final Video video) {
         runOnUiThread(new Runnable() {
             public void run() {
-                adapter.addVideo(video);
+                playListFragment.addPlayList(video);
+            }
+        });
+    }
+
+    private void initChatList(final ArrayList<Chat> chats) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                chatFragment.initChatList(chats);
+            }
+        });
+    }
+
+    private void addChat(final Chat chat) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                chatFragment.addChat(chat);
             }
         });
     }
