@@ -153,6 +153,10 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
         startActivityForResult(varIntent, searchVideoRequestCode);
     }
 
+    public void sendChat(String message) {
+        roomChannel.sendChat(message);
+    }
+
     private void startVideo(final Video video) {
         player.loadVideo(video.youtube_video_id, video.current_time * 1000);
         runOnUiThread(new Runnable() {

@@ -68,6 +68,12 @@ public class RoomChannel {
 
     public void getChatList() { subscription.perform("past_chats"); }
 
+    public void sendChat(String message) {
+        JsonObject params = new JsonObject();
+        params.addProperty("message", message);
+        subscription.perform("message", params);
+    }
+
     public void addVideo(String youtubeVideoId) {
         JsonObject params = new JsonObject();
         params.addProperty("youtube_video_id", youtubeVideoId);
