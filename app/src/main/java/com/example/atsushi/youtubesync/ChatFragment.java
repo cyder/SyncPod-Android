@@ -2,6 +2,7 @@ package com.example.atsushi.youtubesync;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,10 @@ public class ChatFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         chatList = (ListView) view.findViewById(R.id.chat_list);
         chatList.setAdapter(adapter);
+
+        chatList.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
+        chatList.setStackFromBottom(true);
+
         chatForm = (EditText) view.findViewById(R.id.chat_form);
         chatSubmit = (ImageButton) view.findViewById(R.id.chat_submit);
 
