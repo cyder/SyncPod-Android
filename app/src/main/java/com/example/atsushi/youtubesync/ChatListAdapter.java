@@ -1,6 +1,8 @@
 package com.example.atsushi.youtubesync;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,8 +59,14 @@ public class ChatListAdapter extends BaseAdapter {
     public View getView(final int position, View view, ViewGroup parent) {
         final View convertView = layoutInflater.inflate(R.layout.chat_list_item,parent,false);
         final Chat chat = chatList.get(position);
-        ((TextView)convertView.findViewById(R.id.message)).setText(chat.message);
 
+        TextView message = (TextView)convertView.findViewById(R.id.message);
+        message.setText(chat.message);
+        if(chat.chat_type.equals("user")) {
+            message.setTextColor(Color.parseColor("#333333"));
+        } else {
+            message.setTextColor(Color.parseColor("#aaaaaa"));
+        }
         return convertView;
     }
 }
