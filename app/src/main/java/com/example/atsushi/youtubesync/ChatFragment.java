@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.example.atsushi.youtubesync.json_data.Chat;
@@ -21,7 +21,7 @@ public class ChatFragment extends Fragment {
     private ListView chatList;
     private ChatListAdapter adapter;
     private EditText chatForm;
-    private Button chatSubmit;
+    private ImageButton chatSubmit;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class ChatFragment extends Fragment {
         chatList = (ListView) view.findViewById(R.id.chat_list);
         chatList.setAdapter(adapter);
         chatForm = (EditText) view.findViewById(R.id.chat_form);
-        chatSubmit = (Button) view.findViewById(R.id.chat_submit);
+        chatSubmit = (ImageButton) view.findViewById(R.id.chat_submit);
 
         chatSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
