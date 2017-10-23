@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">YouTube Sync</string>
     <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
+    <string name="DEVELOPER_KEY">developer_key</string>
 </resources>

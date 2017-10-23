@@ -37,7 +37,7 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
 
         YouTubePlayerFragment frag =
                 (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_fragment);
-        frag.initialize(DeveloperKey.DEVELOPER_KEY, this);
+        frag.initialize(getString(R.string.DEVELOPER_KEY), this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         RoomFragmentPagerAdapter adapter = new RoomFragmentPagerAdapter(fragmentManager);
