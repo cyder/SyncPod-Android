@@ -1,9 +1,9 @@
 package com.example.atsushi.youtubesync.youtube;
 
-import android.graphics.BitmapFactory;
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.util.Log;
-
-import com.example.atsushi.youtubesync.DeveloperKey;
 import com.example.atsushi.youtubesync.json_data.Video;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
@@ -16,8 +16,6 @@ import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -36,18 +34,21 @@ public class Search {
     private String nextPageToken = null;
     private String nowPageToken = null;
 
-    public Search() {
+    public Search(Context context) {
         try {
             youtube = new YouTube.Builder(HTTP_TRANSPORT, JSON_FACTORY, new HttpRequestInitializer() {
                 public void initialize(HttpRequest request) throws IOException {
                 }
             }).setApplicationName("youtube-sync").build();
+            ApplicationInfo info = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
             search = youtube.search().list("id,snippet");
-            search.setKey(DeveloperKey.DEVELOPER_KEY);
+            search.setKey(info.metaData.getString("developer_key"));
             search.setMaxResults(maxResult);
             search.setType("video");
         } catch (IOException e) {
             Log.e("App", "There was an IO error: " + e.getCause() + " : " + e.getMessage());
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e("App", e.getStackTrace().toString());
         }
     }
 

@@ -53,7 +53,7 @@ public class SearchVideoActivity extends AppCompatActivity implements SearchInte
         });
         youtubeSearchForm = (EditText) findViewById(R.id.youtube_search_form);
 
-        search = new Search();
+        search = new Search(this);
         search.setListener(this);
         listView = (ListView)findViewById(R.id.result_list);
         adapter = new SearchAdapter(SearchVideoActivity.this);

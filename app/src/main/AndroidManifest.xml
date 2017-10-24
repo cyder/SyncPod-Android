@@ -20,6 +20,7 @@
         </activity>
         <activity android:name=".VideoActivity"></activity>
         <activity android:name=".SearchVideoActivity"></activity>
+        <meta-data android:name="developer_key" android:value="${developer_key}" />
     </application>
 
 </manifest>

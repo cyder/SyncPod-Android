@@ -1,5 +1,7 @@
 package com.example.atsushi.youtubesync;
 
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.content.Intent;
@@ -37,7 +39,12 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
 
         YouTubePlayerFragment frag =
                 (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_fragment);
-        frag.initialize(DeveloperKey.DEVELOPER_KEY, this);
+        try {
+            ApplicationInfo info = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+            frag.initialize(info.metaData.getString("developer_key"), this);
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e("App", e.getStackTrace().toString());
+        }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         RoomFragmentPagerAdapter adapter = new RoomFragmentPagerAdapter(fragmentManager);
