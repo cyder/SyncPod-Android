@@ -1,8 +1,9 @@
 package com.example.atsushi.youtubesync.youtube;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.util.Log;
-import com.example.atsushi.youtubesync.R;
 import com.example.atsushi.youtubesync.json_data.Video;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
@@ -39,12 +40,15 @@ public class Search {
                 public void initialize(HttpRequest request) throws IOException {
                 }
             }).setApplicationName("youtube-sync").build();
+            ApplicationInfo info = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
             search = youtube.search().list("id,snippet");
-            search.setKey(context.getResources().getString(R.string.DEVELOPER_KEY));
+            search.setKey(info.metaData.getString("developer_key"));
             search.setMaxResults(maxResult);
             search.setType("video");
         } catch (IOException e) {
             Log.e("App", "There was an IO error: " + e.getCause() + " : " + e.getMessage());
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e("App", e.getStackTrace().toString());
         }
     }
 
