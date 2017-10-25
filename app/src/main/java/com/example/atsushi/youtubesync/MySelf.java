@@ -5,7 +5,11 @@ package com.example.atsushi.youtubesync;
  */
 
 public final class MySelf {
-    private static String token = "1:m-_SMCVWTnjxgAF2au4_";
+    private static String token = null;
+
+    public static Boolean exists() {
+        return (token != null);
+    }
 
     public static String getToken() {
         return token;
