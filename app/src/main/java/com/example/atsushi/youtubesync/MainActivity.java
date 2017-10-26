@@ -1,5 +1,6 @@
 package com.example.atsushi.youtubesync;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,13 +16,21 @@ import com.example.atsushi.youtubesync.server.MySelfInterface;
 public class MainActivity extends AppCompatActivity
     implements MySelfInterface {
 
+    SharedPreferences pref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MySelf.setListener(this);
+        pref = getSharedPreferences("youtube-sync", MODE_PRIVATE);
+        String token = pref.getString("access_token", "");
+        if(!token.equals("")) {
+            MySelf.singIn(token);
+        }
+
         if (MySelf.exists()) {
             startMainActivity();
         } else {
+            MySelf.setListener(this);
             startSignInActivity();
         }
     }
@@ -53,8 +62,7 @@ public class MainActivity extends AppCompatActivity
                 public void onClick(View v) {
                     String email = emailForm.getText().toString();
                     String password = passwordForm.getText().toString();
-                    SignInParam param = new SignInParam(email, password);
-                    MySelf.signIn(param);
+                    MySelf.signIn(email, password);
                 }
             });
     }
@@ -68,5 +76,9 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("access_token", MySelf.getToken());
+        editor.commit();
     }
 }
