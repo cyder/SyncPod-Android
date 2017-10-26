@@ -2,7 +2,7 @@ package com.example.atsushi.youtubesync.channels;
 
 import android.util.Log;
 
-import com.example.atsushi.youtubesync.server.MySelf;
+import com.example.atsushi.youtubesync.MySelf;
 import com.hosopy.actioncable.ActionCable;
 import com.hosopy.actioncable.Consumer;
 

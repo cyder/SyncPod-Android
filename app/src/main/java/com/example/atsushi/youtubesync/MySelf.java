@@ -1,4 +1,4 @@
-package com.example.atsushi.youtubesync.server;
+package com.example.atsushi.youtubesync;
 
 import com.example.atsushi.youtubesync.json_data.User;
 

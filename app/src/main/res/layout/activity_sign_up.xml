@@ -44,7 +44,7 @@
         android:inputType="textPassword" />
 
     <EditText
-        android:id="@+id/sign_up_password_onfirm"
+        android:id="@+id/sign_up_password_confirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
