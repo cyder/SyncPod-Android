@@ -1,5 +1,6 @@
 package com.example.atsushi.youtubesync.server;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.atsushi.youtubesync.json_data.Result;
@@ -35,17 +36,13 @@ public final class MySelf {
         listener = _listener;
     }
 
-    public static void signIn(final SignInParam param) {
-
-        final String json =
-            "{\"email\":\"user@example.com\","+
-            "\"password\":\"password\"}";
-
+    public static void signIn(final String email, final String password) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     Gson gson = new Gson();
+                    SignInParam param = new SignInParam(email, password);
                     URL url = new URL("http://59.106.220.89:3000/api/v1/login");
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
                     con.setRequestMethod("POST");
@@ -68,5 +65,10 @@ public final class MySelf {
                 }
             }
         }).start();
+    }
+
+    public static void singIn(String token) {
+        myself = new User();
+        myself.access_token = token;
     }
 }
