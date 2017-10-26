@@ -1,11 +1,9 @@
 package com.example.atsushi.youtubesync.server;
 
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.atsushi.youtubesync.json_data.Result;
 import com.example.atsushi.youtubesync.json_data.SignInParam;
-import com.example.atsushi.youtubesync.json_data.User;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -16,27 +14,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by atsushi on 2017/10/25.
+ * Created by atsushi on 2017/10/27.
  */
 
-public final class MySelf {
+public class SignIn {
+    private SignInInterface listener = null;
 
-    private static MySelfInterface listener = null;
-    private static User myself;
-
-    public static Boolean exists() {
-        return (myself != null);
-    }
-
-    public static String getToken() {
-        return myself.access_token;
-    }
-
-    public static void setListener(MySelfInterface _listener){
+    public void setListener(SignInInterface _listener){
         listener = _listener;
     }
 
-    public static void signIn(final String email, final String password) {
+    public void post(final String email, final String password) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -57,18 +45,12 @@ public final class MySelf {
                     String buffer = reader.readLine();
                     Result result = gson.fromJson(buffer, Result.class);
                     if(result.result != null && result.result.equals("success")) {
-                        myself = result.user;
+                        listener.onSignedIn(result.user);
                     }
-                    listener.onReceived();
                 } catch(Exception e) {
                     Log.e("App", "There was an IO error: " + e.getCause() + " : " + e.getMessage());
                 }
             }
         }).start();
-    }
-
-    public static void singIn(String token) {
-        myself = new User();
-        myself.access_token = token;
     }
 }
