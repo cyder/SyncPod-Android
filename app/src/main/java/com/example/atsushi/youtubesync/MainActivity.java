@@ -7,15 +7,12 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
-import com.example.atsushi.youtubesync.json_data.SignInParam;
 import com.example.atsushi.youtubesync.server.MySelf;
-import com.example.atsushi.youtubesync.server.MySelfInterface;
 
-public class MainActivity extends AppCompatActivity
-    implements MySelfInterface {
+public class MainActivity extends AppCompatActivity {
 
+    final int signInRequestCode = 100;
     SharedPreferences pref;
 
     @Override
@@ -30,7 +27,6 @@ public class MainActivity extends AppCompatActivity
         if (MySelf.exists()) {
             startMainActivity();
         } else {
-            MySelf.setListener(this);
             startSignInActivity();
         }
     }
@@ -50,35 +46,37 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void startSignInActivity() {
-        setContentView(R.layout.activity_sign_in);
-        Toolbar toolbar = (Toolbar)findViewById(R.id.sign_in_tool_bar);
-        toolbar.setTitle("Sing in");
-        final EditText emailForm = (EditText) findViewById(R.id.sign_in_email);
-        final EditText passwordForm = (EditText) findViewById(R.id.sign_in_password);
+        setContentView(R.layout.activity_sign_up);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.sign_up_tool_bar);
+        toolbar.setTitle("アカウント登録");
 
-        ((Button) findViewById(R.id.sign_in_submit))
-            .setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String email = emailForm.getText().toString();
-                    String password = passwordForm.getText().toString();
-                    MySelf.signIn(email, password);
-                }
-            });
+        ((Button) findViewById(R.id.sign_up_link))
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v){
+                        Intent varIntent =
+                                new Intent(MainActivity.this, SignInActivity.class);
+                        startActivityForResult(varIntent, signInRequestCode);
+                    }
+                });
     }
 
     @Override
-    public void onReceived() {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                if (MySelf.exists()) {
-                    startMainActivity();
-                }
+    protected void onActivityResult( int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if(resultCode == RESULT_OK && requestCode == signInRequestCode && null != intent) {
+            String res = intent.getStringExtra("access_token");
+            if(res != null) {
+                setToken(res);
             }
-        });
+        }
+    }
 
+    private void setToken(String token) {
+        MySelf.singIn(token);
+        startMainActivity();
         SharedPreferences.Editor editor = pref.edit();
-        editor.putString("access_token", MySelf.getToken());
+        editor.putString("access_token", token);
         editor.commit();
     }
 }
