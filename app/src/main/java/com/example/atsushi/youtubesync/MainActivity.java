@@ -106,10 +106,16 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult( int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        if(resultCode == RESULT_OK && requestCode == signInRequestCode && null != intent) {
-            String res = intent.getStringExtra("access_token");
-            if(res != null) {
-                setToken(res);
+        if(resultCode == RESULT_OK && null != intent) {
+            if(requestCode == createRoomRequestCode) {
+                String res = intent.getStringExtra("room_key");
+                EditText roomKeyForm = (EditText) findViewById(R.id.room_key);
+                roomKeyForm.setText(res);
+            } else if(requestCode == signInRequestCode) {
+                String res = intent.getStringExtra("access_token");
+                if (res != null) {
+                    setToken(res);
+                }
             }
         }
     }

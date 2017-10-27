@@ -7,4 +7,5 @@ package com.example.atsushi.youtubesync.json_data;
 public class Result {
     public String result;
     public User user;
+    public Room room;
 }
