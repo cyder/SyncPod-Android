@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity
     implements SignUpInterface {
 
     final int signInRequestCode = 100;
+    final int createRoomRequestCode = 200;
     SharedPreferences pref;
 
     @Override
@@ -38,15 +39,31 @@ public class MainActivity extends AppCompatActivity
     private void startMainActivity() {
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = (Toolbar)findViewById(R.id.main_tool_bar);
+        toolbar.setTitle("YouTube Sync");
+        final EditText roomKeyForm = (EditText) findViewById(R.id.room_key);
+
         ((Button) findViewById(R.id.startButton))
             .setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v){
+                    String roomKey = roomKeyForm.getText().toString();
                     Intent varIntent =
                             new Intent(MainActivity.this, VideoActivity.class);
+                    varIntent.putExtra("room_key", roomKey);
                     startActivity(varIntent);
                 }
             });
+
+        ((Button) findViewById(R.id.create_room_link))
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v){
+                        Intent varIntent =
+                                new Intent(MainActivity.this, CreateRoomActivity.class);
+                        startActivityForResult(varIntent, createRoomRequestCode);
+                    }
+                });
     }
 
     private void startSignInActivity() {
@@ -89,10 +106,16 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult( int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        if(resultCode == RESULT_OK && requestCode == signInRequestCode && null != intent) {
-            String res = intent.getStringExtra("access_token");
-            if(res != null) {
-                setToken(res);
+        if(resultCode == RESULT_OK && null != intent) {
+            if(requestCode == createRoomRequestCode) {
+                String res = intent.getStringExtra("room_key");
+                EditText roomKeyForm = (EditText) findViewById(R.id.room_key);
+                roomKeyForm.setText(res);
+            } else if(requestCode == signInRequestCode) {
+                String res = intent.getStringExtra("access_token");
+                if (res != null) {
+                    setToken(res);
+                }
             }
         }
     }

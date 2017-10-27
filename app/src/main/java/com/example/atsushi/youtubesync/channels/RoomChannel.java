@@ -19,9 +19,10 @@ public class RoomChannel {
     private Consumer consumer;
     private Subscription subscription;
 
-    public RoomChannel() {
+    public RoomChannel(String roomKey) {
         consumer = Cable.getCunsumer();
         roomChannel = new Channel("RoomChannel");
+        roomChannel.addParam("room_key", roomKey);
         subscription = consumer.getSubscriptions().create(roomChannel);
 
         subscription

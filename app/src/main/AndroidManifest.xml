@@ -18,6 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".CreateRoomActivity"></activity>
         <activity android:name=".VideoActivity"></activity>
         <activity android:name=".SearchVideoActivity"></activity>
         <activity android:name=".SignInActivity"></activity>
