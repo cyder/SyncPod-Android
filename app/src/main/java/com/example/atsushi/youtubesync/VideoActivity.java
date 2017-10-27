@@ -56,7 +56,9 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
-        roomChannel = new RoomChannel();
+        Intent varIntent = getIntent();
+        String roomKey = varIntent.getStringExtra("room_key");
+        roomChannel = new RoomChannel(roomKey);
         roomChannel.setListener(this);
     }
 

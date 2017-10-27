@@ -38,12 +38,18 @@ public class MainActivity extends AppCompatActivity
     private void startMainActivity() {
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = (Toolbar)findViewById(R.id.main_tool_bar);
+        toolbar.setTitle("YouTube Sync");
+        final EditText roomKeyForm = (EditText) findViewById(R.id.room_key);
+
         ((Button) findViewById(R.id.startButton))
             .setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v){
+                    String roomKey = roomKeyForm.getText().toString();
                     Intent varIntent =
                             new Intent(MainActivity.this, VideoActivity.class);
+                    varIntent.putExtra("room_key", roomKey);
                     startActivity(varIntent);
                 }
             });
