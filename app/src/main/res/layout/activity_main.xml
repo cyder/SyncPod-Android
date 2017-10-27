@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center_horizontal"
     tools:context="com.example.atsushi.youtubesync.MainActivity">
 
     <android.support.v7.widget.Toolbar
@@ -21,7 +22,6 @@
         android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:text="離れた人と同時に同じ動画を閲覧できます。"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="20dp" />
@@ -40,9 +40,21 @@
         android:id="@+id/startButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:width="150dp"
         android:text="入室" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="40dp"
+        android:text="または" />
+
+    <Button
+        android:id="@+id/create_room_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="150dp"
+        android:text="新規ルーム作成" />
 
 
 </LinearLayout>

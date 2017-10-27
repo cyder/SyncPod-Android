@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity
     implements SignUpInterface {
 
     final int signInRequestCode = 100;
+    final int createRoomRequestCode = 200;
     SharedPreferences pref;
 
     @Override
@@ -53,6 +54,16 @@ public class MainActivity extends AppCompatActivity
                     startActivity(varIntent);
                 }
             });
+
+        ((Button) findViewById(R.id.create_room_link))
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v){
+                        Intent varIntent =
+                                new Intent(MainActivity.this, CreateRoomActivity.class);
+                        startActivityForResult(varIntent, createRoomRequestCode);
+                    }
+                });
     }
 
     private void startSignInActivity() {
