@@ -26,7 +26,7 @@ public class SignInActivity extends AppCompatActivity
         signin.setListener(this);
         setContentView(R.layout.activity_sign_in);
         Toolbar toolbar = (Toolbar)findViewById(R.id.sign_in_tool_bar);
-        toolbar.setTitle("ログイン");
+        toolbar.setTitle(R.string.login_title);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

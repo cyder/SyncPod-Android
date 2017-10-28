@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.main_tool_bar);
-        toolbar.setTitle("YouTube Sync");
+        toolbar.setTitle(R.string.title);
         final EditText roomKeyForm = (EditText) findViewById(R.id.room_key);
 
         ((Button) findViewById(R.id.startButton))
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity
     private void startSignInActivity() {
         setContentView(R.layout.activity_sign_up);
         Toolbar toolbar = (Toolbar)findViewById(R.id.sign_up_tool_bar);
-        toolbar.setTitle("アカウント登録");
+        toolbar.setTitle(R.string.register_account_title);
         final SignUp signUp = new SignUp();
         signUp.setListener(this);
         final EditText emailForm = (EditText) findViewById(R.id.sign_up_email);

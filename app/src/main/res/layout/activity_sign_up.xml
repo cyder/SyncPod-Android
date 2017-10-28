@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Email"
+        android:hint="@string/email"
         android:layout_marginTop="40dp"
         android:layout_marginHorizontal="20dp"
         android:inputType="textEmailAddress" />
@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Name"
+        android:hint="@string/name"
         android:layout_marginHorizontal="20dp"
         android:inputType="textPersonName" />
 
@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Password"
+        android:hint="@string/password"
         android:layout_marginHorizontal="20dp"
         android:inputType="textPassword" />
 
@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Password（確認）"
+        android:hint="@string/confirm_password"
         android:layout_marginHorizontal="20dp"
         android:inputType="textPassword" />
 
@@ -56,19 +56,19 @@
         android:id="@+id/sign_up_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="新規登録" />
+        android:text="@string/new_register" />
 
     <TextView
         android:id="@+id/sign_up_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="既にアカウントを持っている方はこちら" />
+        android:text="@string/already_get_account" />
 
     <Button
         android:id="@+id/sign_up_link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="ログイン" />
+        android:text="@string/login_button" />
 </LinearLayout>
