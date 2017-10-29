@@ -2,6 +2,7 @@ package com.example.atsushi.youtubesync.server;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+import com.example.atsushi.youtubesync.MySelf;
 import com.example.atsushi.youtubesync.json_data.JsonParameter;
 import com.example.atsushi.youtubesync.json_data.Response;
 import com.google.gson.Gson;
@@ -49,6 +50,9 @@ public abstract class Post {
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
                     con.setRequestMethod("POST");
                     con.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+                    if(MySelf.exists()){
+                        con.setRequestProperty("Authorization", MySelf.getToken());
+                    }
                     PrintStream ps = new PrintStream(con.getOutputStream());
                     ps.print(gson.toJson(parameter));
                     ps.close();
