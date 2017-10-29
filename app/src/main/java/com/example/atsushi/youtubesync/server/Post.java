@@ -24,7 +24,7 @@ public abstract class Post {
     @NonNull
     final static String TAG = Post.class.getSimpleName();
     @NonNull
-    final static String host = "http://59/106.220.89:300/api/v1/";
+    final static String host = "http://59.106.220.89:3000/api/v1/";
     @NonNull
     protected JsonParameter parameter;
 
@@ -48,7 +48,7 @@ public abstract class Post {
                     URL url = new URL(host + endPoint);
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
                     con.setRequestMethod("POST");
-                    con.setRequestProperty("Content-Type", "application/json; charset-utf-8");
+                    con.setRequestProperty("Content-Type", "application/json; charset=utf-8");
                     PrintStream ps = new PrintStream(con.getOutputStream());
                     ps.print(gson.toJson(parameter));
                     ps.close();
