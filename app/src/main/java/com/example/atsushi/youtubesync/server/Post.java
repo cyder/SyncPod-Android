@@ -31,16 +31,16 @@ public abstract class Post {
     @NonNull
     private Gson gson;
 
-    protected Post(JsonParameter jsonParameter) {
+    protected Post() {
+        this.gson = new Gson();
+    }
+
+    protected void post(final JsonParameter jsonParameter, final String endPoint, final PostCallback callback) {
         try {
             this.parameter = jsonParameter;
         } catch (NullPointerException e) {
             Log.e(TAG, "There was error that NullPointerException" + Arrays.toString(e.getStackTrace()));
         }
-        this.gson = new Gson();
-    }
-
-    protected void post(final String endPoint, final PostCallback callback) {
         new Thread(new Runnable() {
             @Override
             public void run() {
