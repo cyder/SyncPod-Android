@@ -7,8 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
-import com.example.atsushi.youtubesync.R;
 import com.example.atsushi.youtubesync.json_data.Room;
 import com.example.atsushi.youtubesync.server.CreateRoom;
 import com.example.atsushi.youtubesync.server.CreateRoomInterface;
@@ -18,7 +16,7 @@ import com.example.atsushi.youtubesync.server.CreateRoomInterface;
  */
 
 public class CreateRoomActivity extends AppCompatActivity
-    implements CreateRoomInterface {
+        implements CreateRoomInterface {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,8 +24,8 @@ public class CreateRoomActivity extends AppCompatActivity
         setContentView(R.layout.activity_create_room);
         final CreateRoom createRoom = new CreateRoom();
         createRoom.setListener(this);
-        Toolbar toolbar = (Toolbar)findViewById(R.id.create_room_tool_bar);
-        toolbar.setTitle("新規ルーム作成");
+        Toolbar toolbar = (Toolbar) findViewById(R.id.create_room_tool_bar);
+        toolbar.setTitle(R.string.create_new_room);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

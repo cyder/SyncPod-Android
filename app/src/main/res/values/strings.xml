@@ -5,6 +5,7 @@
     <!--title bar-->
     <string name="login_title">ログイン</string>
     <string name="register_account_title">アカウント登録</string>
+    <string name="create_new_room">新規ルーム作成</string>
     <string name="title">YouTube Sync</string>
 
     <!--layout-->
