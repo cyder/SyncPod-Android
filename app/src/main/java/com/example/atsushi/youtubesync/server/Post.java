@@ -68,7 +68,7 @@ public abstract class Post {
                     Log.e(TAG, "There was a error that NullPointerException" + Arrays.toString(e.getStackTrace()));
                 }
             }
-        });
+        }).start();
     }
 
     public interface PostCallback {
