@@ -4,10 +4,10 @@ package com.example.atsushi.youtubesync.json_data;
  * Created by atsushi on 2017/10/27.
  */
 
-public class SignUpParam {
+public class SignUp extends JsonParameter {
     public User user;
 
-    public SignUpParam(String email, String name, String password) {
+    public SignUp(String email, String name, String password) {
         user = new User(email, name, password);
     }
 

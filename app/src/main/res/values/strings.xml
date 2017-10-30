@@ -1,4 +1,19 @@
 <resources>
     <string name="app_name">YouTube Sync</string>
     <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
+
+    <!--title bar-->
+    <string name="login_title">ログイン</string>
+    <string name="register_account_title">アカウント登録</string>
+    <string name="create_new_room">新規ルーム作成</string>
+    <string name="title">YouTube Sync</string>
+
+    <!--layout-->
+    <string name="email">E-mail</string>
+    <string name="name">Name</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Password（確認）</string>
+    <string name="new_register">新規登録</string>
+    <string name="already_get_account">既にアカウントを持っている方はこちら"</string>
+    <string name="login_button">ログイン</string>
 </resources>

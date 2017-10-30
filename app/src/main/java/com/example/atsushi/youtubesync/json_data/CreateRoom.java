@@ -4,10 +4,10 @@ package com.example.atsushi.youtubesync.json_data;
  * Created by atsushi on 2017/10/27.
  */
 
-public class CreateRoomParam {
+public class CreateRoom extends JsonParameter{
     public Room room;
 
-    public CreateRoomParam(String name, String description) {
+    public CreateRoom(String name, String description) {
         room = new Room(name, description);
     }
 
