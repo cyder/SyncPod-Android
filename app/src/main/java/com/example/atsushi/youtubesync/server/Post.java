@@ -20,7 +20,7 @@ import java.util.Arrays;
  * Created by chigichan24 on 2017/10/29.
  */
 
-public abstract class Post {
+public class Post {
 
     @NonNull
     final static String TAG = Post.class.getSimpleName();
