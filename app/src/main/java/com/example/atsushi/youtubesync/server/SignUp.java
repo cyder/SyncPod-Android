@@ -20,15 +20,15 @@ public class SignUp extends Post {
 
     @Override
     protected void post(JsonParameter jsonParameter, String endPoint, PostCallback callback) {
-        super.post(jsonParameter, endPoint, new PostCallback() {
+        super.post(jsonParameter, endPoint, callback);
+    }
+
+    public void post(final String email, final String name, final String password) {
+        post(new com.example.atsushi.youtubesync.json_data.SignUp(email, name, password), "users", new PostCallback() {
             @Override
             public void call(Response response) {
                 listener.onSignedUp(response.user);
             }
         });
-    }
-
-    public void post(final String email, final String name, final String password) {
-        post(new com.example.atsushi.youtubesync.json_data.SignUp(email, name, password), "users", null);
     }
 }
