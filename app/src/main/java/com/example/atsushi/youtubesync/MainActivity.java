@@ -1,6 +1,7 @@
 package com.example.atsushi.youtubesync;
 
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,18 +15,19 @@ import com.example.atsushi.youtubesync.server.SignUp;
 import com.example.atsushi.youtubesync.server.SignUpInterface;
 
 public class MainActivity extends AppCompatActivity
-    implements SignUpInterface {
+        implements SignUpInterface {
 
-    final int signInRequestCode = 100;
-    final int createRoomRequestCode = 200;
-    SharedPreferences pref;
+    private final int SIGN_IN_REQUEST_CODE = 100;
+    private final int CREATE_ROOM_REQUEST_CODE = 200;
+    @NonNull
+    private SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pref = getSharedPreferences("youtube-sync", MODE_PRIVATE);
         String token = pref.getString("access_token", "");
-        if(!token.equals("")) {
+        if (!token.equals("")) {
             MySelf.singIn(token);
         }
 
@@ -39,36 +41,36 @@ public class MainActivity extends AppCompatActivity
     private void startMainActivity() {
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.main_tool_bar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_tool_bar);
         toolbar.setTitle(R.string.title);
         final EditText roomKeyForm = (EditText) findViewById(R.id.room_key);
 
         ((Button) findViewById(R.id.startButton))
-            .setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v){
-                    String roomKey = roomKeyForm.getText().toString();
-                    Intent varIntent =
-                            new Intent(MainActivity.this, VideoActivity.class);
-                    varIntent.putExtra("room_key", roomKey);
-                    startActivity(varIntent);
-                }
-            });
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String roomKey = roomKeyForm.getText().toString();
+                        Intent varIntent =
+                                new Intent(MainActivity.this, VideoActivity.class);
+                        varIntent.putExtra("room_key", roomKey);
+                        startActivity(varIntent);
+                    }
+                });
 
         ((Button) findViewById(R.id.create_room_link))
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v){
+                    public void onClick(View v) {
                         Intent varIntent =
                                 new Intent(MainActivity.this, CreateRoomActivity.class);
-                        startActivityForResult(varIntent, createRoomRequestCode);
+                        startActivityForResult(varIntent, CREATE_ROOM_REQUEST_CODE);
                     }
                 });
     }
 
     private void startSignInActivity() {
         setContentView(R.layout.activity_sign_up);
-        Toolbar toolbar = (Toolbar)findViewById(R.id.sign_up_tool_bar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.sign_up_tool_bar);
         toolbar.setTitle(R.string.register_account_title);
         final SignUp signUp = new SignUp();
         signUp.setListener(this);
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity
                         String name = nameForm.getText().toString();
                         String password = passwordForm.getText().toString();
                         String passwordConfirm = passwordConfirmForm.getText().toString();
-                        if(password.equals(passwordConfirm)) {
+                        if (password.equals(passwordConfirm)) {
                             signUp.post(email, name, password);
                         }
                     }
@@ -95,23 +97,23 @@ public class MainActivity extends AppCompatActivity
         ((Button) findViewById(R.id.sign_up_link))
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v){
+                    public void onClick(View v) {
                         Intent varIntent =
                                 new Intent(MainActivity.this, SignInActivity.class);
-                        startActivityForResult(varIntent, signInRequestCode);
+                        startActivityForResult(varIntent, SIGN_IN_REQUEST_CODE);
                     }
                 });
     }
 
     @Override
-    protected void onActivityResult( int requestCode, int resultCode, Intent intent) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        if(resultCode == RESULT_OK && null != intent) {
-            if(requestCode == createRoomRequestCode) {
+        if (resultCode == RESULT_OK && intent != null) {
+            if (requestCode == CREATE_ROOM_REQUEST_CODE) {
                 String res = intent.getStringExtra("room_key");
                 EditText roomKeyForm = (EditText) findViewById(R.id.room_key);
                 roomKeyForm.setText(res);
-            } else if(requestCode == signInRequestCode) {
+            } else if (requestCode == SIGN_IN_REQUEST_CODE) {
                 String res = intent.getStringExtra("access_token");
                 if (res != null) {
                     setToken(res);
