@@ -12,7 +12,6 @@ import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final int SIGN_IN_REQUEST_CODE = 100;
     private final int CREATE_ROOM_REQUEST_CODE = 200;
     @NonNull
     private SharedPreferences pref;
@@ -29,7 +28,8 @@ public class MainActivity extends AppCompatActivity {
         if (MySelf.exists()) {
             initUI();
         } else {
-            new Intent(MainActivity.this, SignUpActivity.class);
+            Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -71,11 +71,6 @@ public class MainActivity extends AppCompatActivity {
                 String res = intent.getStringExtra("room_key");
                 EditText roomKeyForm = (EditText) findViewById(R.id.room_key);
                 roomKeyForm.setText(res);
-            } else if (requestCode == SIGN_IN_REQUEST_CODE) {
-                String res = intent.getStringExtra("access_token");
-                if (res != null) {
-                    new Token(this).setToken(res);
-                }
             }
         }
     }
