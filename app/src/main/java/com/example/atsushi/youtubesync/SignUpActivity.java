@@ -16,6 +16,8 @@ import com.example.atsushi.youtubesync.server.SignUpInterface;
 
 public class SignUpActivity extends AppCompatActivity implements SignUpInterface {
 
+    private SignUpActivity self = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +62,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpInterface
     public void onSignedUp(final User user) {
         runOnUiThread(new Runnable() {
             public void run() {
-                setToken(user.access_token);
+                new Token(self).setToken(user.access_token);
             }
         });
     }
