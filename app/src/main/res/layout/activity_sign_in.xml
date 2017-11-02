@@ -45,9 +45,9 @@
             android:layout_height="55dp"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
-            android:background="@color/blue"
+            android:background="@color/appBlue"
             android:text="@string/send_button"
-            android:textColor="@color/white"
+            android:textColor="@color/appWhite"
             android:textSize="18sp" />
     </LinearLayout>
 </LinearLayout>

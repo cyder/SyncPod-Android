@@ -65,9 +65,9 @@
             android:layout_height="55dp"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
-            android:background="@color/green"
+            android:background="@color/appGreen"
             android:text="@string/register_button"
-            android:textColor="@color/white"
+            android:textColor="@color/appWhite"
             android:textSize="18sp" />
     </LinearLayout>
 </LinearLayout>

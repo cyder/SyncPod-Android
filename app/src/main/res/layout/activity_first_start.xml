@@ -40,9 +40,9 @@
                 android:layout_margin="2dp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="50"
-                android:background="@color/blue"
+                android:background="@color/appBlue"
                 android:text="@string/login_button"
-                android:textColor="@color/white"
+                android:textColor="@color/appWhite"
                 android:textSize="18sp" />
 
             <Button
@@ -52,9 +52,9 @@
                 android:layout_margin="2dp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="50"
-                android:background="@color/green"
+                android:background="@color/appGreen"
                 android:text="@string/new_register"
-                android:textColor="@color/white"
+                android:textColor="@color/appWhite"
                 android:textSize="18sp" />
 
         </LinearLayout>
