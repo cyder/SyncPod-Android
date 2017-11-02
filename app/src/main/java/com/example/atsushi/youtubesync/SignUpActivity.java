@@ -81,6 +81,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpInterface
                 new Token(self).setToken(user.access_token);
                 Intent main = new Intent(SignUpActivity.this, MainActivity.class);
                 startActivity(main);
+                finish();
             }
         });
     }
