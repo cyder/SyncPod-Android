@@ -15,4 +15,12 @@
     <string name="confirm_password">Password（確認）</string>
     <string name="new_register">新規登録</string>
     <string name="login_button">ログイン</string>
+    <string name="first_start_message">
+        ようこそ。\n\n
+        これは全く新しい動画視聴の体験です。\n
+        離れた人と一緒に動画を楽しむことができます。\n\n
+        友人や恋人と同じ時間を共有したり、\n
+        アーティストのファン同士で盛り上がったり、\n
+        楽しみ方は自由自在。
+    </string>
 </resources>
