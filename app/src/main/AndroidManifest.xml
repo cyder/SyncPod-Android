@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateRoomActivity"></activity>
+        <activity android:name=".TopActivity"></activity>
         <activity android:name=".VideoActivity"></activity>
         <activity android:name=".SearchVideoActivity"></activity>
         <activity android:name=".FirstStartActivity"></activity>
