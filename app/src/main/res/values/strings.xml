@@ -9,12 +9,14 @@
     <string name="title">YouTube Sync</string>
 
     <!--layout-->
-    <string name="email">E-mail</string>
-    <string name="name">Name</string>
-    <string name="password">Password</string>
-    <string name="confirm_password">Password（確認）</string>
+    <string name="email">メールアドレス</string>
+    <string name="name">名前</string>
+    <string name="password">パスワード</string>
+    <string name="confirm_password">パスワード（確認）</string>
     <string name="new_register">新規登録</string>
     <string name="login_button">ログイン</string>
+    <string name="send_button">送信</string>
+    <string name="register_button">登録</string>
     <string name="first_start_message">
         ようこそ。\n\n
         これは全く新しい動画視聴の体験です。\n

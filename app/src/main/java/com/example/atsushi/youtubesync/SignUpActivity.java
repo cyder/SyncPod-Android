@@ -25,6 +25,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpInterface
         setContentView(R.layout.activity_sign_up);
         Toolbar toolbar = (Toolbar) findViewById(R.id.sign_up_tool_bar);
         toolbar.setTitle(R.string.register_account_title);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         final SignUp signUp = new SignUp();
         signUp.setListener(this);
         final EditText emailForm = (EditText) findViewById(R.id.sign_up_email);
