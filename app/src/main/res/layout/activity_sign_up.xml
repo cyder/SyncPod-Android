@@ -57,18 +57,4 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/new_register" />
-
-    <TextView
-        android:id="@+id/sign_up_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/already_get_account" />
-
-    <Button
-        android:id="@+id/sign_up_link"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/login_button" />
 </LinearLayout>

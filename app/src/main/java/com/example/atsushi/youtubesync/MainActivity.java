@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         if (MySelf.exists()) {
             initUI();
         } else {
-            Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+            Intent intent = new Intent(MainActivity.this, FirstStartActivity.class);
             startActivity(intent);
             finish();
         }
