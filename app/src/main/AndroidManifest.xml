@@ -19,8 +19,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateRoomActivity"></activity>
+        <activity android:name=".TopActivity"></activity>
         <activity android:name=".VideoActivity"></activity>
         <activity android:name=".SearchVideoActivity"></activity>
+        <activity android:name=".FirstStartActivity"></activity>
         <activity android:name=".SignInActivity"></activity>
         <activity android:name=".SignUpActivity"></activity>
         <meta-data android:name="developer_key" android:value="${developer_key}" />
