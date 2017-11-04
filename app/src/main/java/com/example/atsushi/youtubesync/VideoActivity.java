@@ -22,8 +22,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class VideoActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener, RoomChannelInterface {
+
+    private final String TAG = this.getClass().getSimpleName();
+
     final int searchVideoRequestCode = 1000;
     private static final int RECOVERY_DIALOG_REQUEST = 1;
 
@@ -43,7 +47,7 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
             ApplicationInfo info = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
             frag.initialize(info.metaData.getString("developer_key"), this);
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e("App", e.getStackTrace().toString());
+            Log.e(TAG, Arrays.toString(e.getStackTrace()));
         }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -111,7 +115,7 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
 
     @Override
     public void onConnected() {
-        Log.d("App", "connected");
+        Log.d(TAG, "connected");
     }
 
     @Override
@@ -149,12 +153,12 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
 
     @Override
     public void onDisconnected() {
-        Log.d("App", "disconnected");
+        Log.d(TAG, "disconnected");
     }
 
     @Override
     public void onFailed() {
-        Log.d("App", "failed");
+        Log.d(TAG, "failed");
     }
 
     public void startSearchVideoActivity() {
