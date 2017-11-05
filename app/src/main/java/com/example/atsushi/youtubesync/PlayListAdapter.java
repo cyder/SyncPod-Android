@@ -40,7 +40,7 @@ public class PlayListAdapter extends BaseAdapter {
     }
 
     public void startVideo(Video video) {
-        if(getItemId(0) == video.id){
+        if (getItemId(0) == video.id) {
             deleteVideo(0);
         }
     }
@@ -63,7 +63,7 @@ public class PlayListAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        if (videoList != null && 0 <= position && position < videoList.size()) {
+        if (getItem(position) != null) {
             return videoList.get(position).id;
         }
         return -1;
