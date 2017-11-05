@@ -44,7 +44,7 @@ public class ChatListAdapter extends BaseAdapter {
 
     @Override
     public Chat getItem(int position) {
-        if (chatList != null && 0 <= position && position <= chatList.size()) {
+        if (chatList != null && 0 <= position && position <= getCount()) {
             return chatList.get(position);
         }
         return null;

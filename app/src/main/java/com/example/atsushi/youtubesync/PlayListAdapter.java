@@ -55,7 +55,7 @@ public class PlayListAdapter extends BaseAdapter {
 
     @Override
     public Video getItem(int position) {
-        if (videoList != null && 0 <= position && position < videoList.size()) {
+        if (videoList != null && 0 <= position && position < getCount()) {
             return videoList.get(position);
         }
         return null;
