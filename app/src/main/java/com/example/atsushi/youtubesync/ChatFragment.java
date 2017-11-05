@@ -1,15 +1,13 @@
 package com.example.atsushi.youtubesync;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-
 import com.example.atsushi.youtubesync.json_data.Chat;
 
 import java.util.ArrayList;
@@ -39,20 +37,20 @@ public class ChatFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        chatList = (ListView) view.findViewById(R.id.chat_list);
+        chatList = view.findViewById(R.id.chat_list);
         chatList.setAdapter(adapter);
 
         chatList.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
         chatList.setStackFromBottom(true);
 
-        chatForm = (EditText) view.findViewById(R.id.chat_form);
-        chatSubmit = (ImageButton) view.findViewById(R.id.chat_submit);
+        chatForm = view.findViewById(R.id.chat_form);
+        chatSubmit = view.findViewById(R.id.chat_submit);
 
         chatSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String message = chatForm.getText().toString();
-                if(message != "") {
+                if(!message.equals("")) {
                     VideoActivity activity = (VideoActivity)getContext();
                     activity.sendChat(message);
                     chatForm.getEditableText().clear();
