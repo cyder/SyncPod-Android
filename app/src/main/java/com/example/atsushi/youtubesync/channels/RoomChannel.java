@@ -1,7 +1,5 @@
 package com.example.atsushi.youtubesync.channels;
 
-import android.util.Log;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.hosopy.actioncable.ActionCableException;
@@ -32,7 +30,7 @@ public class RoomChannel {
                     listener.onConnected();
                 }
             }).onRejected(new Subscription.RejectedCallback() {
-            @Override
+                @Override
                 public void call() {
                     // Called when the subscription is rejected by the server
                 }
@@ -67,7 +65,9 @@ public class RoomChannel {
         subscription.perform("now_playing_video");
     }
 
-    public void getChatList() { subscription.perform("past_chats"); }
+    public void getChatList() {
+        subscription.perform("past_chats");
+    }
 
     public void sendChat(String message) {
         JsonObject params = new JsonObject();
