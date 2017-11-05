@@ -8,4 +8,5 @@
     <color name="appWhite">#fafafa</color>
     <color name="text">#222222</color>
     <color name="subtext">#666666</color>
+    <color name="roomTab">#ffffff</color>
 </resources>
