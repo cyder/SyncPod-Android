@@ -1,9 +1,11 @@
 package com.example.atsushi.youtubesync;
 
+import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,10 +15,13 @@ import java.util.List;
 public class RoomFragmentPagerAdapter extends FragmentPagerAdapter {
     PlayListFragment playListFragment = new PlayListFragment();
     ChatFragment chatFragment = new ChatFragment();
-    List<Fragment> fragments;
+    List<Fragment> fragments = new ArrayList<>();
 
-    public RoomFragmentPagerAdapter(FragmentManager fm) {
+    private Resources resources;
+
+    public RoomFragmentPagerAdapter(FragmentManager fm, Resources resources) {
         super(fm);
+        this.resources = resources;
         fragments.add(playListFragment);
         fragments.add(chatFragment);
     }
@@ -42,10 +47,10 @@ public class RoomFragmentPagerAdapter extends FragmentPagerAdapter {
         final Fragment fragment = getItem(position);
         if (fragment != null) {
             if (fragment instanceof PlayListFragment) {
-                return ((PlayListFragment) fragment).getTitle();
+                return resources.getString(R.string.playlist_title);
             }
             if (fragment instanceof ChatFragment) {
-                return ((ChatFragment) fragment).getTitle();
+                return resources.getString(R.string.chat_title);
             }
         }
         return null;

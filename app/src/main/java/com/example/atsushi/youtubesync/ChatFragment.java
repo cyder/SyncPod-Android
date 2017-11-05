@@ -21,7 +21,6 @@ public class ChatFragment extends Fragment {
     private ChatListAdapter adapter;
     private EditText chatForm;
     private ImageButton chatSubmit;
-    private final String fragmentTitle = getActivity().getString(R.string.chat_title);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +67,4 @@ public class ChatFragment extends Fragment {
         adapter.addChat(chat);
     }
 
-    public String getTitle() {
-        return fragmentTitle;
-    }
 }

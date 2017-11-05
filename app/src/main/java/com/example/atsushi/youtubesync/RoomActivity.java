@@ -51,7 +51,7 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
         }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        RoomFragmentPagerAdapter adapter = new RoomFragmentPagerAdapter(fragmentManager);
+        RoomFragmentPagerAdapter adapter = new RoomFragmentPagerAdapter(fragmentManager, getResources());
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(adapter);
         playListFragment = (PlayListFragment) adapter.getItem(0);
