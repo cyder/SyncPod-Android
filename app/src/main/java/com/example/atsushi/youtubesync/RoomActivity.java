@@ -81,11 +81,11 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
     }
 
     @Override
-    protected void onActivityResult( int requestCode, int resultCode, Intent intent) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        if(resultCode == RESULT_OK && requestCode == searchVideoRequestCode && null != intent) {
+        if (resultCode == RESULT_OK && requestCode == searchVideoRequestCode && null != intent) {
             String res = intent.getStringExtra("youtube_video_id");
-            if(res != null) {
+            if (res != null) {
                 roomChannel.addVideo(res);
             }
         }
@@ -125,7 +125,7 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
 
         switch (jsonData.data_type) {
             case "now_playing_video":
-                if(jsonData.data != null) {
+                if (jsonData.data != null) {
                     startVideo(jsonData.data.video);
                 }
                 break;
@@ -133,7 +133,7 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
                 addPlayList(jsonData.data.video);
                 break;
             case "start_video":
-                if(jsonData.data != null) {
+                if (jsonData.data != null) {
                     startVideo(jsonData.data.video);
                 }
                 break;

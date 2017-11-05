@@ -24,36 +24,36 @@ public class RoomChannel {
         subscription = consumer.getSubscriptions().create(roomChannel);
 
         subscription
-            .onConnected(new Subscription.ConnectedCallback() {
-                @Override
-                public void call() {
-                    listener.onConnected();
-                }
-            }).onRejected(new Subscription.RejectedCallback() {
-                @Override
-                public void call() {
-                    // Called when the subscription is rejected by the server
-                }
-            }).onReceived(new Subscription.ReceivedCallback() {
-                @Override
-                public void call(JsonElement data) {
-                    listener.onReceived(data);
-                    // Called when the subscription receives data from the server
-                }
-            }).onDisconnected(new Subscription.DisconnectedCallback() {
-                @Override
-                public void call() {
-                    listener.onDisconnected();
-                }
-            }).onFailed(new Subscription.FailedCallback() {
-                @Override
-                public void call(ActionCableException e) {
-                    listener.onFailed();
-                }
-            });
+                .onConnected(new Subscription.ConnectedCallback() {
+                    @Override
+                    public void call() {
+                        listener.onConnected();
+                    }
+                }).onRejected(new Subscription.RejectedCallback() {
+            @Override
+            public void call() {
+                // Called when the subscription is rejected by the server
+            }
+        }).onReceived(new Subscription.ReceivedCallback() {
+            @Override
+            public void call(JsonElement data) {
+                listener.onReceived(data);
+                // Called when the subscription receives data from the server
+            }
+        }).onDisconnected(new Subscription.DisconnectedCallback() {
+            @Override
+            public void call() {
+                listener.onDisconnected();
+            }
+        }).onFailed(new Subscription.FailedCallback() {
+            @Override
+            public void call(ActionCableException e) {
+                listener.onFailed();
+            }
+        });
     }
 
-    public void setListener(RoomChannelInterface listener){
+    public void setListener(RoomChannelInterface listener) {
         this.listener = listener;
     }
 
@@ -81,7 +81,7 @@ public class RoomChannel {
         subscription.perform("add_video", params);
     }
 
-    public void removeListener(){
+    public void removeListener() {
         consumer.getSubscriptions().remove(subscription);
         this.listener = null;
     }
