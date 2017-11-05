@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class PlayListFragment extends Fragment {
     private ListView playList;
     private PlayListAdapter adapter;
+    private final String fragmentTitle = getActivity().getString(R.string.playlist_title);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,5 +60,9 @@ public class PlayListFragment extends Fragment {
 
     public void addPlayList(Video video) {
         adapter.addVideo(video);
+    }
+
+    public String getTitle() {
+        return fragmentTitle;
     }
 }
