@@ -39,6 +39,12 @@ public class PlayListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void startVideo(Video video) {
+        if(getItemId(0) == video.id){
+            deleteVideo(0);
+        }
+    }
+
     @Override
     public int getCount() {
         if (videoList != null) {
