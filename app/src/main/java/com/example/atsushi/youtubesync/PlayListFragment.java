@@ -44,7 +44,7 @@ public class PlayListFragment extends Fragment {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        VideoActivity activity = (VideoActivity) getContext();
+                        RoomActivity activity = (RoomActivity) getContext();
                         activity.startSearchVideoActivity();
                     }
                 });

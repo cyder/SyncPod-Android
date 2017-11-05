@@ -52,7 +52,7 @@ public class ChatFragment extends Fragment {
             public void onClick(View v) {
                 String message = chatForm.getText().toString();
                 if(!message.equals("")) {
-                    VideoActivity activity = (VideoActivity)getContext();
+                    RoomActivity activity = (RoomActivity)getContext();
                     activity.sendChat(message);
                     chatForm.getEditableText().clear();
                 }

@@ -24,7 +24,7 @@ import com.google.gson.JsonElement;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class VideoActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener, RoomChannelInterface {
+public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener, RoomChannelInterface {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -162,7 +162,7 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
     }
 
     public void startSearchVideoActivity() {
-        Intent varIntent = new Intent(VideoActivity.this, SearchVideoActivity.class);
+        Intent varIntent = new Intent(RoomActivity.this, SearchVideoActivity.class);
         startActivityForResult(varIntent, searchVideoRequestCode);
     }
 
