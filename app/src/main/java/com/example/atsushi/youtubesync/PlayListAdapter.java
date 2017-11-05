@@ -71,7 +71,7 @@ public class PlayListAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
-        final View convertView = layoutInflater.inflate(R.layout.play_list_item, parent, false);
+        final View convertView = layoutInflater.inflate(R.layout.video_list, parent, false);
         final Video video = videoList.get(position);
         if (video == null) {
             return null;
@@ -80,7 +80,7 @@ public class PlayListAdapter extends BaseAdapter {
         ((TextView) convertView.findViewById(R.id.title)).setText(video.title);
         ((TextView) convertView.findViewById(R.id.channel_title)).setText(video.channel_title);
 
-        ImageView imageView = ((ImageView) convertView.findViewById(R.id.thumbnail));
+        ImageView imageView = convertView.findViewById(R.id.thumbnail);
         if (video.thumbnail != null) {
             imageView.setImageBitmap(video.thumbnail);
         } else {
