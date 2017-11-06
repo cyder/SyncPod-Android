@@ -23,13 +23,12 @@ public class RoomChannel {
         roomChannel.addParam("room_key", roomKey);
         subscription = consumer.getSubscriptions().create(roomChannel);
 
-        subscription
-                .onConnected(new Subscription.ConnectedCallback() {
-                    @Override
-                    public void call() {
-                        listener.onConnected();
-                    }
-                }).onRejected(new Subscription.RejectedCallback() {
+        subscription.onConnected(new Subscription.ConnectedCallback() {
+            @Override
+            public void call() {
+                listener.onConnected();
+            }
+        }).onRejected(new Subscription.RejectedCallback() {
             @Override
             public void call() {
                 // Called when the subscription is rejected by the server
