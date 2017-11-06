@@ -73,9 +73,9 @@ public class TopActivity extends AppCompatActivity {
     }
 
     private void joinRoom(String roomKey) {
-        Intent varIntent =
+        Intent intent =
                 new Intent(TopActivity.this, RoomActivity.class);
-        varIntent.putExtra("room_key", roomKey);
-        startActivity(varIntent);
+        intent.putExtra("room_key", roomKey);
+        startActivity(intent);
     }
 }
