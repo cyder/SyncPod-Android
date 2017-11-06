@@ -19,7 +19,7 @@
             android:inputType="text"
             android:background="@android:color/transparent"
             android:imeOptions="actionSearch"
-            android:hint="キーワード" >
+            android:hint="@string/searching_hint_keyword" >
             <requestFocus />
         </EditText>
 

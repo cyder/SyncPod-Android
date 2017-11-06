@@ -25,6 +25,7 @@
         アーティストのファン同士で盛り上がったり、\n
         楽しみ方は自由自在。
     </string>
+    <string name="searching_hint_keyword">キーワード</string>
     <string name="playlist_title">プレイリスト</string>
     <string name="chat_title">チャット</string>
 </resources>

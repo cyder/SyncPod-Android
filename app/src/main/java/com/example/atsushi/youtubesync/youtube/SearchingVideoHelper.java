@@ -17,38 +17,38 @@ import com.google.api.services.youtube.model.SearchResult;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by atsushi on 2017/10/11.
  */
 
-public class Search {
+public class SearchingVideoHelper {
     private SearchInterface listener = null;
-    private static YouTube youtube;
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
-    private static final long maxResult = 10;
+    private static final long MAX_RESULT = 10;
+    private static final int SHOWING_VIDEOS = 5;
     private YouTube.Search.List search;
     private String nextPageToken = null;
     private String nowPageToken = null;
 
-    public Search(Context context) {
+    public SearchingVideoHelper(Context context) {
         try {
-            youtube = new YouTube.Builder(HTTP_TRANSPORT, JSON_FACTORY, new HttpRequestInitializer() {
+            YouTube youtube = new YouTube.Builder(HTTP_TRANSPORT, JSON_FACTORY, new HttpRequestInitializer() {
                 public void initialize(HttpRequest request) throws IOException {
                 }
             }).setApplicationName("youtube-sync").build();
             ApplicationInfo info = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
             search = youtube.search().list("id,snippet");
             search.setKey(info.metaData.getString("developer_key"));
-            search.setMaxResults(maxResult);
+            search.setMaxResults(MAX_RESULT);
             search.setType("video");
         } catch (IOException e) {
             Log.e("App", "There was an IO error: " + e.getCause() + " : " + e.getMessage());
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e("App", e.getStackTrace().toString());
+            Log.e("App", Arrays.toString(e.getStackTrace()));
         }
     }
 
@@ -65,8 +65,11 @@ public class Search {
         }).start();
     }
 
-    public void next() {
-        if(nextPageToken != null && !nextPageToken.equals(nowPageToken)) {
+    public void next(final int firstVisibleItem, final int visibleItemCount, final int totalItemCount) {
+        if(totalItemCount == 0 || (totalItemCount - visibleItemCount - SHOWING_VIDEOS) >= firstVisibleItem){
+            return ;
+        }
+        if (nextPageToken != null && !nextPageToken.equals(nowPageToken)) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -79,18 +82,17 @@ public class Search {
         }
     }
 
-    public void setListener(SearchInterface listener){
+    public void setListener(SearchInterface listener) {
         this.listener = listener;
     }
 
     private ArrayList<Video> getResult() {
-        ArrayList<Video> resultList = new ArrayList<Video>();
+        ArrayList<Video> resultList = new ArrayList<>();
         try {
             SearchListResponse searchResponse = search.execute();
             List<SearchResult> searchResultList = searchResponse.getItems();
-            Iterator<SearchResult> iterator = searchResultList.iterator();
-            while (iterator.hasNext()) {
-                Video video = convert(iterator.next());
+            for (SearchResult result : searchResultList) {
+                Video video = convert(result);
                 resultList.add(video);
             }
             nextPageToken = searchResponse.getNextPageToken();
