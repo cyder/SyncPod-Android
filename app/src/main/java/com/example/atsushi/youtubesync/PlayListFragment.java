@@ -1,14 +1,11 @@
 package com.example.atsushi.youtubesync;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-
 import com.example.atsushi.youtubesync.json_data.Video;
 
 import java.util.ArrayList;
@@ -37,25 +34,23 @@ public class PlayListFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        playList = (ListView) view.findViewById(R.id.play_list);
+        playList = view.findViewById(R.id.play_list);
         playList.setAdapter(adapter);
         View listHeader = getActivity().getLayoutInflater().inflate(R.layout.play_list_header, null);
         playList.addHeaderView(listHeader, null, false);
 
-        ((FloatingActionButton) view.findViewById(R.id.add_video_action_button))
+        view.findViewById(R.id.add_video_action_button)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v){
-                        VideoActivity activity = (VideoActivity)getContext();
+                    public void onClick(View v) {
+                        RoomActivity activity = (RoomActivity) getContext();
                         activity.startSearchVideoActivity();
-                }
+                    }
                 });
     }
 
     public void startVideo(Video video) {
-        if(adapter.getCount() > 0 && adapter.getItemId(0) == video.id) {
-            adapter.deleteVideo(0);
-        }
+        adapter.startVideo(video);
     }
 
     public void initPlayList(ArrayList<Video> videos) {
@@ -65,4 +60,5 @@ public class PlayListFragment extends Fragment {
     public void addPlayList(Video video) {
         adapter.addVideo(video);
     }
+
 }

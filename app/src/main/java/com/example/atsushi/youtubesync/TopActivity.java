@@ -29,7 +29,7 @@ public class TopActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         String roomKey = roomKeyForm.getText().toString();
                         Intent varIntent =
-                                new Intent(TopActivity.this, VideoActivity.class);
+                                new Intent(TopActivity.this, RoomActivity.class);
                         varIntent.putExtra("room_key", roomKey);
                         startActivity(varIntent);
                     }

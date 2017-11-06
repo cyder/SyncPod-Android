@@ -17,13 +17,11 @@ import java.util.ArrayList;
  */
 
 public class SearchAdapter extends BaseAdapter {
-    Context context;
     LayoutInflater layoutInflater = null;
     ArrayList<Video> videoList;
 
     public SearchAdapter(Context context) {
-        this.context = context;
-        this.layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public void setVideoList(ArrayList<Video> videoList) {
@@ -37,28 +35,40 @@ public class SearchAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return videoList.size();
+        if (videoList != null) {
+            return videoList.size();
+        }
+        return 0;
     }
 
     @Override
     public Video getItem(int position) {
-        return videoList.get(position);
+        if (videoList != null && 0 <= position && position < getCount()) {
+            return videoList.get(position);
+        }
+        return null;
     }
 
     @Override
     public long getItemId(int position) {
-        return videoList.get(position).id;
+        if (getItem(position) != null) {
+            return videoList.get(position).id;
+        }
+        return -1;
     }
 
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
-        final View convertView = layoutInflater.inflate(R.layout.search_result_video_list,parent,false);
+        final View convertView = layoutInflater.inflate(R.layout.video_list, parent, false);
         final Video video = videoList.get(position);
-        ((TextView)convertView.findViewById(R.id.title)).setText(video.title);
-        ((TextView)convertView.findViewById(R.id.channel_title)).setText(video.channel_title);
+        if (video == null) {
+            return null;
+        }
+        ((TextView) convertView.findViewById(R.id.title)).setText(video.title);
+        ((TextView) convertView.findViewById(R.id.channel_title)).setText(video.channel_title);
 
-        ImageView imageView = ((ImageView)convertView.findViewById(R.id.thumbnail));
-        if(video.thumbnail != null) {
+        ImageView imageView = convertView.findViewById(R.id.thumbnail);
+        if (video.thumbnail != null) {
             imageView.setImageBitmap(video.thumbnail);
         } else {
             new ThumbnailGetTask(video, imageView).execute();

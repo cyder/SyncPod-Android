@@ -20,7 +20,7 @@
         </activity>
         <activity android:name=".CreateRoomActivity"></activity>
         <activity android:name=".TopActivity"></activity>
-        <activity android:name=".VideoActivity"></activity>
+        <activity android:name=".RoomActivity"></activity>
         <activity android:name=".SearchVideoActivity"></activity>
         <activity android:name=".FirstStartActivity"></activity>
         <activity android:name=".SignInActivity"></activity>

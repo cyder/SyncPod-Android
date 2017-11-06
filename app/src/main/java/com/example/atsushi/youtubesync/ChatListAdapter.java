@@ -1,14 +1,11 @@
 package com.example.atsushi.youtubesync;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.example.atsushi.youtubesync.json_data.Chat;
 
 import java.util.ArrayList;
@@ -24,7 +21,7 @@ public class ChatListAdapter extends BaseAdapter {
 
     public ChatListAdapter(Context context) {
         this.context = context;
-        this.layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public void setChatList(ArrayList<Chat> chatList) {
@@ -39,7 +36,7 @@ public class ChatListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if(chatList != null) {
+        if (chatList != null) {
             return chatList.size();
         }
         return 0;
@@ -47,25 +44,31 @@ public class ChatListAdapter extends BaseAdapter {
 
     @Override
     public Chat getItem(int position) {
-        return chatList.get(position);
+        if (chatList != null && 0 <= position && position <= getCount()) {
+            return chatList.get(position);
+        }
+        return null;
     }
 
     @Override
     public long getItemId(int position) {
-        return chatList.get(position).id;
+        if (getItem(position) != null) {
+            return getItem(position).id;
+        }
+        return -1;
     }
 
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
-        final View convertView = layoutInflater.inflate(R.layout.chat_list_item,parent,false);
+        final View convertView = layoutInflater.inflate(R.layout.chat_list_item, parent, false);
         final Chat chat = chatList.get(position);
 
-        TextView message = (TextView)convertView.findViewById(R.id.message);
+        TextView message = convertView.findViewById(R.id.message);
         message.setText(chat.message);
-        if(chat.chat_type.equals("user")) {
-            message.setTextColor(Color.parseColor("#333333"));
+        if (chat.chat_type.equals("user")) {
+            message.setTextColor(context.getResources().getColor(R.color.userMessage));
         } else {
-            message.setTextColor(Color.parseColor("#aaaaaa"));
+            message.setTextColor(context.getResources().getColor(R.color.systemMessage));
         }
         return convertView;
     }
