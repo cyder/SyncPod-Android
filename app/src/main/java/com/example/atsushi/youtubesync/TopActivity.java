@@ -52,6 +52,8 @@ public class TopActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == RESULT_OK && intent != null) {
             if (requestCode == CREATE_ROOM_REQUEST_CODE) {
+                String res = intent.getStringExtra("room_key");
+                joinRoom(res);
             }
         }
     }
