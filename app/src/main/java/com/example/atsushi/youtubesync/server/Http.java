@@ -2,6 +2,7 @@ package com.example.atsushi.youtubesync.server;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+
 import com.example.atsushi.youtubesync.MySelf;
 import com.example.atsushi.youtubesync.json_data.JsonParameter;
 import com.example.atsushi.youtubesync.json_data.Response;
@@ -20,10 +21,10 @@ import java.util.Arrays;
  * Created by chigichan24 on 2017/10/29.
  */
 
-public class Post {
+public class Http {
 
     @NonNull
-    final static String TAG = Post.class.getSimpleName();
+    final static String TAG = Http.class.getSimpleName();
     @NonNull
     final static String host = "http://59.106.220.89:3000/api/v1/";
     @NonNull
@@ -32,11 +33,23 @@ public class Post {
     @NonNull
     private Gson gson;
 
-    protected Post() {
+    protected Http() {
         this.gson = new Gson();
     }
 
     protected void post(final JsonParameter jsonParameter, final String endPoint, final PostCallback callback) {
+        communicate("POST", jsonParameter, endPoint, callback);
+    }
+
+    protected void get(final JsonParameter jsonParameter, final String endPoint, final PostCallback callback) {
+        communicate("GET", jsonParameter, endPoint, callback);
+    }
+
+    public interface PostCallback {
+        void call(Response response);
+    }
+
+    private void communicate(final String method, final JsonParameter jsonParameter, final String endPoint, final PostCallback callback) {
         try {
             this.parameter = jsonParameter;
         } catch (NullPointerException e) {
@@ -48,9 +61,9 @@ public class Post {
                 try {
                     URL url = new URL(host + endPoint);
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                    con.setRequestMethod("POST");
+                    con.setRequestMethod(method);
                     con.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-                    if(MySelf.exists()){
+                    if (MySelf.exists()) {
                         con.setRequestProperty("Authorization", MySelf.getToken());
                     }
                     PrintStream ps = new PrintStream(con.getOutputStream());
@@ -73,10 +86,6 @@ public class Post {
                 }
             }
         }).start();
-    }
-
-    public interface PostCallback {
-        void call(Response response);
     }
 
 

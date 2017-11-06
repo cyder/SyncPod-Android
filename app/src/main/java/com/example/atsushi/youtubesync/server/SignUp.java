@@ -6,7 +6,7 @@ import com.example.atsushi.youtubesync.json_data.Response;
  * Created by atsushi on 2017/10/27.
  */
 
-public class SignUp extends Post {
+public class SignUp extends Http {
     private SignUpInterface listener = null;
 
     public void setListener(SignUpInterface _listener) {
