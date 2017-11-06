@@ -35,6 +35,7 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
     YouTubePlayer player;
     PlayListFragment playListFragment;
     ChatFragment chatFragment;
+    RoomInformationFragment roomInformationFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
         viewPager.setAdapter(adapter);
         playListFragment = (PlayListFragment) adapter.getItem(0);
         chatFragment = (ChatFragment) adapter.getItem(1);
+        roomInformationFragment = (RoomInformationFragment) adapter.getItem(2);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
