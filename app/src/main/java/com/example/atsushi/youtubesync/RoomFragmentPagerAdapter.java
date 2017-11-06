@@ -1,8 +1,12 @@
 package com.example.atsushi.youtubesync;
 
+import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by atsushi on 2017/10/16.
@@ -11,33 +15,43 @@ import android.support.v4.app.FragmentPagerAdapter;
 public class RoomFragmentPagerAdapter extends FragmentPagerAdapter {
     PlayListFragment playListFragment = new PlayListFragment();
     ChatFragment chatFragment = new ChatFragment();
-    public RoomFragmentPagerAdapter(FragmentManager fm) {
+    List<Fragment> fragments = new ArrayList<>();
+
+    private Resources resources;
+
+    public RoomFragmentPagerAdapter(FragmentManager fm, Resources resources) {
         super(fm);
+        this.resources = resources;
+        fragments.add(playListFragment);
+        fragments.add(chatFragment);
     }
 
     @Override
     public Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                return playListFragment;
-            case 1:
-                return chatFragment;
+        if (fragments != null && 0 <= position && position < fragments.size()) {
+            return fragments.get(position);
         }
         return null;
     }
 
     @Override
     public int getCount() {
-        return 2;
+        if (fragments != null) {
+            return fragments.size();
+        }
+        return 0;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        switch (position) {
-            case 0:
-                return "プレイリスト";
-            case 1:
-                return "チャット";
+        final Fragment fragment = getItem(position);
+        if (fragment != null) {
+            if (fragment instanceof PlayListFragment) {
+                return resources.getString(R.string.playlist_title);
+            }
+            if (fragment instanceof ChatFragment) {
+                return resources.getString(R.string.chat_title);
+            }
         }
         return null;
     }

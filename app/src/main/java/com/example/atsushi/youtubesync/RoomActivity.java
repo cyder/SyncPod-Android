@@ -22,8 +22,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class VideoActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener, RoomChannelInterface {
+public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener, RoomChannelInterface {
+
+    private final String TAG = this.getClass().getSimpleName();
+
     final int searchVideoRequestCode = 1000;
     private static final int RECOVERY_DIALOG_REQUEST = 1;
 
@@ -43,11 +47,11 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
             ApplicationInfo info = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
             frag.initialize(info.metaData.getString("developer_key"), this);
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e("App", e.getStackTrace().toString());
+            Log.e(TAG, Arrays.toString(e.getStackTrace()));
         }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        RoomFragmentPagerAdapter adapter = new RoomFragmentPagerAdapter(fragmentManager);
+        RoomFragmentPagerAdapter adapter = new RoomFragmentPagerAdapter(fragmentManager, getResources());
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(adapter);
         playListFragment = (PlayListFragment) adapter.getItem(0);
@@ -77,11 +81,11 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
     }
 
     @Override
-    protected void onActivityResult( int requestCode, int resultCode, Intent intent) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        if(resultCode == RESULT_OK && requestCode == searchVideoRequestCode && null != intent) {
+        if (resultCode == RESULT_OK && requestCode == searchVideoRequestCode && null != intent) {
             String res = intent.getStringExtra("youtube_video_id");
-            if(res != null) {
+            if (res != null) {
                 roomChannel.addVideo(res);
             }
         }
@@ -111,7 +115,7 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
 
     @Override
     public void onConnected() {
-        Log.d("App", "connected");
+        Log.d(TAG, "connected");
     }
 
     @Override
@@ -121,7 +125,7 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
 
         switch (jsonData.data_type) {
             case "now_playing_video":
-                if(jsonData.data != null) {
+                if (jsonData.data != null) {
                     startVideo(jsonData.data.video);
                 }
                 break;
@@ -129,7 +133,7 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
                 addPlayList(jsonData.data.video);
                 break;
             case "start_video":
-                if(jsonData.data != null) {
+                if (jsonData.data != null) {
                     startVideo(jsonData.data.video);
                 }
                 break;
@@ -149,16 +153,16 @@ public class VideoActivity extends AppCompatActivity implements YouTubePlayer.On
 
     @Override
     public void onDisconnected() {
-        Log.d("App", "disconnected");
+        Log.d(TAG, "disconnected");
     }
 
     @Override
     public void onFailed() {
-        Log.d("App", "failed");
+        Log.d(TAG, "failed");
     }
 
     public void startSearchVideoActivity() {
-        Intent varIntent = new Intent(VideoActivity.this, SearchVideoActivity.class);
+        Intent varIntent = new Intent(RoomActivity.this, SearchVideoActivity.class);
         startActivityForResult(varIntent, searchVideoRequestCode);
     }
 
