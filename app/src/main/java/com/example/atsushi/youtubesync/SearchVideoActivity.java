@@ -28,7 +28,6 @@ import java.util.ArrayList;
  */
 
 public class SearchVideoActivity extends AppCompatActivity implements SearchInterface {
-    private EditText youtubeVideoIdForm;
     private EditText youtubeSearchForm;
     private SearchingVideoHelper searchingHelper;
     private SearchAdapter adapter;
@@ -72,9 +71,7 @@ public class SearchVideoActivity extends AppCompatActivity implements SearchInte
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (totalItemCount != 0 && (totalItemCount - visibleItemCount - 5) < firstVisibleItem) {
-                    searchingHelper.next();
-                }
+                searchingHelper.next(firstVisibleItem, visibleItemCount, totalItemCount);
             }
 
             @Override

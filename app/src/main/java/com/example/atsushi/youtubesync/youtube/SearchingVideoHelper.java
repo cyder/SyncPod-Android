@@ -28,7 +28,8 @@ public class SearchingVideoHelper {
     private SearchInterface listener = null;
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
-    private static final long maxResult = 10;
+    private static final long MAX_RESULT = 10;
+    private static final int SHOWING_VIDEOS = 5;
     private YouTube.Search.List search;
     private String nextPageToken = null;
     private String nowPageToken = null;
@@ -42,7 +43,7 @@ public class SearchingVideoHelper {
             ApplicationInfo info = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
             search = youtube.search().list("id,snippet");
             search.setKey(info.metaData.getString("developer_key"));
-            search.setMaxResults(maxResult);
+            search.setMaxResults(MAX_RESULT);
             search.setType("video");
         } catch (IOException e) {
             Log.e("App", "There was an IO error: " + e.getCause() + " : " + e.getMessage());
@@ -64,7 +65,10 @@ public class SearchingVideoHelper {
         }).start();
     }
 
-    public void next() {
+    public void next(final int firstVisibleItem, final int visibleItemCount, final int totalItemCount) {
+        if(totalItemCount == 0 || (totalItemCount - visibleItemCount - SHOWING_VIDEOS) >= firstVisibleItem){
+            return ;
+        }
         if (nextPageToken != null && !nextPageToken.equals(nowPageToken)) {
             new Thread(new Runnable() {
                 @Override
