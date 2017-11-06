@@ -18,7 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.atsushi.youtubesync.json_data.Video;
-import com.example.atsushi.youtubesync.youtube.Search;
+import com.example.atsushi.youtubesync.youtube.SearchingVideoHelper;
 import com.example.atsushi.youtubesync.youtube.SearchInterface;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import java.util.ArrayList;
 public class SearchVideoActivity extends AppCompatActivity implements SearchInterface {
     private EditText youtubeVideoIdForm;
     private EditText youtubeSearchForm;
-    private Search search;
+    private SearchingVideoHelper searchingHelper;
     private SearchAdapter adapter;
     private ListView listView;
     private View listFooter;
@@ -53,8 +53,8 @@ public class SearchVideoActivity extends AppCompatActivity implements SearchInte
         });
         youtubeSearchForm = (EditText) findViewById(R.id.youtube_search_form);
 
-        search = new Search(this);
-        search.setListener(this);
+        searchingHelper = new SearchingVideoHelper(this);
+        searchingHelper.setListener(this);
         listView = (ListView)findViewById(R.id.result_list);
         adapter = new SearchAdapter(SearchVideoActivity.this);
 
@@ -73,7 +73,7 @@ public class SearchVideoActivity extends AppCompatActivity implements SearchInte
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (totalItemCount != 0 && (totalItemCount - visibleItemCount - 5) < firstVisibleItem) {
-                    search.next();
+                    searchingHelper.next();
                 }
             }
 
@@ -87,7 +87,7 @@ public class SearchVideoActivity extends AppCompatActivity implements SearchInte
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 Log.d("App", "Submit");
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    search.get(youtubeSearchForm.getText().toString());
+                    searchingHelper.get(youtubeSearchForm.getText().toString());
                     InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                     inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     return true;

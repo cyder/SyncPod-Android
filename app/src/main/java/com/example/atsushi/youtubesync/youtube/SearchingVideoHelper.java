@@ -24,7 +24,7 @@ import java.util.List;
  * Created by atsushi on 2017/10/11.
  */
 
-public class Search {
+public class SearchingVideoHelper {
     private SearchInterface listener = null;
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
@@ -33,7 +33,7 @@ public class Search {
     private String nextPageToken = null;
     private String nowPageToken = null;
 
-    public Search(Context context) {
+    public SearchingVideoHelper(Context context) {
         try {
             YouTube youtube = new YouTube.Builder(HTTP_TRANSPORT, JSON_FACTORY, new HttpRequestInitializer() {
                 public void initialize(HttpRequest request) throws IOException {
