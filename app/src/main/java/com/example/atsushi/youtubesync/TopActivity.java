@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 
 public class TopActivity extends AppCompatActivity {
     private final int CREATE_ROOM_REQUEST_CODE = 200;
-    private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +27,26 @@ public class TopActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.top_tool_bar);
         toolbar.setLogo(R.drawable.toolbar_logo);
 
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.join_room_dialog, (ViewGroup) findViewById(R.id.join_room_dialog_root));
+
+        final AlertDialog dialog = new AlertDialog.Builder(TopActivity.this)
+                .setTitle(R.string.join_room)
+                .setView(layout)
+                .setPositiveButton(R.string.send_button, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        EditText input = (EditText) layout.getFocusedChild();
+                        joinRoom(input.getText().toString());
+                    }
+                })
+                .setNegativeButton(R.string.cancel_button, null)
+                .create();
+
         findViewById(R.id.join_room_card)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showDialog();
+                        dialog.show();
                     }
                 });
 
@@ -56,29 +70,6 @@ public class TopActivity extends AppCompatActivity {
                 joinRoom(res);
             }
         }
-    }
-
-    private void showDialog() {
-        if (dialog == null) {
-            LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
-            final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.join_room_dialog, (ViewGroup) findViewById(R.id.join_room_dialog_root));
-
-            dialog = new AlertDialog.Builder(TopActivity.this)
-                    .setTitle(R.string.join_room)
-                    .setView(layout)
-                    .setPositiveButton(R.string.send_button, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            EditText input = (EditText) layout.getFocusedChild();
-                            joinRoom(input.getText().toString());
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel_button, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                        }
-                    })
-                    .show();
-        }
-        dialog.show();
     }
 
     private void joinRoom(String roomKey) {
