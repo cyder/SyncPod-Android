@@ -7,7 +7,7 @@
     <string name="register_account_title">アカウント登録</string>
     <string name="create_new_room">新規ルーム作成</string>
     <string name="title">YouTube Sync</string>
-    
+
     <!--layout-->
     <string name="email">メールアドレス</string>
     <string name="name">名前</string>
@@ -15,6 +15,7 @@
     <string name="confirm_password">パスワード（確認）</string>
     <string name="new_register">新規登録</string>
     <string name="login_button">ログイン</string>
+    <string name="create_room_button">ルーム作成</string>
     <string name="send_button">送信</string>
     <string name="cancel_button">キャンセル</string>
     <string name="register_button">登録</string>
@@ -33,4 +34,6 @@
     <string name="create_room">ルームを作成する</string>
     <string name="create_room_description">新しいルームを作成します。ルームキーを共有して他の人に参加してもらうことができます。</string>
     <string name="room_key">ルームキー</string>
+    <string name="room_name">ルーム名</string>
+    <string name="room_description">ルーム説明</string>
 </resources>
