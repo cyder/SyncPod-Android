@@ -27,4 +27,8 @@
     </string>
     <string name="playlist_title">プレイリスト</string>
     <string name="chat_title">チャット</string>
+    <string name="join_room">ルームに参加する</string>
+    <string name="join_room_description">ルームキーを入力して既存のルームに参加します。</string>
+    <string name="create_room">ルームを作成する</string>
+    <string name="create_room_description">新しいルームを作成します。ルームキーを共有して他の人に参加してもらうことができます。</string>
 </resources>
