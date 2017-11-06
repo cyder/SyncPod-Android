@@ -61,7 +61,7 @@ public class TopActivity extends AppCompatActivity {
     private void showDialog() {
         if (dialog == null) {
             LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
-            final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.join_room_dialog, (ViewGroup)findViewById(R.id.join_room_dialog_root));
+            final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.join_room_dialog, (ViewGroup) findViewById(R.id.join_room_dialog_root));
 
             dialog = new AlertDialog.Builder(TopActivity.this)
                     .setTitle(R.string.join_room)
