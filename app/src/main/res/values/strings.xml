@@ -41,4 +41,5 @@
     <string name="play_list_empty_description">
         プレイリストに動画がありません。右下のボタンからみんなで見たい動画を追加してください。
     </string>
+    <string name="share_room_key_button">ルームキーを共有</string>
 </resources>
