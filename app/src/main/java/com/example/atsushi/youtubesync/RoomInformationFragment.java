@@ -1,7 +1,9 @@
 package com.example.atsushi.youtubesync;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ShareCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,8 @@ import com.example.atsushi.youtubesync.server.RoomInterface;
 public class RoomInformationFragment extends Fragment
         implements RoomInterface {
     private Room room;
+    @NonNull
+    private String shareMessage = "";
     TextView name;
     TextView description;
 
@@ -39,7 +43,19 @@ public class RoomInformationFragment extends Fragment
         if (room != null) {
             name.setText(room.name);
             description.setText(room.description);
+            shareMessage = String.format(getActivity().getResources().getString(R.string.share_room_key_message), room.name, room.key);
         }
+
+        view.findViewById(R.id.share_room_key_button)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(getActivity());
+                        builder.setText(shareMessage);
+                        builder.setType("text/plain");
+                        builder.startChooser();
+                    }
+                });
     }
 
     public void setRoom(String roomKey) {

@@ -70,8 +70,8 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
     }
 
     @Override
-    public void onRestart() {
-        super.onRestart();
+    public void onResume() {
+        super.onResume();
         roomChannel.getNowPlayingVideo();
         roomChannel.getPlayList();
         roomChannel.getChatList();
@@ -102,8 +102,6 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
             this.player = player;
         }
         roomChannel.getNowPlayingVideo();
-        roomChannel.getPlayList();
-        roomChannel.getChatList();
     }
 
     @Override
@@ -174,7 +172,9 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
     }
 
     private void startVideo(final Video video) {
-        player.loadVideo(video.youtube_video_id, video.current_time * 1000);
+        if(player != null) {
+            player.loadVideo(video.youtube_video_id, video.current_time * 1000);
+        }
         runOnUiThread(new Runnable() {
             public void run() {
                 playListFragment.startVideo(video);
