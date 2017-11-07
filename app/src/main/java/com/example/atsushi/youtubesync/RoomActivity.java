@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.atsushi.youtubesync.channels.RoomChannel;
@@ -35,6 +34,7 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
     YouTubePlayer player;
     PlayListFragment playListFragment;
     ChatFragment chatFragment;
+    RoomInformationFragment roomInformationFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,7 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
         viewPager.setAdapter(adapter);
         playListFragment = (PlayListFragment) adapter.getItem(0);
         chatFragment = (ChatFragment) adapter.getItem(1);
+        roomInformationFragment = (RoomInformationFragment) adapter.getItem(2);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
@@ -64,6 +65,8 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
         String roomKey = varIntent.getStringExtra("room_key");
         roomChannel = new RoomChannel(roomKey);
         roomChannel.setListener(this);
+
+        roomInformationFragment.setRoom(roomKey);
     }
 
     @Override
@@ -174,10 +177,6 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
         player.loadVideo(video.youtube_video_id, video.current_time * 1000);
         runOnUiThread(new Runnable() {
             public void run() {
-                TextView title = (TextView) findViewById(R.id.now_title);
-                title.setText(video.title);
-                TextView channelTitle = (TextView) findViewById(R.id.now_channel_title);
-                channelTitle.setText(video.channel_title);
                 playListFragment.startVideo(video);
             }
         });

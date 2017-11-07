@@ -30,6 +30,7 @@
     <string name="searching_hint_keyword">キーワード</string>
     <string name="playlist_title">プレイリスト</string>
     <string name="chat_title">チャット</string>
+    <string name="room_information_title">ルーム情報</string>
     <string name="join_room">ルームに参加する</string>
     <string name="join_room_description">ルームキーを入力して既存のルームに参加します。</string>
     <string name="create_room">ルームを作成する</string>
