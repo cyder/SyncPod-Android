@@ -38,6 +38,20 @@
             android:layout_marginTop="5dp"
             android:textSize="12sp"
             android:ellipsize="end" />
+        <TextView
+            android:id="@+id/published"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textSize="10sp"
+            android:layout_marginRight="5dp" />
+
+        <TextView
+            android:id="@+id/views"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textSize="10sp" />
     </LinearLayout>
 
 </LinearLayout>

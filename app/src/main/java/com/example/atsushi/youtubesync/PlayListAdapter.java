@@ -19,8 +19,10 @@ import java.util.ArrayList;
 public class PlayListAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater = null;
     private ArrayList<Video> videoList;
+    private Context context;
 
     public PlayListAdapter(Context context) {
+        this.context = context;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -79,7 +81,8 @@ public class PlayListAdapter extends BaseAdapter {
 
         ((TextView) convertView.findViewById(R.id.title)).setText(video.title);
         ((TextView) convertView.findViewById(R.id.channel_title)).setText(video.channel_title);
-
+        ((TextView) convertView.findViewById(R.id.published)).setText(String.format(context.getResources().getString(R.string.published),video.published));
+        ((TextView) convertView.findViewById(R.id.views)).setText(String.format(context.getResources().getString(R.string.views),"1,000,000"));
         ImageView imageView = convertView.findViewById(R.id.thumbnail);
         if (video.thumbnail != null) {
             imageView.setImageBitmap(video.thumbnail);
