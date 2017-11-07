@@ -28,7 +28,7 @@ public class HttpRequestsHelper {
     final static String TAG = HttpRequestsHelper.class.getSimpleName();
     @NonNull
     final static String host = "http://59.106.220.89:3000/api/v1/";
-    final static private int http_success_status = 200;
+    final static private int HTTP_SUCCESS_STATUS = 200;
     @NonNull
     protected JsonParameter parameter;
 
@@ -88,7 +88,7 @@ public class HttpRequestsHelper {
                     String buffer = reader.readLine();
 
                     Response response = gson.fromJson(buffer, Response.class);
-                    if (con.getResponseCode() == http_success_status) {
+                    if (con.getResponseCode() == HTTP_SUCCESS_STATUS) {
                         callback.call(response);
                     }
 
