@@ -16,40 +16,51 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Created by chigichan24 on 2017/10/29.
  */
 
-public class Http {
+public class HttpRequestsHelper {
 
     @NonNull
-    final static String TAG = Http.class.getSimpleName();
+    final static String TAG = HttpRequestsHelper.class.getSimpleName();
     @NonNull
     final static String host = "http://59.106.220.89:3000/api/v1/";
+    final static private int http_success_status = 200;
     @NonNull
     protected JsonParameter parameter;
 
     @NonNull
     private Gson gson;
 
-    protected Http() {
+    protected HttpRequestsHelper() {
         this.gson = new Gson();
     }
 
-    protected void post(final JsonParameter jsonParameter, final String endPoint, final PostCallback callback) {
+    protected void post(final JsonParameter jsonParameter, final String endPoint, final HttpRequestCallback callback) {
         communicate("POST", jsonParameter, endPoint, callback);
     }
 
-    protected void get(final String params, final String endPoint, final PostCallback callback) {
+    protected void get(final HashMap<String, String> hashParameter, final String endPoint, final HttpRequestCallback callback) {
+        String params = "";
+        for (String key : hashParameter.keySet()) {
+            if(params.equals("")) {
+                params += "?";
+            } else {
+                params += "&";
+            }
+            params += key + "=" + hashParameter.get(key);
+        }
         communicate("GET", null, endPoint + params, callback);
     }
 
-    public interface PostCallback {
+    public interface HttpRequestCallback {
         void call(Response response);
     }
 
-    private void communicate(final String method, final JsonParameter jsonParameter, final String endPoint, final PostCallback callback) {
+    private void communicate(final String method, final JsonParameter jsonParameter, final String endPoint, final HttpRequestCallback callback) {
         try {
             this.parameter = jsonParameter;
         } catch (NullPointerException e) {
@@ -77,7 +88,7 @@ public class Http {
                     String buffer = reader.readLine();
 
                     Response response = gson.fromJson(buffer, Response.class);
-                    if (con.getResponseCode() == 200) {
+                    if (con.getResponseCode() == http_success_status) {
                         callback.call(response);
                     }
 

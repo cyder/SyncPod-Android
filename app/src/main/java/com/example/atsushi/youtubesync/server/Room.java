@@ -2,11 +2,13 @@ package com.example.atsushi.youtubesync.server;
 
 import com.example.atsushi.youtubesync.json_data.Response;
 
+import java.util.HashMap;
+
 /**
  * Created by atsushi on 2017/11/07.
  */
 
-public class Room extends Http {
+public class Room extends HttpRequestsHelper {
     private RoomInterface listener = null;
 
     public Room() {
@@ -18,7 +20,9 @@ public class Room extends Http {
     }
 
     public void get(final String roomKey) {
-        super.get("?room_key=" + roomKey, "rooms", new PostCallback() {
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("room_key", roomKey);
+        super.get(params, "rooms", new HttpRequestCallback() {
             @Override
             public void call(Response response) {
                 listener.onReceived(response.room);
