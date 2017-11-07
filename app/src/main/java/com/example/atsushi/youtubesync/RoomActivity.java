@@ -178,6 +178,10 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
                 title.setText(video.title);
                 TextView channelTitle = (TextView) findViewById(R.id.now_channel_title);
                 channelTitle.setText(video.channel_title);
+                TextView published = (TextView) findViewById(R.id.now_published);
+                published.setText(String.format(getResources().getString(R.string.published), video.published));
+                TextView views = (TextView) findViewById(R.id.now_views);
+                views.setText(String.format(getResources().getString(R.string.views), "1,000,000"));
                 playListFragment.startVideo(video);
             }
         });
