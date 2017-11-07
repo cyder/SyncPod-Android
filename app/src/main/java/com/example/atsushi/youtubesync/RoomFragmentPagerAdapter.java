@@ -15,6 +15,7 @@ import java.util.List;
 public class RoomFragmentPagerAdapter extends FragmentPagerAdapter {
     PlayListFragment playListFragment = new PlayListFragment();
     ChatFragment chatFragment = new ChatFragment();
+    RoomInformationFragment roomInformationFragment = new RoomInformationFragment();
     List<Fragment> fragments = new ArrayList<>();
 
     private Resources resources;
@@ -24,6 +25,7 @@ public class RoomFragmentPagerAdapter extends FragmentPagerAdapter {
         this.resources = resources;
         fragments.add(playListFragment);
         fragments.add(chatFragment);
+        fragments.add(roomInformationFragment);
     }
 
     @Override
@@ -51,6 +53,9 @@ public class RoomFragmentPagerAdapter extends FragmentPagerAdapter {
             }
             if (fragment instanceof ChatFragment) {
                 return resources.getString(R.string.chat_title);
+            }
+            if (fragment instanceof RoomInformationFragment) {
+                return resources.getString(R.string.room_information_title);
             }
         }
         return null;

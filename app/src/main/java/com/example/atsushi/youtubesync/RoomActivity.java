@@ -1,20 +1,21 @@
 package com.example.atsushi.youtubesync;
 
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.atsushi.youtubesync.channels.RoomChannel;
 import com.example.atsushi.youtubesync.channels.RoomChannelInterface;
-import com.example.atsushi.youtubesync.json_data.*;
+import com.example.atsushi.youtubesync.json_data.Chat;
+import com.example.atsushi.youtubesync.json_data.JsonData;
+import com.example.atsushi.youtubesync.json_data.Video;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
@@ -35,6 +36,7 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
     YouTubePlayer player;
     PlayListFragment playListFragment;
     ChatFragment chatFragment;
+    RoomInformationFragment roomInformationFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
         viewPager.setAdapter(adapter);
         playListFragment = (PlayListFragment) adapter.getItem(0);
         chatFragment = (ChatFragment) adapter.getItem(1);
+        roomInformationFragment = (RoomInformationFragment) adapter.getItem(2);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
@@ -64,6 +67,8 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
         String roomKey = varIntent.getStringExtra("room_key");
         roomChannel = new RoomChannel(roomKey);
         roomChannel.setListener(this);
+
+        roomInformationFragment.setRoom(roomKey);
     }
 
     @Override

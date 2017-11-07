@@ -6,7 +6,7 @@ import com.example.atsushi.youtubesync.json_data.Response;
  * Created by atsushi on 2017/10/27.
  */
 
-public class CreateRoom extends Post {
+public class CreateRoom extends HttpRequestsHelper {
     private CreateRoomInterface listener = null;
 
     public void setListener(CreateRoomInterface listener) {
@@ -18,7 +18,7 @@ public class CreateRoom extends Post {
     }
 
     public void post(final String name, final String description) {
-        super.post(new com.example.atsushi.youtubesync.json_data.CreateRoom(name, description), "rooms", new PostCallback() {
+        super.post(new com.example.atsushi.youtubesync.json_data.CreateRoom(name, description), "rooms", new HttpRequestCallback() {
             @Override
             public void call(Response response) {
                 listener.onCreatedRoom(response.room);

@@ -1,6 +1,7 @@
 package com.example.atsushi.youtubesync;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,10 @@ import java.util.ArrayList;
 
 public class PlayListAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater = null;
-    private ArrayList<Video> videoList;
     private Context context;
+    @NonNull
+    private ArrayList<Video> videoList = new ArrayList<>();
+    private boolean emptyFlag = false;
 
     public PlayListAdapter(Context context) {
         this.context = context;
@@ -28,36 +31,32 @@ public class PlayListAdapter extends BaseAdapter {
 
     public void setVideoList(ArrayList<Video> videoList) {
         this.videoList = videoList;
+        emptyFlag = videoList.size() == 0;
         notifyDataSetChanged();
     }
 
     public void addVideo(Video video) {
         videoList.add(video);
-        notifyDataSetChanged();
-    }
-
-    public void deleteVideo(int position) {
-        videoList.remove(position);
+        emptyFlag = false;
         notifyDataSetChanged();
     }
 
     public void startVideo(Video video) {
         if (getItemId(0) == video.id) {
-            deleteVideo(0);
+            videoList.remove(0);
         }
+        emptyFlag = videoList.size() == 0;
+        notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        if (videoList != null) {
-            return videoList.size();
-        }
-        return 0;
+        return emptyFlag ? 1 : videoList.size();
     }
 
     @Override
     public Video getItem(int position) {
-        if (videoList != null && 0 <= position && position < getCount()) {
+        if (!emptyFlag && 0 <= position && position < getCount()) {
             return videoList.get(position);
         }
         return null;
@@ -73,6 +72,10 @@ public class PlayListAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
+        if (emptyFlag) {
+            return layoutInflater.inflate(R.layout.play_list_empty_view, parent, false);
+        }
+
         final View convertView = layoutInflater.inflate(R.layout.video_list, parent, false);
         final Video video = videoList.get(position);
         if (video == null) {
