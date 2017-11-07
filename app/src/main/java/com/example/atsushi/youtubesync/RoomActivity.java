@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.example.atsushi.youtubesync.channels.RoomChannel;
 import com.example.atsushi.youtubesync.channels.RoomChannelInterface;
@@ -179,14 +178,6 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
         player.loadVideo(video.youtube_video_id, video.current_time * 1000);
         runOnUiThread(new Runnable() {
             public void run() {
-                TextView title = (TextView) findViewById(R.id.now_title);
-                title.setText(video.title);
-                TextView channelTitle = (TextView) findViewById(R.id.now_channel_title);
-                channelTitle.setText(video.channel_title);
-                TextView published = (TextView) findViewById(R.id.now_published);
-                published.setText(String.format(getResources().getString(R.string.published), video.published));
-                TextView views = (TextView) findViewById(R.id.now_views);
-                views.setText(String.format(getResources().getString(R.string.views), "1,000,000"));
                 playListFragment.startVideo(video);
             }
         });
