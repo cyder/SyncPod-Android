@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import com.example.atsushi.youtubesync.json_data.Video;
 
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ import java.util.ArrayList;
 public class PlayListFragment extends Fragment {
     private ListView playList;
     private PlayListAdapter adapter;
+    private Video nowPlayingVideo;
+    private View view;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,10 +38,13 @@ public class PlayListFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        this.view = view;
+
         playList = view.findViewById(R.id.play_list);
         playList.setAdapter(adapter);
         View listHeader = getActivity().getLayoutInflater().inflate(R.layout.play_list_header, null);
         playList.addHeaderView(listHeader, null, false);
+        showNowPlayingVideo();
 
         view.findViewById(R.id.add_video_action_button)
                 .setOnClickListener(new View.OnClickListener() {
@@ -50,6 +57,8 @@ public class PlayListFragment extends Fragment {
     }
 
     public void startVideo(Video video) {
+        nowPlayingVideo = video;
+        showNowPlayingVideo();
         adapter.startVideo(video);
     }
 
@@ -59,6 +68,15 @@ public class PlayListFragment extends Fragment {
 
     public void addPlayList(Video video) {
         adapter.addVideo(video);
+    }
+
+    private void showNowPlayingVideo() {
+        if (nowPlayingVideo != null && view != null) {
+            TextView title = view.findViewById(R.id.now_title);
+            title.setText(nowPlayingVideo.title);
+            TextView channelTitle = view.findViewById(R.id.now_channel_title);
+            channelTitle.setText(nowPlayingVideo.channel_title);
+        }
     }
 
 }
