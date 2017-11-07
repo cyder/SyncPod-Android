@@ -41,8 +41,8 @@ public class Http {
         communicate("POST", jsonParameter, endPoint, callback);
     }
 
-    protected void get(final JsonParameter jsonParameter, final String endPoint, final PostCallback callback) {
-        communicate("GET", jsonParameter, endPoint, callback);
+    protected void get(final String params, final String endPoint, final PostCallback callback) {
+        communicate("GET", null, endPoint + params, callback);
     }
 
     public interface PostCallback {
@@ -66,14 +66,18 @@ public class Http {
                     if (MySelf.exists()) {
                         con.setRequestProperty("Authorization", MySelf.getToken());
                     }
-                    PrintStream ps = new PrintStream(con.getOutputStream());
-                    ps.print(gson.toJson(parameter));
-                    ps.close();
+
+                    if (jsonParameter != null) {
+                        PrintStream ps = new PrintStream(con.getOutputStream());
+                        ps.print(gson.toJson(parameter));
+                        ps.close();
+                    }
 
                     BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
                     String buffer = reader.readLine();
+
                     Response response = gson.fromJson(buffer, Response.class);
-                    if (response.result.equals("success")) {
+                    if (con.getResponseCode() == 200) {
                         callback.call(response);
                     }
 

@@ -66,6 +66,8 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
         String roomKey = varIntent.getStringExtra("room_key");
         roomChannel = new RoomChannel(roomKey);
         roomChannel.setListener(this);
+
+        roomInformationFragment.setRoom(roomKey);
     }
 
     @Override

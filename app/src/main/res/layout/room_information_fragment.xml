@@ -13,7 +13,7 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/room_title"
+                android:id="@+id/room_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

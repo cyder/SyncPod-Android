@@ -8,13 +8,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.atsushi.youtubesync.json_data.Room;
+import com.example.atsushi.youtubesync.server.RoomInterface;
 
 /**
  * Created by atsushi on 2017/11/07.
  */
 
-public class RoomInformationFragment extends Fragment {
+public class RoomInformationFragment extends Fragment
+        implements RoomInterface {
     private Room room;
+    TextView name;
+    TextView description;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,11 +34,22 @@ public class RoomInformationFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        TextView title = (TextView) view.findViewById(R.id.room_title);
-        TextView description = (TextView) view.findViewById(R.id.room_description);
+        name = view.findViewById(R.id.room_name);
+        description = view.findViewById(R.id.room_description);
+        if (room != null) {
+            name.setText(room.name);
+            description.setText(room.description);
+        }
     }
 
-    public void setRoom(Room room) {
+    public void setRoom(String roomKey) {
+        com.example.atsushi.youtubesync.server.Room room = new com.example.atsushi.youtubesync.server.Room();
+        room.setListener(this);
+        room.get(roomKey);
+    }
+
+    @Override
+    public void onReceived(final Room room) {
         this.room = room;
     }
 }
