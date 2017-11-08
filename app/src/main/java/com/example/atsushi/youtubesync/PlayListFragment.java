@@ -71,11 +71,16 @@ public class PlayListFragment extends Fragment {
     }
 
     private void showNowPlayingVideo() {
-        if (nowPlayingVideo != null && view != null) {
-            TextView title = view.findViewById(R.id.now_title);
-            title.setText(nowPlayingVideo.title);
-            TextView channelTitle = view.findViewById(R.id.now_channel_title);
-            channelTitle.setText(nowPlayingVideo.channel_title);
+        if (view != null) {
+            if (nowPlayingVideo != null) {
+                view.findViewById(R.id.now_play_video_area).setVisibility(View.VISIBLE);
+                TextView title = view.findViewById(R.id.now_title);
+                title.setText(nowPlayingVideo.title);
+                TextView channelTitle = view.findViewById(R.id.now_channel_title);
+                channelTitle.setText(nowPlayingVideo.channel_title);
+            } else {
+                view.findViewById(R.id.now_play_video_area).setVisibility(View.GONE);
+            }
         }
     }
 
