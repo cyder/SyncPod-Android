@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.atsushi.youtubesync.channels.RoomChannel;
@@ -183,12 +184,13 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
     private void startVideo(final Video video) {
         if(player != null) {
             player.loadVideo(video.youtube_video_id, video.current_time * 1000);
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    playListFragment.startVideo(video);
+                    findViewById(R.id.video_player).setVisibility(View.VISIBLE);
+                }
+            });
         }
-        runOnUiThread(new Runnable() {
-            public void run() {
-                playListFragment.startVideo(video);
-            }
-        });
     }
 
     private void initPlayList(final ArrayList<Video> videos) {
