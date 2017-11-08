@@ -47,6 +47,12 @@ public class PlayListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public Video getNextVideo() {
+        if (videoList.size() == 0)
+            return null;
+        return getItem(0);
+    }
+
     @Override
     public int getCount() {
         return emptyFlag ? 1 : videoList.size();

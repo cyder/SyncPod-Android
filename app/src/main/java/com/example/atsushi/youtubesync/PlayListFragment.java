@@ -62,6 +62,19 @@ public class PlayListFragment extends Fragment {
         adapter.startVideo(video);
     }
 
+    public void endVideo() {
+        nowPlayingVideo = null;
+        showNowPlayingVideo();
+    }
+
+    public Video getNextVideo() {
+        return adapter.getNextVideo();
+    }
+
+    public Video getNowPlayingVideo() {
+        return nowPlayingVideo;
+    }
+
     public void initPlayList(ArrayList<Video> videos) {
         adapter.setVideoList(videos);
     }

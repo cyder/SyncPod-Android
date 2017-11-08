@@ -24,7 +24,8 @@ import com.google.gson.JsonElement;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener, RoomChannelInterface {
+public class RoomActivity extends AppCompatActivity
+        implements YouTubePlayer.OnInitializedListener, YouTubePlayer.PlayerStateChangeListener, RoomChannelInterface {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -75,7 +76,7 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
     @Override
     public void onResume() {
         super.onResume();
-        if(connectFlag) {
+        if (connectFlag) {
             roomChannel.getNowPlayingVideo();
             roomChannel.getPlayList();
             roomChannel.getChatList();
@@ -104,6 +105,7 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
                                         boolean wasRestored) {
         if (!wasRestored) {
             player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
+            player.setPlayerStateChangeListener(this);
             this.player = player;
         }
         roomChannel.getNowPlayingVideo();
@@ -172,6 +174,38 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
         Log.d(TAG, "failed");
     }
 
+
+    @Override
+    public void onAdStarted() {
+    }
+
+    @Override
+    public void onError(YouTubePlayer.ErrorReason reason) {
+    }
+
+    @Override
+    public void onLoaded(String videoId) {
+    }
+
+    @Override
+    public void onLoading() {
+    }
+
+    @Override
+    public void onVideoEnded() {
+        Video nextVideo = playListFragment.getNextVideo();
+        if (nextVideo != null) {
+            cueVideo(nextVideo);
+        } else {
+            playListFragment.endVideo();
+            findViewById(R.id.video_player).setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onVideoStarted() {
+    }
+
     public void startSearchVideoActivity() {
         Intent varIntent = new Intent(RoomActivity.this, SearchVideoActivity.class);
         startActivityForResult(varIntent, searchVideoRequestCode);
@@ -182,11 +216,24 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
     }
 
     private void startVideo(final Video video) {
-        if(player != null) {
+        if (player != null) {
             player.loadVideo(video.youtube_video_id, video.current_time * 1000);
             runOnUiThread(new Runnable() {
                 public void run() {
                     playListFragment.startVideo(video);
+                    findViewById(R.id.video_player).setVisibility(View.VISIBLE);
+                }
+            });
+        }
+    }
+
+    private void cueVideo(final Video video) {
+        if (player != null) {
+            player.loadVideo(video.youtube_video_id, video.current_time * 1000);
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    playListFragment.startVideo(video);
+                    player.cueVideo(video.youtube_video_id);
                     findViewById(R.id.video_player).setVisibility(View.VISIBLE);
                 }
             });
@@ -202,11 +249,11 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
     }
 
     private void addPlayList(final Video video) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                playListFragment.addPlayList(video);
-            }
-        });
+        if (playListFragment.getNowPlayingVideo() == null) {
+            cueVideo(video);
+        } else {
+            playListFragment.addPlayList(video);
+        }
     }
 
     private void initChatList(final ArrayList<Chat> chats) {
