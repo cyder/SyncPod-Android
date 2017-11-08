@@ -30,6 +30,7 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
 
     final int searchVideoRequestCode = 1000;
     private static final int RECOVERY_DIALOG_REQUEST = 1;
+    private boolean connectFlag = false;
 
     RoomChannel roomChannel;
     YouTubePlayer player;
@@ -62,6 +63,7 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
+        connectFlag = false;
         Intent varIntent = getIntent();
         String roomKey = varIntent.getStringExtra("room_key");
         roomChannel = new RoomChannel(roomKey);
@@ -71,11 +73,13 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
     }
 
     @Override
-    public void onRestart() {
-        super.onRestart();
-        roomChannel.getNowPlayingVideo();
-        roomChannel.getPlayList();
-        roomChannel.getChatList();
+    public void onResume() {
+        super.onResume();
+        if(connectFlag) {
+            roomChannel.getNowPlayingVideo();
+            roomChannel.getPlayList();
+            roomChannel.getChatList();
+        }
     }
 
     @Override
@@ -103,8 +107,6 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
             this.player = player;
         }
         roomChannel.getNowPlayingVideo();
-        roomChannel.getPlayList();
-        roomChannel.getChatList();
     }
 
     @Override
@@ -120,6 +122,10 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
     @Override
     public void onConnected() {
         Log.d(TAG, "connected");
+        roomChannel.getNowPlayingVideo();
+        roomChannel.getPlayList();
+        roomChannel.getChatList();
+        connectFlag = true;
     }
 
     @Override
@@ -158,6 +164,7 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
     @Override
     public void onDisconnected() {
         Log.d(TAG, "disconnected");
+        connectFlag = false;
     }
 
     @Override
@@ -175,7 +182,9 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
     }
 
     private void startVideo(final Video video) {
-        player.loadVideo(video.youtube_video_id, video.current_time * 1000);
+        if(player != null) {
+            player.loadVideo(video.youtube_video_id, video.current_time * 1000);
+        }
         runOnUiThread(new Runnable() {
             public void run() {
                 playListFragment.startVideo(video);
