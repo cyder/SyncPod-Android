@@ -29,6 +29,7 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
 
     final int searchVideoRequestCode = 1000;
     private static final int RECOVERY_DIALOG_REQUEST = 1;
+    private boolean connectFlag = false;
 
     RoomChannel roomChannel;
     YouTubePlayer player;
@@ -61,6 +62,7 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
+        connectFlag = false;
         Intent varIntent = getIntent();
         String roomKey = varIntent.getStringExtra("room_key");
         roomChannel = new RoomChannel(roomKey);
@@ -72,9 +74,11 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
     @Override
     public void onResume() {
         super.onResume();
-        roomChannel.getNowPlayingVideo();
-        roomChannel.getPlayList();
-        roomChannel.getChatList();
+        if(connectFlag) {
+            roomChannel.getNowPlayingVideo();
+            roomChannel.getPlayList();
+            roomChannel.getChatList();
+        }
     }
 
     @Override
@@ -117,6 +121,10 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
     @Override
     public void onConnected() {
         Log.d(TAG, "connected");
+        roomChannel.getNowPlayingVideo();
+        roomChannel.getPlayList();
+        roomChannel.getChatList();
+        connectFlag = true;
     }
 
     @Override
@@ -155,6 +163,7 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
     @Override
     public void onDisconnected() {
         Log.d(TAG, "disconnected");
+        connectFlag = false;
     }
 
     @Override
