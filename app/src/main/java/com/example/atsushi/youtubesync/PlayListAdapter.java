@@ -21,7 +21,6 @@ public class PlayListAdapter extends BaseAdapter implements ListInterface {
     private Context context;
     private LayoutInflater layoutInflater = null;
     private PlayList playList;
-    private boolean emptyViewFlag = false;
 
     public PlayListAdapter(Context context) {
         this.context = context;
@@ -36,7 +35,6 @@ public class PlayListAdapter extends BaseAdapter implements ListInterface {
 
     @Override
     public void updated() {
-        emptyViewFlag = playList.size() == 0;
         ((Activity) context).runOnUiThread(new Runnable() {
             public void run() {
                 notifyDataSetChanged();
@@ -47,10 +45,10 @@ public class PlayListAdapter extends BaseAdapter implements ListInterface {
     @Override
     public int getCount() {
         if (playList == null) {
-            return emptyViewFlag ? 0 : 1;
+            return 0;
         }
         if (playList.size() == 0) {
-            return emptyViewFlag ? 0 : 1;
+            return 1;
         }
         return playList.size();
     }

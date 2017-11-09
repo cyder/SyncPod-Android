@@ -34,6 +34,7 @@ public class RoomData implements RoomInterface {
 
     public void clearNowPlayingVideo() {
         this.nowPlayingVideo = null;
+        updated();
     }
 
     public void getRoomInfoByKey(String roomKey) {
