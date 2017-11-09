@@ -76,7 +76,13 @@ public class ChatListAdapter extends BaseAdapter implements ListInterface {
         final View convertView = layoutInflater.inflate(R.layout.chat_list_item, parent, false);
         final Chat chat = chatList.get(position);
 
-        TextView message = convertView.findViewById(R.id.message);
+        TextView name = (TextView)convertView.findViewById(R.id.name);
+        TextView time = (TextView)convertView.findViewById(R.id.time);
+        if(chat.chat_type.equals("user")) {
+            name.setText(chat.user.name);
+            time.setText(getTime(chat.created_at));
+        }
+        TextView message = (TextView)convertView.findViewById(R.id.message);
         message.setText(chat.message);
         if (chat.chat_type.equals("user")) {
             message.setTextColor(context.getResources().getColor(R.color.userMessage));
@@ -84,5 +90,10 @@ public class ChatListAdapter extends BaseAdapter implements ListInterface {
             message.setTextColor(context.getResources().getColor(R.color.systemMessage));
         }
         return convertView;
+    }
+    //時間を加工する場所
+    private String getTime(String t){
+        String[] time = t.split("[/ :]", 6);
+        return time[3]+':'+time[4];
     }
 }
