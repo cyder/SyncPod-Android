@@ -29,6 +29,7 @@ public class HttpRequestsHelper {
     @NonNull
     private final static String host = "http://59.106.220.89:3000/api/v1/";
     final static private int HTTP_SUCCESS_STATUS = 200;
+    final static private int HTTP_FAILURE_STATUS = 400;
     @NonNull
     protected JsonParameter parameter;
 
@@ -57,7 +58,8 @@ public class HttpRequestsHelper {
     }
 
     public interface HttpRequestCallback {
-        void call(Response response);
+        void success(Response response);
+        void failure(Response response);
     }
 
     private void communicate(final String method, final JsonParameter jsonParameter, final String endPoint, final HttpRequestCallback callback) {
@@ -87,7 +89,10 @@ public class HttpRequestsHelper {
 
                     Response response = gson.fromJson(buffer, Response.class);
                     if (con.getResponseCode() == HTTP_SUCCESS_STATUS) {
-                        callback.call(response);
+                        callback.success(response);
+                    }
+                    else if(con.getResponseCode() == HTTP_FAILURE_STATUS) {
+                        callback.failure(response);
                     }
 
                 } catch (MalformedURLException e) {
