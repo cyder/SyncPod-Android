@@ -63,8 +63,8 @@ public class ChatFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String message = chatForm.getText().toString();
-                if(!message.equals("")) {
-                    RoomActivity activity = (RoomActivity)getContext();
+                if (!message.equals("")) {
+                    RoomActivity activity = (RoomActivity) getContext();
                     activity.sendChat(message);
                     chatForm.getEditableText().clear();
                 }
