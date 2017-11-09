@@ -2,6 +2,7 @@ package com.example.atsushi.youtubesync;
 
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.atsushi.youtubesync.app_data.RoomData;
 import com.example.atsushi.youtubesync.channels.RoomChannel;
 import com.example.atsushi.youtubesync.channels.RoomChannelInterface;
 import com.example.atsushi.youtubesync.json_data.*;
@@ -34,10 +36,9 @@ public class RoomActivity extends AppCompatActivity
     private boolean connectFlag = false;
 
     RoomChannel roomChannel;
+    @NonNull
+    RoomData roomData = new RoomData();
     YouTubePlayer player;
-    PlayListFragment playListFragment;
-    ChatFragment chatFragment;
-    RoomInformationFragment roomInformationFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,9 +58,13 @@ public class RoomActivity extends AppCompatActivity
         RoomFragmentPagerAdapter adapter = new RoomFragmentPagerAdapter(fragmentManager, getResources());
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(adapter);
-        playListFragment = (PlayListFragment) adapter.getItem(0);
-        chatFragment = (ChatFragment) adapter.getItem(1);
-        roomInformationFragment = (RoomInformationFragment) adapter.getItem(2);
+
+        PlayListFragment playListFragment = (PlayListFragment) adapter.getItem(0);
+        ChatFragment chatFragment = (ChatFragment) adapter.getItem(1);
+        RoomInformationFragment roomInformationFragment = (RoomInformationFragment) adapter.getItem(2);
+        playListFragment.setRoomData(roomData);
+        chatFragment.setRoomData(roomData);
+        roomInformationFragment.setRoomData(roomData);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
@@ -70,7 +75,7 @@ public class RoomActivity extends AppCompatActivity
         roomChannel = new RoomChannel(roomKey);
         roomChannel.setListener(this);
 
-        roomInformationFragment.setRoom(roomKey);
+        roomData.getRoomInfoByKey(roomKey);
     }
 
     @Override
@@ -145,9 +150,7 @@ public class RoomActivity extends AppCompatActivity
                 addPlayList(jsonData.data.video);
                 break;
             case "start_video":
-                if (jsonData.data != null) {
-                    startVideo(jsonData.data.video);
-                }
+                startVideo(jsonData.data.video);
                 break;
             case "play_list":
                 initPlayList(jsonData.data.play_list);
@@ -193,11 +196,11 @@ public class RoomActivity extends AppCompatActivity
 
     @Override
     public void onVideoEnded() {
-        Video nextVideo = playListFragment.getNextVideo();
+        Video nextVideo = roomData.getPlayList().getTopItem();
         if (nextVideo != null) {
             prepareVideo(nextVideo);
         } else {
-            playListFragment.endVideo();
+            roomData.clearNowPlayingVideo();
             findViewById(R.id.video_player).setVisibility(View.GONE);
         }
     }
@@ -230,10 +233,11 @@ public class RoomActivity extends AppCompatActivity
     }
 
     private void setNowPlayingVideo(final Video video) {
+        roomData.setNowPlayingVideo(video);
         if (player != null) {
+            roomData.setNowPlayingVideo(video);
             runOnUiThread(new Runnable() {
                 public void run() {
-                    playListFragment.startVideo(video);
                     findViewById(R.id.video_player).setVisibility(View.VISIBLE);
                 }
             });
@@ -241,34 +245,22 @@ public class RoomActivity extends AppCompatActivity
     }
 
     private void initPlayList(final ArrayList<Video> videos) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                playListFragment.initPlayList(videos);
-            }
-        });
+        roomData.getPlayList().setList(videos);
     }
 
     private void addPlayList(final Video video) {
-        if (playListFragment.getNowPlayingVideo() == null) {
+        if (roomData.getNowPlayingVideo() == null) {
             prepareVideo(video);
         } else {
-            playListFragment.addPlayList(video);
+            roomData.getPlayList().add(video);
         }
     }
 
     private void initChatList(final ArrayList<Chat> chats) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                chatFragment.initChatList(chats);
-            }
-        });
+        roomData.getChatList().setList(chats);
     }
 
     private void addChat(final Chat chat) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                chatFragment.addChat(chat);
-            }
-        });
+        roomData.getChatList().add(chat);
     }
 }

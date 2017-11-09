@@ -1,11 +1,15 @@
 package com.example.atsushi.youtubesync;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.example.atsushi.youtubesync.app_data.ChatList;
+import com.example.atsushi.youtubesync.app_data.ListInterface;
 import com.example.atsushi.youtubesync.json_data.Chat;
 
 import java.util.ArrayList;
@@ -14,32 +18,37 @@ import java.util.ArrayList;
  * Created by atsushi on 2017/10/16.
  */
 
-public class ChatListAdapter extends BaseAdapter {
-    Context context;
-    LayoutInflater layoutInflater = null;
-    ArrayList<Chat> chatList = new ArrayList<Chat>();
+public class ChatListAdapter extends BaseAdapter implements ListInterface {
+    private Context context;
+    private LayoutInflater layoutInflater = null;
+    private ChatList chatList;
 
     public ChatListAdapter(Context context) {
         this.context = context;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public void setChatList(ArrayList<Chat> chatList) {
+    public void setChatList(ChatList chatList) {
         this.chatList = chatList;
-        notifyDataSetChanged();
-    }
-
-    public void addChat(Chat chat) {
-        chatList.add(chat);
+        chatList.addListener(this);
         notifyDataSetChanged();
     }
 
     @Override
+    public void updated() {
+        ((Activity) context).runOnUiThread(new Runnable() {
+            public void run() {
+                notifyDataSetChanged();
+            }
+        });
+    }
+
+    @Override
     public int getCount() {
-        if (chatList != null) {
-            return chatList.size();
+        if (chatList == null) {
+            return 0;
         }
-        return 0;
+        return chatList.size();
     }
 
     @Override
