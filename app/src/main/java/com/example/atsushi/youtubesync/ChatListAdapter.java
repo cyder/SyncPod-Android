@@ -30,8 +30,12 @@ public class ChatListAdapter extends BaseAdapter implements ListInterface {
 
     public void setChatList(ChatList chatList) {
         this.chatList = chatList;
-        chatList.addListener(this);
-        notifyDataSetChanged();
+        this.chatList.addListener(this);
+        ((Activity) context).runOnUiThread(new Runnable() {
+            public void run() {
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override

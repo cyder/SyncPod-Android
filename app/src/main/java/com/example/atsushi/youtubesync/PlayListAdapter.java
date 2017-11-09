@@ -29,8 +29,12 @@ public class PlayListAdapter extends BaseAdapter implements ListInterface {
 
     public void setPlayList(PlayList list) {
         this.playList = list;
-        list.addListener(this);
-        notifyDataSetChanged();
+        this.playList.addListener(this);
+        ((Activity) context).runOnUiThread(new Runnable() {
+            public void run() {
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
