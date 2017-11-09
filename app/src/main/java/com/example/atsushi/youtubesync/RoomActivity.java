@@ -195,7 +195,7 @@ public class RoomActivity extends AppCompatActivity
     public void onVideoEnded() {
         Video nextVideo = playListFragment.getNextVideo();
         if (nextVideo != null) {
-            cueVideo(nextVideo);
+            prepareVideo(nextVideo);
         } else {
             playListFragment.endVideo();
             findViewById(R.id.video_player).setVisibility(View.GONE);
@@ -218,22 +218,22 @@ public class RoomActivity extends AppCompatActivity
     private void startVideo(final Video video) {
         if (player != null) {
             player.loadVideo(video.youtube_video_id, video.current_time * 1000);
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    playListFragment.startVideo(video);
-                    findViewById(R.id.video_player).setVisibility(View.VISIBLE);
-                }
-            });
+            setNowPlayingVideo(video);
         }
     }
 
-    private void cueVideo(final Video video) {
+    private void prepareVideo(final Video video) {
         if (player != null) {
-            player.loadVideo(video.youtube_video_id, video.current_time * 1000);
+            player.cueVideo(video.youtube_video_id);
+            setNowPlayingVideo(video);
+        }
+    }
+
+    private void setNowPlayingVideo(final Video video) {
+        if (player != null) {
             runOnUiThread(new Runnable() {
                 public void run() {
                     playListFragment.startVideo(video);
-                    player.cueVideo(video.youtube_video_id);
                     findViewById(R.id.video_player).setVisibility(View.VISIBLE);
                 }
             });
@@ -250,7 +250,7 @@ public class RoomActivity extends AppCompatActivity
 
     private void addPlayList(final Video video) {
         if (playListFragment.getNowPlayingVideo() == null) {
-            cueVideo(video);
+            prepareVideo(video);
         } else {
             playListFragment.addPlayList(video);
         }
