@@ -49,10 +49,10 @@ public class ChatListAdapter extends BaseAdapter implements ListInterface {
 
     @Override
     public int getCount() {
-        if (chatList == null) {
-            return 0;
+        if (chatList != null) {
+            return chatList.size();
         }
-        return chatList.size();
+        return 0;
     }
 
     @Override

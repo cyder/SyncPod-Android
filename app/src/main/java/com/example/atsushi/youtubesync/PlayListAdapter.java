@@ -75,30 +75,30 @@ public class PlayListAdapter extends BaseAdapter implements ListInterface {
 
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
-        if (playList == null) {
-            return layoutInflater.inflate(R.layout.play_list_empty_view, parent, false);
-        }
+        if (playList != null) {
+            if (playList.size() == 0) {
+                return layoutInflater.inflate(R.layout.play_list_empty_view, parent, false);
+            }
 
-        if (playList.size() == 0) {
-            return layoutInflater.inflate(R.layout.play_list_empty_view, parent, false);
-        }
+            final View convertView = layoutInflater.inflate(R.layout.video_list, parent, false);
+            final Video video = getItem(position);
+            if (video != null) {
+                ((TextView) convertView.findViewById(R.id.title)).setText(video.title);
+                ((TextView) convertView.findViewById(R.id.channel_title)).setText(video.channel_title);
 
-        final View convertView = layoutInflater.inflate(R.layout.video_list, parent, false);
-        final Video video = getItem(position);
-        if (video == null) {
+                ImageView imageView = convertView.findViewById(R.id.thumbnail);
+                if (video.thumbnail != null) {
+                    imageView.setImageBitmap(video.thumbnail);
+                } else {
+                    new ThumbnailGetTask(video, imageView).execute();
+                }
+
+                return convertView;
+            }
+
             return null;
         }
 
-        ((TextView) convertView.findViewById(R.id.title)).setText(video.title);
-        ((TextView) convertView.findViewById(R.id.channel_title)).setText(video.channel_title);
-
-        ImageView imageView = convertView.findViewById(R.id.thumbnail);
-        if (video.thumbnail != null) {
-            imageView.setImageBitmap(video.thumbnail);
-        } else {
-            new ThumbnailGetTask(video, imageView).execute();
-        }
-
-        return convertView;
+        return layoutInflater.inflate(R.layout.play_list_empty_view, parent, false);
     }
 }
