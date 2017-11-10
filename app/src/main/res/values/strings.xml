@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">YouTube Sync</string>
+    <string name="app_name">SyncPod</string>
     <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
 
     <!--title bar-->
     <string name="login_title">ログイン</string>
     <string name="register_account_title">アカウント登録</string>
     <string name="create_new_room">新規ルーム作成</string>
-    <string name="title">YouTube Sync</string>
+    <string name="title">SyncPod</string>
 
     <!--layout-->
     <string name="email">メールアドレス</string>
