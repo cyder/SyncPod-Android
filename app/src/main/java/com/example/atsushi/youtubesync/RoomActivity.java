@@ -2,6 +2,7 @@ package com.example.atsushi.youtubesync;
 
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.content.Intent;
@@ -9,8 +10,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
+import com.example.atsushi.youtubesync.app_data.RoomData;
 import com.example.atsushi.youtubesync.channels.RoomChannel;
 import com.example.atsushi.youtubesync.channels.RoomChannelInterface;
 import com.example.atsushi.youtubesync.json_data.*;
@@ -23,7 +26,8 @@ import com.google.gson.JsonElement;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener, RoomChannelInterface {
+public class RoomActivity extends AppCompatActivity
+        implements YouTubePlayer.OnInitializedListener, YouTubePlayer.PlayerStateChangeListener, RoomChannelInterface {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -32,10 +36,9 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
     private boolean connectFlag = false;
 
     RoomChannel roomChannel;
+    @NonNull
+    RoomData roomData = new RoomData();
     YouTubePlayer player;
-    PlayListFragment playListFragment;
-    ChatFragment chatFragment;
-    RoomInformationFragment roomInformationFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,9 +58,13 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
         RoomFragmentPagerAdapter adapter = new RoomFragmentPagerAdapter(fragmentManager, getResources());
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(adapter);
-        playListFragment = (PlayListFragment) adapter.getItem(0);
-        chatFragment = (ChatFragment) adapter.getItem(1);
-        roomInformationFragment = (RoomInformationFragment) adapter.getItem(2);
+
+        PlayListFragment playListFragment = (PlayListFragment) adapter.getItem(0);
+        ChatFragment chatFragment = (ChatFragment) adapter.getItem(1);
+        RoomInformationFragment roomInformationFragment = (RoomInformationFragment) adapter.getItem(2);
+        playListFragment.setRoomData(roomData);
+        chatFragment.setRoomData(roomData);
+        roomInformationFragment.setRoomData(roomData);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
@@ -68,13 +75,13 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
         roomChannel = new RoomChannel(roomKey);
         roomChannel.setListener(this);
 
-        roomInformationFragment.setRoom(roomKey);
+        roomData.getRoomInfoByKey(roomKey);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(connectFlag) {
+        if (connectFlag) {
             roomChannel.getNowPlayingVideo();
             roomChannel.getPlayList();
             roomChannel.getChatList();
@@ -103,6 +110,7 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
                                         boolean wasRestored) {
         if (!wasRestored) {
             player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
+            player.setPlayerStateChangeListener(this);
             this.player = player;
         }
         roomChannel.getNowPlayingVideo();
@@ -142,9 +150,7 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
                 addPlayList(jsonData.data.video);
                 break;
             case "start_video":
-                if (jsonData.data != null) {
-                    startVideo(jsonData.data.video);
-                }
+                startVideo(jsonData.data.video);
                 break;
             case "play_list":
                 initPlayList(jsonData.data.play_list);
@@ -171,6 +177,38 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
         Log.d(TAG, "failed");
     }
 
+
+    @Override
+    public void onAdStarted() {
+    }
+
+    @Override
+    public void onError(YouTubePlayer.ErrorReason reason) {
+    }
+
+    @Override
+    public void onLoaded(String videoId) {
+    }
+
+    @Override
+    public void onLoading() {
+    }
+
+    @Override
+    public void onVideoEnded() {
+        Video nextVideo = roomData.getPlayList().getTopItem();
+        if (nextVideo != null) {
+            prepareVideo(nextVideo);
+        } else {
+            roomData.clearNowPlayingVideo();
+            findViewById(R.id.video_player).setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onVideoStarted() {
+    }
+
     public void startSearchVideoActivity() {
         Intent varIntent = new Intent(RoomActivity.this, SearchVideoActivity.class);
         startActivityForResult(varIntent, searchVideoRequestCode);
@@ -181,45 +219,48 @@ public class RoomActivity extends AppCompatActivity implements YouTubePlayer.OnI
     }
 
     private void startVideo(final Video video) {
-        if(player != null) {
+        if (player != null) {
             player.loadVideo(video.youtube_video_id, video.current_time * 1000);
+            setNowPlayingVideo(video);
         }
-        runOnUiThread(new Runnable() {
-            public void run() {
-                playListFragment.startVideo(video);
-            }
-        });
+    }
+
+    private void prepareVideo(final Video video) {
+        if (player != null) {
+            player.cueVideo(video.youtube_video_id);
+            setNowPlayingVideo(video);
+        }
+    }
+
+    private void setNowPlayingVideo(final Video video) {
+        roomData.setNowPlayingVideo(video);
+        if (player != null) {
+            roomData.setNowPlayingVideo(video);
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    findViewById(R.id.video_player).setVisibility(View.VISIBLE);
+                }
+            });
+        }
     }
 
     private void initPlayList(final ArrayList<Video> videos) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                playListFragment.initPlayList(videos);
-            }
-        });
+        roomData.getPlayList().setList(videos);
     }
 
     private void addPlayList(final Video video) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                playListFragment.addPlayList(video);
-            }
-        });
+        if (roomData.getNowPlayingVideo() == null) {
+            prepareVideo(video);
+        } else {
+            roomData.getPlayList().add(video);
+        }
     }
 
     private void initChatList(final ArrayList<Chat> chats) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                chatFragment.initChatList(chats);
-            }
-        });
+        roomData.getChatList().setList(chats);
     }
 
     private void addChat(final Chat chat) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                chatFragment.addChat(chat);
-            }
-        });
+        roomData.getChatList().add(chat);
     }
 }

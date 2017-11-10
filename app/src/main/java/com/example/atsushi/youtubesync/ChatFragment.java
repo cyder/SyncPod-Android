@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+
+import com.example.atsushi.youtubesync.app_data.RoomData;
 import com.example.atsushi.youtubesync.json_data.Chat;
 
 import java.util.ArrayList;
@@ -21,11 +23,22 @@ public class ChatFragment extends Fragment {
     private ChatListAdapter adapter;
     private EditText chatForm;
     private ImageButton chatSubmit;
+    private RoomData roomData;
+
+    public void setRoomData(RoomData roomData) {
+        this.roomData = roomData;
+        if(adapter != null) {
+            adapter.setChatList(roomData.getChatList());
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adapter = new ChatListAdapter(getActivity());
+        if(roomData != null) {
+            adapter.setChatList(roomData.getChatList());
+        }
     }
 
     @Override
@@ -58,13 +71,4 @@ public class ChatFragment extends Fragment {
             }
         });
     }
-
-    public void initChatList(ArrayList<Chat> chats) {
-        adapter.setChatList(chats);
-    }
-
-    public void addChat(Chat chat) {
-        adapter.addChat(chat);
-    }
-
 }

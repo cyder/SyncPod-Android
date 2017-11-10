@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.atsushi.youtubesync.app_data.RoomData;
+import com.example.atsushi.youtubesync.app_data.RoomDataInterface;
 import com.example.atsushi.youtubesync.json_data.Video;
 
 import java.util.ArrayList;
@@ -16,16 +18,27 @@ import java.util.ArrayList;
  * Created by atsushi on 2017/10/16.
  */
 
-public class PlayListFragment extends Fragment {
+public class PlayListFragment extends Fragment implements RoomDataInterface {
     private ListView playList;
     private PlayListAdapter adapter;
-    private Video nowPlayingVideo;
     private View view;
+    private RoomData roomData;
+
+    public void setRoomData(RoomData roomData) {
+        this.roomData = roomData;
+        roomData.addListener(this);
+        if (adapter != null) {
+            adapter.setPlayList(roomData.getPlayList());
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adapter = new PlayListAdapter(getActivity());
+        if (roomData != null) {
+            adapter.setPlayList(roomData.getPlayList());
+        }
     }
 
 
@@ -56,26 +69,29 @@ public class PlayListFragment extends Fragment {
                 });
     }
 
-    public void startVideo(Video video) {
-        nowPlayingVideo = video;
-        showNowPlayingVideo();
-        adapter.startVideo(video);
-    }
-
-    public void initPlayList(ArrayList<Video> videos) {
-        adapter.setVideoList(videos);
-    }
-
-    public void addPlayList(Video video) {
-        adapter.addVideo(video);
+    @Override
+    public void updated() {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    showNowPlayingVideo();
+                }
+            });
+        }
     }
 
     private void showNowPlayingVideo() {
-        if (nowPlayingVideo != null && view != null) {
-            TextView title = view.findViewById(R.id.now_title);
-            title.setText(nowPlayingVideo.title);
-            TextView channelTitle = view.findViewById(R.id.now_channel_title);
-            channelTitle.setText(nowPlayingVideo.channel_title);
+        if (view != null) {
+            Video nowPlayingVideo = roomData.getNowPlayingVideo();
+            if (nowPlayingVideo != null) {
+                view.findViewById(R.id.now_play_video_area).setVisibility(View.VISIBLE);
+                TextView title = view.findViewById(R.id.now_title);
+                title.setText(nowPlayingVideo.title);
+                TextView channelTitle = view.findViewById(R.id.now_channel_title);
+                channelTitle.setText(nowPlayingVideo.channel_title);
+            } else {
+                view.findViewById(R.id.now_play_video_area).setVisibility(View.GONE);
+            }
         }
     }
 

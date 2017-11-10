@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.atsushi.youtubesync.app_data.RoomData;
+import com.example.atsushi.youtubesync.app_data.RoomDataInterface;
 import com.example.atsushi.youtubesync.json_data.Room;
 import com.example.atsushi.youtubesync.server.RoomInterface;
 
@@ -16,13 +18,27 @@ import com.example.atsushi.youtubesync.server.RoomInterface;
  * Created by atsushi on 2017/11/07.
  */
 
-public class RoomInformationFragment extends Fragment
-        implements RoomInterface {
-    private Room room;
+public class RoomInformationFragment extends Fragment implements RoomDataInterface {
     @NonNull
     private String shareMessage = "";
-    TextView name;
-    TextView description;
+    View view;
+    private RoomData roomData;
+
+    public void setRoomData(RoomData roomData) {
+        this.roomData = roomData;
+        roomData.addListener(this);
+    }
+
+    @Override
+    public void updated() {
+        if(getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    showRoomInformation();
+                }
+            });
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,34 +54,32 @@ public class RoomInformationFragment extends Fragment
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        name = view.findViewById(R.id.room_name);
-        description = view.findViewById(R.id.room_description);
-        if (room != null) {
-            name.setText(room.name);
-            description.setText(room.description);
-            shareMessage = String.format(getActivity().getResources().getString(R.string.share_room_key_message), room.name, room.key);
+        this.view = view;
+        showRoomInformation();
+    }
+
+    private void showRoomInformation() {
+        if(view != null) {
+            TextView name = view.findViewById(R.id.room_name);
+            TextView description = view.findViewById(R.id.room_description);
+            if (roomData != null && roomData.getRoomInfomation() != null ) {
+                name.setText(roomData.getRoomInfomation().name);
+                description.setText(roomData.getRoomInfomation().description);
+                shareMessage = String.format(getActivity().getResources().getString(R.string.share_room_key_message),
+                        roomData.getRoomInfomation().name,
+                        roomData.getRoomInfomation().key);
+            }
+
+            view.findViewById(R.id.share_room_key_button)
+                    .setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(getActivity());
+                            builder.setText(shareMessage);
+                            builder.setType("text/plain");
+                            builder.startChooser();
+                        }
+                    });
         }
-
-        view.findViewById(R.id.share_room_key_button)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(getActivity());
-                        builder.setText(shareMessage);
-                        builder.setType("text/plain");
-                        builder.startChooser();
-                    }
-                });
-    }
-
-    public void setRoom(String roomKey) {
-        com.example.atsushi.youtubesync.server.Room room = new com.example.atsushi.youtubesync.server.Room();
-        room.setListener(this);
-        room.get(roomKey);
-    }
-
-    @Override
-    public void onReceived(final Room room) {
-        this.room = room;
     }
 }
