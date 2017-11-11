@@ -2,7 +2,7 @@ package com.cyder.atsushi.youtubesync.channels;
 
 import android.util.Log;
 
-import com.cyder.atsushi.youtubesync.MySelf;
+import com.cyder.atsushi.youtubesync.app_data.MySelf;
 import com.hosopy.actioncable.ActionCable;
 import com.hosopy.actioncable.Consumer;
 
