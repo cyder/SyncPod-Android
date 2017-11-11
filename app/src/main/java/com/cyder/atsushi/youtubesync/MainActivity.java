@@ -10,17 +10,9 @@ import com.cyder.atsushi.youtubesync.app_data.MySelf;
 
 
 public class MainActivity extends AppCompatActivity {
-    @NonNull
-    private SharedPreferences pref;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pref = getSharedPreferences("youtube-sync", MODE_PRIVATE);
-        String token = pref.getString("access_token", null);
-        if (token != null) {
-            MySelf.singIn(token);
-        }
 
         if (MySelf.exists()) {
             Intent intent = new Intent(MainActivity.this, TopActivity.class);

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.cyder.atsushi.youtubesync.app_data.MySelf;
+
 /**
  * Created by atsushi on 2017/11/02.
  */
@@ -47,7 +49,7 @@ public class FirstStartActivity extends AppCompatActivity {
             if (requestCode == SIGN_IN_REQUEST_CODE || requestCode == SIGN_UP_REQUEST_CODE) {
                 String res = intent.getStringExtra("access_token");
                 if (res != null) {
-                    new Token(this).setToken(res);
+                    MySelf.setToken(res);
                     Intent main = new Intent(FirstStartActivity.this, MainActivity.class);
                     startActivity(main);
                     finish();
