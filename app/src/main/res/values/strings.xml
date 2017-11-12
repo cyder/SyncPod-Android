@@ -43,9 +43,11 @@
     </string>
     <string name="share_room_key_button">ルームキーを共有</string>
     <string name="share_room_key_message">
-        YouTube Syncで一緒に動画を見ませんか？\n\n
+        SyncPodで一緒に動画を見ませんか？\n\n
         ルーム名: %1$s\n
-        ルームキー: %2$s
+        ルームキー: %2$s\n\n
+        アプリのインストールはこちらから。\n
+        https://goo.gl/jHHywN
     </string>
     <string name="playlist">プレイリスト</string>
 </resources>
