@@ -28,7 +28,7 @@ public class PlayListFragment extends Fragment implements RoomDataInterface {
         this.roomData = roomData;
         roomData.addListener(this);
         if (adapter != null) {
-            adapter.setPlayList(roomData.getPlayList());
+            adapter.setList(roomData.getPlayList());
         }
     }
 
@@ -37,7 +37,7 @@ public class PlayListFragment extends Fragment implements RoomDataInterface {
         super.onCreate(savedInstanceState);
         adapter = new PlayListAdapter(getActivity());
         if (roomData != null) {
-            adapter.setPlayList(roomData.getPlayList());
+            adapter.setList(roomData.getPlayList());
         }
     }
 
