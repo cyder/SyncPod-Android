@@ -7,12 +7,11 @@ import android.support.v4.app.ShareCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cyder.atsushi.youtubesync.app_data.RoomData;
 import com.cyder.atsushi.youtubesync.app_data.RoomDataInterface;
-import com.cyder.atsushi.youtubesync.json_data.Room;
-import com.cyder.atsushi.youtubesync.server.RoomInterface;
 
 /**
  * Created by atsushi on 2017/11/07.
@@ -21,17 +20,21 @@ import com.cyder.atsushi.youtubesync.server.RoomInterface;
 public class RoomInformationFragment extends Fragment implements RoomDataInterface {
     @NonNull
     private String shareMessage = "";
-    View view;
+    private View view;
     private RoomData roomData;
+    private OnlineUsersAdapter adapter;
 
     public void setRoomData(RoomData roomData) {
         this.roomData = roomData;
         roomData.addListener(this);
+        if (adapter != null) {
+            adapter.setList(roomData.getOnlineUsersList());
+        }
     }
 
     @Override
     public void updated() {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
                 public void run() {
                     showRoomInformation();
@@ -43,6 +46,10 @@ public class RoomInformationFragment extends Fragment implements RoomDataInterfa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        adapter = new OnlineUsersAdapter(getActivity());
+        if (roomData != null) {
+            adapter.setList(roomData.getOnlineUsersList());
+        }
     }
 
     @Override
@@ -55,16 +62,24 @@ public class RoomInformationFragment extends Fragment implements RoomDataInterfa
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         this.view = view;
+        ListView onlineUsersList = view.findViewById(R.id.online_users_list);
+        onlineUsersList.setAdapter(adapter);
+        View listHeader = getActivity().getLayoutInflater().inflate(R.layout.online_users_list_header, null);
+        onlineUsersList.addHeaderView(listHeader, null, false);
         showRoomInformation();
     }
 
     private void showRoomInformation() {
-        if(view != null) {
+        if (view != null) {
             TextView name = view.findViewById(R.id.room_name);
             TextView description = view.findViewById(R.id.room_description);
-            if (roomData != null && roomData.getRoomInfomation() != null ) {
+            TextView online_users_title = view.findViewById(R.id.online_users_title);
+            if (roomData != null && roomData.getRoomInfomation() != null) {
                 name.setText(roomData.getRoomInfomation().name);
                 description.setText(roomData.getRoomInfomation().description);
+                String onlineUserTitle = String.format(getActivity().getResources().getString(R.string.online_users_title),
+                        roomData.getOnlineUsersList().size());
+                online_users_title.setText(onlineUserTitle);
                 shareMessage = String.format(getActivity().getResources().getString(R.string.share_room_key_message),
                         roomData.getRoomInfomation().name,
                         roomData.getRoomInfomation().key);

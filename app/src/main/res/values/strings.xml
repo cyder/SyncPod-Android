@@ -48,4 +48,5 @@
         ルームキー: %2$s
     </string>
     <string name="playlist">プレイリスト</string>
+    <string name="online_users_title">オンライン（%d人）</string>
 </resources>
