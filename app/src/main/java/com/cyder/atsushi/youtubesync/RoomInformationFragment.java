@@ -70,20 +70,18 @@ public class RoomInformationFragment extends Fragment implements RoomDataInterfa
     }
 
     private void showRoomInformation() {
-        if (view != null) {
+        if (view != null && roomData != null && roomData.getRoomInfomation() != null) {
             TextView name = view.findViewById(R.id.room_name);
             TextView description = view.findViewById(R.id.room_description);
             TextView online_users_title = view.findViewById(R.id.online_users_title);
-            if (roomData != null && roomData.getRoomInfomation() != null) {
-                name.setText(roomData.getRoomInfomation().name);
-                description.setText(roomData.getRoomInfomation().description);
-                String onlineUserTitle = String.format(getActivity().getResources().getString(R.string.online_users_title),
-                        roomData.getOnlineUsersList().size());
-                online_users_title.setText(onlineUserTitle);
-                shareMessage = String.format(getActivity().getResources().getString(R.string.share_room_key_message),
-                        roomData.getRoomInfomation().name,
-                        roomData.getRoomInfomation().key);
-            }
+            name.setText(roomData.getRoomInfomation().name);
+            description.setText(roomData.getRoomInfomation().description);
+            String onlineUserTitle = String.format(getActivity().getResources().getString(R.string.online_users_title),
+                    roomData.getOnlineUsersList().size());
+            online_users_title.setText(onlineUserTitle);
+            shareMessage = String.format(getActivity().getResources().getString(R.string.share_room_key_message),
+                    roomData.getRoomInfomation().name,
+                    roomData.getRoomInfomation().key);
 
             view.findViewById(R.id.share_room_key_button)
                     .setOnClickListener(new View.OnClickListener() {
