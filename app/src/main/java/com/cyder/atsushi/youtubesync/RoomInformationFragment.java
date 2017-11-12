@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,13 @@ import com.cyder.atsushi.youtubesync.app_data.RoomDataInterface;
  * Created by atsushi on 2017/11/07.
  */
 
-public class RoomInformationFragment extends Fragment implements RoomDataInterface {
+public class RoomInformationFragment extends Fragment implements RoomDataInterface, SwipeRefreshLayout.OnRefreshListener {
     @NonNull
     private String shareMessage = "";
     private View view;
     private RoomData roomData;
     private OnlineUsersAdapter adapter;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public void setRoomData(RoomData roomData) {
         this.roomData = roomData;
@@ -66,7 +68,14 @@ public class RoomInformationFragment extends Fragment implements RoomDataInterfa
         onlineUsersList.setAdapter(adapter);
         View listHeader = getActivity().getLayoutInflater().inflate(R.layout.online_users_list_header, null);
         onlineUsersList.addHeaderView(listHeader, null, false);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_room_info);
+        swipeRefreshLayout.setOnRefreshListener(this);
         showRoomInformation();
+    }
+
+    @Override
+    public void onRefresh() {
+        roomData.refreshRoomInformation();
     }
 
     private void showRoomInformation() {
@@ -82,6 +91,9 @@ public class RoomInformationFragment extends Fragment implements RoomDataInterfa
             shareMessage = String.format(getActivity().getResources().getString(R.string.share_room_key_message),
                     roomData.getRoomInfomation().name,
                     roomData.getRoomInfomation().key);
+
+            SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_room_info);
+            swipeRefreshLayout.setRefreshing(false);
 
             view.findViewById(R.id.share_room_key_button)
                     .setOnClickListener(new View.OnClickListener() {

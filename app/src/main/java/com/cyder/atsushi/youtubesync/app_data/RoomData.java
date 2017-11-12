@@ -49,6 +49,10 @@ public class RoomData implements RoomInterface {
         return room;
     }
 
+    public void refreshRoomInformation() {
+        getRoomInfoByKey(room.key);
+    }
+
     @Override
     public void onReceived(final Room room) {
         this.room = room;
