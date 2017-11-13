@@ -76,13 +76,16 @@ public class ChatListAdapter extends BaseAdapter implements ListInterface {
         final View convertView = layoutInflater.inflate(R.layout.chat_list_item, parent, false);
         final Chat chat = chatList.get(position);
 
-        TextView name = (TextView) convertView.findViewById(R.id.name);
-        TextView time = (TextView) convertView.findViewById(R.id.time);
+        TextView name = convertView.findViewById(R.id.name);
+        TextView time = convertView.findViewById(R.id.time);
         if (chat.chat_type.equals("user")) {
             name.setText(chat.user.name);
             time.setText(getTime(chat.created_at));
+        } else {
+            name.setVisibility(View.GONE);
+            time.setVisibility(View.GONE);
         }
-        TextView message = (TextView) convertView.findViewById(R.id.message);
+        TextView message = convertView.findViewById(R.id.message);
         message.setText(chat.message);
         if (chat.chat_type.equals("user")) {
             message.setTextColor(context.getResources().getColor(R.color.userMessage));
