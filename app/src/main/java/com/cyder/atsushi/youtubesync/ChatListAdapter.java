@@ -13,6 +13,7 @@ import com.cyder.atsushi.youtubesync.app_data.ListInterface;
 import com.cyder.atsushi.youtubesync.json_data.Chat;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by atsushi on 2017/10/16.
@@ -97,7 +98,38 @@ public class ChatListAdapter extends BaseAdapter implements ListInterface {
 
     //時間を加工する場所
     private String getTime(String t) {
-        String[] time = t.split("[/ :]", 6);
-        return time[3] + ':' + time[4];
+        Calendar current = Calendar.getInstance();
+
+        // 時間の文字列切り出しとintへの変換
+        String[] temp = t.split("[/ :]", 6);
+        int[] time = {0};
+        for (int i = 0; i < temp.length; i++) {
+            time[i] = Integer.parseInt(temp[i]);
+        }
+
+
+        // ネスト深い
+        // 時間表示の分岐
+        if (current.get(Calendar.YEAR) == time[0]) {
+            if (current.get(Calendar.MONTH) + 1 == time[1]) {
+                if (current.get(Calendar.DATE) == time[2]) {
+                    if (current.get(Calendar.HOUR_OF_DAY) == time[3]) {
+                        if (current.get(Calendar.SECOND) == time[4]) {
+                            return "たった今"
+                        } else {
+                            return String.valueOf(current.get(Calendar.SECOND) - time[4]) + "秒前";
+                        }
+                    } else {
+                        return String.valueOf(current.get(Calendar.HOUR_OF_DAY) - time[3]) + "時間前";
+                    }
+                } else {
+                    return String.valueOf(current.get(Calendar.DATE) - time[2]) + "日前";
+                }
+            } else {
+                return String.valueOf(current.get(Calendar.MONTH) + 1 - time[1]) + "月前";
+            }
+        } else {
+            return String.valueOf(current.get(Calendar.YEAR) - time[0]) + "年前";
+        }
     }
 }
