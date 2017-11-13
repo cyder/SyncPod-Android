@@ -78,6 +78,10 @@ public class RoomInformationFragment extends Fragment implements RoomDataInterfa
         roomData.refreshRoomInformation();
     }
 
+    public void onPageSelected() {
+        roomData.refreshRoomInformation();
+    }
+
     private void showRoomInformation() {
         if (view != null && roomData != null && roomData.getRoomInfomation() != null) {
             TextView name = view.findViewById(R.id.room_name);
