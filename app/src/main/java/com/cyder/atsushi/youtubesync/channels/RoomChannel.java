@@ -31,13 +31,12 @@ public class RoomChannel {
         }).onRejected(new Subscription.RejectedCallback() {
             @Override
             public void call() {
-                // Called when the subscription is rejected by the server
+                listener.onRejected();
             }
         }).onReceived(new Subscription.ReceivedCallback() {
             @Override
             public void call(JsonElement data) {
                 listener.onReceived(data);
-                // Called when the subscription receives data from the server
             }
         }).onDisconnected(new Subscription.DisconnectedCallback() {
             @Override

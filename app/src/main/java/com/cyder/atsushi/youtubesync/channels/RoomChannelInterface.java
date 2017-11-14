@@ -8,6 +8,7 @@ import com.google.gson.JsonElement;
 
 public interface RoomChannelInterface {
     void onConnected();
+    void onRejected();
     void onReceived(JsonElement data);
     void onDisconnected();
     void onFailed();

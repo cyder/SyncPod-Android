@@ -136,6 +136,11 @@ public class RoomActivity extends AppCompatActivity
     }
 
     @Override
+    public void onRejected() {
+        finish();
+    }
+
+    @Override
     public void onReceived(JsonElement data) {
         Gson gson = new Gson();
         JsonData jsonData = gson.fromJson(data.getAsString(), JsonData.class);
