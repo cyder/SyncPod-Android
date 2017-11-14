@@ -13,7 +13,7 @@ import com.cyder.atsushi.youtubesync.json_data.Video;
  * Created by atsushi on 2017/10/16.
  */
 
-public class PlayListAdapter extends BaseAdapter<Video, PlayList> {
+public class PlayListAdapter extends BaseListAdapter<Video, PlayList> {
     public PlayListAdapter(Context context) {
         super(context);
     }

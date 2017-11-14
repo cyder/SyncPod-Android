@@ -12,7 +12,7 @@ import com.cyder.atsushi.youtubesync.json_data.Chat;
  * Created by atsushi on 2017/10/16.
  */
 
-public class ChatListAdapter extends BaseAdapter<Chat, ChatList> {
+public class ChatListAdapter extends BaseListAdapter<Chat, ChatList> {
     public ChatListAdapter(Context context) {
         super(context);
     }

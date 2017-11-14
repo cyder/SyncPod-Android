@@ -12,7 +12,7 @@ import com.cyder.atsushi.youtubesync.json_data.User;
  * Created by atsushi on 2017/11/12.
  */
 
-public class OnlineUsersAdapter extends BaseAdapter<User, OnlineUsersList> {
+public class OnlineUsersAdapter extends BaseListAdapter<User, OnlineUsersList> {
     public OnlineUsersAdapter(Context context) {
         super(context);
     }

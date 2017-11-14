@@ -11,12 +11,12 @@ import com.cyder.atsushi.youtubesync.app_data.ListInterface;
  * Created by atsushi on 2017/11/12.
  */
 
-abstract public class BaseAdapter<Item, List extends BaseList<Item>> extends android.widget.BaseAdapter implements ListInterface {
+abstract public class BaseListAdapter<Item, List extends BaseList<Item>> extends android.widget.BaseAdapter implements ListInterface {
     protected Context context;
     protected LayoutInflater layoutInflater = null;
     protected List list;
 
-    public BaseAdapter(Context context) {
+    public BaseListAdapter(Context context) {
         this.context = context;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
