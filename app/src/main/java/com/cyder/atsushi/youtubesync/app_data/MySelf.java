@@ -1,4 +1,4 @@
-package com.cyder.atsushi.youtubesync;
+package com.cyder.atsushi.youtubesync.app_data;
 
 import com.cyder.atsushi.youtubesync.json_data.User;
 

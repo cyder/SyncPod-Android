@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
+import com.cyder.atsushi.youtubesync.app_data.MySelf;
+
 import static android.content.Context.MODE_PRIVATE;
 
 /**
