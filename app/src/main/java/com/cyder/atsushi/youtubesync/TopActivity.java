@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.cyder.atsushi.youtubesync.app_data.MySelf;
+
 /**
  * Created by atsushi on 2017/11/03.
  */
@@ -23,6 +25,10 @@ public class TopActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top);
+
+        if (savedInstanceState != null) {
+            MySelf.restoreInstanceState(savedInstanceState);
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.top_tool_bar);
         toolbar.setLogo(R.drawable.toolbar_logo);
@@ -70,6 +76,12 @@ public class TopActivity extends AppCompatActivity {
                 joinRoom(res);
             }
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        MySelf.saveInstanceState(savedInstanceState);
     }
 
     private void joinRoom(String roomKey) {

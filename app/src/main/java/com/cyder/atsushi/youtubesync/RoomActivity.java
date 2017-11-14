@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.cyder.atsushi.youtubesync.app_data.MySelf;
 import com.cyder.atsushi.youtubesync.app_data.RoomData;
 import com.cyder.atsushi.youtubesync.channels.RoomChannel;
 import com.cyder.atsushi.youtubesync.channels.RoomChannelInterface;
@@ -44,6 +45,10 @@ public class RoomActivity extends AppCompatActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
+
+        if (savedInstanceState != null) {
+            MySelf.restoreInstanceState(savedInstanceState);
+        }
 
         YouTubePlayerFragment frag =
                 (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_fragment);
@@ -207,6 +212,13 @@ public class RoomActivity extends AppCompatActivity
 
     @Override
     public void onVideoStarted() {
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        MySelf.saveInstanceState(savedInstanceState);
     }
 
     public void startSearchVideoActivity() {
