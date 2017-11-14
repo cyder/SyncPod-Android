@@ -137,6 +137,9 @@ public class RoomActivity extends AppCompatActivity
 
     @Override
     public void onRejected() {
+        Intent intent = new Intent();
+        intent.putExtra("error", "actionCableRejected");
+        setResult(RESULT_OK, intent);
         finish();
     }
 

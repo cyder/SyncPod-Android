@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.LinearLayout;
  */
 
 public class TopActivity extends AppCompatActivity {
+    private final int JOIN_ROOM_REQUEST_CODE = 100;
     private final int CREATE_ROOM_REQUEST_CODE = 200;
 
     @Override
@@ -65,7 +67,12 @@ public class TopActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == RESULT_OK && intent != null) {
-            if (requestCode == CREATE_ROOM_REQUEST_CODE) {
+            if (requestCode == JOIN_ROOM_REQUEST_CODE) {
+                String res = intent.getStringExtra("error");
+                if(res.equals("actionCableRejected")) {
+                    Log.d("App", "rejected");
+                }
+            } else if (requestCode == CREATE_ROOM_REQUEST_CODE) {
                 String res = intent.getStringExtra("room_key");
                 joinRoom(res);
             }
@@ -76,6 +83,6 @@ public class TopActivity extends AppCompatActivity {
         Intent intent =
                 new Intent(TopActivity.this, RoomActivity.class);
         intent.putExtra("room_key", roomKey);
-        startActivity(intent);
+        startActivityForResult(intent, JOIN_ROOM_REQUEST_CODE);
     }
 }
