@@ -14,6 +14,9 @@ import com.cyder.atsushi.youtubesync.json_data.Chat;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 /**
  * Created by atsushi on 2017/10/16.
@@ -98,34 +101,30 @@ public class ChatListAdapter extends BaseAdapter implements ListInterface {
 
     //時間を加工する場所
     private String getTime(String t) {
-        Calendar current = Calendar.getInstance();
+        Calendar current = Calendar.getInstance(TimeZone.getTimeZone("Asia/Tokyo"));  // 現在時刻の取得
 
-        // 時間の文字列切り出しとintへの変換(要素数と年月日　0:年、1:月、2:日、3:時、4:分、5:秒）
-        String[] temp = t.split("[/ :]", 6);
-        int[] time = new int[6];
-        for (int i = 0; i < temp.length; i++) {
-            if (i != 3) {
-                time[i] = Integer.parseInt(temp[i]);
-            } else { // 時差の修正
-                int hour = Integer.parseInt(temp[i]);
-                if (hour + 9 >= 24) {
-                    time[2]++;
-                    time[3] = hour + 9 - 24;
-                } else {
-                    time[3] = hour + 9;
-                }
-            }
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+        Calendar time = Calendar.getInstance();
+        sdFormat.setTimeZone(TimeZone.getTimeZone("Europe/London"));
+        time.setTimeZone(TimeZone.getTimeZone("Europe/London")); // UTCにセット
+        try {
+            time.setTime(sdFormat.parse(t));
+        } catch (ParseException e) {
+            System.out.println(e);
         }
+        sdFormat.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
+        time.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
 
         // 時間表示の分岐
-        if (current.get(Calendar.YEAR) == time[0]) {
-            if (current.get(Calendar.DATE) == time[2]) {
-                return String.format("%02d:%02d", time[3], time[4]);  // 日が同じ時、時間と秒のみ表示
+        if (current.get(Calendar.YEAR) == time.get(Calendar.YEAR)) {
+            if (current.get(Calendar.DATE) == time.get(Calendar.DATE)) {
+                sdFormat.applyPattern("HH:mm");   // 日が同じ時、時間と分のみ表示
             } else {
-                return String.format("%d/%d %02d:%02d", time[1], time[2], time[3], time[4]);  // 日が違うとき、月、日、時間、秒を表示
+                sdFormat.applyPattern("yyyy/MM/dd HH:mm");  // 日が違うとき、月、日、時間、秒を表示
             }
         } else {
-            return String.format("%d/%d/%d %02d:%02d", time[0], time[1], time[2], time[3], time[4]);  // 年も違うとき上記に合わせ年も表示
+            sdFormat.applyPattern("MM/dd HH:mm");  // 年も違うとき上記に合わせ年も表示
         }
+        return sdFormat.format(time.getTime());
     }
 }
