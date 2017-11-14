@@ -24,7 +24,7 @@
         android:background="@color/roomTab"
         android:elevation="2dp" />
 
-    <android.support.v4.view.ViewPager
+    <com.cyder.atsushi.youtubesync.components.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
