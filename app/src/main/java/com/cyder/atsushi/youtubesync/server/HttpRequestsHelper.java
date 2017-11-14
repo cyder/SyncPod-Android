@@ -3,7 +3,7 @@ package com.cyder.atsushi.youtubesync.server;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.cyder.atsushi.youtubesync.MySelf;
+import com.cyder.atsushi.youtubesync.app_data.MySelf;
 import com.cyder.atsushi.youtubesync.json_data.JsonParameter;
 import com.cyder.atsushi.youtubesync.json_data.Response;
 import com.google.gson.Gson;
