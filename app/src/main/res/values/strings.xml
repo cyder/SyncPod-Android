@@ -50,4 +50,5 @@
         https://goo.gl/jHHywN
     </string>
     <string name="playlist">プレイリスト</string>
+    <string name="online_users_title">オンライン（%d人）</string>
 </resources>

@@ -55,13 +55,23 @@ public class RoomActivity extends AppCompatActivity
         }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        RoomFragmentPagerAdapter adapter = new RoomFragmentPagerAdapter(fragmentManager, getResources());
+        final RoomFragmentPagerAdapter adapter = new RoomFragmentPagerAdapter(fragmentManager, getResources());
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(adapter);
 
-        PlayListFragment playListFragment = (PlayListFragment) adapter.getItem(0);
-        ChatFragment chatFragment = (ChatFragment) adapter.getItem(1);
-        RoomInformationFragment roomInformationFragment = (RoomInformationFragment) adapter.getItem(2);
+        final PlayListFragment playListFragment = (PlayListFragment) adapter.getItem(0);
+        final ChatFragment chatFragment = (ChatFragment) adapter.getItem(1);
+        final RoomInformationFragment roomInformationFragment = (RoomInformationFragment) adapter.getItem(2);
+
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                if (adapter.getItem(position) instanceof RoomInformationFragment) {
+                    roomInformationFragment.onPageSelected();
+                }
+            }
+        });
+
         playListFragment.setRoomData(roomData);
         chatFragment.setRoomData(roomData);
         roomInformationFragment.setRoomData(roomData);
