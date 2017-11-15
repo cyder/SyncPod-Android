@@ -43,7 +43,6 @@ public class TopActivity extends AppCompatActivity
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_joined_rooms);
         swipeRefreshLayout.setOnRefreshListener(this);
-        getJoinedRooms();
 
         final AlertDialog dialog = new AlertDialog.Builder(TopActivity.this)
                 .setTitle(R.string.join_room)
@@ -77,6 +76,12 @@ public class TopActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        getJoinedRooms();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == RESULT_OK && intent != null) {
@@ -95,26 +100,10 @@ public class TopActivity extends AppCompatActivity
     @Override
     public void onReceived(final ArrayList<Room> joinedRooms) {
         swipeRefreshLayout.setRefreshing(false);
-        final Context context = this;
 
         runOnUiThread(new Runnable() {
             public void run() {
-                LinearLayout layout = (LinearLayout) findViewById(R.id.joined_rooms_list);
-                layout.removeAllViews();
-                for (final Room room : joinedRooms) {
-                    View view = getLayoutInflater().inflate(R.layout.room_card, null);
-                    TextView name = view.findViewById(R.id.room_name);
-                    TextView description = view.findViewById(R.id.room_description);
-                    name.setText(room.name);
-                    description.setText(room.description);
-                    view.findViewById(R.id.room_card).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            joinRoom(room.key);
-                        }
-                    });
-                    layout.addView(view);
-                }
+                showJoinedRooms(joinedRooms);
             }
         });
     }
@@ -130,5 +119,24 @@ public class TopActivity extends AppCompatActivity
         JoinedRooms joinedRooms = new JoinedRooms();
         joinedRooms.setListener(this);
         joinedRooms.get();
+    }
+
+    private void showJoinedRooms(final ArrayList<Room> joinedRooms) {
+        LinearLayout layout = (LinearLayout) findViewById(R.id.joined_rooms_list);
+        layout.removeAllViews();
+        for (final Room room : joinedRooms) {
+            View view = getLayoutInflater().inflate(R.layout.room_card, null);
+            TextView name = view.findViewById(R.id.room_name);
+            TextView description = view.findViewById(R.id.room_description);
+            name.setText(room.name);
+            description.setText(room.description);
+            view.findViewById(R.id.room_card).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    joinRoom(room.key);
+                }
+            });
+            layout.addView(view);
+        }
     }
 }
