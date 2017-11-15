@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import com.cyder.atsushi.youtubesync.json_data.User;
 import com.cyder.atsushi.youtubesync.server.SignUp;
 import com.cyder.atsushi.youtubesync.server.SignUpInterface;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by chigichan24 on 2017/11/01.
@@ -22,6 +26,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpInterface
     private static String TAG = SignUpActivity.class.getSimpleName();
     private Snackbar snackbar;
     private InputMethodManager manager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,13 +56,15 @@ public class SignUpActivity extends AppCompatActivity implements SignUpInterface
                         String name = nameForm.getText().toString();
                         String password = passwordForm.getText().toString();
                         String passwordConfirm = passwordConfirmForm.getText().toString();
-                        if (password.equals(passwordConfirm)) {
+                        if (validate(email, name, password, passwordConfirm)) {
                             signUp.post(email, name, password);
+                        } else {
+                            onSignUpFailed();
                         }
                     }
                 });
         manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        snackbar = Snackbar.make(findViewById(R.id.sign_up_view), R.string.signup_mistook, Snackbar.LENGTH_INDEFINITE);
+        snackbar = Snackbar.make(findViewById(R.id.sign_up_view), R.string.sign_up_used_email, Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction(R.string.ok, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,6 +84,8 @@ public class SignUpActivity extends AppCompatActivity implements SignUpInterface
     @Override
     public void onSignUpFailed() {
         manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        clearText(R.id.sign_up_email);
+        clearText(R.id.sign_up_name);
         clearText(R.id.sign_up_password);
         clearText(R.id.sign_up_password_confirm);
         snackbar.show();
@@ -90,5 +99,30 @@ public class SignUpActivity extends AppCompatActivity implements SignUpInterface
                 editText.getEditableText().clear();
             }
         });
+    }
+
+    private boolean validate(final String email, final String name, final String password, final String passwordConfirm) {
+        Pattern emailPattern = Pattern.compile(
+                "^(([0-9a-zA-Z!#$%&'*+\\-/=?\\^_`{\\}|~]+(\\.[0-9a-zA-Z!#$%&'*+\\-/=?\\^_`{\\}|~]+)*)|(\"[^\"]*\"))"
+                        + "@[0-9a-zA-Z!#$%&'*+\\-/=?\\^_`{\\}|~]+"
+                        + "(\\.[0-9a-zA-Z!#$%&'*+\\-/=?\\^_`{\\}|~]+)*$");
+        Matcher matcher = emailPattern.matcher(email);
+        if (email.equals("") || name.equals("") || password.equals("") || passwordConfirm.equals("")) {
+            snackbar.setText(R.string.sign_up_not_filled);
+            return false;
+        }
+        if (!password.equals(passwordConfirm)) {
+            snackbar.setText(R.string.sign_up_invalid_password);
+            return false;
+        }
+        if (password.length() < 6) {
+            snackbar.setText(R.string.sign_up_min_password_length);
+            return false;
+        }
+        if (!matcher.find()) {
+            snackbar.setText(R.string.sign_up_invalid_email);
+            return false;
+        }
+        return true;
     }
 }
