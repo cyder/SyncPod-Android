@@ -137,5 +137,12 @@ public class TopActivity extends AppCompatActivity
             });
             layout.addView(view);
         }
+
+        View title = findViewById(R.id.online_users_title);
+        if (joinedRooms.size() == 0) {
+            title.setVisibility(View.GONE);
+        } else {
+            title.setVisibility(View.VISIBLE);
+        }
     }
 }

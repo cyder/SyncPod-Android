@@ -128,7 +128,8 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/joined_rooms"
                     android:textColor="@color/text"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/joined_rooms_list"
