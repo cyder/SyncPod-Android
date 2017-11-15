@@ -81,7 +81,7 @@ public class HttpRequestsHelper {
                         con.setRequestProperty("Authorization", MySelf.getToken());
                     }
 
-                    if (parameter != null) {
+                    if (method.equals("POST")) {
                         PrintStream ps = new PrintStream(con.getOutputStream());
                         ps.print(gson.toJson(parameter));
                         ps.close();
