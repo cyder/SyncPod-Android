@@ -99,10 +99,9 @@ public class TopActivity extends AppCompatActivity
 
     @Override
     public void onReceived(final ArrayList<Room> joinedRooms) {
-        swipeRefreshLayout.setRefreshing(false);
-
         runOnUiThread(new Runnable() {
             public void run() {
+                swipeRefreshLayout.setRefreshing(false);
                 showJoinedRooms(joinedRooms);
             }
         });
