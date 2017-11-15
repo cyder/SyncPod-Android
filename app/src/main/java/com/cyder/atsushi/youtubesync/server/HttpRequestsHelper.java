@@ -46,13 +46,15 @@ public class HttpRequestsHelper {
 
     protected void get(final HashMap<String, String> hashParameter, final String endPoint, final HttpRequestCallback callback) {
         String params = "";
-        for (String key : hashParameter.keySet()) {
-            if (params.equals("")) {
-                params += "?";
-            } else {
-                params += "&";
+        if (hashParameter != null) {
+            for (String key : hashParameter.keySet()) {
+                if (params.equals("")) {
+                    params += "?";
+                } else {
+                    params += "&";
+                }
+                params += key + "=" + hashParameter.get(key);
             }
-            params += key + "=" + hashParameter.get(key);
         }
         communicate("GET", null, endPoint + params, callback);
     }
@@ -89,7 +91,6 @@ public class HttpRequestsHelper {
                     if (con.getResponseCode() == HTTP_SUCCESS_STATUS) {
                         BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
                         String buffer = reader.readLine();
-
                         Response response = gson.fromJson(buffer, Response.class);
                         callback.success(response);
 
