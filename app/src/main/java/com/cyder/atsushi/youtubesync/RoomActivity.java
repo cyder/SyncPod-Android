@@ -151,6 +151,14 @@ public class RoomActivity extends AppCompatActivity
     }
 
     @Override
+    public void onRejected() {
+        Intent intent = new Intent();
+        intent.putExtra("error", "actionCableRejected");
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
     public void onReceived(JsonElement data) {
         Gson gson = new Gson();
         JsonData jsonData = gson.fromJson(data.getAsString(), JsonData.class);
