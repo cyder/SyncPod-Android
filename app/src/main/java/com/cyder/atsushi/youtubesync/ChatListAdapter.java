@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import com.cyder.atsushi.youtubesync.app_data.ChatList;
 import com.cyder.atsushi.youtubesync.app_data.ListInterface;
@@ -86,8 +87,8 @@ public class ChatListAdapter extends BaseAdapter implements ListInterface {
             name.setText(chat.user.name);
             time.setText(getTime(chat.created_at));
         } else {
-            name.setVisibility(View.GONE);
-            time.setVisibility(View.GONE);
+            LinearLayout info = convertView.findViewById(R.id.info);
+            info.setVisibility(View.GONE);
         }
         TextView message = convertView.findViewById(R.id.message);
         message.setText(chat.message);
@@ -112,8 +113,8 @@ public class ChatListAdapter extends BaseAdapter implements ListInterface {
         } catch (ParseException e) {
             System.out.println(e);
         }
-        sdFormat.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
-        time.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
+        sdFormat.setTimeZone(current.getTimeZone());
+        time.setTimeZone(current.getTimeZone());
 
         // 時間表示の分岐
         if (current.get(Calendar.YEAR) == time.get(Calendar.YEAR)) {
