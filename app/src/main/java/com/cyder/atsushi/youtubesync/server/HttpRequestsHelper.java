@@ -81,10 +81,11 @@ public class HttpRequestsHelper {
                         con.setRequestProperty("Authorization", MySelf.getToken());
                     }
 
-                    PrintStream ps = new PrintStream(con.getOutputStream());
-                    ps.print(gson.toJson(parameter));
-                    ps.close();
-
+                    if (method.equals("POST")) {
+                        PrintStream ps = new PrintStream(con.getOutputStream());
+                        ps.print(gson.toJson(parameter));
+                        ps.close();
+                    }
                     if (con.getResponseCode() == HTTP_SUCCESS_STATUS) {
                         BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
                         String buffer = reader.readLine();
@@ -95,7 +96,6 @@ public class HttpRequestsHelper {
                     } else if (con.getResponseCode() == HTTP_FAILURE_STATUS) {
                         callback.failure();
                     }
-
                 } catch (MalformedURLException e) {
                     Log.e(TAG, "There was a post error: " + Arrays.toString(e.getStackTrace()));
                 } catch (IOException e) {
