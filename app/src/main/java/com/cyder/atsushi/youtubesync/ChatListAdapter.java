@@ -103,7 +103,7 @@ public class ChatListAdapter extends BaseAdapter implements ListInterface {
     private String getTime(String t) {
         Calendar current = Calendar.getInstance(TimeZone.getTimeZone("Asia/Tokyo"));  // 現在時刻の取得
 
-        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Calendar time = Calendar.getInstance();
         sdFormat.setTimeZone(TimeZone.getTimeZone("Europe/London"));
         time.setTimeZone(TimeZone.getTimeZone("Europe/London")); // UTCにセット
