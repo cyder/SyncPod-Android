@@ -93,7 +93,6 @@ public class HttpRequestsHelper {
                         callback.success(response);
 
                     } else if (con.getResponseCode() == HTTP_FAILURE_STATUS) {
-                        Log.e(TAG, "fail");
                         callback.failure();
                     }
 

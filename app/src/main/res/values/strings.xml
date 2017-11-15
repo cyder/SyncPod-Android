@@ -52,5 +52,6 @@
     <string name="playlist">プレイリスト</string>
     <string name="online_users_title">オンライン（%d人）</string>
     <string name="login_mistook">メールアドレスもしくはパスワードが間違っています。</string>
+    <string name="signup_mistook">パスワードが一致しません。</string>
     <string name="ok">ok</string>
 </resources>
