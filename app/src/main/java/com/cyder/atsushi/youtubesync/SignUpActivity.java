@@ -6,16 +6,13 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import com.cyder.atsushi.youtubesync.json_data.User;
 import com.cyder.atsushi.youtubesync.server.SignUp;
 import com.cyder.atsushi.youtubesync.server.SignUpInterface;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by chigichan24 on 2017/11/01.
@@ -84,7 +81,6 @@ public class SignUpActivity extends AppCompatActivity implements SignUpInterface
     @Override
     public void onSignUpFailed() {
         manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        clearText(R.id.sign_up_email);
         clearText(R.id.sign_up_name);
         clearText(R.id.sign_up_password);
         clearText(R.id.sign_up_password_confirm);
@@ -102,13 +98,8 @@ public class SignUpActivity extends AppCompatActivity implements SignUpInterface
     }
 
     private boolean validate(final String email, final String name, final String password, final String passwordConfirm) {
-        Pattern emailPattern = Pattern.compile(
-                "^(([0-9a-zA-Z!#$%&'*+\\-/=?\\^_`{\\}|~]+(\\.[0-9a-zA-Z!#$%&'*+\\-/=?\\^_`{\\}|~]+)*)|(\"[^\"]*\"))"
-                        + "@[0-9a-zA-Z!#$%&'*+\\-/=?\\^_`{\\}|~]+"
-                        + "(\\.[0-9a-zA-Z!#$%&'*+\\-/=?\\^_`{\\}|~]+)*$");
-        Matcher matcher = emailPattern.matcher(email);
         if (email.equals("") || name.equals("") || password.equals("") || passwordConfirm.equals("")) {
-            snackbar.setText(R.string.sign_up_not_filled);
+            snackbar.setText(R.string.form_not_filled);
             return false;
         }
         if (!password.equals(passwordConfirm)) {
@@ -119,7 +110,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpInterface
             snackbar.setText(R.string.sign_up_min_password_length);
             return false;
         }
-        if (!matcher.find()) {
+        if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             snackbar.setText(R.string.sign_up_invalid_email);
             return false;
         }

@@ -47,7 +47,11 @@ public class SignInActivity extends AppCompatActivity
                     public void onClick(View v) {
                         String email = emailForm.getText().toString();
                         String password = passwordForm.getText().toString();
-                        signin.post(email, password);
+                        if (validate(email, password)) {
+                            signin.post(email, password);
+                        } else {
+                            onSignInFailed();
+                        }
                     }
                 });
         manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -84,5 +88,13 @@ public class SignInActivity extends AppCompatActivity
                 editText.getEditableText().clear();
             }
         });
+    }
+
+    private boolean validate(final String email, final String password) {
+        if (email.equals("") || password.equals("")) {
+            snackbar.setText(R.string.form_not_filled);
+            return false;
+        }
+        return true;
     }
 }
