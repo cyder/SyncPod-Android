@@ -100,6 +100,7 @@ public class TopActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             public void run() {
                 LinearLayout layout = (LinearLayout) findViewById(R.id.joined_rooms_list);
+                layout.removeAllViews();
                 for (final Room room : joinedRooms) {
                     View view = getLayoutInflater().inflate(R.layout.room_card, null);
                     TextView name = view.findViewById(R.id.room_name);
