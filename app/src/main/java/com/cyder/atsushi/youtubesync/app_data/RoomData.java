@@ -45,7 +45,7 @@ public class RoomData implements RoomInterface {
         room.get(roomKey);
     }
 
-    public Room getRoomInfomation() {
+    public Room getRoomInformation() {
         return room;
     }
 
