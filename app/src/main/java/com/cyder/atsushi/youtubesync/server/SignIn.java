@@ -24,7 +24,7 @@ public class SignIn extends HttpRequestsHelper {
                 listener.onSignedIn(response.user);
             }
             @Override
-            public void failure(Response response) {
+            public void failure() {
                 //TODO implement
             }
         });

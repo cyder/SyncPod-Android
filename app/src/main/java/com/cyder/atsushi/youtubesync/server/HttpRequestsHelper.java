@@ -47,7 +47,7 @@ public class HttpRequestsHelper {
     protected void get(final HashMap<String, String> hashParameter, final String endPoint, final HttpRequestCallback callback) {
         String params = "";
         for (String key : hashParameter.keySet()) {
-            if(params.equals("")) {
+            if (params.equals("")) {
                 params += "?";
             } else {
                 params += "&";
@@ -59,7 +59,8 @@ public class HttpRequestsHelper {
 
     public interface HttpRequestCallback {
         void success(Response response);
-        void failure(Response response);
+
+        void failure();
     }
 
     private void communicate(final String method, final JsonParameter jsonParameter, final String endPoint, final HttpRequestCallback callback) {
@@ -84,15 +85,16 @@ public class HttpRequestsHelper {
                     ps.print(gson.toJson(parameter));
                     ps.close();
 
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-                    String buffer = reader.readLine();
-
-                    Response response = gson.fromJson(buffer, Response.class);
                     if (con.getResponseCode() == HTTP_SUCCESS_STATUS) {
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+                        String buffer = reader.readLine();
+
+                        Response response = gson.fromJson(buffer, Response.class);
                         callback.success(response);
-                    }
-                    else if(con.getResponseCode() == HTTP_FAILURE_STATUS) {
-                        callback.failure(response);
+
+                    } else if (con.getResponseCode() == HTTP_FAILURE_STATUS) {
+                        Log.e(TAG, "fail");
+                        callback.failure();
                     }
 
                 } catch (MalformedURLException e) {

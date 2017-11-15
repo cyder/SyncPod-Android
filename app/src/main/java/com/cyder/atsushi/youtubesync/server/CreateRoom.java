@@ -24,7 +24,7 @@ public class CreateRoom extends HttpRequestsHelper {
                 listener.onCreatedRoom(response.room);
             }
             @Override
-            public void failure(Response response) {
+            public void failure() {
                 //TODO implement
             }
         });
