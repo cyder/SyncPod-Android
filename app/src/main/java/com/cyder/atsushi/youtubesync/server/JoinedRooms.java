@@ -20,8 +20,13 @@ public class JoinedRooms extends HttpRequestsHelper {
     public void get() {
         super.get(null, "joined_rooms", new HttpRequestCallback() {
             @Override
-            public void call(Response response) {
+            public void success(Response response) {
                 listener.onReceived(response.joined_rooms);
+            }
+
+            @Override
+            public void failure() {
+                //TODO implement
             }
         });
     }

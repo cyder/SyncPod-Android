@@ -48,7 +48,7 @@ public class TopActivity extends AppCompatActivity
         toolbar.setLogo(R.drawable.toolbar_logo);
 
         View rootView = findViewById(R.id.top_root_view);
-        snackbar  = Snackbar.make(rootView, R.string.reject_message, Snackbar.LENGTH_INDEFINITE);
+        snackbar = Snackbar.make(rootView, R.string.reject_message, Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction(R.string.ok, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,6 +130,8 @@ public class TopActivity extends AppCompatActivity
                 showJoinedRooms(joinedRooms);
             }
         });
+    }
+
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         MySelf.saveInstanceState(savedInstanceState);
