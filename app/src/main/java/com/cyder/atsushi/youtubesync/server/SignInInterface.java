@@ -8,4 +8,5 @@ import com.cyder.atsushi.youtubesync.json_data.User;
 
 public interface SignInInterface {
     void onSignedIn(User user);
+    void onSignInFailed();
 }

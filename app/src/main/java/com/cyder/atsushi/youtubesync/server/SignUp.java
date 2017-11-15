@@ -20,8 +20,13 @@ public class SignUp extends HttpRequestsHelper {
     public void post(final String email, final String name, final String password) {
         super.post(new com.cyder.atsushi.youtubesync.json_data.SignUp(email, name, password), "users", new HttpRequestCallback() {
             @Override
-            public void call(Response response) {
+            public void success(Response response) {
                 listener.onSignedUp(response.user);
+            }
+
+            @Override
+            public void failure() {
+                listener.onSignUpFailed();
             }
         });
     }

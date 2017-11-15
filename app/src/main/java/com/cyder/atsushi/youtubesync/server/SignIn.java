@@ -20,8 +20,13 @@ public class SignIn extends HttpRequestsHelper {
     public void post(final String email, final String password) {
         super.post(new com.cyder.atsushi.youtubesync.json_data.SignIn(email, password), "login", new HttpRequestCallback() {
             @Override
-            public void call(Response response) {
+            public void success(Response response) {
                 listener.onSignedIn(response.user);
+            }
+
+            @Override
+            public void failure() {
+                listener.onSignInFailed();
             }
         });
     }
