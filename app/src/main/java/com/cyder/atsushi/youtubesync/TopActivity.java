@@ -1,5 +1,6 @@
 package com.cyder.atsushi.youtubesync;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,12 +8,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.cyder.atsushi.youtubesync.json_data.Room;
 import com.cyder.atsushi.youtubesync.server.JoinedRooms;
@@ -92,9 +93,23 @@ public class TopActivity extends AppCompatActivity
     }
 
     @Override
-    public void onReceived(ArrayList<Room> joinedRooms) {
+    public void onReceived(final ArrayList<Room> joinedRooms) {
         swipeRefreshLayout.setRefreshing(false);
-        Log.d("App", "onReceived");
+        final Context context = this;
+
+        runOnUiThread(new Runnable() {
+            public void run() {
+                LinearLayout layout = (LinearLayout)findViewById(R.id.joined_rooms_list);
+                for (Room room : joinedRooms) {
+                    View view = getLayoutInflater().inflate(R.layout.room_card, null);
+                    TextView name = view.findViewById(R.id.room_name);
+                    TextView description = view.findViewById(R.id.room_description);
+                    name.setText(room.name);
+                    description.setText(room.description);
+                    layout.addView(view);
+                }
+            }
+        });
     }
 
     private void joinRoom(String roomKey) {
