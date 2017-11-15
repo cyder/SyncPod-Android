@@ -99,13 +99,19 @@ public class TopActivity extends AppCompatActivity
 
         runOnUiThread(new Runnable() {
             public void run() {
-                LinearLayout layout = (LinearLayout)findViewById(R.id.joined_rooms_list);
-                for (Room room : joinedRooms) {
+                LinearLayout layout = (LinearLayout) findViewById(R.id.joined_rooms_list);
+                for (final Room room : joinedRooms) {
                     View view = getLayoutInflater().inflate(R.layout.room_card, null);
                     TextView name = view.findViewById(R.id.room_name);
                     TextView description = view.findViewById(R.id.room_description);
                     name.setText(room.name);
                     description.setText(room.description);
+                    view.findViewById(R.id.room_card).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            joinRoom(room.key);
+                        }
+                    });
                     layout.addView(view);
                 }
             }
