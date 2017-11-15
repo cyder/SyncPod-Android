@@ -28,7 +28,7 @@ public class ChatFragment extends Fragment {
     public void setRoomData(RoomData roomData) {
         this.roomData = roomData;
         if(adapter != null) {
-            adapter.setChatList(roomData.getChatList());
+            adapter.setList(roomData.getChatList());
         }
     }
 
@@ -37,7 +37,7 @@ public class ChatFragment extends Fragment {
         super.onCreate(savedInstanceState);
         adapter = new ChatListAdapter(getActivity());
         if(roomData != null) {
-            adapter.setChatList(roomData.getChatList());
+            adapter.setList(roomData.getChatList());
         }
     }
 

@@ -37,6 +37,8 @@
     <string name="create_room_description">新しいルームを作成します。ルームキーを共有して他の人に参加してもらうことができます。</string>
     <string name="room_key">ルームキー</string>
     <string name="joined_rooms">最近参加したルーム</string>
+    <string name="reject_message">入室できません。\nルームIDが間違っている可能性があります。</string>
+    <string name="ok">OK</string>
     <string name="room_name">ルーム名</string>
     <string name="room_description">ルーム説明</string>
     <string name="play_list_empty_description">
@@ -51,4 +53,11 @@
         https://goo.gl/jHHywN
     </string>
     <string name="playlist">プレイリスト</string>
+    <string name="online_users_title">オンライン（%d人）</string>
+    <string name="login_mistook">メールアドレスもしくはパスワードが間違っています。</string>
+    <string name="sign_up_used_email">入力されたメールアドレスは既に使われています。</string>
+    <string name="form_not_filled">項目をすべて入力してください。</string>
+    <string name="sign_up_invalid_password">パスワードが一致しません。</string>
+    <string name="sign_up_min_password_length">パスワードが短すぎます。</string>
+    <string name="sign_up_invalid_email">メールアドレスが正しくありません。</string>
 </resources>

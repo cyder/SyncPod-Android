@@ -3,7 +3,7 @@ package com.cyder.atsushi.youtubesync.server;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.cyder.atsushi.youtubesync.MySelf;
+import com.cyder.atsushi.youtubesync.app_data.MySelf;
 import com.cyder.atsushi.youtubesync.json_data.JsonParameter;
 import com.cyder.atsushi.youtubesync.json_data.Response;
 import com.google.gson.Gson;
@@ -25,10 +25,11 @@ import java.util.HashMap;
 public class HttpRequestsHelper {
 
     @NonNull
-    final static String TAG = HttpRequestsHelper.class.getSimpleName();
+    private final static String TAG = HttpRequestsHelper.class.getSimpleName();
     @NonNull
-    final static String host = "http://59.106.220.89:3000/api/v1/";
+    private final static String host = "http://59.106.220.89:3000/api/v1/";
     final static private int HTTP_SUCCESS_STATUS = 200;
+    final static private int HTTP_FAILURE_STATUS = 400;
     @NonNull
     protected JsonParameter parameter;
 
@@ -59,7 +60,9 @@ public class HttpRequestsHelper {
     }
 
     public interface HttpRequestCallback {
-        void call(Response response);
+        void success(Response response);
+
+        void failure();
     }
 
     private void communicate(final String method, final JsonParameter jsonParameter, final String endPoint, final HttpRequestCallback callback) {
@@ -80,19 +83,20 @@ public class HttpRequestsHelper {
                         con.setRequestProperty("Authorization", MySelf.getToken());
                     }
 
-                    if (jsonParameter != null) {
+                    if (method.equals("POST")) {
                         PrintStream ps = new PrintStream(con.getOutputStream());
                         ps.print(gson.toJson(parameter));
                         ps.close();
                     }
-
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-                    String buffer = reader.readLine();
-                    Response response = gson.fromJson(buffer, Response.class);
                     if (con.getResponseCode() == HTTP_SUCCESS_STATUS) {
-                        callback.call(response);
-                    }
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+                        String buffer = reader.readLine();
+                        Response response = gson.fromJson(buffer, Response.class);
+                        callback.success(response);
 
+                    } else if (con.getResponseCode() == HTTP_FAILURE_STATUS) {
+                        callback.failure();
+                    }
                 } catch (MalformedURLException e) {
                     Log.e(TAG, "There was a post error: " + Arrays.toString(e.getStackTrace()));
                 } catch (IOException e) {
