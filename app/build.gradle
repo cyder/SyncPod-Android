@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
     defaultConfig {
-        applicationId "com.example.atsushi.youtubesync"
+        applicationId "com.cyder.atsushi.youtubesync"
         minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
@@ -15,6 +15,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [developer_key: System.getenv('YOUTUBE_DEVELOPER_KEY')]
         }
         debug {
             minifyEnabled false

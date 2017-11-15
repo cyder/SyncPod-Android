@@ -4,22 +4,29 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <fragment
-        android:name="com.google.android.youtube.player.YouTubePlayerFragment"
-        android:id="@+id/youtube_fragment"
+    <LinearLayout
+        android:id="@+id/video_player"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <fragment
+            android:id="@+id/youtube_fragment"
+            android:name="com.google.android.youtube.player.YouTubePlayerFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="2dp"
-        android:background="@color/roomTab" />
+        android:background="@color/roomTab"
+        android:elevation="2dp" />
 
-    <android.support.v4.view.ViewPager
+    <com.cyder.atsushi.youtubesync.components.ViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/view_pager"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>
