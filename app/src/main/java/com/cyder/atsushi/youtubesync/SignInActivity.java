@@ -76,11 +76,11 @@ public class SignInActivity extends AppCompatActivity
         snackbar.show();
     }
 
-    private void clearText(final int editTextId){
+    private void clearText(final int editTextId) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                EditText editText = (EditText)findViewById(editTextId);
+                EditText editText = (EditText) findViewById(editTextId);
                 editText.getEditableText().clear();
             }
         });
