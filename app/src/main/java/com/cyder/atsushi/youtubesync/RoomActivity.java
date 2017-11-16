@@ -35,6 +35,7 @@ public class RoomActivity extends AppCompatActivity
     final int searchVideoRequestCode = 1000;
     private static final int RECOVERY_DIALOG_REQUEST = 1;
     private boolean connectFlag = false;
+    private RoomFragmentPagerAdapter roomFragmentPagerAdapter;
 
     RoomChannel roomChannel;
     @NonNull
@@ -46,9 +47,16 @@ public class RoomActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
 
+        Intent varIntent = getIntent();
+        String roomKey = varIntent.getStringExtra("room_key");
+        roomData.getRoomInfoByKey(roomKey);
+
         if (savedInstanceState != null) {
             MySelf.restoreInstanceState(savedInstanceState);
         }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        roomFragmentPagerAdapter = new RoomFragmentPagerAdapter(fragmentManager, getResources(), savedInstanceState);
 
         YouTubePlayerFragment frag =
                 (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_fragment);
@@ -59,19 +67,17 @@ public class RoomActivity extends AppCompatActivity
             Log.e(TAG, Arrays.toString(e.getStackTrace()));
         }
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        final RoomFragmentPagerAdapter adapter = new RoomFragmentPagerAdapter(fragmentManager, getResources());
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        viewPager.setAdapter(adapter);
+        viewPager.setAdapter(roomFragmentPagerAdapter);
 
-        final PlayListFragment playListFragment = (PlayListFragment) adapter.getItem(0);
-        final ChatFragment chatFragment = (ChatFragment) adapter.getItem(1);
-        final RoomInformationFragment roomInformationFragment = (RoomInformationFragment) adapter.getItem(2);
+        final PlayListFragment playListFragment = (PlayListFragment) roomFragmentPagerAdapter.getItem(0);
+        final ChatFragment chatFragment = (ChatFragment) roomFragmentPagerAdapter.getItem(1);
+        final RoomInformationFragment roomInformationFragment = (RoomInformationFragment) roomFragmentPagerAdapter.getItem(2);
 
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                if (adapter.getItem(position) instanceof RoomInformationFragment) {
+                if (roomFragmentPagerAdapter.getItem(position) instanceof RoomInformationFragment) {
                     roomInformationFragment.onPageSelected();
                 }
             }
@@ -85,12 +91,8 @@ public class RoomActivity extends AppCompatActivity
         tabLayout.setupWithViewPager(viewPager);
 
         connectFlag = false;
-        Intent varIntent = getIntent();
-        String roomKey = varIntent.getStringExtra("room_key");
         roomChannel = new RoomChannel(roomKey);
         roomChannel.setListener(this);
-
-        roomData.getRoomInfoByKey(roomKey);
     }
 
     @Override
@@ -237,6 +239,7 @@ public class RoomActivity extends AppCompatActivity
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         MySelf.saveInstanceState(savedInstanceState);
+        roomFragmentPagerAdapter.saveInstanceState(savedInstanceState);
     }
 
     public void startSearchVideoActivity() {

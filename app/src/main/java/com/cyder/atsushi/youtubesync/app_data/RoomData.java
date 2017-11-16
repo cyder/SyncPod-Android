@@ -50,7 +50,9 @@ public class RoomData implements RoomInterface {
     }
 
     public void refreshRoomInformation() {
-        getRoomInfoByKey(room.key);
+        if (room != null) {
+            getRoomInfoByKey(room.key);
+        }
     }
 
     @Override

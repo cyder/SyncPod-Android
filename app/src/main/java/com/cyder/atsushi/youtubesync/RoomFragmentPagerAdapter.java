@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync;
 
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -13,16 +14,34 @@ import java.util.List;
  */
 
 public class RoomFragmentPagerAdapter extends FragmentPagerAdapter {
-    PlayListFragment playListFragment = new PlayListFragment();
-    ChatFragment chatFragment = new ChatFragment();
-    RoomInformationFragment roomInformationFragment = new RoomInformationFragment();
+    PlayListFragment playListFragment;
+    ChatFragment chatFragment;
+    RoomInformationFragment roomInformationFragment;
     List<Fragment> fragments = new ArrayList<>();
+    FragmentManager fragmentManager;
 
     private Resources resources;
 
-    public RoomFragmentPagerAdapter(FragmentManager fm, Resources resources) {
+    public RoomFragmentPagerAdapter(FragmentManager fm, Resources resources, Bundle savedInstanceState) {
         super(fm);
         this.resources = resources;
+        fragmentManager = fm;
+
+        if (savedInstanceState != null) {
+            playListFragment = (PlayListFragment) fragmentManager.getFragment(savedInstanceState, "playListFragment");
+            chatFragment = (ChatFragment) fragmentManager.getFragment(savedInstanceState, "chatFragment");
+            roomInformationFragment = (RoomInformationFragment) fragmentManager.getFragment(savedInstanceState, "roomInformationFragment");
+        }
+        if (playListFragment == null) {
+            playListFragment = new PlayListFragment();
+        }
+        if (chatFragment == null) {
+            chatFragment = new ChatFragment();
+        }
+        if (roomInformationFragment == null) {
+            roomInformationFragment = new RoomInformationFragment();
+        }
+
         fragments.add(playListFragment);
         fragments.add(chatFragment);
         fragments.add(roomInformationFragment);
@@ -59,5 +78,17 @@ public class RoomFragmentPagerAdapter extends FragmentPagerAdapter {
             }
         }
         return null;
+    }
+
+    public void saveInstanceState(Bundle savedInstanceState) {
+        if (playListFragment.isStateSaved()) {
+            fragmentManager.putFragment(savedInstanceState, "playListFragment", playListFragment);
+        }
+        if (chatFragment.isStateSaved()) {
+            fragmentManager.putFragment(savedInstanceState, "chatFragment", chatFragment);
+        }
+        if (roomInformationFragment.isStateSaved()) {
+            fragmentManager.putFragment(savedInstanceState, "roomInformationFragment", roomInformationFragment);
+        }
     }
 }
