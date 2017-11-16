@@ -128,8 +128,8 @@ public class RoomActivity extends AppCompatActivity
         if (!wasRestored) {
             player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
             player.setPlayerStateChangeListener(this);
-            this.player = player;
         }
+        this.player = player;
         roomChannel.getNowPlayingVideo();
     }
 
