@@ -254,27 +254,24 @@ public class RoomActivity extends AppCompatActivity
     private void startVideo(final Video video) {
         if (player != null) {
             player.loadVideo(video.youtube_video_id, video.current_time * 1000);
-            setNowPlayingVideo(video);
         }
+        setNowPlayingVideo(video);
     }
 
     private void prepareVideo(final Video video) {
         if (player != null) {
             player.cueVideo(video.youtube_video_id);
-            setNowPlayingVideo(video);
         }
+        setNowPlayingVideo(video);
     }
 
     private void setNowPlayingVideo(final Video video) {
         roomData.setNowPlayingVideo(video);
-        if (player != null) {
-            roomData.setNowPlayingVideo(video);
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    findViewById(R.id.video_player).setVisibility(View.VISIBLE);
-                }
-            });
-        }
+        runOnUiThread(new Runnable() {
+            public void run() {
+                findViewById(R.id.video_player).setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private void initPlayList(final ArrayList<Video> videos) {
