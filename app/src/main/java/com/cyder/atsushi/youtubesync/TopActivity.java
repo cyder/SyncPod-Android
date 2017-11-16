@@ -38,6 +38,13 @@ public class TopActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent varIntent = getIntent();
+        String roomKey = varIntent.getStringExtra("room_key");
+        if (roomKey != null) {
+            joinRoom(roomKey);
+        }
+
         setContentView(R.layout.activity_top);
 
         if (savedInstanceState != null) {
@@ -138,7 +145,9 @@ public class TopActivity extends AppCompatActivity
     }
 
     private void joinRoom(String roomKey) {
-        snackbar.dismiss();
+        if(snackbar != null) {
+            snackbar.dismiss();
+        }
         Intent intent =
                 new Intent(TopActivity.this, RoomActivity.class);
         intent.putExtra("room_key", roomKey);

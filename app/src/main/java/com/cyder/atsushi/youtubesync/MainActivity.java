@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync;
 
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
@@ -24,6 +25,13 @@ public class MainActivity extends AppCompatActivity {
 
         if (MySelf.exists()) {
             Intent intent = new Intent(MainActivity.this, TopActivity.class);
+            Uri uri = getIntent().getData();
+            if (uri != null) {
+                String roomKey = uri.getQueryParameter("room_key");
+                if (roomKey != null) {
+                    intent.putExtra("room_key", roomKey);
+                }
+            }
             startActivity(intent);
             finish();
         } else {
