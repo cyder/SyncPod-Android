@@ -27,8 +27,9 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, TopActivity.class);
             Uri uri = getIntent().getData();
             if (uri != null) {
+                String path = uri.getPath();
                 String roomKey = uri.getQueryParameter("room_key");
-                if (roomKey != null) {
+                if (path.equals("/room") && roomKey != null) {
                     intent.putExtra("room_key", roomKey);
                 }
             }
