@@ -32,10 +32,12 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("room_key", roomKey);
                 }
             }
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
         } else {
             Intent intent = new Intent(MainActivity.this, FirstStartActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
         }
