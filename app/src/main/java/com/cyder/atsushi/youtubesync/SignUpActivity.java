@@ -110,7 +110,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpInterface
             snackbar.setText(R.string.sign_up_min_password_length);
             return false;
         }
-        if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             snackbar.setText(R.string.sign_up_invalid_email);
             return false;
         }
