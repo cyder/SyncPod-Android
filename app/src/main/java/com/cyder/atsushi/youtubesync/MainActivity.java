@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.cyder.atsushi.youtubesync.app_data.MySelf;
+
 
 public class MainActivity extends AppCompatActivity {
     @NonNull

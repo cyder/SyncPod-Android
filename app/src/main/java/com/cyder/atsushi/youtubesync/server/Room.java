@@ -24,8 +24,12 @@ public class Room extends HttpRequestsHelper {
         params.put("room_key", roomKey);
         super.get(params, "rooms", new HttpRequestCallback() {
             @Override
-            public void call(Response response) {
+            public void success(Response response) {
                 listener.onReceived(response.room);
+            }
+            @Override
+            public void failure(){
+                //TODO implement
             }
         });
     }

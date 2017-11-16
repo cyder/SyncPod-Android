@@ -21,6 +21,8 @@ public class RoomData implements RoomInterface {
     private PlayList playList = new PlayList();
     @NonNull
     private ChatList chatList = new ChatList();
+    @NonNull
+    private OnlineUsersList onlineUsersList = new OnlineUsersList();
 
     public void setNowPlayingVideo(Video nowPlayingVideo) {
         this.nowPlayingVideo = nowPlayingVideo;
@@ -47,9 +49,14 @@ public class RoomData implements RoomInterface {
         return room;
     }
 
+    public void refreshRoomInformation() {
+        getRoomInfoByKey(room.key);
+    }
+
     @Override
     public void onReceived(final Room room) {
         this.room = room;
+        onlineUsersList.setList(room.online_users);
         updated();
     }
 
@@ -61,6 +68,10 @@ public class RoomData implements RoomInterface {
         return chatList;
     }
 
+    public OnlineUsersList getOnlineUsersList() {
+        return onlineUsersList;
+    }
+
     public void addListener(RoomDataInterface listener) {
         listeners.add(listener);
     }
@@ -70,7 +81,7 @@ public class RoomData implements RoomInterface {
     }
 
     private void updated() {
-        for(RoomDataInterface listener : listeners) {
+        for (RoomDataInterface listener : listeners) {
             listener.updated();
         }
     }

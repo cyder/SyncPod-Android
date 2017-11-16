@@ -1,15 +1,11 @@
 package com.cyder.atsushi.youtubesync;
 
-import android.app.Activity;
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cyder.atsushi.youtubesync.app_data.ListInterface;
 import com.cyder.atsushi.youtubesync.app_data.PlayList;
 import com.cyder.atsushi.youtubesync.json_data.Video;
 
@@ -17,52 +13,20 @@ import com.cyder.atsushi.youtubesync.json_data.Video;
  * Created by atsushi on 2017/10/16.
  */
 
-public class PlayListAdapter extends BaseAdapter implements ListInterface {
-    private Context context;
-    private LayoutInflater layoutInflater = null;
-    private PlayList playList;
-
+public class PlayListAdapter extends BaseListAdapter<Video, PlayList> {
     public PlayListAdapter(Context context) {
-        this.context = context;
-        this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-
-    public void setPlayList(PlayList list) {
-        this.playList = list;
-        this.playList.addListener(this);
-        ((Activity) context).runOnUiThread(new Runnable() {
-            public void run() {
-                notifyDataSetChanged();
-            }
-        });
-    }
-
-    @Override
-    public void updated() {
-        ((Activity) context).runOnUiThread(new Runnable() {
-            public void run() {
-                notifyDataSetChanged();
-            }
-        });
+        super(context);
     }
 
     @Override
     public int getCount() {
-        if (playList == null) {
+        if (list == null) {
             return 0;
         }
-        if (playList.size() == 0) {
+        if (list.size() == 0) {
             return 1;
         }
-        return playList.size();
-    }
-
-    @Override
-    public Video getItem(int position) {
-        if (playList != null && playList.size() != 0 && 0 <= position && position < getCount()) {
-            return playList.get(position);
-        }
-        return null;
+        return list.size();
     }
 
     @Override
@@ -75,8 +39,8 @@ public class PlayListAdapter extends BaseAdapter implements ListInterface {
 
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
-        if (playList != null) {
-            if (playList.size() == 0) {
+        if (list != null) {
+            if (list.size() == 0) {
                 return layoutInflater.inflate(R.layout.play_list_empty_view, parent, false);
             }
 

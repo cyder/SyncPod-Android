@@ -8,14 +8,15 @@ import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.cyder.atsushi.youtubesync.app_data.MySelf;
 import com.cyder.atsushi.youtubesync.app_data.RoomData;
 import com.cyder.atsushi.youtubesync.channels.RoomChannel;
 import com.cyder.atsushi.youtubesync.channels.RoomChannelInterface;
+import com.cyder.atsushi.youtubesync.components.ViewPager;
 import com.cyder.atsushi.youtubesync.json_data.*;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -45,6 +46,10 @@ public class RoomActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
 
+        if (savedInstanceState != null) {
+            MySelf.restoreInstanceState(savedInstanceState);
+        }
+
         YouTubePlayerFragment frag =
                 (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_fragment);
         try {
@@ -55,13 +60,23 @@ public class RoomActivity extends AppCompatActivity
         }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        RoomFragmentPagerAdapter adapter = new RoomFragmentPagerAdapter(fragmentManager, getResources());
+        final RoomFragmentPagerAdapter adapter = new RoomFragmentPagerAdapter(fragmentManager, getResources());
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(adapter);
 
-        PlayListFragment playListFragment = (PlayListFragment) adapter.getItem(0);
-        ChatFragment chatFragment = (ChatFragment) adapter.getItem(1);
-        RoomInformationFragment roomInformationFragment = (RoomInformationFragment) adapter.getItem(2);
+        final PlayListFragment playListFragment = (PlayListFragment) adapter.getItem(0);
+        final ChatFragment chatFragment = (ChatFragment) adapter.getItem(1);
+        final RoomInformationFragment roomInformationFragment = (RoomInformationFragment) adapter.getItem(2);
+
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                if (adapter.getItem(position) instanceof RoomInformationFragment) {
+                    roomInformationFragment.onPageSelected();
+                }
+            }
+        });
+
         playListFragment.setRoomData(roomData);
         chatFragment.setRoomData(roomData);
         roomInformationFragment.setRoomData(roomData);
@@ -136,6 +151,14 @@ public class RoomActivity extends AppCompatActivity
     }
 
     @Override
+    public void onRejected() {
+        Intent intent = new Intent();
+        intent.putExtra("error", "actionCableRejected");
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
     public void onReceived(JsonElement data) {
         Gson gson = new Gson();
         JsonData jsonData = gson.fromJson(data.getAsString(), JsonData.class);
@@ -207,6 +230,13 @@ public class RoomActivity extends AppCompatActivity
 
     @Override
     public void onVideoStarted() {
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        MySelf.saveInstanceState(savedInstanceState);
     }
 
     public void startSearchVideoActivity() {
