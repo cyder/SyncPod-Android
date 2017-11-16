@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:bottom="5dp"
-    android:top="5dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_width="match_parent">
+    android:bottom="5dp"
+    android:top="5dp">
 
-    <item android:drawable="@drawable/divider_item"/>
+    <item>
+
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+               android:shape="rectangle">
+
+            <size android:height="1dp"/>
+
+            <solid android:color="@color/border"/>
+
+        </shape>
+    </item>
 
 </layer-list>
