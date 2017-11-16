@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -41,17 +42,17 @@ public class ChatListAdapter extends BaseListAdapter<Chat, ChatList> {
         TextView time = convertView.findViewById(R.id.time);
         if (chat.chat_type.equals("user")) {
             name.setText(chat.user.name);
-            time.setText(getTime(chat.created_at));
         } else {
-            LinearLayout info = convertView.findViewById(R.id.info);
-            info.setVisibility(View.GONE);
+            name.setText("おしらせ");
+            name.setTextColor(ContextCompat.getColor(context, R.color.systemMessage));
         }
+        time.setText(getTime(chat.created_at));
         TextView message = convertView.findViewById(R.id.message);
         message.setText(chat.message);
         if (chat.chat_type.equals("user")) {
-            message.setTextColor(context.getResources().getColor(R.color.userMessage));
+            message.setTextColor(ContextCompat.getColor(context, R.color.userMessage));
         } else {
-            message.setTextColor(context.getResources().getColor(R.color.systemMessage));
+            message.setTextColor(ContextCompat.getColor(context, R.color.systemMessage));
         }
         return convertView;
     }
