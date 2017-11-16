@@ -8,9 +8,8 @@
     <color name="appWhite">#fafafa</color>
     <color name="text">#222222</color>
     <color name="subtext">#666666</color>
+    <color name="gray_text">#aaaaaa</color>
     <color name="roomTab">#ffffff</color>
-    <color name="userMessage">#333333</color>
-    <color name="systemMessage">#aaaaaa</color>
     <color name="border">#CCCCCC</color>
     <color name="chat_background">#ffffff</color>
     <color name="top_background">#eeeeee</color>

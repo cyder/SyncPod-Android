@@ -44,15 +44,15 @@ public class ChatListAdapter extends BaseListAdapter<Chat, ChatList> {
             name.setText(chat.user.name);
         } else {
             name.setText("おしらせ");
-            name.setTextColor(ContextCompat.getColor(context, R.color.systemMessage));
+            name.setTextColor(ContextCompat.getColor(context, R.color.gray_text));
         }
         time.setText(getTime(chat.created_at));
         TextView message = convertView.findViewById(R.id.message);
         message.setText(chat.message);
         if (chat.chat_type.equals("user")) {
-            message.setTextColor(ContextCompat.getColor(context, R.color.userMessage));
+            message.setTextColor(ContextCompat.getColor(context, R.color.text));
         } else {
-            message.setTextColor(ContextCompat.getColor(context, R.color.systemMessage));
+            message.setTextColor(ContextCompat.getColor(context, R.color.gray_text));
         }
         return convertView;
     }
