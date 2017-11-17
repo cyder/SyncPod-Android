@@ -15,7 +15,8 @@ import java.util.ArrayList;
 public class RoomData implements RoomInterface {
     @NonNull
     ArrayList<RoomDataInterface> listeners = new ArrayList<>();
-    private Room room;
+    @NonNull
+    private Room room = new Room();
     private Video nowPlayingVideo;
     @NonNull
     private PlayList playList = new PlayList();
@@ -23,6 +24,10 @@ public class RoomData implements RoomInterface {
     private ChatList chatList = new ChatList();
     @NonNull
     private OnlineUsersList onlineUsersList = new OnlineUsersList();
+
+    public void setRoomKey(String roomKey) {
+        this.room.key = roomKey;
+    }
 
     public void setNowPlayingVideo(Video nowPlayingVideo) {
         this.nowPlayingVideo = nowPlayingVideo;
@@ -39,20 +44,14 @@ public class RoomData implements RoomInterface {
         updated();
     }
 
-    public void getRoomInfoByKey(String roomKey) {
-        com.cyder.atsushi.youtubesync.server.Room room = new com.cyder.atsushi.youtubesync.server.Room();
-        room.setListener(this);
-        room.get(roomKey);
-    }
-
     public Room getRoomInformation() {
         return room;
     }
 
     public void refreshRoomInformation() {
-        if (room != null) {
-            getRoomInfoByKey(room.key);
-        }
+        com.cyder.atsushi.youtubesync.server.Room serverRoom = new com.cyder.atsushi.youtubesync.server.Room();
+        serverRoom.setListener(this);
+        serverRoom.get(room.key);
     }
 
     @Override
