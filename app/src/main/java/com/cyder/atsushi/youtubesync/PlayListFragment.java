@@ -27,18 +27,12 @@ public class PlayListFragment extends Fragment implements RoomDataInterface {
     public void setRoomData(RoomData roomData) {
         this.roomData = roomData;
         roomData.addListener(this);
-        if (adapter != null) {
-            adapter.setList(roomData.getPlayList());
-        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adapter = new PlayListAdapter(getActivity());
-        if (roomData != null) {
-            adapter.setList(roomData.getPlayList());
-        }
     }
 
 
@@ -47,6 +41,12 @@ public class PlayListFragment extends Fragment implements RoomDataInterface {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.play_list_fragment, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle bundle) {
+        super.onActivityCreated(bundle);
+        adapter.setList(roomData.getPlayList());
     }
 
     @Override
