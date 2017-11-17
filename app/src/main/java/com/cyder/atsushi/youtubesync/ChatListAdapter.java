@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -41,17 +42,17 @@ public class ChatListAdapter extends BaseListAdapter<Chat, ChatList> {
         TextView time = convertView.findViewById(R.id.time);
         if (chat.chat_type.equals("user")) {
             name.setText(chat.user.name);
-            time.setText(getTime(chat.created_at));
         } else {
-            LinearLayout info = convertView.findViewById(R.id.info);
-            info.setVisibility(View.GONE);
+            name.setText(R.string.notice);
+            name.setTextColor(ContextCompat.getColor(context, R.color.notice_message));
         }
+        time.setText(getTime(chat.created_at));
         TextView message = convertView.findViewById(R.id.message);
         message.setText(chat.message);
         if (chat.chat_type.equals("user")) {
-            message.setTextColor(context.getResources().getColor(R.color.userMessage));
+            message.setTextColor(ContextCompat.getColor(context, R.color.text));
         } else {
-            message.setTextColor(context.getResources().getColor(R.color.systemMessage));
+            message.setTextColor(ContextCompat.getColor(context, R.color.gray_text));
         }
         return convertView;
     }
@@ -77,10 +78,10 @@ public class ChatListAdapter extends BaseListAdapter<Chat, ChatList> {
             if (current.get(Calendar.DATE) == time.get(Calendar.DATE)) {
                 sdFormat.applyPattern("HH:mm");   // 日が同じ時、時間と分のみ表示
             } else {
-                sdFormat.applyPattern("yyyy/MM/dd HH:mm");  // 日が違うとき、月、日、時間、秒を表示
+                sdFormat.applyPattern("MM/dd HH:mm");  // 日が違うとき、月、日、時間、秒を表示
             }
         } else {
-            sdFormat.applyPattern("MM/dd HH:mm");  // 年も違うとき上記に合わせ年も表示
+            sdFormat.applyPattern("yyyy/MM/dd HH:mm");  // 年も違うとき上記に合わせ年も表示
         }
         return sdFormat.format(time.getTime());
     }
