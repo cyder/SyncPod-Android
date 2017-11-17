@@ -44,7 +44,7 @@ public class ChatListAdapter extends BaseListAdapter<Chat, ChatList> {
             name.setText(chat.user.name);
         } else {
             name.setText(R.string.notice);
-            name.setTextColor(ContextCompat.getColor(context, R.color.gray_text));
+            name.setTextColor(ContextCompat.getColor(context, R.color.notice_message));
         }
         time.setText(getTime(chat.created_at));
         TextView message = convertView.findViewById(R.id.message);

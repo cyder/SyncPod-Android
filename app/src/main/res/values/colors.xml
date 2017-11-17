@@ -9,6 +9,7 @@
     <color name="text">#222222</color>
     <color name="subtext">#666666</color>
     <color name="gray_text">#aaaaaa</color>
+    <color name="notice_message">#90CAF9</color>
     <color name="roomTab">#ffffff</color>
     <color name="border">#CCCCCC</color>
     <color name="chat_background">#ffffff</color>
