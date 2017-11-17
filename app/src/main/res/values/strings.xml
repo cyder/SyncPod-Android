@@ -49,8 +49,8 @@
         SyncPodで一緒に動画を見ませんか？\n\n
         ルーム名: %1$s\n
         ルームキー: %2$s\n\n
-        アプリのインストールはこちらから。\n
-        https://goo.gl/jHHywN
+        こちらのURLからも入室できます。\n
+        http://app.sync-pod.com/room?room_key=%2$s
     </string>
     <string name="playlist">プレイリスト</string>
     <string name="online_users_title">オンライン（%d人）</string>
