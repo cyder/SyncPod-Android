@@ -11,5 +11,7 @@ public class Room {
     public String name;
     public String description;
     public String key;
+    public Video now_playing_video;
+    public Video last_played_video;
     public ArrayList<User> online_users;
 }
