@@ -1,6 +1,5 @@
 package com.cyder.atsushi.youtubesync;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -38,6 +38,13 @@ public class TopActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        String roomKey = intent.getStringExtra("room_key");
+        if (roomKey != null) {
+            joinRoom(roomKey);
+        }
+
         setContentView(R.layout.activity_top);
 
         if (savedInstanceState != null) {
@@ -138,7 +145,9 @@ public class TopActivity extends AppCompatActivity
     }
 
     private void joinRoom(String roomKey) {
-        snackbar.dismiss();
+        if(snackbar != null) {
+            snackbar.dismiss();
+        }
         Intent intent =
                 new Intent(TopActivity.this, RoomActivity.class);
         intent.putExtra("room_key", roomKey);
@@ -158,14 +167,39 @@ public class TopActivity extends AppCompatActivity
             View view = getLayoutInflater().inflate(R.layout.room_card, null);
             TextView name = view.findViewById(R.id.room_name);
             TextView description = view.findViewById(R.id.room_description);
+            TextView onlineUsersNum = view.findViewById(R.id.online_users_num);
+            TextView videoInfo = view.findViewById(R.id.video_info);
+            ImageView thumbnail = view.findViewById(R.id.thumbnail);
             name.setText(room.name);
             description.setText(room.description);
+
+            String onlineUsersString = String.format(
+                    getResources().getString(R.string.online_users_num),
+                    room.online_users.size());
+            onlineUsersNum.setText(onlineUsersString);
             view.findViewById(R.id.room_card).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     joinRoom(room.key);
                 }
             });
+
+            if (room.now_playing_video != null) {
+                String nowPlayingVideoInfo = String.format(
+                        getResources().getString(R.string.now_playing_video_info),
+                        room.now_playing_video.title);
+                videoInfo.setText(nowPlayingVideoInfo);
+                new ThumbnailGetTask(room.now_playing_video, thumbnail).execute();
+            } else if (room.last_played_video != null) {
+                String lastPlayedVideoInfo = String.format(
+                        getResources().getString(R.string.last_played_video_info),
+                        room.last_played_video.title);
+                videoInfo.setText(lastPlayedVideoInfo);
+                new ThumbnailGetTask(room.last_played_video, thumbnail).execute();
+            } else {
+                videoInfo.setVisibility(View.GONE);
+                thumbnail.setVisibility(View.GONE);
+            }
             layout.addView(view);
         }
 
