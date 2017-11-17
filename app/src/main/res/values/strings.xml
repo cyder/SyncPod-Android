@@ -39,6 +39,7 @@
     <string name="joined_rooms">最近参加したルーム</string>
     <string name="reject_message">入室できません。\nルームIDが間違っている可能性があります。</string>
     <string name="ok">OK</string>
+    <string name="notice">おしらせ</string>
     <string name="room_name">ルーム名</string>
     <string name="room_description">ルーム説明</string>
     <string name="play_list_empty_description">

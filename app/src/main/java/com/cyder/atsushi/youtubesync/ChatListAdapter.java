@@ -43,7 +43,7 @@ public class ChatListAdapter extends BaseListAdapter<Chat, ChatList> {
         if (chat.chat_type.equals("user")) {
             name.setText(chat.user.name);
         } else {
-            name.setText("おしらせ");
+            name.setText(R.string.notice);
             name.setTextColor(ContextCompat.getColor(context, R.color.gray_text));
         }
         time.setText(getTime(chat.created_at));
