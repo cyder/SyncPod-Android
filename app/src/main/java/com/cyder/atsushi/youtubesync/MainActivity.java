@@ -25,12 +25,14 @@ public class MainActivity extends AppCompatActivity {
 
         if (MySelf.exists()) {
             Intent intent = new Intent(MainActivity.this, TopActivity.class);
-            Uri uri = getIntent().getData();
-            if (uri != null) {
-                String path = uri.getPath();
-                String roomKey = uri.getQueryParameter("room_key");
-                if (path.equals("/room") && roomKey != null) {
-                    intent.putExtra("room_key", roomKey);
+            if (getIntent() != null) {
+                Uri uri = getIntent().getData();
+                if (uri != null) {
+                    String path = uri.getPath();
+                    String roomKey = uri.getQueryParameter("room_key");
+                    if (path.equals("/room") && roomKey != null) {
+                        intent.putExtra("room_key", roomKey);
+                    }
                 }
             }
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
