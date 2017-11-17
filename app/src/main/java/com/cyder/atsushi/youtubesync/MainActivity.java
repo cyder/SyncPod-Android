@@ -24,19 +24,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (MySelf.exists()) {
-            Intent intent = new Intent(MainActivity.this, TopActivity.class);
-            if (getIntent() != null) {
-                Uri uri = getIntent().getData();
+            Intent topIntent = new Intent(MainActivity.this, TopActivity.class);
+            Intent mainIntent = getIntent();
+            if (mainIntent != null) {
+                Uri uri = mainIntent.getData();
                 if (uri != null) {
                     String path = uri.getPath();
                     String roomKey = uri.getQueryParameter("room_key");
                     if (path.equals("/room") && roomKey != null) {
-                        intent.putExtra("room_key", roomKey);
+                        topIntent.putExtra("room_key", roomKey);
                     }
                 }
             }
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            topIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(topIntent);
             finish();
         } else {
             Intent intent = new Intent(MainActivity.this, FirstStartActivity.class);
