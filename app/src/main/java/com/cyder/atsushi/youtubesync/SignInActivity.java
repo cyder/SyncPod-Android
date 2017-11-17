@@ -75,7 +75,6 @@ public class SignInActivity extends AppCompatActivity
     @Override
     public void onSignInFailed() {
         manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        clearText(R.id.sign_in_email);
         clearText(R.id.sign_in_password);
         snackbar.show();
     }

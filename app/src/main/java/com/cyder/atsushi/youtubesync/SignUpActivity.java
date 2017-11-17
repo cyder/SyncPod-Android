@@ -81,7 +81,6 @@ public class SignUpActivity extends AppCompatActivity implements SignUpInterface
     @Override
     public void onSignUpFailed() {
         manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        clearText(R.id.sign_up_name);
         clearText(R.id.sign_up_password);
         clearText(R.id.sign_up_password_confirm);
         snackbar.show();
