@@ -45,12 +45,14 @@ public class RoomData implements RoomInterface {
         room.get(roomKey);
     }
 
-    public Room getRoomInfomation() {
+    public Room getRoomInformation() {
         return room;
     }
 
     public void refreshRoomInformation() {
-        getRoomInfoByKey(room.key);
+        if (room != null) {
+            getRoomInfoByKey(room.key);
+        }
     }
 
     @Override

@@ -10,4 +10,5 @@ public class Chat {
     public String chat_type;
     public String message;
     public String created_at;
+    public User user;
 }
