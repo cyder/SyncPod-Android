@@ -39,8 +39,8 @@ public class TopActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent varIntent = getIntent();
-        String roomKey = varIntent.getStringExtra("room_key");
+        Intent intent = getIntent();
+        String roomKey = intent.getStringExtra("room_key");
         if (roomKey != null) {
             joinRoom(roomKey);
         }
