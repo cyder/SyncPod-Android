@@ -16,11 +16,6 @@
                 android:name="com.cyder.atsushi.youtubesync.VideoFragment"
                 android:id="@+id/youtube_fragment"
                 android:layout_weight="1"/>
-        <!--<fragment
-            android:id="@+id/youtube_fragment"
-            android:name="com.google.android.youtube.player.YouTubePlayerFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" /> -->
     </LinearLayout>
 
     <android.support.design.widget.TabLayout

@@ -14,4 +14,6 @@
     <color name="border">#CCCCCC</color>
     <color name="chat_background">#ffffff</color>
     <color name="top_background">#eeeeee</color>
+    <color name="progress_bar">#f57c00</color>
+    <color name="progress_bar_background">#aaaaaa</color>
 </resources>

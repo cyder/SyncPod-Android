@@ -8,4 +8,11 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:visibility="visible" />
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_below="@+id/view_player"
+        android:progressDrawable="@drawable/progress" />
 </RelativeLayout>

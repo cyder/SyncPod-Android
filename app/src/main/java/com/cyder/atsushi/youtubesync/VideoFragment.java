@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.cyder.atsushi.youtubesync.app_data.RoomData;
 import com.cyder.atsushi.youtubesync.app_data.RoomDataInterface;
@@ -18,6 +19,9 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by chigichan24 on 2017/11/19.
@@ -29,6 +33,8 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
     private static final String TAG = Video.class.getSimpleName();
     private RoomData roomData;
     private YouTubePlayer player;
+    private ProgressBar bar;
+    Timer mTimer;
 
     public void setRoomData(RoomData roomData) {
         this.roomData = roomData;
@@ -49,6 +55,7 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, Arrays.toString(e.getStackTrace()));
         }
+        bar = rootView.findViewById(R.id.progress_bar);
         return rootView;
     }
 
@@ -127,12 +134,15 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
 
     public void startVideo(final Video video) {
         if (player != null) {
+            Log.d(TAG, "current_time = " + video.current_time + "duration = " + video.duration);
             player.loadVideo(video.youtube_video_id, video.current_time * 1000);
         }
         setNowPlayingVideo(video);
+        updateProgressBar(video.current_time, getTotalTime(video.duration));
     }
 
     public void setNowPlayingVideo(final Video video) {
+        stopProgressBar();
         roomData.setNowPlayingVideo(video);
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
@@ -148,5 +158,34 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
         setNowPlayingVideo(video);
     }
 
+    private void updateProgressBar(final int start, final int duration) {
+        mTimer = new Timer(true);
+        mTimer.schedule(new TimerTask() {
+            int cnt = start*10;
+            @Override
+            public void run() {
+                ++cnt;
+                bar.setProgress((int)10.0 * cnt/duration);
+            }
+        }, 100, 100);
+    }
+
+    private void stopProgressBar(){
+        if(mTimer != null) {
+            mTimer.cancel();
+        }
+        mTimer = null;
+    }
+
+    private int getTotalTime(String duration) {
+        List<String> items = Arrays.asList(duration.split(":", 0));
+        if(items.size() == 3){
+            return Integer.parseInt(items.get(0))*3600 + Integer.parseInt(items.get(1)) * 60 + Integer.parseInt(items.get(2));
+        }
+        else if (items.size() == 2){
+            return Integer.parseInt(items.get(0))*60 + Integer.parseInt(items.get(1));
+        }
+        return 0;
+    }
 
 }
