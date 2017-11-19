@@ -1,42 +1,34 @@
 package com.cyder.atsushi.youtubesync;
 
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
 import com.cyder.atsushi.youtubesync.app_data.MySelf;
 import com.cyder.atsushi.youtubesync.app_data.RoomData;
 import com.cyder.atsushi.youtubesync.channels.RoomChannel;
 import com.cyder.atsushi.youtubesync.channels.RoomChannelInterface;
 import com.cyder.atsushi.youtubesync.components.ViewPager;
-import com.cyder.atsushi.youtubesync.json_data.*;
-import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.cyder.atsushi.youtubesync.json_data.Chat;
+import com.cyder.atsushi.youtubesync.json_data.JsonData;
+import com.cyder.atsushi.youtubesync.json_data.Video;
 import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class RoomActivity extends AppCompatActivity
-        implements YouTubePlayer.OnInitializedListener, YouTubePlayer.PlayerStateChangeListener, RoomChannelInterface {
+public class RoomActivity extends AppCompatActivity implements RoomChannelInterface {
 
     private final String TAG = this.getClass().getSimpleName();
 
     final int searchVideoRequestCode = 1000;
-    private static final int RECOVERY_DIALOG_REQUEST = 1;
     private boolean connectFlag = false;
     private RoomFragmentPagerAdapter roomFragmentPagerAdapter;
-
+    private VideoFragment videoFragment;
     RoomChannel roomChannel;
     @NonNull
     RoomData roomData = new RoomData();
@@ -58,15 +50,6 @@ public class RoomActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         roomFragmentPagerAdapter = new RoomFragmentPagerAdapter(fragmentManager, getResources(), savedInstanceState);
 
-        YouTubePlayerFragment frag =
-                (YouTubePlayerFragment) getFragmentManager().findFragmentById(R.id.youtube_fragment);
-        try {
-            ApplicationInfo info = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
-            frag.initialize(info.metaData.getString("developer_key"), this);
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, Arrays.toString(e.getStackTrace()));
-        }
-
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(roomFragmentPagerAdapter);
 
@@ -86,7 +69,9 @@ public class RoomActivity extends AppCompatActivity
         playListFragment.setRoomData(roomData);
         chatFragment.setRoomData(roomData);
         roomInformationFragment.setRoomData(roomData);
-
+        VideoFragment fragment = (VideoFragment) getSupportFragmentManager().findFragmentById(R.id.youtube_fragment);
+        fragment.setRoomData(roomData);
+        this.videoFragment = fragment;
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -123,27 +108,6 @@ public class RoomActivity extends AppCompatActivity
     }
 
     @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player,
-                                        boolean wasRestored) {
-        if (!wasRestored) {
-            player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
-            player.setPlayerStateChangeListener(this);
-        }
-        this.player = player;
-        roomChannel.getNowPlayingVideo();
-    }
-
-    @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult errorReason) {
-        if (errorReason.isUserRecoverableError()) {
-            errorReason.getErrorDialog(this, RECOVERY_DIALOG_REQUEST).show();
-        } else {
-            String errorMessage = String.format(getString(R.string.error_player), errorReason.toString());
-            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
     public void onConnected() {
         Log.d(TAG, "connected");
         roomChannel.getNowPlayingVideo();
@@ -168,14 +132,18 @@ public class RoomActivity extends AppCompatActivity
         switch (jsonData.data_type) {
             case "now_playing_video":
                 if (jsonData.data != null) {
-                    startVideo(jsonData.data.video);
+                    if (videoFragment != null) {
+                        videoFragment.startVideo(jsonData.data.video);
+                    }
                 }
                 break;
             case "add_video":
                 addPlayList(jsonData.data.video);
                 break;
             case "start_video":
-                startVideo(jsonData.data.video);
+                if (videoFragment != null) {
+                    videoFragment.startVideo(jsonData.data.video);
+                }
                 break;
             case "play_list":
                 initPlayList(jsonData.data.play_list);
@@ -202,39 +170,6 @@ public class RoomActivity extends AppCompatActivity
         Log.d(TAG, "failed");
     }
 
-
-    @Override
-    public void onAdStarted() {
-    }
-
-    @Override
-    public void onError(YouTubePlayer.ErrorReason reason) {
-    }
-
-    @Override
-    public void onLoaded(String videoId) {
-    }
-
-    @Override
-    public void onLoading() {
-    }
-
-    @Override
-    public void onVideoEnded() {
-        Video nextVideo = roomData.getPlayList().getTopItem();
-        if (nextVideo != null) {
-            prepareVideo(nextVideo);
-        } else {
-            roomData.clearNowPlayingVideo();
-            findViewById(R.id.video_player).setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    public void onVideoStarted() {
-    }
-
-
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
@@ -251,36 +186,13 @@ public class RoomActivity extends AppCompatActivity
         roomChannel.sendChat(message);
     }
 
-    private void startVideo(final Video video) {
-        if (player != null) {
-            player.loadVideo(video.youtube_video_id, video.current_time * 1000);
-        }
-        setNowPlayingVideo(video);
-    }
-
-    private void prepareVideo(final Video video) {
-        if (player != null) {
-            player.cueVideo(video.youtube_video_id);
-        }
-        setNowPlayingVideo(video);
-    }
-
-    private void setNowPlayingVideo(final Video video) {
-        roomData.setNowPlayingVideo(video);
-        runOnUiThread(new Runnable() {
-            public void run() {
-                findViewById(R.id.video_player).setVisibility(View.VISIBLE);
-            }
-        });
-    }
-
     private void initPlayList(final ArrayList<Video> videos) {
         roomData.getPlayList().setList(videos);
     }
 
     private void addPlayList(final Video video) {
-        if (roomData.getNowPlayingVideo() == null) {
-            prepareVideo(video);
+        if (roomData.getNowPlayingVideo() == null && videoFragment != null) {
+            videoFragment.prepareVideo(video);
         } else {
             roomData.getPlayList().add(video);
         }
