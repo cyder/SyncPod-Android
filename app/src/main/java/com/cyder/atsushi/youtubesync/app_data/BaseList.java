@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class BaseList<T> {
     @NonNull
-    ArrayList<ListInterface> listeners = new ArrayList<>();
+    private ArrayList<ListInterface> listeners = new ArrayList<>();
     @NonNull
     protected ArrayList<T> list = new ArrayList<>();
     private Context context;
