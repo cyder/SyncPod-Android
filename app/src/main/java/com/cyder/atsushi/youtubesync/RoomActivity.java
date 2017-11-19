@@ -21,7 +21,7 @@ import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 
-public class RoomActivity extends AppCompatActivity implements RoomChannelInterface {
+public class RoomActivity extends AppCompatActivity implements RoomChannelInterface, VideoFragment.VideoFragmentListener{
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -204,5 +204,10 @@ public class RoomActivity extends AppCompatActivity implements RoomChannelInterf
 
     private void addChat(final Chat chat) {
         roomData.getChatList().add(chat);
+    }
+
+    @Override
+    public void onGetNowPlayingVideo() {
+        roomChannel.getNowPlayingVideo();
     }
 }

@@ -1,5 +1,6 @@
 package com.cyder.atsushi.youtubesync;
 
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -31,14 +32,25 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
 
     private static final int RECOVERY_DIALOG_REQUEST = 1;
     private static final String TAG = Video.class.getSimpleName();
+    private VideoFragmentListener listener = null;
     private RoomData roomData;
     private YouTubePlayer player;
     private ProgressBar bar;
-    Timer mTimer;
+    private Timer mTimer;
+
+    public interface VideoFragmentListener {
+        void onGetNowPlayingVideo();
+    }
 
     public void setRoomData(RoomData roomData) {
         this.roomData = roomData;
         roomData.addListener(this);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        listener = (VideoFragmentListener) context;
     }
 
     @Override
@@ -71,7 +83,7 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
             player.setPlayerStateChangeListener(this);
         }
         this.player = player;
-
+        listener.onGetNowPlayingVideo();
     }
 
     @Override
@@ -134,7 +146,6 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
 
     public void startVideo(final Video video) {
         if (player != null) {
-            Log.d(TAG, "current_time = " + video.current_time + "duration = " + video.duration);
             player.loadVideo(video.youtube_video_id, video.current_time * 1000);
         }
         setNowPlayingVideo(video);
