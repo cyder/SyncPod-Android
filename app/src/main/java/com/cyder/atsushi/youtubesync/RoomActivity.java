@@ -150,7 +150,7 @@ public class RoomActivity extends AppCompatActivity
         roomChannel.getPlayList();
         roomChannel.getChatList();
         connectFlag = true;
-        roomData.refreshRoomInformation();
+        roomData.getRoomInformationToServer();
     }
 
     @Override

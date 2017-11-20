@@ -48,7 +48,7 @@ public class RoomData implements RoomInterface {
         return room;
     }
 
-    public void refreshRoomInformation() {
+    public void getRoomInformationToServer() {
         com.cyder.atsushi.youtubesync.server.Room serverRoom = new com.cyder.atsushi.youtubesync.server.Room();
         serverRoom.setListener(this);
         serverRoom.get(room.key);
