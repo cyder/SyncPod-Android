@@ -176,9 +176,9 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
             @Override
             public void run() {
                 ++cnt;
-                bar.setProgress((int)10.0 * cnt/duration);
+                bar.setProgress((int)((120.0 * cnt)/duration));
             }
-        }, 100, 100);
+        }, 10, 10);
     }
 
     private void stopProgressBar(){

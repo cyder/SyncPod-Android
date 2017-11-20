@@ -14,5 +14,7 @@
         android:layout_height="wrap_content"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_below="@+id/view_player"
+        android:max="10000"
+        android:minHeight="4dp"
         android:progressDrawable="@drawable/progress" />
 </RelativeLayout>
