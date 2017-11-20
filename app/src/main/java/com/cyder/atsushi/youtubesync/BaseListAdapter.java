@@ -23,7 +23,6 @@ abstract public class BaseListAdapter<Item, List extends BaseList<Item>> extends
 
     public void setList(List list) {
         this.list = list;
-        this.list.setContext(context);
         this.list.addListener(this);
         ((Activity) context).runOnUiThread(new Runnable() {
             public void run() {

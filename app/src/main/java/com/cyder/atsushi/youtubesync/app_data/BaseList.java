@@ -1,7 +1,7 @@
 package com.cyder.atsushi.youtubesync.app_data;
 
-import android.app.Activity;
-import android.content.Context;
+import android.os.Looper;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
@@ -15,28 +15,27 @@ public class BaseList<T> {
     private ArrayList<ListInterface> listeners = new ArrayList<>();
     @NonNull
     protected ArrayList<T> list = new ArrayList<>();
-    private Context context;
 
     public void setList(@NonNull final ArrayList<T> l) {
-        if (context != null) {
-            ((Activity) context).runOnUiThread(new Runnable() {
-                public void run() {
-                    list = l;
-                    updated();
-                }
-            });
-        }
+        final Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                list = l;
+                updated();
+            }
+        });
     }
 
     public void add(final T item) {
-        if (context != null) {
-            ((Activity) context).runOnUiThread(new Runnable() {
-                public void run() {
-                    list.add(item);
-                    updated();
-                }
-            });
-        }
+        final Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                list.add(item);
+                updated();
+            }
+        });
     }
 
     public T getTopItem() {
@@ -57,10 +56,6 @@ public class BaseList<T> {
 
     public void addListener(ListInterface listener) {
         listeners.add(listener);
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
     }
 
     public void removeListener(ListInterface listener) {
