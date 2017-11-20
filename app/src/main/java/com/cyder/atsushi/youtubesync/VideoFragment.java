@@ -20,7 +20,6 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -103,7 +102,7 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
 
     @Override
     public void onLoaded(String s) {
-
+        updateProgressBar();
     }
 
     @Override
@@ -149,7 +148,6 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
             player.loadVideo(video.youtube_video_id, video.current_time * 1000);
         }
         setNowPlayingVideo(video);
-        updateProgressBar(video.current_time, getTotalTime(video.duration));
     }
 
     public void setNowPlayingVideo(final Video video) {
@@ -169,14 +167,12 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
         setNowPlayingVideo(video);
     }
 
-    private void updateProgressBar(final int start, final int duration) {
+    private void updateProgressBar() {
         mTimer = new Timer(true);
         mTimer.schedule(new TimerTask() {
-            int cnt = start*10;
             @Override
             public void run() {
-                ++cnt;
-                bar.setProgress((int)((120.0 * cnt)/duration));
+                bar.setProgress((int)((10000.0 * player.getCurrentTimeMillis())/player.getDurationMillis()));
             }
         }, 10, 10);
     }
@@ -186,17 +182,6 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
             mTimer.cancel();
         }
         mTimer = null;
-    }
-
-    private int getTotalTime(String duration) {
-        List<String> items = Arrays.asList(duration.split(":", 0));
-        if(items.size() == 3){
-            return Integer.parseInt(items.get(0))*3600 + Integer.parseInt(items.get(1)) * 60 + Integer.parseInt(items.get(2));
-        }
-        else if (items.size() == 2){
-            return Integer.parseInt(items.get(0))*60 + Integer.parseInt(items.get(1));
-        }
-        return 0;
     }
 
 }
