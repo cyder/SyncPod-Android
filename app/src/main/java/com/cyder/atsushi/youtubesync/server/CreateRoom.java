@@ -17,12 +17,22 @@ public class CreateRoom extends HttpRequestsHelper {
         super();
     }
 
-    public void post(final String name, final String description) {
+    public void post(final String name, final String description) throws Exception {
+        // エラー処理（名前または説明がなかったとき）
+        if (name.equals("") && description.equals("")) {
+            throw new MissingArgumentsException(MissingArgumentsException.MISSING_BOTH_ARGUMENTS);
+        } else if (name.equals("")) {
+            throw new MissingArgumentsException(MissingArgumentsException.MISSING_NAME_ARGUMENT);
+        } else if (description.equals("")) {
+            throw new MissingArgumentsException(MissingArgumentsException.MISSING_DESCRIPTION_ARGUMENT);
+        }
+
         super.post(new com.cyder.atsushi.youtubesync.json_data.CreateRoom(name, description), "rooms", new HttpRequestCallback() {
             @Override
             public void success(Response response) {
                 listener.onCreatedRoom(response.room);
             }
+
             @Override
             public void failure() {
                 //TODO implement

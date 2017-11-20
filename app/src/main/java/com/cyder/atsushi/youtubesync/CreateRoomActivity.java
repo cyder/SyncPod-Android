@@ -2,14 +2,19 @@ package com.cyder.atsushi.youtubesync;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+
 import com.cyder.atsushi.youtubesync.json_data.Room;
 import com.cyder.atsushi.youtubesync.server.CreateRoom;
 import com.cyder.atsushi.youtubesync.server.CreateRoomInterface;
+import com.cyder.atsushi.youtubesync.server.MissingArgumentsException;
 
 /**
  * Created by atsushi on 2017/10/27.
@@ -42,7 +47,22 @@ public class CreateRoomActivity extends AppCompatActivity
                     public void onClick(View v) {
                         String name = nameForm.getText().toString();
                         String description = descriptionForm.getText().toString();
-                        createRoom.post(name, description);
+                        try {
+                            createRoom.post(name, description);
+                        } catch (Exception e) {
+                            String errMessage = "";
+                            if (e.getMessage().equals(MissingArgumentsException.MISSING_BOTH_ARGUMENTS)) {
+                                errMessage = "名前と説明を入力してください";
+                            } else if (e.getMessage().equals(MissingArgumentsException.MISSING_NAME_ARGUMENT)) {
+                                errMessage = "名前を入力してください";
+                            } else if (e.getMessage().equals(MissingArgumentsException.MISSING_DESCRIPTION_ARGUMENT)) {
+                                errMessage = "説明を入力してください";
+                            }
+                            e.printStackTrace();
+                            Snackbar.make((LinearLayout) findViewById(R.id.create_room_layout),
+                                    errMessage, Snackbar.LENGTH_SHORT)
+                                    .show();
+                        }
                     }
                 });
     }
