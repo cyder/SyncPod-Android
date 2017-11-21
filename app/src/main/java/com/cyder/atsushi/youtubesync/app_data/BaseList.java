@@ -1,5 +1,7 @@
 package com.cyder.atsushi.youtubesync.app_data;
 
+import android.os.Looper;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
@@ -10,18 +12,30 @@ import java.util.ArrayList;
 
 public class BaseList<T> {
     @NonNull
-    ArrayList<ListInterface> listeners = new ArrayList<>();
+    private ArrayList<ListInterface> listeners = new ArrayList<>();
     @NonNull
     protected ArrayList<T> list = new ArrayList<>();
 
-    public void setList(ArrayList<T> list) {
-        this.list = list;
-        updated();
+    public void setList(@NonNull final ArrayList<T> l) {
+        final Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                list = l;
+                updated();
+            }
+        });
     }
 
-    public void add(T item) {
-        list.add(item);
-        updated();
+    public void add(final T item) {
+        final Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                list.add(item);
+                updated();
+            }
+        });
     }
 
     public T getTopItem() {
@@ -49,7 +63,7 @@ public class BaseList<T> {
     }
 
     protected void updated() {
-        for(ListInterface listener : listeners) {
+        for (ListInterface listener : listeners) {
             listener.updated();
         }
     }
