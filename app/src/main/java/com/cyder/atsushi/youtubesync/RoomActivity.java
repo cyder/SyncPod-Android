@@ -41,7 +41,7 @@ public class RoomActivity extends AppCompatActivity implements RoomChannelInterf
 
         Intent varIntent = getIntent();
         String roomKey = varIntent.getStringExtra("room_key");
-        roomData.getRoomInfoByKey(roomKey);
+        roomData.setRoomKey(roomKey);
 
         if (savedInstanceState != null) {
             MySelf.restoreInstanceState(savedInstanceState);
@@ -114,6 +114,7 @@ public class RoomActivity extends AppCompatActivity implements RoomChannelInterf
         roomChannel.getPlayList();
         roomChannel.getChatList();
         connectFlag = true;
+        roomData.getRoomInformationToServer();
     }
 
     @Override
