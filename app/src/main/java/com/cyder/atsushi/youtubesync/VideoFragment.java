@@ -31,6 +31,7 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
 
     private static final int RECOVERY_DIALOG_REQUEST = 1;
     private static final String TAG = Video.class.getSimpleName();
+    private YouTubePlayerSupportFragment youTubePlayerFragment;
     private VideoFragmentListener listener = null;
     private RoomData roomData;
     private YouTubePlayer player;
@@ -56,7 +57,7 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.video_fragment, container, false);
-        YouTubePlayerSupportFragment youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
+        youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
 
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.view_player, youTubePlayerFragment).commit();
@@ -73,6 +74,26 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopProgressBar();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        stopProgressBar();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.remove(youTubePlayerFragment);
+        youTubePlayerFragment = null;
     }
 
     @Override
@@ -118,7 +139,7 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
     @Override
     public void onVideoEnded() {
         Video nextVideo = roomData.getPlayList().getTopItem();
-        if(nextVideo != null) {
+        if (nextVideo != null) {
             prepareVideo(nextVideo);
         } else {
             roomData.clearNowPlayingVideo();
@@ -172,13 +193,18 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
         mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                bar.setProgress((int)((10000.0 * player.getCurrentTimeMillis())/player.getDurationMillis()));
+                if (youTubePlayerFragment != null && player != null) {
+                    int duration = player.getDurationMillis();
+                    if (duration > 0) {
+                        bar.setProgress((int) (((double) bar.getMax() * (double) player.getCurrentTimeMillis()) / duration));
+                    }
+                }
             }
-        }, 10, 10);
+        }, 0, 10);
     }
 
-    private void stopProgressBar(){
-        if(mTimer != null) {
+    private void stopProgressBar() {
+        if (mTimer != null) {
             mTimer.cancel();
         }
         mTimer = null;
