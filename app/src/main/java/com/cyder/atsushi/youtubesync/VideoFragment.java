@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
 import com.cyder.atsushi.youtubesync.app_data.RoomData;
-import com.cyder.atsushi.youtubesync.app_data.RoomDataInterface;
 import com.cyder.atsushi.youtubesync.json_data.Video;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -27,11 +27,10 @@ import java.util.TimerTask;
  * Created by chigichan24 on 2017/11/19.
  */
 
-public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializedListener, YouTubePlayer.PlayerStateChangeListener, RoomDataInterface {
+public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializedListener, YouTubePlayer.PlayerStateChangeListener {
 
     private static final int RECOVERY_DIALOG_REQUEST = 1;
     private static final String TAG = Video.class.getSimpleName();
-    private YouTubePlayerSupportFragment youTubePlayerFragment;
     private VideoFragmentListener listener = null;
     private RoomData roomData;
     private YouTubePlayer player;
@@ -44,7 +43,6 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
 
     public void setRoomData(RoomData roomData) {
         this.roomData = roomData;
-        roomData.addListener(this);
     }
 
     @Override
@@ -57,7 +55,7 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.video_fragment, container, false);
-        youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
+        YouTubePlayerSupportFragment youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance();
 
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.view_player, youTubePlayerFragment).commit();
@@ -72,28 +70,14 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         stopProgressBar();
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
-        stopProgressBar();
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.remove(youTubePlayerFragment);
-        youTubePlayerFragment = null;
     }
 
     @Override
@@ -152,18 +136,6 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
 
     }
 
-    @Override
-    public void updated() {
-        if (getActivity() != null) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //TODO impliment
-                }
-            });
-        }
-    }
-
     public void startVideo(final Video video) {
         if (player != null) {
             player.loadVideo(video.youtube_video_id, video.current_time * 1000);
@@ -193,14 +165,15 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
         mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (youTubePlayerFragment != null && player != null) {
-                    int duration = player.getDurationMillis();
-                    if (duration > 0) {
-                        bar.setProgress((int) (((double) bar.getMax() * (double) player.getCurrentTimeMillis()) / duration));
+                if (player != null) {
+                    double duration = (double)player.getDurationMillis();
+                    if (duration > 0.0) {
+                        int progress = (int) (((double) bar.getMax() * (double) player.getCurrentTimeMillis()) / duration);
+                        bar.setProgress(progress);
                     }
                 }
             }
-        }, 0, 10);
+        }, 0, 500);
     }
 
     private void stopProgressBar() {
