@@ -37,7 +37,7 @@ public class RoomActivity extends AppCompatActivity implements RoomChannelInterf
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video);
+        setContentView(R.layout.activity_room);
 
         Intent varIntent = getIntent();
         String roomKey = varIntent.getStringExtra("room_key");
