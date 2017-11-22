@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+
 import com.cyder.atsushi.youtubesync.app_data.MySelf;
 import com.cyder.atsushi.youtubesync.app_data.RoomData;
 import com.cyder.atsushi.youtubesync.channels.RoomChannel;
@@ -21,7 +22,7 @@ import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 
-public class RoomActivity extends AppCompatActivity implements RoomChannelInterface, VideoFragment.VideoFragmentListener{
+public class RoomActivity extends AppCompatActivity implements RoomChannelInterface, VideoFragment.VideoFragmentListener {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -132,9 +133,11 @@ public class RoomActivity extends AppCompatActivity implements RoomChannelInterf
 
         switch (jsonData.data_type) {
             case "now_playing_video":
-                if (jsonData.data != null) {
-                    if (videoFragment != null) {
+                if (videoFragment != null) {
+                    if (jsonData.data != null) {
                         videoFragment.startVideo(jsonData.data.video);
+                    } else {
+                        videoFragment.clearNowPlayingVideo();
                     }
                 }
                 break;

@@ -126,8 +126,7 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
         if (nextVideo != null) {
             prepareVideo(nextVideo);
         } else {
-            roomData.clearNowPlayingVideo();
-            getActivity().findViewById(R.id.video_player).setVisibility(View.GONE);
+            clearNowPlayingVideo();
         }
     }
 
@@ -153,6 +152,15 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
         });
     }
 
+    public void clearNowPlayingVideo() {
+        roomData.clearNowPlayingVideo();
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                getActivity().findViewById(R.id.video_player).setVisibility(View.GONE);
+            }
+        });
+    }
+
     public void prepareVideo(final Video video) {
         if (player != null) {
             player.cueVideo(video.youtube_video_id);
@@ -166,7 +174,7 @@ public class VideoFragment extends Fragment implements YouTubePlayer.OnInitializ
             @Override
             public void run() {
                 if (player != null) {
-                    double duration = (double)player.getDurationMillis();
+                    double duration = (double) player.getDurationMillis();
                     if (duration > 0.0) {
                         int progress = (int) (((double) bar.getMax() * (double) player.getCurrentTimeMillis()) / duration);
                         bar.setProgress(progress);
