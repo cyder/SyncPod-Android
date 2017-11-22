@@ -36,8 +36,8 @@ public class CreateRoom extends HttpRequestsHelper {
             }
 
             @Override
-            public void failure() throws CreateRoomException {
-                throw new CreateRoomException(CreateRoomException.NETWORK_ERROR);
+            public void failure() {
+                //TODO implement
             }
         });
     }

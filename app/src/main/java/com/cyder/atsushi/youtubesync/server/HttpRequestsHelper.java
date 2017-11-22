@@ -62,7 +62,7 @@ public class HttpRequestsHelper {
     public interface HttpRequestCallback {
         void success(Response response);
 
-        void failure() throws CreateRoomException;
+        void failure();
     }
 
     private void communicate(final String method, final JsonParameter jsonParameter, final String endPoint, final HttpRequestCallback callback) {
