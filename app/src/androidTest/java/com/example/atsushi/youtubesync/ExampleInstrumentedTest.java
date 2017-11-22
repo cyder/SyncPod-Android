@@ -1,4 +1,4 @@
-package com.example.atsushi.youtubesync;
+package com.cyder.atsushi.youtubesync;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.atsushi.youtubesync", appContext.getPackageName());
+        assertEquals("com.cyder.atsushi.youtubesync", appContext.getPackageName());
     }
 }

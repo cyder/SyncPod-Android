@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">YouTube Sync</string>
+    <string name="app_name">SyncPod</string>
     <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
 
     <!--title bar-->
     <string name="login_title">ログイン</string>
     <string name="register_account_title">アカウント登録</string>
     <string name="create_new_room">新規ルーム作成</string>
-    <string name="title">YouTube Sync</string>
+    <string name="title">SyncPod</string>
 
     <!--layout-->
     <string name="email">メールアドレス</string>
@@ -36,6 +36,13 @@
     <string name="create_room">ルームを作成する</string>
     <string name="create_room_description">新しいルームを作成します。ルームキーを共有して他の人に参加してもらうことができます。</string>
     <string name="room_key">ルームキー</string>
+    <string name="joined_rooms">最近参加したルーム</string>
+    <string name="online_users_num">オンライン：%d人</string>
+    <string name="now_playing_video_info">再生中：%s</string>
+    <string name="last_played_video_info">再生終了：%s</string>
+    <string name="reject_message">入室できません。\nルームIDが間違っている可能性があります。</string>
+    <string name="ok">OK</string>
+    <string name="notice">おしらせ</string>
     <string name="room_name">ルーム名</string>
     <string name="room_description">ルーム説明</string>
     <string name="published">公開 : %s</string>
@@ -45,8 +52,18 @@
     </string>
     <string name="share_room_key_button">ルームキーを共有</string>
     <string name="share_room_key_message">
-        YouTube Syncで一緒に動画を見ませんか？\n\n
+        SyncPodで一緒に動画を見ませんか？\n\n
         ルーム名: %1$s\n
-        ルームキー: %2$s
+        ルームキー: %2$s\n\n
+        こちらのURLからも入室できます。\n
+        http://app.sync-pod.com/room?room_key=%2$s
     </string>
+    <string name="playlist">プレイリスト</string>
+    <string name="online_users_title">オンライン（%d人）</string>
+    <string name="login_mistook">メールアドレスもしくはパスワードが間違っています。</string>
+    <string name="sign_up_used_email">入力されたメールアドレスは既に使われています。</string>
+    <string name="form_not_filled">項目をすべて入力してください。</string>
+    <string name="sign_up_invalid_password">パスワードが一致しません。</string>
+    <string name="sign_up_min_password_length">パスワードが短すぎます。</string>
+    <string name="sign_up_invalid_email">メールアドレスが正しくありません。</string>
 </resources>
