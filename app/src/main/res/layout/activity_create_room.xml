@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/create_room_layout"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center_horizontal"
-              android:orientation="vertical">
+    android:id="@+id/create_room_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/create_room_tool_bar"
@@ -13,13 +13,13 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"/>
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="20dp" >
 
         <EditText
             android:id="@+id/create_room_name"
@@ -29,7 +29,7 @@
             android:layout_marginTop="10dp"
             android:ems="10"
             android:hint="@string/room_name"
-            android:inputType="text"/>
+            android:inputType="text" />
 
         <EditText
             android:id="@+id/create_room_description"
@@ -39,7 +39,7 @@
             android:layout_marginTop="10dp"
             android:ems="10"
             android:hint="@string/room_description"
-            android:inputType="textMultiLine"/>
+            android:inputType="textMultiLine" />
 
         <Button
             android:id="@+id/create_room_submit"
@@ -50,6 +50,6 @@
             android:background="@color/appGreen"
             android:text="@string/create_room_button"
             android:textColor="@color/appWhite"
-            android:textSize="18sp"/>
-    </LinearLayout>
-</LinearLayout>
+            android:textSize="18sp" />
+    </LinearLayout >
+</LinearLayout >

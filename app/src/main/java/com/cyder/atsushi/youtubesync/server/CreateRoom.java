@@ -1,5 +1,7 @@
 package com.cyder.atsushi.youtubesync.server;
 
+import com.cyder.atsushi.youtubesync.MainActivity;
+import com.cyder.atsushi.youtubesync.R;
 import com.cyder.atsushi.youtubesync.json_data.Response;
 
 /**
@@ -20,11 +22,11 @@ public class CreateRoom extends HttpRequestsHelper {
     public void post(final String name, final String description) throws Exception {
         // エラー処理（名前または説明がなかったとき）
         if (name.equals("") && description.equals("")) {
-            throw new MissingArgumentsException(MissingArgumentsException.MISSING_BOTH_ARGUMENTS);
+            throw new CreateRoomException(CreateRoomException.MISSING_BOTH_ARGUMENTS);
         } else if (name.equals("")) {
-            throw new MissingArgumentsException(MissingArgumentsException.MISSING_NAME_ARGUMENT);
+            throw new CreateRoomException(CreateRoomException.MISSING_NAME_ARGUMENT);
         } else if (description.equals("")) {
-            throw new MissingArgumentsException(MissingArgumentsException.MISSING_DESCRIPTION_ARGUMENT);
+            throw new CreateRoomException(CreateRoomException.MISSING_DESCRIPTION_ARGUMENT);
         }
 
         super.post(new com.cyder.atsushi.youtubesync.json_data.CreateRoom(name, description), "rooms", new HttpRequestCallback() {
@@ -34,9 +36,11 @@ public class CreateRoom extends HttpRequestsHelper {
             }
 
             @Override
-            public void failure() {
-                //TODO implement
+            public void failure() throws CreateRoomException {
+                throw new CreateRoomException(CreateRoomException.NETWORK_ERROR);
             }
         });
     }
 }
+
+

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +13,7 @@ import android.widget.LinearLayout;
 import com.cyder.atsushi.youtubesync.json_data.Room;
 import com.cyder.atsushi.youtubesync.server.CreateRoom;
 import com.cyder.atsushi.youtubesync.server.CreateRoomInterface;
-import com.cyder.atsushi.youtubesync.server.MissingArgumentsException;
+import com.cyder.atsushi.youtubesync.server.CreateRoomException;
 
 /**
  * Created by atsushi on 2017/10/27.
@@ -51,17 +50,26 @@ public class CreateRoomActivity extends AppCompatActivity
                             createRoom.post(name, description);
                         } catch (Exception e) {
                             String errMessage = "";
-                            if (e.getMessage().equals(MissingArgumentsException.MISSING_BOTH_ARGUMENTS)) {
-                                errMessage = "名前と説明を入力してください";
-                            } else if (e.getMessage().equals(MissingArgumentsException.MISSING_NAME_ARGUMENT)) {
-                                errMessage = "名前を入力してください";
-                            } else if (e.getMessage().equals(MissingArgumentsException.MISSING_DESCRIPTION_ARGUMENT)) {
-                                errMessage = "説明を入力してください";
+                            if (e.getMessage().equals(CreateRoomException.MISSING_BOTH_ARGUMENTS)) {
+                                errMessage = getResources().getString(R.string.missing_both_arguments);
+                            } else if (e.getMessage().equals(CreateRoomException.MISSING_NAME_ARGUMENT)) {
+                                errMessage = getResources().getString(R.string.missing_name_argument);
+                            } else if (e.getMessage().equals(CreateRoomException.MISSING_DESCRIPTION_ARGUMENT)) {
+                                errMessage = getResources().getString(R.string.missing_description_argument);
+                            } else if (e.getMessage().equals(CreateRoomException.NETWORK_ERROR)){
+                                errMessage = getResources().getString(R.string.network_error);
                             }
                             e.printStackTrace();
-                            Snackbar.make((LinearLayout) findViewById(R.id.create_room_layout),
-                                    errMessage, Snackbar.LENGTH_SHORT)
-                                    .show();
+                            final Snackbar snackbar = Snackbar.make(
+                                    (LinearLayout) findViewById(R.id.create_room_layout),
+                                    errMessage, Snackbar.LENGTH_INDEFINITE);
+                            snackbar.setAction("OK", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    snackbar.dismiss();
+                                }
+                            });
+                            snackbar.show();
                         }
                     }
                 });
