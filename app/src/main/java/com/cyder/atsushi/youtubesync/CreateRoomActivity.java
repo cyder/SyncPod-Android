@@ -57,11 +57,12 @@ public class CreateRoomActivity extends AppCompatActivity
                         }
                     }
                 });
-        snackbar = Snackbar.make(findViewById(R.id.create_room_layout), R.string.create_room_error, Snackbar.LENGTH_INDEFINITE);
+        snackbar = Snackbar.make(findViewById(R.id.create_room_layout), R.string.network_error, Snackbar.LENGTH_INDEFINITE);
         snackbar.setAction(R.string.ok, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 snackbar.dismiss();
+                snackbar.setText(R.string.network_error);
             }
         });
         manager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -69,9 +70,9 @@ public class CreateRoomActivity extends AppCompatActivity
 
     // データが正しいかチェック
     public boolean validData(final String name, final String description) {
-        if(!(name.equals("") || description.equals(""))){
+        if (!(name.equals("") || description.equals(""))) {
             return true;
-        }else{
+        } else {
             snackbar.setText(R.string.form_not_filled);
             return false;
         }
@@ -79,7 +80,7 @@ public class CreateRoomActivity extends AppCompatActivity
 
     // 作成失敗時の挙動
     @Override
-    public void onCreateFailed(){
+    public void onCreateFailed() {
         // キーボード消す
         manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         snackbar.show();

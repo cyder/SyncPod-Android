@@ -65,9 +65,5 @@
     <string name="sign_up_min_password_length">パスワードが短すぎます。</string>
     <string name="sign_up_invalid_email">メールアドレスが正しくありません。</string>
     <string name="create_room_error">ルームの作成に失敗しました。</string>
-    <!-- ルーム作成時エラー -->
-    <string name="missing_both_arguments">名前と説明を入力してください</string>
-    <string name="missing_name_argument">名前を入力してください</string>
-    <string name="missing_description_argument">説明を入力してください</string>
     <string name="network_error">予期せぬエラーが発生しました。間を開けてお試しください。</string>
 </resources>
