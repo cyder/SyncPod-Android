@@ -64,6 +64,5 @@
     <string name="sign_up_invalid_password">パスワードが一致しません。</string>
     <string name="sign_up_min_password_length">パスワードが短すぎます。</string>
     <string name="sign_up_invalid_email">メールアドレスが正しくありません。</string>
-    <string name="create_room_error">ルームの作成に失敗しました。</string>
     <string name="network_error">予期せぬエラーが発生しました。間を開けてお試しください。</string>
 </resources>
