@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.cyder.atsushi.youtubesync.app_data.MySelf;
 import com.cyder.atsushi.youtubesync.app_data.RoomData;
@@ -69,6 +71,20 @@ public class RoomActivity extends AppCompatActivity implements RoomChannelInterf
                 setChatFormArea(position);
                 if (roomFragmentPagerAdapter.getItem(position) instanceof RoomInformationFragment) {
                     roomInformationFragment.onPageSelected();
+                }
+            }
+        });
+
+        final EditText chatForm = (EditText) findViewById(R.id.chat_form);
+        final ImageButton chatSubmit = (ImageButton) findViewById(R.id.chat_submit);
+
+        chatSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message = chatForm.getText().toString();
+                if (!message.equals("")) {
+                    sendChat(message);
+                    chatForm.getEditableText().clear();
                 }
             }
         });

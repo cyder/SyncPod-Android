@@ -55,20 +55,5 @@ public class ChatFragment extends Fragment {
 
         chatList.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
         chatList.setStackFromBottom(true);
-
-        chatForm = view.findViewById(R.id.chat_form);
-        chatSubmit = view.findViewById(R.id.chat_submit);
-
-        chatSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String message = chatForm.getText().toString();
-                if (!message.equals("")) {
-                    RoomActivity activity = (RoomActivity) getContext();
-                    activity.sendChat(message);
-                    chatForm.getEditableText().clear();
-                }
-            }
-        });
     }
 }
