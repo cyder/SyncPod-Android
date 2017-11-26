@@ -21,8 +21,6 @@ import java.util.ArrayList;
 public class ChatFragment extends Fragment {
     private ListView chatList;
     private ChatListAdapter adapter;
-    private EditText chatForm;
-    private ImageButton chatSubmit;
     private RoomData roomData;
 
     public void setRoomData(RoomData roomData) {

@@ -36,7 +36,6 @@ public class RoomActivity extends AppCompatActivity implements RoomChannelInterf
     RoomChannel roomChannel;
     @NonNull
     RoomData roomData = new RoomData();
-    YouTubePlayer player;
     private View chatFormArea;
 
     @Override
