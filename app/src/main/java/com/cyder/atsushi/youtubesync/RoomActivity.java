@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
 import com.cyder.atsushi.youtubesync.app_data.MySelf;
 import com.cyder.atsushi.youtubesync.app_data.RoomData;
@@ -34,6 +35,7 @@ public class RoomActivity extends AppCompatActivity implements RoomChannelInterf
     @NonNull
     RoomData roomData = new RoomData();
     YouTubePlayer player;
+    private View chatFormArea;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,9 +60,13 @@ public class RoomActivity extends AppCompatActivity implements RoomChannelInterf
         final ChatFragment chatFragment = (ChatFragment) roomFragmentPagerAdapter.getItem(1);
         final RoomInformationFragment roomInformationFragment = (RoomInformationFragment) roomFragmentPagerAdapter.getItem(2);
 
+        chatFormArea = findViewById(R.id.chat_form_area);
+        setChatFormArea(viewPager.getCurrentItem());
+
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
+                setChatFormArea(position);
                 if (roomFragmentPagerAdapter.getItem(position) instanceof RoomInformationFragment) {
                     roomInformationFragment.onPageSelected();
                 }
@@ -213,5 +219,13 @@ public class RoomActivity extends AppCompatActivity implements RoomChannelInterf
     @Override
     public void onGetNowPlayingVideo() {
         roomChannel.getNowPlayingVideo();
+    }
+
+    private void setChatFormArea(int position) {
+        if (roomFragmentPagerAdapter.getItem(position) instanceof ChatFragment) {
+            chatFormArea.setVisibility(View.VISIBLE);
+        } else {
+            chatFormArea.setVisibility(View.GONE);
+        }
     }
 }
