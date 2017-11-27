@@ -2,7 +2,7 @@ package com.cyder.atsushi.youtubesync.server;
 
 import com.cyder.atsushi.youtubesync.MainActivity;
 import com.cyder.atsushi.youtubesync.R;
-import com.cyder.atsushi.youtubesync.json_data.Response;
+import com.cyder.atsushi.youtubesync.json_data.BaseResponse;
 
 /**
  * Created by atsushi on 2017/10/27.
