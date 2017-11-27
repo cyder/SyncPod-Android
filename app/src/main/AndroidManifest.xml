@@ -13,7 +13,8 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -29,13 +30,27 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateRoomActivity"></activity>
-        <activity android:name=".TopActivity"></activity>
-        <activity android:name=".RoomActivity"></activity>
-        <activity android:name=".SearchVideoActivity"></activity>
-        <activity android:name=".FirstStartActivity"></activity>
-        <activity android:name=".SignInActivity"></activity>
-        <activity android:name=".SignUpActivity"></activity>
+        <activity
+            android:name=".CreateRoomActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TopActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RoomActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SearchVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FirstStartActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SignInActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SignUpActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="developer_key"

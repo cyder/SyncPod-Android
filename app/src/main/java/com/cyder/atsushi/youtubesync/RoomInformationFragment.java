@@ -75,11 +75,11 @@ public class RoomInformationFragment extends Fragment implements RoomDataInterfa
 
     @Override
     public void onRefresh() {
-        roomData.refreshRoomInformation();
+        roomData.getRoomInformationToServer();
     }
 
     public void onPageSelected() {
-        roomData.refreshRoomInformation();
+        roomData.getRoomInformationToServer();
     }
 
     private void showRoomInformation() {
