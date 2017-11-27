@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,6 @@ import android.widget.TextView;
 import com.cyder.atsushi.youtubesync.app_data.RoomData;
 import com.cyder.atsushi.youtubesync.app_data.RoomDataInterface;
 import com.cyder.atsushi.youtubesync.json_data.Video;
-
-import java.util.ArrayList;
 
 /**
  * Created by atsushi on 2017/10/16.
@@ -89,10 +88,29 @@ public class PlayListFragment extends Fragment implements RoomDataInterface {
                 title.setText(nowPlayingVideo.title);
                 TextView channelTitle = view.findViewById(R.id.now_channel_title);
                 channelTitle.setText(nowPlayingVideo.channel_title);
+                TextView published = view.findViewById(R.id.now_published);
+                published.setText(String.format(getResources().getString(R.string.published), nowPlayingVideo.published));
+                TextView views = view.findViewById(R.id.now_view_count);
+                views.setText(String.format(getResources().getString(R.string.view_count), insertComma(nowPlayingVideo.view_count)));
             } else {
                 view.findViewById(R.id.now_play_video_area).setVisibility(View.GONE);
             }
         }
+    }
+
+    @NonNull
+    private String insertComma(String bignum) {
+        StringBuffer sb = new StringBuffer(bignum);
+        String reversed = sb.reverse().toString();
+        String res = "";
+        for (int i = 0; i < reversed.length(); ++i) {
+            res += reversed.charAt(i);
+            if (i % 3 == 2 && i != reversed.length() - 1) {
+                res += ",";
+            }
+        }
+        sb = new StringBuffer(res);
+        return sb.reverse().toString();
     }
 
 }

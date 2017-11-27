@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -49,7 +50,8 @@ public class PlayListAdapter extends BaseListAdapter<Video, PlayList> {
             if (video != null) {
                 ((TextView) convertView.findViewById(R.id.title)).setText(video.title);
                 ((TextView) convertView.findViewById(R.id.channel_title)).setText(video.channel_title);
-
+                ((TextView) convertView.findViewById(R.id.published)).setText(String.format(context.getString(R.string.published), video.published));
+                ((TextView) convertView.findViewById(R.id.view_count)).setText(String.format(context.getString(R.string.view_count), insertComma(video.view_count)));
                 ImageView imageView = convertView.findViewById(R.id.thumbnail);
                 if (video.thumbnail != null) {
                     imageView.setImageBitmap(video.thumbnail);
@@ -64,5 +66,20 @@ public class PlayListAdapter extends BaseListAdapter<Video, PlayList> {
         }
 
         return layoutInflater.inflate(R.layout.play_list_empty_view, parent, false);
+    }
+
+    @NonNull
+    private String insertComma(String bignum) {
+        StringBuffer sb = new StringBuffer(bignum);
+        String reversed = sb.reverse().toString();
+        String res = "";
+        for (int i = 0; i < reversed.length(); ++i) {
+            res += reversed.charAt(i);
+            if (i % 3 == 2 && i != reversed.length() - 1) {
+                res += ",";
+            }
+        }
+        sb = new StringBuffer(res);
+        return sb.reverse().toString();
     }
 }

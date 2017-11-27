@@ -38,6 +38,22 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/published"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:maxLines="1"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/view_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textSize="12sp" />
+
     </LinearLayout>
 
 </LinearLayout>

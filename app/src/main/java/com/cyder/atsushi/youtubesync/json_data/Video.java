@@ -17,4 +17,6 @@ public class Video {
     public String channel_title;
     public String video_start_time;
     public int current_time;
+    public String published;
+    public String view_count;
 }
