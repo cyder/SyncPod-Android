@@ -1,6 +1,6 @@
 package com.cyder.atsushi.youtubesync.server;
 
-import com.cyder.atsushi.youtubesync.json_data.Response;
+import com.cyder.atsushi.youtubesync.json_data.BaseResponse;
 
 import java.util.HashMap;
 
@@ -12,7 +12,7 @@ public class Room extends HttpRequestsHelper {
     private RoomInterface listener = null;
 
     public Room() {
-        super(Response.class);
+        super(BaseResponse.class);
     }
 
     public void setListener(RoomInterface listener) {
@@ -25,7 +25,7 @@ public class Room extends HttpRequestsHelper {
         super.get(params, "rooms", new HttpRequestCallback() {
             @Override
             public void success(Object response) {
-                Response r = (Response)response;
+                BaseResponse r = (BaseResponse)response;
                 listener.onReceived(r.room);
             }
             @Override

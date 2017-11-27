@@ -1,6 +1,6 @@
 package com.cyder.atsushi.youtubesync.server;
 
-import com.cyder.atsushi.youtubesync.json_data.Response;
+import com.cyder.atsushi.youtubesync.json_data.BaseResponse;
 
 /**
  * Created by atsushi on 2017/10/27.
@@ -10,7 +10,7 @@ public class SignIn extends HttpRequestsHelper {
     private SignInInterface listener = null;
 
     public SignIn() {
-        super(Response.class);
+        super(BaseResponse.class);
     }
 
     public void setListener(SignInInterface _listener) {
@@ -21,7 +21,7 @@ public class SignIn extends HttpRequestsHelper {
         super.post(new com.cyder.atsushi.youtubesync.json_data.SignIn(email, password), "login", new HttpRequestCallback() {
             @Override
             public void success(Object response) {
-                Response r = (Response)response;
+                BaseResponse r = (BaseResponse)response;
                 listener.onSignedIn(r.user);
             }
 
