@@ -107,6 +107,7 @@ public class SearchingVideoHelper {
         video.youtube_video_id = result.getId().getVideoId();
         video.title = result.getSnippet().getTitle();
         video.channel_title = result.getSnippet().getChannelTitle();
+        video.published = result.getSnippet().getPublishedAt().toString().split("T")[0].replace("-","/");
         video.thumbnail_url = result.getSnippet().getThumbnails().getMedium().getUrl();
 
         return video;

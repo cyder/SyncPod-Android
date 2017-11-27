@@ -45,6 +45,8 @@
     <string name="notice">おしらせ</string>
     <string name="room_name">ルーム名</string>
     <string name="room_description">ルーム説明</string>
+    <string name="published">公開 : %s</string>
+    <string name="views">再生回数 : %s回</string>
     <string name="play_list_empty_description">
         プレイリストに動画がありません。右下のボタンからみんなで見たい動画を追加してください。
     </string>

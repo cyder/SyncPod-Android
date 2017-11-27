@@ -89,6 +89,10 @@ public class PlayListFragment extends Fragment implements RoomDataInterface {
                 title.setText(nowPlayingVideo.title);
                 TextView channelTitle = view.findViewById(R.id.now_channel_title);
                 channelTitle.setText(nowPlayingVideo.channel_title);
+                TextView published = view.findViewById(R.id.now_published);
+                published.setText(String.format(getResources().getString(R.string.published), nowPlayingVideo.published));
+                TextView views = view.findViewById(R.id.now_views);
+                views.setText(String.format(getResources().getString(R.string.views), "1,000,000"));
             } else {
                 view.findViewById(R.id.now_play_video_area).setVisibility(View.GONE);
             }

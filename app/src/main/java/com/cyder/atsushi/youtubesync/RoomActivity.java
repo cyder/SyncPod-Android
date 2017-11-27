@@ -16,6 +16,7 @@ import com.cyder.atsushi.youtubesync.components.ViewPager;
 import com.cyder.atsushi.youtubesync.json_data.Chat;
 import com.cyder.atsushi.youtubesync.json_data.JsonData;
 import com.cyder.atsushi.youtubesync.json_data.Video;
+
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
