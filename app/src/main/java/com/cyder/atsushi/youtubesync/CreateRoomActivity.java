@@ -64,9 +64,9 @@ public class CreateRoomActivity extends AppCompatActivity
                 snackbar.dismiss();
             }
         });
-        snackbar.addCallback(new Snackbar.Callback(){
+        snackbar.addCallback(new Snackbar.Callback() {
             @Override
-            public void onDismissed(Snackbar snackbar, int event){
+            public void onDismissed(Snackbar snackbar, int event) {
                 snackbar.setText(R.string.network_error);
             }
         });

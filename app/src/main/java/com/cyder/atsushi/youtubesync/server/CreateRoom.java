@@ -1,7 +1,5 @@
 package com.cyder.atsushi.youtubesync.server;
 
-import com.cyder.atsushi.youtubesync.MainActivity;
-import com.cyder.atsushi.youtubesync.R;
 import com.cyder.atsushi.youtubesync.json_data.BaseResponse;
 
 /**
@@ -19,11 +17,11 @@ public class CreateRoom extends HttpRequestsHelper {
         super(BaseResponse.class);
     }
 
-    public void post(final String name, final String description){
+    public void post(final String name, final String description) {
         super.post(new com.cyder.atsushi.youtubesync.json_data.CreateRoom(name, description), "rooms", new HttpRequestCallback() {
             @Override
             public void success(Object response) {
-                BaseResponse r = (BaseResponse)response;
+                BaseResponse r = (BaseResponse) response;
                 listener.onCreatedRoom(r.room);
             }
 
