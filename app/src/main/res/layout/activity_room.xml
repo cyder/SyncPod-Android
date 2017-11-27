@@ -11,7 +11,6 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-
         <fragment
             android:id="@+id/youtube_fragment"
             android:name="com.cyder.atsushi.youtubesync.VideoFragment"
@@ -20,16 +19,37 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/roomTab"
-        android:elevation="2dp" />
 
-    <com.cyder.atsushi.youtubesync.components.ViewPager
-        android:id="@+id/view_pager"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@color/roomTab"
+                android:elevation="2dp" />
+
+            <com.cyder.atsushi.youtubesync.components.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+
+        <fragment
+            android:id="@+id/chat_form_fragment"
+            android:name="com.cyder.atsushi.youtubesync.ChatFormFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 </LinearLayout>
+
