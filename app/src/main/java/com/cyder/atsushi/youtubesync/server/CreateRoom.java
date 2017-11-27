@@ -21,13 +21,16 @@ public class CreateRoom extends HttpRequestsHelper {
         super.post(new com.cyder.atsushi.youtubesync.json_data.CreateRoom(name, description), "rooms", new HttpRequestCallback() {
             @Override
             public void success(Object response) {
-                BaseResponse r = (BaseResponse)response;
+                BaseResponse r = (BaseResponse) response;
                 listener.onCreatedRoom(r.room);
             }
+
             @Override
             public void failure() {
-                //TODO implement
+                listener.onCreateFailed();
             }
         });
     }
 }
+
+
