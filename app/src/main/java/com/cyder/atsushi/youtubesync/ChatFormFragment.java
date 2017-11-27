@@ -51,7 +51,7 @@ public class ChatFormFragment extends Fragment {
     }
 
     public void setChatFormArea(Fragment nowFragment) {
-        if(chatFormArea != null) {
+        if (chatFormArea != null) {
             if (nowFragment instanceof ChatFragment) {
                 chatFormArea.setVisibility(View.VISIBLE);
             } else {
