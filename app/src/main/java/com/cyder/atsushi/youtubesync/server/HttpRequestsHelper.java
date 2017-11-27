@@ -35,11 +35,11 @@ public class HttpRequestsHelper<T>{
     @NonNull
     private Gson gson;
 
-    private final Class<T> typeParamaterClass;
+    private final Class<T> typeParameterClass;
 
-    protected HttpRequestsHelper(Class<T> typeParamaterClass) {
+    protected HttpRequestsHelper(Class<T> typeParameterClass) {
         this.gson = new Gson();
-        this.typeParamaterClass = typeParamaterClass;
+        this.typeParameterClass = typeParameterClass;
     }
 
     protected void post(final JsonParameter jsonParameter, final String endPoint, final HttpRequestCallback callback) {
@@ -93,7 +93,7 @@ public class HttpRequestsHelper<T>{
                     if (con.getResponseCode() == HTTP_SUCCESS_STATUS) {
                         BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
                         String buffer = reader.readLine();
-                        T response = gson.fromJson(buffer, typeParamaterClass);
+                        T response = gson.fromJson(buffer, typeParameterClass);
                         callback.success(response);
 
                     } else if (con.getResponseCode() == HTTP_FAILURE_STATUS) {

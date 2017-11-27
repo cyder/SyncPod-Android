@@ -10,7 +10,7 @@ public class JoinedRooms extends HttpRequestsHelper {
     private JoinedRoomsInterface listener = null;
 
     public JoinedRooms() {
-        super();
+        super(Response.class);
     }
 
     public void setListener(JoinedRoomsInterface listener) {
@@ -20,8 +20,9 @@ public class JoinedRooms extends HttpRequestsHelper {
     public void get() {
         super.get(null, "joined_rooms", new HttpRequestCallback() {
             @Override
-            public void success(Response response) {
-                listener.onReceived(response.joined_rooms);
+            public void success(Object response) {
+                Response r = (Response)response;
+                listener.onReceived(r.joined_rooms);
             }
 
             @Override
