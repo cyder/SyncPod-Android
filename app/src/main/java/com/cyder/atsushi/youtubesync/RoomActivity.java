@@ -16,13 +16,13 @@ import com.cyder.atsushi.youtubesync.components.ViewPager;
 import com.cyder.atsushi.youtubesync.json_data.Chat;
 import com.cyder.atsushi.youtubesync.json_data.JsonData;
 import com.cyder.atsushi.youtubesync.json_data.Video;
-import com.google.android.youtube.player.YouTubePlayer;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 
-public class RoomActivity extends AppCompatActivity implements RoomChannelInterface, VideoFragment.VideoFragmentListener {
+public class RoomActivity extends AppCompatActivity
+        implements RoomChannelInterface, VideoFragment.VideoFragmentListener, ChatFormFragment.ChatFormFragmentListener {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -33,7 +33,6 @@ public class RoomActivity extends AppCompatActivity implements RoomChannelInterf
     RoomChannel roomChannel;
     @NonNull
     RoomData roomData = new RoomData();
-    YouTubePlayer player;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,9 +57,13 @@ public class RoomActivity extends AppCompatActivity implements RoomChannelInterf
         final ChatFragment chatFragment = (ChatFragment) roomFragmentPagerAdapter.getItem(1);
         final RoomInformationFragment roomInformationFragment = (RoomInformationFragment) roomFragmentPagerAdapter.getItem(2);
 
+        final ChatFormFragment chatFormFragment = (ChatFormFragment) getSupportFragmentManager().findFragmentById(R.id.chat_form_fragment);
+        chatFormFragment.setChatFormArea(roomFragmentPagerAdapter.getItem(viewPager.getCurrentItem()));
+
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
+                chatFormFragment.setChatFormArea(roomFragmentPagerAdapter.getItem(position));
                 if (roomFragmentPagerAdapter.getItem(position) instanceof RoomInformationFragment) {
                     roomInformationFragment.onPageSelected();
                 }
@@ -70,9 +73,9 @@ public class RoomActivity extends AppCompatActivity implements RoomChannelInterf
         playListFragment.setRoomData(roomData);
         chatFragment.setRoomData(roomData);
         roomInformationFragment.setRoomData(roomData);
-        VideoFragment fragment = (VideoFragment) getSupportFragmentManager().findFragmentById(R.id.youtube_fragment);
-        fragment.setRoomData(roomData);
-        this.videoFragment = fragment;
+        VideoFragment videoFragment = (VideoFragment) getSupportFragmentManager().findFragmentById(R.id.youtube_fragment);
+        videoFragment.setRoomData(roomData);
+        this.videoFragment = videoFragment;
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -186,10 +189,6 @@ public class RoomActivity extends AppCompatActivity implements RoomChannelInterf
         startActivityForResult(varIntent, searchVideoRequestCode);
     }
 
-    public void sendChat(String message) {
-        roomChannel.sendChat(message);
-    }
-
     private void initPlayList(final ArrayList<Video> videos) {
         roomData.getPlayList().setList(videos);
     }
@@ -213,5 +212,10 @@ public class RoomActivity extends AppCompatActivity implements RoomChannelInterf
     @Override
     public void onGetNowPlayingVideo() {
         roomChannel.getNowPlayingVideo();
+    }
+
+    @Override
+    public void onSendChat(String message) {
+        roomChannel.sendChat(message);
     }
 }
