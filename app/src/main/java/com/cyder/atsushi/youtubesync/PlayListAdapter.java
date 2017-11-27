@@ -53,6 +53,7 @@ public class PlayListAdapter extends BaseListAdapter<Video, PlayList> {
                 ((TextView) convertView.findViewById(R.id.published)).setText(String.format(context.getString(R.string.published), video.published));
                 ((TextView) convertView.findViewById(R.id.view_count)).setText(String.format(context.getString(R.string.view_count), insertComma(video.view_count)));
                 ImageView imageView = convertView.findViewById(R.id.thumbnail);
+                ((TextView) convertView.findViewById(R.id.video_duration)).setText(" "+video.duration+" ");
                 if (video.thumbnail != null) {
                     imageView.setImageBitmap(video.thumbnail);
                 } else {
