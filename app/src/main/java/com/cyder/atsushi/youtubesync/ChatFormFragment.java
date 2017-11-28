@@ -7,6 +7,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ public class ChatFormFragment extends Fragment {
     private View chatFormArea;
     private ChatFormFragment.ChatFormFragmentListener listener = null;
     private InputMethodManager manager;
+    private int originalHeight;
 
     public interface ChatFormFragmentListener {
         void onSendChat(String message);
@@ -53,21 +55,20 @@ public class ChatFormFragment extends Fragment {
             }
         });
 
+        originalHeight = dpToPx(48);
         manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         return rootView;
     }
 
     public void setChatFormArea(Fragment nowFragment) {
         if (chatFormArea != null) {
+            final ResizeAnimation animation;
             if (nowFragment instanceof ChatFragment) {
                 chatFormArea.setVisibility(View.VISIBLE);
-                final ResizeAnimation animation = new ResizeAnimation(chatFormArea, dpToPx(48), 0);
-                animation.setDuration(100);
-                chatFormArea.startAnimation(animation);
+                animation = new ResizeAnimation(chatFormArea, originalHeight, 0);
             } else {
                 manager.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                final ResizeAnimation animation = new ResizeAnimation(chatFormArea, -chatFormArea.getHeight(), chatFormArea.getHeight());
-                animation.setDuration(100);
+                animation = new ResizeAnimation(chatFormArea, -chatFormArea.getHeight(), chatFormArea.getHeight());
                 animation.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
@@ -82,8 +83,10 @@ public class ChatFormFragment extends Fragment {
                     public void onAnimationRepeat(Animation animation) {
                     }
                 });
-                chatFormArea.startAnimation(animation);
             }
+            animation.setDuration(100);
+            animation.setInterpolator( new AccelerateDecelerateInterpolator() );
+            chatFormArea.startAnimation(animation);
         }
     }
 
