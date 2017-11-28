@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -20,6 +21,7 @@ import com.cyder.atsushi.youtubesync.animations.ResizeAnimation;
 public class ChatFormFragment extends Fragment {
     private View chatFormArea;
     private ChatFormFragment.ChatFormFragmentListener listener = null;
+    private InputMethodManager manager;
 
     public interface ChatFormFragmentListener {
         void onSendChat(String message);
@@ -51,6 +53,7 @@ public class ChatFormFragment extends Fragment {
             }
         });
 
+        manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         return rootView;
     }
 
@@ -62,6 +65,7 @@ public class ChatFormFragment extends Fragment {
                 animation.setDuration(100);
                 chatFormArea.startAnimation(animation);
             } else {
+                manager.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 final ResizeAnimation animation = new ResizeAnimation(chatFormArea, -chatFormArea.getHeight(), chatFormArea.getHeight());
                 animation.setDuration(100);
                 animation.setAnimationListener(new Animation.AnimationListener() {
