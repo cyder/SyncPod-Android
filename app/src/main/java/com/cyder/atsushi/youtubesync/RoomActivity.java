@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.cyder.atsushi.youtubesync.app_data.MySelf;
 import com.cyder.atsushi.youtubesync.app_data.RoomData;
@@ -82,6 +83,8 @@ public class RoomActivity extends AppCompatActivity
         connectFlag = false;
         roomChannel = new RoomChannel(roomKey);
         roomChannel.setListener(this);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     @Override
