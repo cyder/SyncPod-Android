@@ -53,8 +53,7 @@ public class SearchVideoActivity extends AppCompatActivity implements SearchInte
         youtubeSearchForm = (EditText) findViewById(R.id.youtube_search_form);
 
         searchingHelper = new SearchingVideoHelper(this);
-        searchingHelper.setListener(this);
-        listView = (ListView)findViewById(R.id.result_list);
+        listView = (ListView) findViewById(R.id.result_list);
         adapter = new SearchAdapter(SearchVideoActivity.this);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -75,7 +74,8 @@ public class SearchVideoActivity extends AppCompatActivity implements SearchInte
             }
 
             @Override
-            public void onScrollStateChanged(AbsListView arg0, int arg1) {}
+            public void onScrollStateChanged(AbsListView arg0, int arg1) {
+            }
         });
 
 
@@ -85,7 +85,7 @@ public class SearchVideoActivity extends AppCompatActivity implements SearchInte
                 Log.d("App", "Submit");
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     searchingHelper.get(youtubeSearchForm.getText().toString());
-                    InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     return true;
                 }
@@ -100,7 +100,7 @@ public class SearchVideoActivity extends AppCompatActivity implements SearchInte
             public void run() {
                 adapter.setVideoList(result);
                 listView.setAdapter(adapter);
-                if(listFooter == null) {
+                if (listFooter == null) {
                     listFooter = getLayoutInflater().inflate(R.layout.search_result_video_list_footer, null);
                     listView.addFooterView(listFooter);
                 }
