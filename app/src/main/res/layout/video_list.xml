@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="110dp"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="10dp">
 
@@ -25,15 +25,17 @@
             android:layout_alignParentBottom="true"
             android:layout_margin="5dp"
             android:background="@color/duration_background"
-            android:gravity="right"
-            android:textColor="@color/duration_text" />
+            android:paddingEnd="2dp"
+            android:paddingStart="1dp"
+            android:textColor="@color/duration_text"
+            android:textSize="12sp" />
 
     </RelativeLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
         android:layout_marginStart="5dp"
         android:orientation="vertical">
@@ -43,26 +45,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:lineSpacingExtra="3sp"
+            android:lineSpacingExtra="2sp"
             android:maxLines="2"
             android:scrollHorizontally="true"
+            android:textColor="@color/text"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/channel_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="2dp"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textColor="@color/subtext"
             android:textSize="12sp" />
 
         <TextView
             android:id="@+id/published"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:maxLines="1"
+            android:textColor="@color/subtext"
             android:textSize="12sp" />
 
         <TextView
@@ -70,6 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:textColor="@color/subtext"
             android:textSize="12sp" />
 
     </LinearLayout>
