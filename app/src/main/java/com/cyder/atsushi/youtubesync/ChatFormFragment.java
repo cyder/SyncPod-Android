@@ -67,7 +67,9 @@ public class ChatFormFragment extends Fragment {
                 chatFormArea.setVisibility(View.VISIBLE);
                 animation = new ResizeAnimation(chatFormArea, originalHeight, 0);
             } else {
-                manager.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                if(getView() != null) {
+                    manager.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                }
                 animation = new ResizeAnimation(chatFormArea, -chatFormArea.getHeight(), chatFormArea.getHeight());
                 animation.setAnimationListener(new Animation.AnimationListener() {
                     @Override
