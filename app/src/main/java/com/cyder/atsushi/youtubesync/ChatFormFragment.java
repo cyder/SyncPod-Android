@@ -67,7 +67,7 @@ public class ChatFormFragment extends Fragment {
                 chatFormArea.setVisibility(View.VISIBLE);
                 animation = new ResizeAnimation(chatFormArea, originalHeight, 0);
             } else {
-                if(getView() != null) {
+                if (getView() != null) {
                     manager.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 }
                 animation = new ResizeAnimation(chatFormArea, -chatFormArea.getHeight(), chatFormArea.getHeight());
@@ -87,14 +87,13 @@ public class ChatFormFragment extends Fragment {
                 });
             }
             animation.setDuration(getResources().getInteger(R.integer.chat_form_animation_time));
-            animation.setInterpolator( new AccelerateDecelerateInterpolator() );
+            animation.setInterpolator(new AccelerateDecelerateInterpolator());
             chatFormArea.startAnimation(animation);
         }
     }
 
     private int dpToPx(int dp) {
         DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-        return px;
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 }
