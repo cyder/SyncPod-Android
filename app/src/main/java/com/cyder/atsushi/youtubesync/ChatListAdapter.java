@@ -2,18 +2,18 @@ package com.cyder.atsushi.youtubesync;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.LinearLayout;
 
 import com.cyder.atsushi.youtubesync.app_data.ChatList;
 import com.cyder.atsushi.youtubesync.json_data.Chat;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -57,32 +57,48 @@ public class ChatListAdapter extends BaseListAdapter<Chat, ChatList> {
         return convertView;
     }
 
-    //時間を加工する場所
+    /**
+     * 1.現在時刻 & 現在タイムゾーン取得
+     * 2.UTCのデートフォーマッタでチャット投稿時の時刻を表すtimeに食わせる
+     * 3.デートフォーマッタのタイムゾーンを現在タイムゾーンに
+     * 4.時刻解析 & 値返却
+     *
+     * @param t "UTC"の時間の文字列(yyyy/MM/dd HH:mm:ss)
+     * @return "日本標準時"の時間文字列(投稿された時により変わる)
+     */
     private String getTime(String t) {
-        Calendar current = Calendar.getInstance(TimeZone.getTimeZone("Asia/Tokyo"));  // 現在時刻の取得
+        // このままで現在のタイムゾーンを取得できているようです
+        // -- 1 --
+        Calendar current = Calendar.getInstance();
 
+        // -- 2 --
         SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Calendar time = Calendar.getInstance();
         sdFormat.setTimeZone(TimeZone.getTimeZone("Europe/London"));
-        time.setTimeZone(TimeZone.getTimeZone("Europe/London")); // UTCにセット
         try {
             time.setTime(sdFormat.parse(t));
         } catch (ParseException e) {
             System.out.println(e);
         }
+
+        // -- 3 --
         sdFormat.setTimeZone(current.getTimeZone());
-        time.setTimeZone(current.getTimeZone());
 
         // 時間表示の分岐
+        // -- 4 --
         if (current.get(Calendar.YEAR) == time.get(Calendar.YEAR)) {
             if (current.get(Calendar.DATE) == time.get(Calendar.DATE)) {
-                sdFormat.applyPattern("HH:mm");   // 日が同じ時、時間と分のみ表示
+                // 日が同じ時、時間と分のみ表示
+                sdFormat.applyPattern(DateFormat.getBestDateTimePattern(Locale.getDefault(), "Hm"));
             } else {
-                sdFormat.applyPattern("MM/dd HH:mm");  // 日が違うとき、月、日、時間、秒を表示
+                // 日が違うとき、月、日、時間を表示
+                sdFormat.applyPattern(DateFormat.getBestDateTimePattern(Locale.getDefault(), "MdHm"));
             }
         } else {
-            sdFormat.applyPattern("yyyy/MM/dd HH:mm");  // 年も違うとき上記に合わせ年も表示
+            // 年も違うとき上記に合わせ年も表示
+            sdFormat.applyPattern(DateFormat.getBestDateTimePattern(Locale.getDefault(), "yMdHm"));
         }
+
         return sdFormat.format(time.getTime());
     }
 }
