@@ -72,7 +72,7 @@ public class ChatListAdapter extends BaseListAdapter<Chat, ChatList> {
         Calendar current = Calendar.getInstance();
 
         // -- 2 --
-        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault());
         Calendar time = Calendar.getInstance();
         sdFormat.setTimeZone(TimeZone.getTimeZone("Europe/London"));
         try {
