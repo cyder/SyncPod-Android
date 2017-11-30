@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -61,7 +62,7 @@ public class ChatListAdapter extends BaseListAdapter<Chat, ChatList> {
     private String getTime(String t) {
         Calendar current = Calendar.getInstance(TimeZone.getTimeZone("Asia/Tokyo"));  // 現在時刻の取得
 
-        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault());
         Calendar time = Calendar.getInstance();
         sdFormat.setTimeZone(TimeZone.getTimeZone("Europe/London"));
         time.setTimeZone(TimeZone.getTimeZone("Europe/London")); // UTCにセット
