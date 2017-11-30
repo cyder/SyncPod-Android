@@ -55,7 +55,7 @@ public class ChatFormFragment extends Fragment {
             }
         });
 
-        originalHeight = dpToPx(48);
+        originalHeight = dpToPx(getResources().getInteger(R.integer.chat_form_height));
         manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         return rootView;
     }
@@ -86,7 +86,7 @@ public class ChatFormFragment extends Fragment {
                     }
                 });
             }
-            animation.setDuration(100);
+            animation.setDuration(getResources().getInteger(R.integer.chat_form_animation_time));
             animation.setInterpolator( new AccelerateDecelerateInterpolator() );
             chatFormArea.startAnimation(animation);
         }
