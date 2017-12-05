@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import static android.net.Uri.encode;
+
 /**
  * Created by atsushi on 2017/10/11.
  */
@@ -60,7 +62,7 @@ public class SearchingVideoHelper extends HttpRequestsHelper {
 
     private void search(final String keyword, final String pageToken) {
         HashMap<String, String> params = new HashMap<>();
-        params.put("keyword", keyword);
+        params.put("keyword", encode(keyword));
         if (pageToken != null) {
             params.put("page_token", pageToken);
         }
