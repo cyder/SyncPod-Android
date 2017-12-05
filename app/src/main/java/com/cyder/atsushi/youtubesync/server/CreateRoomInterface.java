@@ -8,4 +8,5 @@ import com.cyder.atsushi.youtubesync.json_data.Room;
 
 public interface CreateRoomInterface {
     void onCreatedRoom(Room room);
+    void onCreateFailed();
 }

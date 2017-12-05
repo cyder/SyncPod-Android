@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.cyder.atsushi.youtubesync.app_data.MySelf;
 import com.cyder.atsushi.youtubesync.json_data.JsonParameter;
-import com.cyder.atsushi.youtubesync.json_data.Response;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -18,11 +17,13 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import static android.net.Uri.encode;
+
 /**
  * Created by chigichan24 on 2017/10/29.
  */
 
-public class HttpRequestsHelper {
+public class HttpRequestsHelper<T> {
 
     @NonNull
     private final static String TAG = HttpRequestsHelper.class.getSimpleName();
@@ -36,8 +37,11 @@ public class HttpRequestsHelper {
     @NonNull
     private Gson gson;
 
-    protected HttpRequestsHelper() {
+    private final Class<T> typeParameterClass;
+
+    protected HttpRequestsHelper(Class<T> typeParameterClass) {
         this.gson = new Gson();
+        this.typeParameterClass = typeParameterClass;
     }
 
     protected void post(final JsonParameter jsonParameter, final String endPoint, final HttpRequestCallback callback) {
@@ -53,14 +57,14 @@ public class HttpRequestsHelper {
                 } else {
                     params += "&";
                 }
-                params += key + "=" + hashParameter.get(key);
+                params += key + "=" + encode(hashParameter.get(key));
             }
         }
         communicate("GET", null, endPoint + params, callback);
     }
 
-    public interface HttpRequestCallback {
-        void success(Response response);
+    public interface HttpRequestCallback<T> {
+        void success(T response);
 
         void failure();
     }
@@ -91,7 +95,7 @@ public class HttpRequestsHelper {
                     if (con.getResponseCode() == HTTP_SUCCESS_STATUS) {
                         BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
                         String buffer = reader.readLine();
-                        Response response = gson.fromJson(buffer, Response.class);
+                        T response = gson.fromJson(buffer, typeParameterClass);
                         callback.success(response);
 
                     } else if (con.getResponseCode() == HTTP_FAILURE_STATUS) {

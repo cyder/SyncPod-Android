@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -18,8 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cyder.atsushi.youtubesync.json_data.Video;
-import com.cyder.atsushi.youtubesync.youtube.SearchingVideoHelper;
 import com.cyder.atsushi.youtubesync.youtube.SearchInterface;
+import com.cyder.atsushi.youtubesync.youtube.SearchingVideoHelper;
 
 import java.util.ArrayList;
 
@@ -53,8 +51,7 @@ public class SearchVideoActivity extends AppCompatActivity implements SearchInte
         youtubeSearchForm = (EditText) findViewById(R.id.youtube_search_form);
 
         searchingHelper = new SearchingVideoHelper(this);
-        searchingHelper.setListener(this);
-        listView = (ListView)findViewById(R.id.result_list);
+        listView = (ListView) findViewById(R.id.result_list);
         adapter = new SearchAdapter(SearchVideoActivity.this);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -75,21 +72,18 @@ public class SearchVideoActivity extends AppCompatActivity implements SearchInte
             }
 
             @Override
-            public void onScrollStateChanged(AbsListView arg0, int arg1) {}
+            public void onScrollStateChanged(AbsListView arg0, int arg1) {
+            }
         });
 
 
         youtubeSearchForm.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                Log.d("App", "Submit");
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    searchingHelper.get(youtubeSearchForm.getText().toString());
-                    InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                    return true;
-                }
-                return false;
+                searchingHelper.get(youtubeSearchForm.getText().toString());
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                return true;
             }
         });
     }
@@ -100,7 +94,7 @@ public class SearchVideoActivity extends AppCompatActivity implements SearchInte
             public void run() {
                 adapter.setVideoList(result);
                 listView.setAdapter(adapter);
-                if(listFooter == null) {
+                if (listFooter == null) {
                     listFooter = getLayoutInflater().inflate(R.layout.search_result_video_list_footer, null);
                     listView.addFooterView(listFooter);
                 }

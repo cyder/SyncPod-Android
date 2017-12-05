@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +20,11 @@ import java.util.ArrayList;
 public class SearchAdapter extends BaseAdapter {
     LayoutInflater layoutInflater = null;
     ArrayList<Video> videoList;
+    private Context context = null;
 
     public SearchAdapter(Context context) {
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.context = context;
     }
 
     public void setVideoList(ArrayList<Video> videoList) {
@@ -66,8 +69,11 @@ public class SearchAdapter extends BaseAdapter {
         }
         ((TextView) convertView.findViewById(R.id.title)).setText(video.title);
         ((TextView) convertView.findViewById(R.id.channel_title)).setText(video.channel_title);
+        ((TextView) convertView.findViewById(R.id.published)).setText(String.format(context.getString(R.string.published), video.published));
+        ((TextView) convertView.findViewById(R.id.view_count)).setText(String.format(context.getString(R.string.view_count), insertComma(video.view_count)));
 
         ImageView imageView = convertView.findViewById(R.id.thumbnail);
+        ((TextView) convertView.findViewById(R.id.video_duration)).setText(" " + video.duration + " ");
         if (video.thumbnail != null) {
             imageView.setImageBitmap(video.thumbnail);
         } else {
@@ -75,5 +81,20 @@ public class SearchAdapter extends BaseAdapter {
         }
 
         return convertView;
+    }
+
+    @NonNull
+    private String insertComma(String bignum) {
+        StringBuffer sb = new StringBuffer(bignum);
+        String reversed = sb.reverse().toString();
+        String res = "";
+        for (int i = 0; i < reversed.length(); ++i) {
+            res += reversed.charAt(i);
+            if (i % 3 == 2 && i != reversed.length() - 1) {
+                res += ",";
+            }
+        }
+        sb = new StringBuffer(res);
+        return sb.reverse().toString();
     }
 }
