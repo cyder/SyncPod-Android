@@ -17,11 +17,13 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import static android.net.Uri.encode;
+
 /**
  * Created by chigichan24 on 2017/10/29.
  */
 
-public class HttpRequestsHelper<T>{
+public class HttpRequestsHelper<T> {
 
     @NonNull
     private final static String TAG = HttpRequestsHelper.class.getSimpleName();
@@ -55,7 +57,7 @@ public class HttpRequestsHelper<T>{
                 } else {
                     params += "&";
                 }
-                params += key + "=" + hashParameter.get(key);
+                params += key + "=" + encode(hashParameter.get(key));
             }
         }
         communicate("GET", null, endPoint + params, callback);
