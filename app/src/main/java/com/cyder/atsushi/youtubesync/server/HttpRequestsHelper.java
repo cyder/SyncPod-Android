@@ -21,7 +21,7 @@ import java.util.HashMap;
  * Created by chigichan24 on 2017/10/29.
  */
 
-public class HttpRequestsHelper<T>{
+public class HttpRequestsHelper<T> {
 
     @NonNull
     private final static String TAG = HttpRequestsHelper.class.getSimpleName();
