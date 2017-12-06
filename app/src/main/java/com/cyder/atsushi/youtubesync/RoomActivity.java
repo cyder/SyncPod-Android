@@ -195,16 +195,16 @@ public class RoomActivity extends AppCompatActivity
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
             if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                alertDialogBuilder.setTitle("確認");
-                alertDialogBuilder.setMessage("ルームを退出しますか？");
-                alertDialogBuilder.setPositiveButton("退出",
+                alertDialogBuilder.setTitle(R.string.confirm);
+                alertDialogBuilder.setMessage(R.string.confirm_to_exit);
+                alertDialogBuilder.setPositiveButton(R.string.exit,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 finish();
                             }
                         });
-                alertDialogBuilder.setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setNegativeButton(R.string.cancel_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // なにもしない
