@@ -195,30 +195,28 @@ public class RoomActivity extends AppCompatActivity
      */
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                alertDialogBuilder.setTitle(R.string.confirm);
-                alertDialogBuilder.setMessage(R.string.confirm_to_exit);
-                alertDialogBuilder.setPositiveButton(R.string.exit,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                finish();
-                            }
-                        });
-                alertDialogBuilder.setNegativeButton(R.string.cancel_button, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // なにもしない
-                    }
-                });
-                alertDialogBuilder.setCancelable(true);
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+        if (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle(R.string.confirm);
+            alertDialogBuilder.setMessage(R.string.confirm_to_exit);
+            alertDialogBuilder.setPositiveButton(R.string.exit,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    });
+            alertDialogBuilder.setNegativeButton(R.string.cancel_button, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // なにもしない
+                }
+            });
+            alertDialogBuilder.setCancelable(true);
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
 
-                return false;
-            }
+            return false;
         }
         return super.dispatchKeyEvent(event);
     }
