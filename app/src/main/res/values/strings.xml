@@ -48,7 +48,7 @@
     <string name="play_list_empty_description">
         プレイリストに動画がありません。右下のボタンからみんなで見たい動画を追加してください。
     </string>
-    <string name="share_room_key_button">ルームキーを共有</string>
+    <string name="share_room_key_button">ルームに招待する</string>
     <string name="share_room_key_message">
         SyncPodで一緒に動画を見ませんか？\n\n
         ルーム名: %1$s\n
