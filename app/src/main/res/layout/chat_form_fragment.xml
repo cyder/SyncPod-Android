@@ -6,7 +6,8 @@
     android:background="@color/chat_background"
     android:elevation="15dp"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:visibility="gone">
 
     <EditText
         android:id="@+id/chat_form"
