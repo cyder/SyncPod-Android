@@ -1,25 +1,56 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
 
+def versionMajor = 0
+def versionMinor = 1
+def versionPatch = 0
+
+def appVersionCode = versionMajor * 100 + versionMinor * 10 + versionPatch
+def appVersionName = "${versionMajor}.${versionMinor}.${versionPatch}"
+
+def appCompileSdkVersion = 26
+def appPackageName = "com.cyder.atsushi.youtubesync"
+def appMinSdkVersion = 19
+def appTargetSdkVersion = 26
+
 android {
-    compileSdkVersion 26
+    compileSdkVersion appCompileSdkVersion
+    flavorDimensions "default"
     defaultConfig {
-        applicationId "com.cyder.atsushi.youtubesync"
-        minSdkVersion 19
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        applicationId appPackageName
+        minSdkVersion appMinSdkVersion
+        targetSdkVersion appTargetSdkVersion
+        versionCode appVersionCode
+        versionName appVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix '-dev'
+            manifestPlaceholders = [developer_key: System.getenv('YOUTUBE_DEVELOPER_KEY')]
+        }
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            jniDebuggable false
+            renderscriptDebuggable false
+            manifestPlaceholders = [developer_key: System.getenv('YOUTUBE_DEVELOPER_KEY')]
         }
     }
+
+    productFlavors {
+        develop {
+            applicationId "${appPackageName}.develop"
+        }
+        production {
+            applicationId "${appPackageName}"
+        }
+    }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
@@ -27,7 +58,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
