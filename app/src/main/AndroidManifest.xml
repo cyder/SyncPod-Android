@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="atsushi.cyder.com.youtubesync">
+    package="com.cyder.atsushi.youtubesync">
 
     <application
         android:allowBackup="true"

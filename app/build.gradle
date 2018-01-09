@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "atsushi.cyder.com.youtubesync"
+        applicationId "com.cyder.atsushi.youtubesync"
         minSdkVersion 19
         targetSdkVersion 26
         versionCode 1

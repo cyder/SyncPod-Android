@@ -1,4 +1,4 @@
-package atsushi.cyder.com.youtubesync
+package com.cyder.atsushi.youtubesync
 
 import org.junit.Test
 
