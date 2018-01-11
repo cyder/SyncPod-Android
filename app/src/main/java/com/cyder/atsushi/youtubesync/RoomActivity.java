@@ -1,12 +1,15 @@
 package com.cyder.atsushi.youtubesync;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.WindowManager;
 
 import com.cyder.atsushi.youtubesync.app_data.MySelf;
@@ -185,6 +188,37 @@ public class RoomActivity extends AppCompatActivity
         super.onSaveInstanceState(savedInstanceState);
         MySelf.saveInstanceState(savedInstanceState);
         roomFragmentPagerAdapter.saveInstanceState(savedInstanceState);
+    }
+
+    /**
+     *
+     */
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle(R.string.confirm);
+            alertDialogBuilder.setMessage(R.string.confirm_to_exit);
+            alertDialogBuilder.setPositiveButton(R.string.exit,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    });
+            alertDialogBuilder.setNegativeButton(R.string.cancel_button, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // なにもしない
+                }
+            });
+            alertDialogBuilder.setCancelable(true);
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            return false;
+        }
+        return super.dispatchKeyEvent(event);
     }
 
     public void startSearchVideoActivity() {

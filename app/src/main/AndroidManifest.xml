@@ -28,6 +28,9 @@
                 <data
                     android:host="app.sync-pod.com"
                     android:scheme="http" />
+                <data
+                    android:host="app.com"
+                    android:scheme="sync-pod" />
             </intent-filter>
         </activity>
         <activity
