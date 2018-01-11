@@ -2,10 +2,10 @@
 YouTubeSyncのAndroidアプリ用のリポジトリです。
 
 ## 必要環境
-* Android Studio 2.3.3
+* Android Studio 3.0.1
 * Android SDK
 
-### Android Studio 2.3.3
+### Android Studio 3.0.1
 [ここ](https://developer.android.com/studio/archive.html)からインストールする。
 
 ### Android SDK
@@ -30,3 +30,4 @@ launchctl setenv YOUTUBE_DEVELOPER_KEY <APIキー>
 
 ## 著者
 * [森 篤史](@Mori-Atsushi)
+* [千北 一期](@chigichan24)
