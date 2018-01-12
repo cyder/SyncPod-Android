@@ -14,12 +14,12 @@ abstract class BaseActivity : AppCompatActivity() {
     private var component: ActivityComponent? = null
     private var viewModel: ActivityViewModel? = null
 
-    fun getComponent(): ActivityComponent? {
-        component.also {
+    fun getComponent(): ActivityComponent {
+        if (component == null) {
             val application = application as BaseApplication
-            application.getComponent().plus(ActivityModule(this))
+            component = application.getComponent().plus(ActivityModule(this))
         }
-        return component
+        return component as ActivityComponent
     }
 
     protected fun bindViewModel(viewModel: ActivityViewModel) {
