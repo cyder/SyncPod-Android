@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync.di
 
 import com.cyder.atsushi.youtubesync.di.scope.ActivityScope
+import com.cyder.atsushi.youtubesync.view.activity.MainActivity
 import dagger.Subcomponent
 
 /**
@@ -11,6 +12,6 @@ import dagger.Subcomponent
 @Subcomponent(modules = [ActivityModule::class])
 interface ActivityComponent {
     //TODO when you create Activity, you have to create inject method
-
+    fun inject(activity: MainActivity)
     fun plus(module: FragmentModule): FragmentComponent
 }
