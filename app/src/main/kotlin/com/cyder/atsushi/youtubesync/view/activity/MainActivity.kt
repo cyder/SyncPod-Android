@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class MainActivity : BaseActivity() {
 
-    @Inject lateinit var viewModel : MainActivityViewModel
+    @Inject lateinit var viewModel: MainActivityViewModel
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
