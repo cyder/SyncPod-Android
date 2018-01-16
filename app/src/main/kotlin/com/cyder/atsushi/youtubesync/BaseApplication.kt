@@ -10,9 +10,7 @@ import com.cyder.atsushi.youtubesync.di.DaggerAppComponent
  */
 
 class BaseApplication : Application() {
-    private lateinit var component: AppComponent
-
-    fun getComponent(): AppComponent = component
+    lateinit var component: AppComponent
 
     override fun onCreate() {
         super.onCreate()
