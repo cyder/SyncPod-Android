@@ -1,19 +1,15 @@
 {
   "request": {
     "method": "POST",
-    "urlPatter": "/login",
+    "urlPath": "/login",
     "headers": {
       "Content-Type": {
         "matches": "application/json"
       }
-
     }
   },
   "response": {
     "status": 200,
-    "body": "{\"result\": \"success\"}",
-    "headers": {
-      "Content-Type": "application/json"
-    }
+    "body": "{\"result\":\"success\"}",
   }
 }
