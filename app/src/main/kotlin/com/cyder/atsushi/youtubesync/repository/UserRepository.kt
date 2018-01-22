@@ -10,6 +10,7 @@ import io.reactivex.Flowable
  */
 
 interface UserRepository {
-    val user: Flowable<User>
-    @CheckResult fun signIn(): Completable
+    val user: Flowable<User?>
+    @CheckResult
+    fun signIn(): Completable
 }
