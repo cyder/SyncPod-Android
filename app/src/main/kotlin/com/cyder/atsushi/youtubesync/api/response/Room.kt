@@ -5,10 +5,10 @@ package com.cyder.atsushi.youtubesync.api.response
  */
 
 data class Room(
-        val id: Int?,
-        val name: String?,
-        val description: String?,
-        val key: String?,
+        val id: Int,
+        val name: String,
+        val description: String,
+        val key: String,
         val nowPlayingVideo: Video?,
         val lastPlatedVideo: Video?,
         val onlineUsers: List<User>?
