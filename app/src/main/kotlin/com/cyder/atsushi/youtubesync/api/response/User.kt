@@ -6,7 +6,7 @@ package com.cyder.atsushi.youtubesync.api.response
 
 data class User(
         val id: Int,
-        val email: String,
+        val email: String?,
         val name: String,
         val accessToken: String?
 )
