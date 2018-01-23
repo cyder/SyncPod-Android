@@ -17,10 +17,11 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 public class SignInTest {
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(8080);
+
     @Test
     public void post() throws Exception {
         stubFor(WireMock.post(urlPathEqualTo("/login"))
-                .withHeader("Content-Type",matching("application/json"))
+                .withHeader("Content-Type", matching("application/json"))
                 .willReturn(aResponse()));
     }
 
