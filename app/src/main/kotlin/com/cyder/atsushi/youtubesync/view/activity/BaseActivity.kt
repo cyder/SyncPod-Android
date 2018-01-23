@@ -14,10 +14,11 @@ abstract class BaseActivity : AppCompatActivity() {
     private var component: ActivityComponent? = null
     private var viewModel: ActivityViewModel? = null
 
+    //TODO change to custom getter
     fun getComponent(): ActivityComponent {
         if (component == null) {
             val application = application as BaseApplication
-            component = application.getComponent().plus(ActivityModule(this))
+            component = application.component.plus(ActivityModule(this))
         }
         return component as ActivityComponent
     }
