@@ -5,6 +5,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import com.cyder.atsushi.youtubesync.R
+import com.cyder.atsushi.youtubesync.databinding.ActivitySignInBinding
 import com.cyder.atsushi.youtubesync.viewmodel.SignInActivityViewModel
 import javax.inject.Inject
 
