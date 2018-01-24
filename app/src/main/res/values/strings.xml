@@ -1,3 +1,73 @@
 <resources>
-    <string name="app_name">SyncPod-AND</string>
+    <string name="app_name">SyncPod</string>
+    <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
+
+    <!--title bar-->
+    <string name="login_title">ログイン</string>
+    <string name="register_account_title">アカウント登録</string>
+    <string name="create_new_room">新規ルーム作成</string>
+    <string name="title">SyncPod</string>
+
+    <!--layout-->
+    <string name="email">メールアドレス</string>
+    <string name="name">名前</string>
+    <string name="password">パスワード</string>
+    <string name="confirm_password">パスワード（確認）</string>
+    <string name="new_register">新規登録</string>
+    <string name="login_button">ログイン</string>
+    <string name="create_room_button">ルーム作成</string>
+    <string name="send_button">送信</string>
+    <string name="cancel_button">キャンセル</string>
+    <string name="register_button">登録</string>
+    <string name="first_start_message">
+        ようこそ。\n\n
+        これは全く新しい動画視聴の体験です。\n
+        離れた人と一緒に動画を楽しむことができます。\n\n
+        友人や恋人と同じ時間を共有したり、\n
+        アーティストのファン同士で盛り上がったり、\n
+        楽しみ方は自由自在。
+    </string>
+    <string name="searching_hint_keyword">キーワード</string>
+    <string name="playlist_title">プレイリスト</string>
+    <string name="chat_title">チャット</string>
+    <string name="room_information_title">ルーム情報</string>
+    <string name="join_room">ルームに参加する</string>
+    <string name="join_room_description">ルームキーを入力して既存のルームに参加します。</string>
+    <string name="create_room">ルームを作成する</string>
+    <string name="create_room_description">新しいルームを作成します。ルームキーを共有して他の人に参加してもらうことができます。</string>
+    <string name="room_key">ルームキー</string>
+    <string name="joined_rooms">最近参加したルーム</string>
+    <string name="online_users_num">オンライン：%d人</string>
+    <string name="now_playing_video_info">再生中：%s</string>
+    <string name="last_played_video_info">再生終了：%s</string>
+    <string name="reject_message">入室できません。\nルームIDが間違っている可能性があります。</string>
+    <string name="ok">OK</string>
+    <string name="notice">おしらせ</string>
+    <string name="room_name">ルーム名</string>
+    <string name="room_description">ルーム説明</string>
+    <string name="play_list_empty_description">
+        プレイリストに動画がありません。右下のボタンからみんなで見たい動画を追加してください。
+    </string>
+    <string name="share_room_key_button">ルームに招待する</string>
+    <string name="share_room_key_message">
+        SyncPodで一緒に動画を見ませんか？\n\n
+        ルーム名: %1$s\n
+        ルームキー: %2$s\n\n
+        こちらのURLからも入室できます。\n
+        http://app.sync-pod.com/room?room_key=%2$s
+    </string>
+    <string name="playlist">プレイリスト</string>
+    <string name="online_users_title">オンライン（%d人）</string>
+    <string name="confirm">確認</string>
+    <string name="confirm_to_exit">ルームを退出しますか？</string>
+    <string name="exit">退出</string>
+    <string name="login_mistook">メールアドレスもしくはパスワードが間違っています。</string>
+    <string name="sign_up_used_email">入力されたメールアドレスは既に使われています。</string>
+    <string name="form_not_filled">項目をすべて入力してください。</string>
+    <string name="sign_up_invalid_password">パスワードが一致しません。</string>
+    <string name="sign_up_min_password_length">パスワードが短すぎます。</string>
+    <string name="sign_up_invalid_email">メールアドレスが正しくありません。</string>
+    <string name="published">公開 : %s</string>
+    <string name="view_count">視聴回数 : %s 回</string>
+    <string name="network_error">予期せぬエラーが発生しました。間を開けてお試しください。</string>
 </resources>
