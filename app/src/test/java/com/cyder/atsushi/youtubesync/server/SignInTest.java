@@ -19,10 +19,12 @@ public class SignInTest {
     public WireMockRule wireMockRule = new WireMockRule(8080);
 
     @Test
-    public void post() throws Exception {
+    public void post_null() throws Exception {
         stubFor(WireMock.post(urlPathEqualTo("/login"))
                 .withHeader("Content-Type", matching("application/json"))
                 .willReturn(aResponse()));
+        SignIn signIn = new SignIn();
+        signIn.post("", "");
     }
 
 }
