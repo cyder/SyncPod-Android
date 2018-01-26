@@ -1,5 +1,7 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
+import android.view.View
+import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
 import javax.inject.Inject
 
@@ -8,7 +10,7 @@ import javax.inject.Inject
  */
 
 class SignInActivityViewModel @Inject constructor(
-
+        val navigator: Navigator
 ): ActivityViewModel() {
     override fun onStart() {
 
@@ -25,4 +27,7 @@ class SignInActivityViewModel @Inject constructor(
     override fun onStop() {
 
     }
+
+    fun onBackButtonClicked(view: View) = navigator.closeActivity()
+
 }

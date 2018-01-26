@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <data>
@@ -16,6 +17,9 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
+            app:title="@string/login_title"
+            app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
+            app:navigationOnClick="@{viewModel::onBackButtonClicked}"
             android:id="@+id/sign_in_tool_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

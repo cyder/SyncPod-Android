@@ -8,7 +8,7 @@ import javax.inject.Inject
 @ActivityScope
 class Navigator @Inject constructor(
         private val activity: AppCompatActivity
-        ) {
+) {
 
     fun navigateToSignInActivity() = activity.startActivity(SignInActivity.createIntent(activity))
 
