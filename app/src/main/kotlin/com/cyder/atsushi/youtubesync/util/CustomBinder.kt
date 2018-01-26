@@ -8,8 +8,5 @@ import android.view.View
  * Created by chigichan24 on 2018/01/26.
  */
 
-object CustomBinder {
-    @JvmStatic
-    @BindingAdapter("navigationOnClick")
-    fun onNavigationClick(toolbar: Toolbar, clickListener: View.OnClickListener) = toolbar.setNavigationOnClickListener(clickListener)
-}
+@BindingAdapter("navigationOnClick")
+fun Toolbar.onNavigationClick(clickListener: View.OnClickListener) = setNavigationOnClickListener(clickListener)
