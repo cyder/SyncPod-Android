@@ -9,7 +9,10 @@ import javax.inject.Singleton
  */
 
 @Singleton
-@Component(modules = [AppModule::class])
+@Component(modules = [
+    AppModule::class,
+    NetworkModule::class
+])
 interface AppComponent {
     fun inject(application: BaseApplication)
     fun plus(module: ActivityModule): ActivityComponent
