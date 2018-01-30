@@ -19,6 +19,10 @@ class NetworkModule {
         val instance = NetworkModule()
     }
 
+    @Singleton
+    @Provides
+    fun provideOkHttpClient():OkHttpClient = OkHttpClient.Builder().build()
+
     @RetrofitApi
     @Singleton
     @Provides

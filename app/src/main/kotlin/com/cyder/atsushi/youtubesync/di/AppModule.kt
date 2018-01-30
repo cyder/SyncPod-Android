@@ -13,7 +13,7 @@ import javax.inject.Singleton
  */
 @Module
 class AppModule(val context: Context) {
-    @Provides
+    @Singleton @Provides
     fun provideContext(): Context = context
 
     // TODO create singleton ormadatabase
