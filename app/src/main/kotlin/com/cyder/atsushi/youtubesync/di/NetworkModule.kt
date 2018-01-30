@@ -3,7 +3,10 @@ package com.cyder.atsushi.youtubesync.di
 import com.cyder.atsushi.youtubesync.api.SignInApi
 import dagger.Module
 import dagger.Provides
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 /**
@@ -16,9 +19,20 @@ class NetworkModule {
         val instance = NetworkModule()
     }
 
+    @RetrofitApi
     @Singleton
     @Provides
-    fun provideSignInApi(retrofit: Retrofit): SignInApi {
+    fun provideRetrofitApi(okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+                .baseUrl("http://59.106.220.89:3000/api/v1")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
+                .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideSignInApi(@RetrofitApi retrofit: Retrofit): SignInApi {
         return retrofit.create(SignInApi::class.java)
     }
 }
