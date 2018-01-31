@@ -15,9 +15,6 @@ import javax.inject.Singleton
 
 @Module
 class NetworkModule {
-    companion object {
-        val instance = NetworkModule()
-    }
 
     @Singleton
     @Provides
@@ -28,7 +25,7 @@ class NetworkModule {
     @Provides
     fun provideRetrofitApi(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-                .baseUrl("http://59.106.220.89:3000/api/v1")
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
                 .build()
@@ -38,5 +35,10 @@ class NetworkModule {
     @Provides
     fun provideSignInApi(@RetrofitApi retrofit: Retrofit): SignInApi {
         return retrofit.create(SignInApi::class.java)
+    }
+
+    companion object {
+        val instance = NetworkModule()
+        const val BASE_URL = "http://59.106.220.89:3000/api/v1/"
     }
 }
