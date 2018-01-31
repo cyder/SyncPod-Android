@@ -18,7 +18,7 @@ class BaseApplication : Application() {
         @Suppress("DEPRECATION")
         component = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
-                .appModule(NetworkModule.instance)
+                .networkModule(NetworkModule.instance)
                 .build()
         component.inject(this)
 

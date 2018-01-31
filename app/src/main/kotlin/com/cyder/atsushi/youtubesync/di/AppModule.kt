@@ -20,8 +20,6 @@ class AppModule(val context: Context) {
 
     @Singleton @Provides
     fun provideUserRepository(
-            api: SignInApi,
-            name: String,
-            password: String
-    ): UserRepository = UserDataRepository(api, name, password)
+            api: SignInApi
+    ): UserRepository = UserDataRepository(api)
 }

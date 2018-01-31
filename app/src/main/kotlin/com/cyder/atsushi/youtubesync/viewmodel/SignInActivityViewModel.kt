@@ -1,5 +1,6 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
+import android.databinding.ObservableField
 import android.support.design.widget.Snackbar
 import android.view.View
 import com.cyder.atsushi.youtubesync.repository.UserRepository
@@ -14,7 +15,9 @@ import javax.inject.Inject
 class SignInActivityViewModel @Inject constructor(
         private val repository: UserRepository,
         private val navigator: Navigator
-): ActivityViewModel() {
+) : ActivityViewModel() {
+    var mailAddress: ObservableField<String> = ObservableField()
+    var password: ObservableField<String> = ObservableField()
     override fun onStart() {
 
     }
@@ -34,10 +37,10 @@ class SignInActivityViewModel @Inject constructor(
     fun onBackButtonClicked(view: View) = navigator.closeActivity()
 
     fun onSignIn(view: View) {
-        repository.signIn()
+        repository.signIn(mailAddress.get(), password.get())
                 .subscribe({
                     navigator.navigateToTopActivity()
-                },{
+                }, {
                     Snackbar.make(view, "missed signin", Snackbar.LENGTH_SHORT).show()
                 })
     }

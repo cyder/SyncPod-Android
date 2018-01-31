@@ -46,6 +46,7 @@
                     android:layout_marginTop="10dp"
                     android:ems="10"
                     android:hint="@string/email"
+                    android:text="@={viewModel.mailAddress}"
                     android:inputType="textEmailAddress" />
 
                 <EditText
@@ -56,6 +57,7 @@
                     android:layout_marginTop="10dp"
                     android:ems="10"
                     android:hint="@string/password"
+                    android:text="@={viewModel.password}"
                     android:inputType="textPassword" />
 
                 <Button
