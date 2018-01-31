@@ -19,8 +19,8 @@ class UserDataRepository @Inject constructor(
                     .toFlowable()
                     .subscribeOn(Schedulers.computation())
 
-    override fun signIn(userName: String, password: String): Completable {
-        return signInApi.getSession(userName, password)
+    override fun signIn(email: String, password: String): Completable {
+        return signInApi.getSession(email, password)
                 .subscribeOn(Schedulers.computation())
                 .toCompletable()
     }

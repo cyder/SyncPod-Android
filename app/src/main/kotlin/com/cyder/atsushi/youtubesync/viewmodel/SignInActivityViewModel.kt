@@ -16,8 +16,8 @@ class SignInActivityViewModel @Inject constructor(
         private val repository: UserRepository,
         private val navigator: Navigator
 ) : ActivityViewModel() {
-    var mailAddress: ObservableField<String> = ObservableField()
-    var password: ObservableField<String> = ObservableField()
+    var mailAddress: ObservableField<String?> = ObservableField()
+    var password: ObservableField<String?> = ObservableField()
     override fun onStart() {
 
     }
@@ -37,7 +37,7 @@ class SignInActivityViewModel @Inject constructor(
     fun onBackButtonClicked(view: View) = navigator.closeActivity()
 
     fun onSignIn(view: View) {
-        repository.signIn(mailAddress.get(), password.get())
+        repository.signIn(mailAddress.get()?:"", password.get()?:"")
                 .subscribe({
                     navigator.navigateToTopActivity()
                 }, {

@@ -11,5 +11,5 @@ import io.reactivex.Flowable
 interface UserRepository {
     val user: Flowable<User?>
     @CheckResult
-    fun signIn(userName: String, password:String): Completable
+    fun signIn(email: String, password:String): Completable
 }
