@@ -28,6 +28,7 @@ class NetworkModule {
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
+                .client(okHttpClient)
                 .build()
     }
 
