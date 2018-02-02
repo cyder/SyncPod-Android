@@ -8,9 +8,8 @@ import io.reactivex.Flowable
 /**
  * Created by chigichan24 on 2018/01/18.
  */
-
 interface UserRepository {
     val user: Flowable<User?>
     @CheckResult
-    fun signIn(): Completable
+    fun signIn(email: String, password:String): Completable
 }

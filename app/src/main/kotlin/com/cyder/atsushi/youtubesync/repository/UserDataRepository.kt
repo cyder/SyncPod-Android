@@ -11,18 +11,16 @@ import javax.inject.Inject
  * Created by chigichan24 on 2018/01/17.
  */
 class UserDataRepository @Inject constructor(
-        private val signInApi: SignInApi,
-        private val userName: String,
-        private val password: String
+        private val signInApi: SignInApi
 ) : UserRepository {
     override val user: Flowable<User?> =
-            signInApi.getSession(userName, password)
+            signInApi.getSession("debug", "debug")
                     .map { it.user }
                     .toFlowable()
                     .subscribeOn(Schedulers.computation())
 
-    override fun signIn(): Completable {
-        return signInApi.getSession(userName, password)
+    override fun signIn(email: String, password: String): Completable {
+        return signInApi.getSession(email, password)
                 .subscribeOn(Schedulers.computation())
                 .toCompletable()
     }
