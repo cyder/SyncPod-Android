@@ -15,7 +15,6 @@ class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        @Suppress("DEPRECATION")
         component = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
                 .networkModule(NetworkModule.instance)
