@@ -39,6 +39,7 @@ class SignInActivityViewModel @Inject constructor(
     fun onSignIn(view: View) {
         repository.signIn(mailAddress.get()?:"", password.get()?:"")
                 .subscribe({
+                    navigator.closeActivity()
                     navigator.navigateToTopActivity()
                 }, {
                     Snackbar.make(view, "missed signin", Snackbar.LENGTH_SHORT).show()
