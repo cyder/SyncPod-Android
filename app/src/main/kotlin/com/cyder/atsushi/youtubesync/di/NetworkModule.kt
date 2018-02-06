@@ -18,7 +18,19 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient():OkHttpClient = OkHttpClient.Builder().build()
+    fun provideOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+                .addInterceptor {
+                    it.proceed(
+                            it.request()
+                                    .newBuilder()
+                                    .addHeader("Content-Type", "application/json; charset=utf-8")
+                                    .addHeader("Authorization", "hoge")
+                                    .build()
+                    )
+                }
+                .build()
+    }
 
     @RetrofitApi
     @Singleton
@@ -34,7 +46,7 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideSignInApi(@RetrofitApi retrofit: Retrofit): SyncPodApi {
+    fun provideSyncPodApi(@RetrofitApi retrofit: Retrofit): SyncPodApi {
         return retrofit.create(SyncPodApi::class.java)
     }
 
