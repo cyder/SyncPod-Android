@@ -1,7 +1,7 @@
 package com.cyder.atsushi.youtubesync.di
 
 import android.content.Context
-import com.cyder.atsushi.youtubesync.api.SignInApi
+import com.cyder.atsushi.youtubesync.api.SyncPodApi
 import com.cyder.atsushi.youtubesync.repository.UserDataRepository
 import com.cyder.atsushi.youtubesync.repository.UserRepository
 import dagger.Module
@@ -20,6 +20,6 @@ class AppModule(val context: Context) {
 
     @Singleton @Provides
     fun provideUserRepository(
-            api: SignInApi
+            api: SyncPodApi
     ): UserRepository = UserDataRepository(api)
 }
