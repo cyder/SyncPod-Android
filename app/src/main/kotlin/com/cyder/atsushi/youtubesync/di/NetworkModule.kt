@@ -1,6 +1,5 @@
 package com.cyder.atsushi.youtubesync.di
 
-import android.content.Context
 import com.cyder.atsushi.youtubesync.api.SyncPodApi
 import dagger.Module
 import dagger.Provides
@@ -19,15 +18,13 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(context: Context): OkHttpClient {
-        val data = context.getSharedPreferences("youtube-sync", Context.MODE_PRIVATE)
+    fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
                 .addInterceptor {
                     it.proceed(
                             it.request()
                                     .newBuilder()
                                     .addHeader("Content-Type", "application/json; charset=utf-8")
-                                    .addHeader("Authorization", data.getString("userToken", ""))
                                     .build()
                     )
                 }
