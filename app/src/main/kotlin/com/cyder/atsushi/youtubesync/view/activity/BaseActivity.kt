@@ -29,7 +29,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        viewModel?.onResume()
+        viewModel?.onStart()
     }
 
     override fun onResume() {
