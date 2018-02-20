@@ -20,14 +20,6 @@ class NetworkModule {
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
-                .addInterceptor {
-                    it.proceed(
-                            it.request()
-                                    .newBuilder()
-                                    .addHeader("Content-Type", "application/json; charset=utf-8")
-                                    .build()
-                    )
-                }
                 .build()
     }
 
