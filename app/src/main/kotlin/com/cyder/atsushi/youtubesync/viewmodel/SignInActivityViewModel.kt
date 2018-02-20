@@ -34,7 +34,7 @@ class SignInActivityViewModel @Inject constructor(
 
     }
 
-    fun onBackButtonClicked(view: View) = navigator.closeActivity()
+    fun onBackButtonClicked() = navigator.closeActivity()
 
     fun onSignIn(view: View) {
         repository.signIn(mailAddress.get()?:"", password.get()?:"")

@@ -1,6 +1,5 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
-import android.view.View
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
 import javax.inject.Inject
@@ -24,9 +23,9 @@ class MainActivityViewModel @Inject constructor(
     override fun onStop() {
     }
 
-    fun onSignInClicked(view: View) = navigator.navigateToSignInActivity()
+    fun onSignInClicked() = navigator.navigateToSignInActivity()
 
-    fun onSignUpClicked(view: View) {
+    fun onSignUpClicked() {
 
     }
 }
