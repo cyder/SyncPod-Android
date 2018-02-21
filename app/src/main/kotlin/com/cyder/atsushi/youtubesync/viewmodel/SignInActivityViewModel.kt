@@ -1,8 +1,6 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
 import android.databinding.ObservableField
-import android.support.design.widget.Snackbar
-import android.view.View
 import com.cyder.atsushi.youtubesync.repository.UserRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
@@ -18,6 +16,12 @@ class SignInActivityViewModel @Inject constructor(
 ) : ActivityViewModel() {
     var mailAddress: ObservableField<String?> = ObservableField()
     var password: ObservableField<String?> = ObservableField()
+    var callback: SnackbarCallback? = null
+
+    interface SnackbarCallback {
+        fun onSignInFailed()
+    }
+
     override fun onStart() {
 
     }
@@ -36,12 +40,12 @@ class SignInActivityViewModel @Inject constructor(
 
     fun onBackButtonClicked() = navigator.closeActivity()
 
-    fun onSignIn(view: View) {
-        repository.signIn(mailAddress.get()?:"", password.get()?:"")
+    fun onSignIn() {
+        repository.signIn(mailAddress.get() ?: "", password.get() ?: "")
                 .subscribe({
                     navigator.navigateToTopActivity()
                 }, {
-                    Snackbar.make(view, "missed signin", Snackbar.LENGTH_SHORT).show()
+                    callback?.onSignInFailed()
                 })
     }
 

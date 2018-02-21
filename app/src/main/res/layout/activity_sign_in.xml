@@ -70,7 +70,7 @@
                     android:text="@string/send_button"
                     android:textColor="@color/appWhite"
                     android:textSize="18sp"
-                    android:onClick="@{viewModel::onSignIn}"/>
+                    android:onClick="@{(v) -> viewModel.onSignIn()}"/>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
