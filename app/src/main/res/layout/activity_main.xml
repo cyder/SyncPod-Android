@@ -50,7 +50,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_weight="50"
                     android:background="@color/appBlue"
-                    android:onClick="@{viewModel::onSignInClicked}"
+                    android:onClick="@{(v) -> viewModel.onSignInClicked()}"
                     android:text="@string/login_button"
                     android:textColor="@color/appWhite"
                     android:textSize="18sp" />
@@ -63,7 +63,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_weight="50"
                     android:background="@color/appGreen"
-                    android:onClick="@{viewModel::onSignUpClicked}"
+                    android:onClick="@{(v) -> viewModel.onSignUpClicked()}"
                     android:text="@string/new_register"
                     android:textColor="@color/appWhite"
                     android:textSize="18sp" />
