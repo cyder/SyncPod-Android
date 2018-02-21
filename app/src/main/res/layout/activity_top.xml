@@ -17,14 +17,14 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
-            app:logo="@drawable/toolbar_logo"
             android:id="@+id/top_tool_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:elevation="4dp"
             android:minHeight="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:logo="@drawable/toolbar_logo" />
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_joined_rooms"
@@ -50,6 +50,7 @@
                         android:layout_margin="10dp"
                         android:clickable="true"
                         android:foreground="?android:attr/selectableItemBackground"
+                        android:onClick="@{(v) -> viewModel.onJoinRoom()}"
                         app:cardBackgroundColor="@color/appBlue">
 
                         <LinearLayout
@@ -93,6 +94,7 @@
                         android:layout_margin="10dp"
                         android:clickable="true"
                         android:foreground="?android:attr/selectableItemBackground"
+                        android:onClick="@{(v) -> viewModel.onCreateRoom()}"
                         app:cardBackgroundColor="@color/appGreen">
 
                         <LinearLayout
@@ -139,8 +141,7 @@
                         android:layout_marginTop="10dp"
                         android:text="@string/joined_rooms"
                         android:textColor="@color/text"
-                        android:textSize="18sp"
-                        android:visibility="gone" />
+                        android:textSize="18sp" />
 
                     <LinearLayout
                         android:id="@+id/joined_rooms_list"

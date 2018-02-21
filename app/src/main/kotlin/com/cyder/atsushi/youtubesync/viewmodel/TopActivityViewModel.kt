@@ -23,4 +23,9 @@ class TopActivityViewModel @Inject constructor(
     override fun onStop() {
     }
 
+    fun onJoinRoom() {
+    }
+
+    fun onCreateRoom() {
+    }
 }
