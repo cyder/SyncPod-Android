@@ -18,7 +18,7 @@ class UserDataRepository @Inject constructor(
 
     override fun signIn(email: String, password: String): Completable {
         val result = syncPodApi.signIn(email, password)
-        result.subscribe{ _ ->
+        result.subscribe { _ ->
             sharedPreferences.edit {
                 putString(STATE_USER_TOKEN, result.blockingGet().user?.accessToken)
             }
@@ -28,10 +28,11 @@ class UserDataRepository @Inject constructor(
     }
 
     override fun getAccessToken(): Single<String>? {
-        return Single
-                .just(sharedPreferences.getString(STATE_USER_TOKEN, "fail"))
-                .filter { it != "fail" }
-                .toSingle()
+        val token = sharedPreferences.getString(STATE_USER_TOKEN, "fail")
+        if (token == "fail") {
+            return null
+        }
+        return Single.just(token)
     }
 
     companion object {
