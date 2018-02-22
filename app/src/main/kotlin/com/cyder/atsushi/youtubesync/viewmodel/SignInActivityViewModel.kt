@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
 import android.databinding.ObservableField
+import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.repository.UserRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
@@ -19,7 +20,7 @@ class SignInActivityViewModel @Inject constructor(
     var callback: SnackbarCallback? = null
 
     interface SnackbarCallback {
-        fun onSignInFailed()
+        fun onSignInFailed(resId: Int)
     }
 
     override fun onStart() {
@@ -45,7 +46,7 @@ class SignInActivityViewModel @Inject constructor(
                 .subscribe({
                     navigator.navigateToTopActivity()
                 }, {
-                    callback?.onSignInFailed()
+                    callback?.onSignInFailed(R.string.login_mistook)
                 })
     }
 
