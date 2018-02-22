@@ -13,16 +13,20 @@ import javax.inject.Inject
 class RoomDataRepository @Inject constructor(
         private val syncPodApi: SyncPodApi
 ) : RoomRepository {
-    override fun fetch(id: Int, token: String): Single<Room>? {
-        return syncPodApi.getRoom(token)
-                .filter { it.room?.id == id }
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
+    override fun fetch(id: Int, token: String): Single<Room?>? {
+        return try {
+            syncPodApi.getRoom(token)
+                    .map { it.joinedRooms?.last() }
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+        } catch (e: Exception) {
+            null
+        }
     }
 
-    override fun fetchJoinedRooms(token: String): Single<List<Room>>? {
+    override fun fetchJoinedRooms(token: String): Single<List<Room>> {
         return syncPodApi.getRoom(token)
-                .map { it.joinedRooms }
+                .map { it.joinedRooms ?: emptyList() }
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
     }
