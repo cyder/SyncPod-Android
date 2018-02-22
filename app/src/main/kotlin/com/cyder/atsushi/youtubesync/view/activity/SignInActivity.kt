@@ -5,7 +5,6 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.view.inputmethod.InputMethodManager
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.databinding.ActivitySignInBinding
 import com.cyder.atsushi.youtubesync.viewmodel.SignInActivityViewModel
@@ -39,10 +38,10 @@ class SignInActivity : BaseActivity() {
 
     private fun setUpSnackbar() {
         callback = object : SignInActivityViewModel.SnackbarCallback {
-            override fun onSignInFailed() {
+            override fun onSignInFailed(resId: Int) {
                 hideSoftwareKeyBoard()
                 Snackbar.make(currentFocus,
-                        R.string.login_mistook,
+                        resId,
                         Snackbar.LENGTH_SHORT).apply {
                     setAction(R.string.ok) {
                         dismiss()
@@ -53,12 +52,6 @@ class SignInActivity : BaseActivity() {
         viewModel.callback = callback
     }
 
-    private fun hideSoftwareKeyBoard() {
-        if (currentFocus != null) {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus.windowToken, 0)
-        }
-    }
 
 
     companion object {

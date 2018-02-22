@@ -1,6 +1,8 @@
 package com.cyder.atsushi.youtubesync.view.activity
 
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
+import android.view.inputmethod.InputMethodManager
 import com.cyder.atsushi.youtubesync.BaseApplication
 import com.cyder.atsushi.youtubesync.di.ActivityComponent
 import com.cyder.atsushi.youtubesync.di.ActivityModule
@@ -25,6 +27,13 @@ abstract class BaseActivity : AppCompatActivity() {
 
     protected fun bindViewModel(viewModel: ActivityViewModel) {
         this.viewModel = viewModel
+    }
+
+    protected fun hideSoftwareKeyBoard() {
+        if (currentFocus != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus.windowToken, 0)
+        }
     }
 
     override fun onStart() {
