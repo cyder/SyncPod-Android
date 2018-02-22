@@ -17,15 +17,15 @@ class TopActivityViewModel @Inject constructor(
         private val navigator: Navigator
         ) : ActivityViewModel() {
     override fun onStart() {
+    }
+
+    override fun onResume() {
         val token = userRepository.getAccessToken()?.blockingGet()!!
         roomRepository.fetchJoinedRooms(token).subscribe { response ->
             response.forEach {
                 Log.d("TAG",it.toString())
             }
         }
-    }
-
-    override fun onResume() {
     }
 
     override fun onPause() {

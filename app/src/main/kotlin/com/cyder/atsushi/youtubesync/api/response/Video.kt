@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync.api.response
 
 import android.graphics.Bitmap
+import com.google.gson.annotations.SerializedName
 
 /**
  * Created by chigichan24 on 2018/01/18.
@@ -8,15 +9,15 @@ import android.graphics.Bitmap
 
 data class Video(
         val id: Int,
-        val youtubeVideoId: String,
+        @SerializedName("youtube_video_id") val youtubeVideoId: String,
         val title: String?,
         val thumbnail: Bitmap?,
-        val thumbnailUrl: String?,
+        @SerializedName("thumbnail_url") val thumbnailUrl: String?,
         val duration: String?,
         val description: String?,
-        val channelTitle: String?,
-        val videoStartTime: String?,
-        val currentTime: Int?,
+        @SerializedName("channel_title") val channelTitle: String?,
+        @SerializedName("video_start_time") val videoStartTime: String?,
+        @SerializedName("current_time") val currentTime: Int?,
         val published: String?,
-        val viewCount: String?
+        @SerializedName("view_count") val viewCount: String?
 )
