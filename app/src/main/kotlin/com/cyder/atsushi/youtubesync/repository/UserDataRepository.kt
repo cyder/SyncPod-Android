@@ -17,13 +17,12 @@ class UserDataRepository @Inject constructor(
 ) : UserRepository {
 
     override fun signIn(email: String, password: String): Completable {
-        val result = syncPodApi.signIn(email, password)
-        result.subscribe { _ ->
-            sharedPreferences.edit {
-                putString(STATE_USER_TOKEN, result.blockingGet().user?.accessToken)
-            }
-        }
-        return result.subscribeOn(Schedulers.computation())
+        return syncPodApi.signIn(email, password)
+                .doOnSuccess { response ->
+                    sharedPreferences.edit {
+                        putString(STATE_USER_TOKEN, response.user?.accessToken)
+                    }
+                }.subscribeOn(Schedulers.computation())
                 .toCompletable()
     }
 
