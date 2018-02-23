@@ -11,7 +11,7 @@ import javax.inject.Singleton
  */
 
 @Singleton
-interface SignInApi {
+interface SyncPodApi {
     @POST("login")
-    fun getSession(@Query("email") email: String, @Query("password") password: String): Single<Response>
+    fun signIn(@Query("email") email: String, @Query("password") password: String): Single<Response>
 }

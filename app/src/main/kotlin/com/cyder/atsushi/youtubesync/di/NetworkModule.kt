@@ -1,6 +1,6 @@
 package com.cyder.atsushi.youtubesync.di
 
-import com.cyder.atsushi.youtubesync.api.SignInApi
+import com.cyder.atsushi.youtubesync.api.SyncPodApi
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -18,7 +18,10 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient():OkHttpClient = OkHttpClient.Builder().build()
+    fun provideOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+                .build()
+    }
 
     @RetrofitApi
     @Singleton
@@ -34,8 +37,8 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideSignInApi(@RetrofitApi retrofit: Retrofit): SignInApi {
-        return retrofit.create(SignInApi::class.java)
+    fun provideSyncPodApi(@RetrofitApi retrofit: Retrofit): SyncPodApi {
+        return retrofit.create(SyncPodApi::class.java)
     }
 
     companion object {

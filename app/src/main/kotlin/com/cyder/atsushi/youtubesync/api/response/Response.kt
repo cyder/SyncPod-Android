@@ -1,5 +1,7 @@
 package com.cyder.atsushi.youtubesync.api.response
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * Created by chigichan24 on 2018/01/18.
  */
@@ -8,5 +10,5 @@ data class Response(
         val result: String,
         val user: User?,
         val room: Room?,
-        val joinedRooms: List<Room>?
+        @SerializedName("joined_rooms") val joinedRooms: List<Room>?
 )
