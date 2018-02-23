@@ -27,12 +27,18 @@ class UserDataRepository @Inject constructor(
                 .toCompletable()
     }
 
-    override fun getAccessToken(): Single<String>? {
-        val token = sharedPreferences.getString(STATE_USER_TOKEN, "fail")
-        if (token == "fail") {
-            return null
+    override fun getAccessToken(): Single<String> {
+        val token = sharedPreferences.getString(STATE_USER_TOKEN, null)
+
+        return Single.create { emitter ->
+            try {
+                token?.run {
+                    emitter.onSuccess(token)
+                }
+            } catch (exception: Exception) {
+                emitter.onError(exception)
+            }
         }
-        return Single.just(token)
     }
 
     companion object {
