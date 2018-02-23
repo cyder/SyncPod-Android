@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.databinding.ActivitySignInBinding
+import com.cyder.atsushi.youtubesync.view.helper.hideSoftwareKeyBoard
 import com.cyder.atsushi.youtubesync.viewmodel.SignInActivityViewModel
 import javax.inject.Inject
 
@@ -39,7 +40,7 @@ class SignInActivity : BaseActivity() {
     private fun setUpSnackbar() {
         callback = object : SignInActivityViewModel.SnackbarCallback {
             override fun onSignInFailed(resId: Int) {
-                hideSoftwareKeyBoard()
+                currentFocus.hideSoftwareKeyBoard()
                 Snackbar.make(currentFocus,
                         resId,
                         Snackbar.LENGTH_SHORT).apply {
