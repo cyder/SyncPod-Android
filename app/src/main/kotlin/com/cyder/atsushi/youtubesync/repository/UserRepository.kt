@@ -11,5 +11,5 @@ interface UserRepository {
     //TODO implement val user
     @CheckResult
     fun signIn(email: String, password:String): Completable
-    fun getAccessToken(): Single<String>?
+    fun getAccessToken(): Single<String>
 }

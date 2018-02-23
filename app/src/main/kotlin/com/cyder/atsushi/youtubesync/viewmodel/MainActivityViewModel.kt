@@ -15,7 +15,6 @@ class MainActivityViewModel @Inject constructor(
         private val repository: UserRepository
 ) : ActivityViewModel() {
     override fun onStart() {
-        decideLaunchActivity()
     }
 
     override fun onResume() {
@@ -36,9 +35,9 @@ class MainActivityViewModel @Inject constructor(
 
     private fun decideLaunchActivity() {
         repository.getAccessToken()
-                ?.subscribe { _ ->
+                .subscribe({
                     navigator.closeActivity()
                     navigator.navigateToTopActivity()
-                }
+                }, {})
     }
 }
