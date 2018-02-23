@@ -27,6 +27,7 @@ abstract class BaseActivity : AppCompatActivity() {
         this.viewModel = viewModel
     }
 
+
     override fun onStart() {
         super.onStart()
         viewModel?.onStart()
