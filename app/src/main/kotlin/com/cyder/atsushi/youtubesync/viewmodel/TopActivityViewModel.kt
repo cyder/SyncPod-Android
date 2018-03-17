@@ -20,7 +20,7 @@ class TopActivityViewModel @Inject constructor(
     }
 
     override fun onResume() {
-        val token = userRepository.getAccessToken()?.blockingGet()!!
+        val token = userRepository.getAccessToken().blockingGet()!!
         roomRepository.fetchJoinedRooms(token).subscribe { response ->
             response.forEach {
                 Log.d("TAG",it.toString())
