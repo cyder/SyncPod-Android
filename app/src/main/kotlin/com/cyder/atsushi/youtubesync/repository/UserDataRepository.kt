@@ -28,7 +28,6 @@ class UserDataRepository @Inject constructor(
 
     override fun getAccessToken(): Single<String> {
         val token = sharedPreferences.getString(STATE_USER_TOKEN, null)
-
         return Single.create { emitter ->
             try {
                 token?.run {

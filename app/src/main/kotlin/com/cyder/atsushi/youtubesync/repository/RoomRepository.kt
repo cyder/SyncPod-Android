@@ -1,6 +1,6 @@
 package com.cyder.atsushi.youtubesync.repository
 
-import com.cyder.atsushi.youtubesync.api.response.Room
+import com.cyder.atsushi.youtubesync.model.Room
 import io.reactivex.Single
 
 /**

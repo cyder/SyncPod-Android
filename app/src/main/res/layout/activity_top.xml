@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ScrollView
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -143,15 +143,15 @@
                         android:textColor="@color/text"
                         android:textSize="18sp" />
 
-                    <LinearLayout
-                        android:id="@+id/joined_rooms_list"
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/joined_room_recycler"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:orientation="vertical" />
                 </LinearLayout>
-            </ScrollView>
+            </android.support.v4.widget.NestedScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 </layout>

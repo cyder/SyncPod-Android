@@ -1,7 +1,8 @@
 package com.cyder.atsushi.youtubesync.repository
 
 import com.cyder.atsushi.youtubesync.api.SyncPodApi
-import com.cyder.atsushi.youtubesync.api.response.Room
+import com.cyder.atsushi.youtubesync.api.mapper.toModel
+import com.cyder.atsushi.youtubesync.model.Room
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -17,6 +18,7 @@ class RoomDataRepository @Inject constructor(
         return try {
             syncPodApi.getRoom(token)
                     .map { it.joinedRooms?.last() }
+                    .map { it.toModel() }
                     .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
         } catch (e: Exception) {
@@ -27,6 +29,7 @@ class RoomDataRepository @Inject constructor(
     override fun fetchJoinedRooms(token: String): Single<List<Room>> {
         return syncPodApi.getRoom(token)
                 .map { it.joinedRooms ?: emptyList() }
+                .map { it.toModel() }
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
     }
