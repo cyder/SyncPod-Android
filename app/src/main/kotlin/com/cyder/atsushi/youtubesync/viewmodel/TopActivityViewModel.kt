@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
 import android.databinding.ObservableArrayList
+import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.databinding.ObservableList
 import com.cyder.atsushi.youtubesync.model.Room
@@ -20,19 +21,14 @@ class TopActivityViewModel @Inject constructor(
         private val roomRepository: RoomRepository,
         private val navigator: Navigator
 ) : ActivityViewModel() {
+
     var roomViewModels: ObservableList<RoomViewModel> = ObservableArrayList()
+    var isLoading: ObservableBoolean = ObservableBoolean()
     override fun onStart() {
     }
 
     override fun onResume() {
-        val token = userRepository.getAccessToken().blockingGet()!!
-        roomRepository.fetchJoinedRooms(token)
-                .map { convertToViewModel(it) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { response ->
-                    this.roomViewModels.clear()
-                    this.roomViewModels.addAll(response)
-                }
+        getRooms()
     }
 
     override fun onPause() {
@@ -45,6 +41,25 @@ class TopActivityViewModel @Inject constructor(
     }
 
     fun onCreateRoom() {
+    }
+
+    fun onRefresh() {
+        isLoading.set(true)
+        getRooms()
+    }
+
+    private fun getRooms() {
+        val token = userRepository.getAccessToken().blockingGet()!!
+        roomRepository.fetchJoinedRooms(token)
+                .map { convertToViewModel(it) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe ({ response ->
+                    this.roomViewModels.clear()
+                    this.roomViewModels.addAll(response)
+                    isLoading.set(false)
+                },{
+                    isLoading.set(false)
+                })
     }
 
     private fun convertToViewModel(rooms: List<Room>): List<RoomViewModel> {

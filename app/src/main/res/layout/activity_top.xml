@@ -30,7 +30,9 @@
             android:id="@+id/swipe_refresh_joined_rooms"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:refreshing="@{viewModel.isLoading}"
+            app:onRefreshListener="@{() -> viewModel.onRefresh()}" >
 
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
