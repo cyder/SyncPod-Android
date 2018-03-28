@@ -8,7 +8,6 @@ import android.support.design.widget.Snackbar
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.databinding.ActivitySignUpBinding
 import com.cyder.atsushi.youtubesync.view.helper.hideSoftwareKeyBoard
-import com.cyder.atsushi.youtubesync.viewmodel.SignInActivityViewModel
 import com.cyder.atsushi.youtubesync.viewmodel.SignUpActivityViewModel
 import javax.inject.Inject
 
