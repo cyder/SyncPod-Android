@@ -25,7 +25,7 @@
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
             app:navigationOnClick="@{(v) -> viewModel.onBackButtonClicked()}"
-            app:title="@string/login_title" />
+            app:title="@string/register_account_title" />
 
         <ScrollView
             android:layout_width="match_parent"
