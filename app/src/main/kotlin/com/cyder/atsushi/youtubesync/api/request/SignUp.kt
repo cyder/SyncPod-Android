@@ -6,10 +6,10 @@ package com.cyder.atsushi.youtubesync.api.request
 
 class SignUp(email: String, name: String, password: String) {
     private val user = User(email, name, password)
-
-    data class User (
-            val email: String,
-            val name: String,
-            val password: String
-    )
 }
+
+private data class User (
+        val email: String,
+        val name: String,
+        val password: String
+)
