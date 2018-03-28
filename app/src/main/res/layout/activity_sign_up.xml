@@ -45,7 +45,8 @@
                     android:layout_marginTop="10dp"
                     android:ems="10"
                     android:hint="@string/email"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:text="@={viewModel.mailAddress}" />
 
                 <EditText
                     android:id="@+id/sign_up_name"
@@ -55,7 +56,8 @@
                     android:layout_marginTop="10dp"
                     android:ems="10"
                     android:hint="@string/name"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:text="@={viewModel.name}" />
 
                 <EditText
                     android:id="@+id/sign_up_password"
@@ -65,7 +67,8 @@
                     android:layout_marginTop="10dp"
                     android:ems="10"
                     android:hint="@string/password"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:text="@={viewModel.password}" />
 
                 <EditText
                     android:id="@+id/sign_up_password_confirm"
@@ -75,7 +78,8 @@
                     android:layout_marginTop="10dp"
                     android:ems="10"
                     android:hint="@string/confirm_password"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:text="@={viewModel.passwordConfirm}" />
 
                 <Button
                     android:id="@+id/sign_up_submit"
@@ -84,6 +88,7 @@
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="20dp"
                     android:background="@color/appGreen"
+                    android:onClick="@{(v) -> viewModel.onSignUp()}"
                     android:text="@string/register_button"
                     android:textColor="@color/appWhite"
                     android:textSize="18sp" />
