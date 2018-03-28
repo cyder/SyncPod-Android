@@ -24,6 +24,7 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
+            app:navigationOnClick="@{(v) -> viewModel.onBackButtonClicked()}"
             app:title="@string/login_title" />
 
         <ScrollView
