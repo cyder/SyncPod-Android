@@ -19,6 +19,11 @@ class SignUpActivityViewModel @Inject constructor(
     var name: ObservableField<String?> = ObservableField()
     var password: ObservableField<String?> = ObservableField()
     var passwordConfirm: ObservableField<String?> = ObservableField()
+    var callback: SnackbarCallback? = null
+
+    interface SnackbarCallback {
+        fun onSignUpFailed(resId: Int)
+    }
 
     override fun onStart() {
     }
@@ -39,6 +44,8 @@ class SignUpActivityViewModel @Inject constructor(
                 .subscribe({
                     navigator.closeActivity()
                     navigator.navigateToTopActivity()
-                }, {})
+                }, {
+                    callback?.onSignUpFailed(R.string.sign_up_used_email)
+                })
     }
 }
