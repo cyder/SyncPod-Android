@@ -32,6 +32,9 @@
         <activity
             android:name=".view.activity.SignInActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.SignUpActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".view.activity.TopActivity"
             android:screenOrientation="portrait" />
     </application>
