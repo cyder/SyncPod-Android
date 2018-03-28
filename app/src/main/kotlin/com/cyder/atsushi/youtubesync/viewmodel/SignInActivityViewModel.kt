@@ -19,10 +19,6 @@ class SignInActivityViewModel @Inject constructor(
     var password: ObservableField<String?> = ObservableField()
     var callback: SnackbarCallback? = null
 
-    interface SnackbarCallback {
-        fun onSignInFailed(resId: Int)
-    }
-
     override fun onStart() {
 
     }
@@ -47,7 +43,7 @@ class SignInActivityViewModel @Inject constructor(
                     navigator.closeActivity()
                     navigator.navigateToTopActivity()
                 }, {
-                    callback?.onSignInFailed(R.string.login_mistook)
+                    callback?.onFailed(R.string.login_mistook)
                 })
     }
 

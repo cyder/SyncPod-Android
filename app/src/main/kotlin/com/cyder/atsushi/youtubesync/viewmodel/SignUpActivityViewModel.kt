@@ -21,10 +21,6 @@ class SignUpActivityViewModel @Inject constructor(
     var passwordConfirm: ObservableField<String?> = ObservableField()
     var callback: SnackbarCallback? = null
 
-    interface SnackbarCallback {
-        fun onSignUpFailed(resId: Int)
-    }
-
     override fun onStart() {
     }
 
@@ -45,7 +41,7 @@ class SignUpActivityViewModel @Inject constructor(
                     navigator.closeActivity()
                     navigator.navigateToTopActivity()
                 }, {
-                    callback?.onSignUpFailed(R.string.sign_up_used_email)
+                    callback?.onFailed(R.string.sign_up_used_email)
                 })
     }
 }

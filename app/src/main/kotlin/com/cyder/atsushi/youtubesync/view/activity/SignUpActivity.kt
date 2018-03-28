@@ -9,6 +9,7 @@ import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.databinding.ActivitySignUpBinding
 import com.cyder.atsushi.youtubesync.view.helper.hideSoftwareKeyBoard
 import com.cyder.atsushi.youtubesync.viewmodel.SignUpActivityViewModel
+import com.cyder.atsushi.youtubesync.viewmodel.SnackbarCallback
 import javax.inject.Inject
 
 /**
@@ -18,7 +19,7 @@ import javax.inject.Inject
 class SignUpActivity : BaseActivity() {
     @Inject lateinit var viewModel: SignUpActivityViewModel
     private lateinit var binding: ActivitySignUpBinding
-    private lateinit var callback: SignUpActivityViewModel.SnackbarCallback
+    private lateinit var callback: SnackbarCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +38,8 @@ class SignUpActivity : BaseActivity() {
     }
 
     private fun setUpSnackbar() {
-        callback = object : SignUpActivityViewModel.SnackbarCallback {
-            override fun onSignUpFailed(resId: Int) {
+        callback = object : SnackbarCallback {
+            override fun onFailed(resId: Int) {
                 currentFocus.hideSoftwareKeyBoard()
                 Snackbar.make(currentFocus,
                         resId,
