@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync.di
 
 import com.cyder.atsushi.youtubesync.di.scope.ActivityScope
+import com.cyder.atsushi.youtubesync.view.activity.CreateRoomActivity
 import com.cyder.atsushi.youtubesync.view.activity.MainActivity
 import com.cyder.atsushi.youtubesync.view.activity.SignInActivity
 import com.cyder.atsushi.youtubesync.view.activity.SignUpActivity
@@ -19,5 +20,6 @@ interface ActivityComponent {
     fun inject(activity: SignInActivity)
     fun inject(activity: SignUpActivity)
     fun inject(activity: TopActivity)
+    fun inject(activity: CreateRoomActivity)
     fun plus(module: FragmentModule): FragmentComponent
 }
