@@ -5,6 +5,7 @@ import com.cyder.atsushi.youtubesync.di.scope.ActivityScope
 import com.cyder.atsushi.youtubesync.view.activity.SignInActivity
 import com.cyder.atsushi.youtubesync.view.activity.SignUpActivity
 import com.cyder.atsushi.youtubesync.view.activity.TopActivity
+import com.cyder.atsushi.youtubesync.view.activity.CreateRoomActivity
 import javax.inject.Inject
 
 @ActivityScope
@@ -16,5 +17,6 @@ class Navigator @Inject constructor(
     fun navigateToSignUpActivity() = activity.startActivity(SignUpActivity.createIntent(activity))
     fun navigateToTopActivity() = activity.startActivity(TopActivity.createIntent(activity))
 
+    fun navigateToCreateRoom() = activity.startActivity(CreateRoomActivity.createIntent(activity))
     fun closeActivity() = activity.finish()
 }

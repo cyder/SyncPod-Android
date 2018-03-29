@@ -41,8 +41,7 @@ class TopActivityViewModel @Inject constructor(
     fun onJoinRoom() {
     }
 
-    fun onCreateRoom() {
-    }
+    fun onCreateRoom() = navigator.navigateToCreateRoom()
 
     fun onRefresh() {
         isLoading.set(true)
