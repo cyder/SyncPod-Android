@@ -7,6 +7,8 @@
         <variable
             name="viewModel"
             type="com.cyder.atsushi.youtubesync.viewmodel.TopActivityViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <LinearLayout
@@ -143,7 +145,8 @@
                         android:layout_marginTop="10dp"
                         android:text="@string/joined_rooms"
                         android:textColor="@color/text"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:visibility="@{viewModel.hasEntered ? View.VISIBLE : View.GONE}"/>
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/joined_room_recycler"

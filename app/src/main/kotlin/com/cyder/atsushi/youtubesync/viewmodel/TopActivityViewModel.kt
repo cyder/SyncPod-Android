@@ -24,6 +24,7 @@ class TopActivityViewModel @Inject constructor(
 
     var roomViewModels: ObservableList<RoomViewModel> = ObservableArrayList()
     var isLoading: ObservableBoolean = ObservableBoolean()
+    var hasEntered: ObservableBoolean = ObservableBoolean(false)
     override fun onStart() {
     }
 
@@ -57,6 +58,9 @@ class TopActivityViewModel @Inject constructor(
                     this.roomViewModels.clear()
                     this.roomViewModels.addAll(response)
                     isLoading.set(false)
+                    if(response.isNotEmpty()){
+                        hasEntered.set(true)
+                    }
                 },{
                     isLoading.set(false)
                 })

@@ -28,7 +28,7 @@ class RoomDataRepository @Inject constructor(
 
     override fun fetchJoinedRooms(token: String): Single<List<Room>> {
         return syncPodApi.getRoom(token)
-                .map { it.joinedRooms ?: emptyList() }
+                .map { it.joinedRooms }
                 .map { it.toModel() }
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
