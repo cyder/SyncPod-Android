@@ -9,15 +9,7 @@ import com.cyder.atsushi.youtubesync.api.response.Room as RoomResponse
 
 fun List<RoomResponse>.toModel(): List<Room> =
     this.map {
-        Room(
-                it.id,
-                it.name,
-                it.description,
-                it.key,
-                it.nowPlayingVideo,
-                it.lastPlayedVideo,
-                it.onlineUsers
-        )
+        it.toModel()
     }
 
 fun RoomResponse.toModel(): Room =
@@ -25,6 +17,6 @@ fun RoomResponse.toModel(): Room =
                 this.name,
                 this.description,
                 this.key,
-                this.nowPlayingVideo,
-                this.lastPlayedVideo,
-                this.onlineUsers)
+                this.nowPlayingVideo?.toModel(),
+                this.lastPlayedVideo?.toModel(),
+                this.onlineUsers?.toModel())

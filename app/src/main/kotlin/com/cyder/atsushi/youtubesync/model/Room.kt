@@ -1,7 +1,5 @@
 package com.cyder.atsushi.youtubesync.model
 
-import com.cyder.atsushi.youtubesync.api.response.User
-import com.cyder.atsushi.youtubesync.api.response.Video
 
 /**
  * Created by chigichan24 on 2018/03/21.
