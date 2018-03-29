@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.cyder.atsushi.youtubesync.viewmodel.SignUpActivityViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/sign_up_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/sign_up_tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
+            app:navigationOnClick="@{(v) -> viewModel.onBackButtonClicked()}"
+            app:title="@string/register_account_title" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <EditText
+                    android:id="@+id/sign_up_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    android:text="@={viewModel.mailAddress}" />
+
+                <EditText
+                    android:id="@+id/sign_up_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:hint="@string/name"
+                    android:inputType="textPersonName"
+                    android:text="@={viewModel.name}" />
+
+                <EditText
+                    android:id="@+id/sign_up_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:text="@={viewModel.password}" />
+
+                <EditText
+                    android:id="@+id/sign_up_password_confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:hint="@string/confirm_password"
+                    android:inputType="textPassword"
+                    android:text="@={viewModel.passwordConfirm}" />
+
+                <Button
+                    android:id="@+id/sign_up_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/appGreen"
+                    android:onClick="@{(v) -> viewModel.onSignUp()}"
+                    android:text="@string/register_button"
+                    android:textColor="@color/appWhite"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>
