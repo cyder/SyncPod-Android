@@ -16,7 +16,7 @@ class RoomDataRepository @Inject constructor(
 ) : RoomRepository {
     override fun fetch(id: Int, token: String): Single<Room?>? {
         return try {
-            syncPodApi.getRoom(token)
+            syncPodApi.getEnteredRooms(token)
                     .map { it.joinedRooms?.last() }
                     .map { it.toModel() }
                     .subscribeOn(Schedulers.computation())
@@ -27,7 +27,7 @@ class RoomDataRepository @Inject constructor(
     }
 
     override fun fetchJoinedRooms(token: String): Single<List<Room>> {
-        return syncPodApi.getRoom(token)
+        return syncPodApi.getEnteredRooms(token)
                 .map { it.joinedRooms }
                 .map { it.toModel() }
                 .subscribeOn(Schedulers.computation())

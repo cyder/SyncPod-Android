@@ -20,7 +20,7 @@ interface SyncPodApi {
     fun signIn(@Query("email") email: String, @Query("password") password: String): Single<Response>
 
     @GET("joined_rooms")
-    fun getRoom(@Header("Authorization") token: String): Single<Response>
+    fun getEnteredRoomsあ(@Header("Authorization") token: String): Single<Response>
 
     @POST("users")
     fun signUp(@Body user: SignUp): Single<Response>
