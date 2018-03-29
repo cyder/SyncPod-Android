@@ -28,9 +28,7 @@ class MainActivityViewModel @Inject constructor(
 
     fun onSignInClicked() = navigator.navigateToSignInActivity()
 
-    fun onSignUpClicked() {
-
-    }
+    fun onSignUpClicked() = navigator.navigateToSignUpActivity()
 
     private fun decideLaunchActivity() {
         repository.getAccessToken()

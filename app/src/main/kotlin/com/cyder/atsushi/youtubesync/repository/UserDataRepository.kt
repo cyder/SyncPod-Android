@@ -3,6 +3,7 @@ package com.cyder.atsushi.youtubesync.repository
 import android.content.SharedPreferences
 import androidx.content.edit
 import com.cyder.atsushi.youtubesync.api.SyncPodApi
+import com.cyder.atsushi.youtubesync.api.request.SignUp
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
@@ -18,6 +19,16 @@ class UserDataRepository @Inject constructor(
 
     override fun signIn(email: String, password: String): Completable {
         return syncPodApi.signIn(email, password)
+                .doOnSuccess { response ->
+                    sharedPreferences.edit {
+                        putString(STATE_USER_TOKEN, response.user?.accessToken)
+                    }
+                }.subscribeOn(Schedulers.computation())
+                .toCompletable()
+    }
+
+    override fun signUp(email: String, name: String, password: String): Completable {
+        return syncPodApi.signUp(SignUp(email, name, password))
                 .doOnSuccess { response ->
                     sharedPreferences.edit {
                         putString(STATE_USER_TOKEN, response.user?.accessToken)

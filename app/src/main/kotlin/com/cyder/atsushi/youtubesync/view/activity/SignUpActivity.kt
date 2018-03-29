@@ -6,28 +6,27 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import com.cyder.atsushi.youtubesync.R
-import com.cyder.atsushi.youtubesync.databinding.ActivitySignInBinding
+import com.cyder.atsushi.youtubesync.databinding.ActivitySignUpBinding
 import com.cyder.atsushi.youtubesync.view.helper.hideSoftwareKeyBoard
-import com.cyder.atsushi.youtubesync.viewmodel.SignInActivityViewModel
+import com.cyder.atsushi.youtubesync.viewmodel.SignUpActivityViewModel
 import com.cyder.atsushi.youtubesync.viewmodel.SnackbarCallback
 import javax.inject.Inject
 
-
 /**
- * Created by chigichan24 on 2018/01/17.
+ * Created by atsushi on 2018/03/28.
  */
 
-class SignInActivity : BaseActivity() {
-
-    @Inject lateinit var viewModel: SignInActivityViewModel
-    private lateinit var binding: ActivitySignInBinding
+class SignUpActivity : BaseActivity() {
+    @Inject lateinit var viewModel: SignUpActivityViewModel
+    private lateinit var binding: ActivitySignUpBinding
     private lateinit var callback: SnackbarCallback
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getComponent().inject(this)
         bindViewModel(viewModel)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up)
         binding.viewModel = viewModel
 
         setUpSnackbar()
@@ -54,9 +53,7 @@ class SignInActivity : BaseActivity() {
         viewModel.callback = callback
     }
 
-
-
     companion object {
-        fun createIntent(context: Context): Intent = Intent(context, SignInActivity::class.java)
+        fun createIntent(context: Context): Intent = Intent(context, SignUpActivity::class.java)
     }
 }
