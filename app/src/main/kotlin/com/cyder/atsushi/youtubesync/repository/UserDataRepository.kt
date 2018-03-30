@@ -18,7 +18,8 @@ class UserDataRepository @Inject constructor(
 ) : UserRepository {
 
     override fun signIn(email: String, password: String): Completable {
-        return syncPodApi.signIn(email, password)
+        return validate(email, password)
+                .andThen(syncPodApi.signIn(email, password))
                 .doOnSuccess { response ->
                     sharedPreferences.edit {
                         putString(STATE_USER_TOKEN, response.user?.accessToken)
@@ -50,8 +51,18 @@ class UserDataRepository @Inject constructor(
         }
     }
 
+    private fun validate(email: String, password: String): Completable {
+        return Completable.create { emitter ->
+            if (email.isBlank() || password.isBlank()) {
+                emitter.onError(Exception("form is not full"))
+            } else {
+                emitter.onComplete()
+            }
+        }
+    }
+
+
     companion object {
         const val STATE_USER_TOKEN = "userToken"
     }
 }
-
