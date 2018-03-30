@@ -33,7 +33,6 @@ class MainActivityViewModel @Inject constructor(
     private fun decideLaunchActivity() {
         repository.getAccessToken()
                 .subscribe({
-                    navigator.closeActivity()
                     navigator.navigateToTopActivity()
                 }, {})
     }

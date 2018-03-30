@@ -38,7 +38,6 @@ class SignUpActivityViewModel @Inject constructor(
     fun onSignUp() {
         repository.signUp(mailAddress.get() ?: "", name.get() ?: "", password.get() ?: "")
                 .subscribe({
-                    navigator.closeActivity()
                     navigator.navigateToTopActivity()
                 }, {
                     callback?.onFailed(R.string.sign_up_used_email)
