@@ -54,7 +54,7 @@ class UserDataRepository @Inject constructor(
     private fun validate(email: String, password: String): Completable {
         return Completable.create { emitter ->
             if (email.isBlank() || password.isBlank()) {
-                emitter.onError(Exception("form is not full"))
+                emitter.onError(NotFilledFormsException())
             } else {
                 emitter.onComplete()
             }
@@ -66,3 +66,5 @@ class UserDataRepository @Inject constructor(
         const val STATE_USER_TOKEN = "userToken"
     }
 }
+
+internal class NotFilledFormsException : Exception("forms are not filled!")
