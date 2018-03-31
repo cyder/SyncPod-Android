@@ -9,4 +9,5 @@ import io.reactivex.Single
 interface RoomRepository {
     fun fetchJoinedRooms(token: String): Single<List<Room>>
     fun fetch(id: Int, token: String): Single<Room?>?
+    fun createNewRoom(name: String, description: String, token:String): Single<Room>
 }

@@ -1,5 +1,6 @@
 package com.cyder.atsushi.youtubesync.api
 
+import com.cyder.atsushi.youtubesync.api.request.CreateRoom
 import com.cyder.atsushi.youtubesync.api.request.SignUp
 import com.cyder.atsushi.youtubesync.api.response.Response
 import io.reactivex.Single
@@ -19,9 +20,12 @@ interface SyncPodApi {
     @POST("login")
     fun signIn(@Query("email") email: String, @Query("password") password: String): Single<Response>
 
+    @POST("users")
+    fun signUp(@Body user: SignUp): Single<Response>
+
     @GET("joined_rooms")
     fun getEnteredRooms(@Header("Authorization") token: String): Single<Response>
 
-    @POST("users")
-    fun signUp(@Body user: SignUp): Single<Response>
+    @POST("rooms")
+    fun createNewRoom(@Header("Authorization") token: String, @Body room: CreateRoom): Single<Response>
 }
