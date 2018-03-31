@@ -40,7 +40,6 @@ class SignInActivityViewModel @Inject constructor(
     fun onSignIn() {
         repository.signIn(mailAddress.get() ?: "", password.get() ?: "")
                 .subscribe({
-                    navigator.closeActivity()
                     navigator.navigateToTopActivity()
                 }, {
                     callback?.onFailed(R.string.login_mistook)
