@@ -18,7 +18,7 @@ class UserDataRepository @Inject constructor(
 ) : UserRepository {
 
     override fun signIn(email: String, password: String): Completable {
-        return validate(email, password)
+        return signInValidate(email, password)
                 .andThen(syncPodApi.signIn(email, password))
                 .doOnSuccess { response ->
                     sharedPreferences.edit {
@@ -29,7 +29,7 @@ class UserDataRepository @Inject constructor(
     }
 
     override fun signUp(email: String, name: String, password: String, passwordConfirm: String): Completable {
-        return validate(email, name, password, passwordConfirm)
+        return signUpValidate(email, name, password, passwordConfirm)
                 .andThen(syncPodApi.signUp(SignUp(email, name, password)))
                 .doOnSuccess { response ->
                     sharedPreferences.edit {
@@ -52,7 +52,7 @@ class UserDataRepository @Inject constructor(
         }
     }
 
-    private fun validate(email: String, password: String): Completable {
+    private fun signInValidate(email: String, password: String): Completable {
         return Completable.create { emitter ->
             if (email.isBlank() || password.isBlank()) {
                 emitter.onError(NotFilledFormsException())
@@ -62,7 +62,7 @@ class UserDataRepository @Inject constructor(
         }
     }
 
-    private fun validate(email: String, name: String, password: String, passwordConfirm: String): Completable {
+    private fun signUpValidate(email: String, name: String, password: String, passwordConfirm: String): Completable {
         return Completable.create { emitter ->
             if (email.isBlank() || name.isBlank() || password.isBlank() || passwordConfirm.isBlank()) {
                 emitter.onError(NotFilledFormsException())
