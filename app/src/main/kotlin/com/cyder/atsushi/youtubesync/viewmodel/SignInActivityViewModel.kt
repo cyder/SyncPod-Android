@@ -2,6 +2,7 @@ package com.cyder.atsushi.youtubesync.viewmodel
 
 import android.databinding.ObservableField
 import com.cyder.atsushi.youtubesync.R
+import com.cyder.atsushi.youtubesync.repository.NotFilledFormsException
 import com.cyder.atsushi.youtubesync.repository.UserRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
@@ -41,8 +42,11 @@ class SignInActivityViewModel @Inject constructor(
         repository.signIn(mailAddress.get() ?: "", password.get() ?: "")
                 .subscribe({
                     navigator.navigateToTopActivity()
-                }, {
-                    callback?.onFailed(R.string.login_mistook)
+                }, { error ->
+                    when (error) {
+                        is NotFilledFormsException -> callback?.onFailed(R.string.form_not_filled)
+                        else -> callback?.onFailed(R.string.login_mistook)
+                    }
                 })
     }
 
