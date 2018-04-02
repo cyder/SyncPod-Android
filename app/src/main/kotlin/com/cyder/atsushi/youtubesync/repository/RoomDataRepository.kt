@@ -33,6 +33,9 @@ class RoomDataRepository @Inject constructor(
             subscription.onConnected = {
                 emitter.onComplete()
             }
+            subscription.onRejected = {
+                emitter.onError(CannotJoinRoomException())
+            }
             subscription.onFailed = {
                 emitter.onError(it)
             }
@@ -73,4 +76,6 @@ class RoomDataRepository @Inject constructor(
         const val ROOM_KEY = "room_key"
         const val TOKEN = "token"
     }
+
+    internal class CannotJoinRoomException : Exception("can not join room because of banned or mistook key")
 }

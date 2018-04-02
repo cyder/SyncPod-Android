@@ -3,10 +3,7 @@ package com.cyder.atsushi.youtubesync.view.helper
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import com.cyder.atsushi.youtubesync.di.scope.ActivityScope
-import com.cyder.atsushi.youtubesync.view.activity.SignInActivity
-import com.cyder.atsushi.youtubesync.view.activity.SignUpActivity
-import com.cyder.atsushi.youtubesync.view.activity.TopActivity
-import com.cyder.atsushi.youtubesync.view.activity.CreateRoomActivity
+import com.cyder.atsushi.youtubesync.view.activity.*
 import javax.inject.Inject
 
 @ActivityScope
@@ -23,5 +20,6 @@ class Navigator @Inject constructor(
     }
 
     fun navigateToCreateRoom() = activity.startActivity(CreateRoomActivity.createIntent(activity))
+    fun navigateToRoomActivity(roomKey: String) = activity.startActivity(RoomActivity.createIntent(activity, roomKey))
     fun closeActivity() = activity.finish()
 }
