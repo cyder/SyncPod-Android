@@ -6,7 +6,6 @@ import android.databinding.ObservableField
 import android.databinding.ObservableList
 import com.cyder.atsushi.youtubesync.model.Room
 import com.cyder.atsushi.youtubesync.repository.RoomRepository
-import com.cyder.atsushi.youtubesync.repository.UserRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,7 +16,6 @@ import javax.inject.Inject
  */
 
 class TopActivityViewModel @Inject constructor(
-        private val userRepository: UserRepository,
         private val roomRepository: RoomRepository,
         private val navigator: Navigator
 ) : ActivityViewModel() {
@@ -49,8 +47,7 @@ class TopActivityViewModel @Inject constructor(
     }
 
     private fun getRooms() {
-        val token = userRepository.getAccessToken().blockingGet()!!
-        roomRepository.fetchJoinedRooms(token)
+        roomRepository.fetchJoinedRooms()
                 .map { convertToViewModel(it) }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({ response ->
