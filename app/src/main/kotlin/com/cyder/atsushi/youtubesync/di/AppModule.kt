@@ -7,6 +7,7 @@ import com.cyder.atsushi.youtubesync.repository.RoomDataRepository
 import com.cyder.atsushi.youtubesync.repository.RoomRepository
 import com.cyder.atsushi.youtubesync.repository.UserDataRepository
 import com.cyder.atsushi.youtubesync.repository.UserRepository
+import com.hosopy.actioncable.Consumer
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -35,8 +36,9 @@ class AppModule(private val context: Context) {
     @Provides
     fun provideRoomRepository(
             api: SyncPodApi,
+            consumer: Consumer,
             repository: UserRepository
-    ) : RoomRepository = RoomDataRepository(api, repository.getAccessToken().blockingGet()!!)
+    ) : RoomRepository = RoomDataRepository(api, consumer, repository.getAccessToken().blockingGet()!!)
 
     companion object {
         const val APP_NAME = "youtube-sync"

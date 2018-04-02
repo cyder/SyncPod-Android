@@ -4,11 +4,7 @@ import com.cyder.atsushi.youtubesync.api.request.CreateRoom
 import com.cyder.atsushi.youtubesync.api.request.SignUp
 import com.cyder.atsushi.youtubesync.api.response.Response
 import io.reactivex.Single
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Body
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 import javax.inject.Singleton
 
 /**
