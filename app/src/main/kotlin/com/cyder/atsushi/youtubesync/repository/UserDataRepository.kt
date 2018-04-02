@@ -18,7 +18,8 @@ class UserDataRepository @Inject constructor(
 ) : UserRepository {
 
     override fun signIn(email: String, password: String): Completable {
-        return syncPodApi.signIn(email, password)
+        return signInValidate(email, password)
+                .andThen(syncPodApi.signIn(email, password))
                 .doOnSuccess { response ->
                     sharedPreferences.edit {
                         putString(STATE_USER_TOKEN, response.user?.accessToken)
@@ -27,8 +28,9 @@ class UserDataRepository @Inject constructor(
                 .toCompletable()
     }
 
-    override fun signUp(email: String, name: String, password: String): Completable {
-        return syncPodApi.signUp(SignUp(email, name, password))
+    override fun signUp(email: String, name: String, password: String, passwordConfirm: String): Completable {
+        return signUpValidate(email, name, password, passwordConfirm)
+                .andThen(syncPodApi.signUp(SignUp(email, name, password)))
                 .doOnSuccess { response ->
                     sharedPreferences.edit {
                         putString(STATE_USER_TOKEN, response.user?.accessToken)
@@ -50,8 +52,38 @@ class UserDataRepository @Inject constructor(
         }
     }
 
+    private fun signInValidate(email: String, password: String): Completable {
+        return Completable.create { emitter ->
+            if (email.isBlank() || password.isBlank()) {
+                emitter.onError(NotFilledFormsException())
+            } else {
+                emitter.onComplete()
+            }
+        }
+    }
+
+    private fun signUpValidate(email: String, name: String, password: String, passwordConfirm: String): Completable {
+        return Completable.create { emitter ->
+            if (email.isBlank() || name.isBlank() || password.isBlank() || passwordConfirm.isBlank()) {
+                emitter.onError(NotFilledFormsException())
+            } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                emitter.onError(NotValidEmailException())
+            } else if (password.length < 6) {
+                emitter.onError(TooShortPasswordException())
+            } else if (password != passwordConfirm) {
+                emitter.onError(NotSamePasswordException())
+            } else {
+                emitter.onComplete()
+            }
+        }
+    }
+
     companion object {
         const val STATE_USER_TOKEN = "userToken"
     }
 }
 
+internal class NotFilledFormsException : Exception("forms are not filled!")
+internal class NotValidEmailException : Exception("email address is not valid!")
+internal class TooShortPasswordException : Exception("password is too short!")
+internal class NotSamePasswordException : Exception("passwords are not same!")
