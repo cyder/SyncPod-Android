@@ -34,8 +34,9 @@ class AppModule(private val context: Context) {
     @Singleton
     @Provides
     fun provideRoomRepository(
-            api: SyncPodApi
-    ) : RoomRepository = RoomDataRepository(api)
+            api: SyncPodApi,
+            repository: UserRepository
+    ) : RoomRepository = RoomDataRepository(api, repository.getAccessToken().blockingGet()!!)
 
     companion object {
         const val APP_NAME = "youtube-sync"

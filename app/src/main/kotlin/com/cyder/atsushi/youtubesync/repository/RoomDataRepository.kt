@@ -13,9 +13,10 @@ import javax.inject.Inject
  * Created by chigichan24 on 2018/02/22.
  */
 class RoomDataRepository @Inject constructor(
-        private val syncPodApi: SyncPodApi
+        private val syncPodApi: SyncPodApi,
+        private val token: String
 ) : RoomRepository {
-    override fun createNewRoom(name: String, description: String, token: String): Single<Room> {
+    override fun createNewRoom(name: String, description: String): Single<Room> {
         return syncPodApi.createNewRoom(token, CreateRoom(name, description))
                 .map{ it.room }
                 .map{ it.toModel() }
@@ -23,7 +24,7 @@ class RoomDataRepository @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun fetch(id: Int, token: String): Single<Room?>? {
+    override fun fetch(id: Int): Single<Room?>? {
         return try {
             syncPodApi.getEnteredRooms(token)
                     .map { it.joinedRooms?.last() }
@@ -35,7 +36,7 @@ class RoomDataRepository @Inject constructor(
         }
     }
 
-    override fun fetchJoinedRooms(token: String): Single<List<Room>> {
+    override fun fetchJoinedRooms(): Single<List<Room>> {
         return syncPodApi.getEnteredRooms(token)
                 .map { it.joinedRooms }
                 .map { it.toModel() }

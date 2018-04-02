@@ -33,8 +33,7 @@ class CreateRoomActivityViewModel @Inject constructor(
     fun onBackButtonClicked() = navigator.closeActivity()
 
     fun onSubmit() {
-        val token = userRepository.getAccessToken().blockingGet()!!
-        roomRepository.createNewRoom(roomName.get() ?: "", roomDescription.get() ?: "", token)
+        roomRepository.createNewRoom(roomName.get() ?: "", roomDescription.get() ?: "")
                 .subscribe{ response ->
                     response.key
                 }
