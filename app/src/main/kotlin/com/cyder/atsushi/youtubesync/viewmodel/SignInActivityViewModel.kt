@@ -46,7 +46,7 @@ class SignInActivityViewModel @Inject constructor(
                 }, { error ->
                     when (error) {
                         is NotFilledFormsException -> callback?.onFailed(R.string.form_not_filled)
-                        else -> callback?.onFailed(R.string.sign_up_used_email)
+                        else -> callback?.onFailed(R.string.login_mistook)
                     }
                 })
     }
