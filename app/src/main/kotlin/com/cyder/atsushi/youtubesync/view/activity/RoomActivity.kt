@@ -17,6 +17,7 @@ class RoomActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getComponent().inject(this)
+        bindViewModel(viewModel)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_room)
         binding.viewModel = viewModel

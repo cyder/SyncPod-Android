@@ -7,9 +7,9 @@ import javax.inject.Inject
 
 class RoomActivityViewModel @Inject constructor(
         private val repository: RoomRepository,
-        private val navigator: Navigator,
-        var roomKey: String
+        private val navigator: Navigator
 ) : ActivityViewModel() {
+    lateinit var roomKey: String
 
     override fun onStart() {
     }

@@ -40,7 +40,7 @@
     <string name="online_users_num">オンライン：%d人</string>
     <string name="now_playing_video_info">再生中：%s</string>
     <string name="last_played_video_info">再生終了：%s</string>
-    <string name="reject_message">入室できません。\nルームIDが間違っている可能性があります。</string>
+    <string name="room_enter_reject_message">入室できません。\nルームIDが間違っているか\n他ユーザーからバンされた可能性があります。</string>
     <string name="ok">OK</string>
     <string name="notice">おしらせ</string>
     <string name="room_name">ルーム名</string>
