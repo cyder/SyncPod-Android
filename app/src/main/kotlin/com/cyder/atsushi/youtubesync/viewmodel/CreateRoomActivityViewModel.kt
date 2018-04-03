@@ -35,6 +35,7 @@ class CreateRoomActivityViewModel @Inject constructor(
                 .subscribe{ response ->
                     repository.joinRoom(response.key)
                             .subscribe({
+                                navigator.closeActivity()
                                 navigator.navigateToRoomActivity(response.key)
                             },{
                                 
