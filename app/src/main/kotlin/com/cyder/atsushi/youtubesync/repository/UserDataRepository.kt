@@ -17,8 +17,8 @@ class UserDataRepository @Inject constructor(
         private val sharedPreferences: SharedPreferences
 ) : UserRepository {
 
-    override fun signIn(email: String, password: String): Completable {
-        return signInValidate(email, password)
+    override fun signIn(email: String, password: String, isAgreeTerms: Boolean): Completable {
+        return signInValidate(email, password, isAgreeTerms)
                 .andThen(syncPodApi.signIn(email, password))
                 .doOnSuccess { response ->
                     sharedPreferences.edit {
@@ -52,10 +52,12 @@ class UserDataRepository @Inject constructor(
         }
     }
 
-    private fun signInValidate(email: String, password: String): Completable {
+    private fun signInValidate(email: String, password: String, isAgreeTerms: Boolean): Completable {
         return Completable.create { emitter ->
             if (email.isBlank() || password.isBlank()) {
                 emitter.onError(NotFilledFormsException())
+            } else if (!isAgreeTerms) {
+                emitter.onError(NotAgreeTermsException())
             } else {
                 emitter.onComplete()
             }
@@ -84,6 +86,7 @@ class UserDataRepository @Inject constructor(
 }
 
 internal class NotFilledFormsException : Exception("forms are not filled!")
+internal class NotAgreeTermsException : Exception("not agree terms!")
 internal class NotValidEmailException : Exception("email address is not valid!")
 internal class TooShortPasswordException : Exception("password is too short!")
 internal class NotSamePasswordException : Exception("passwords are not same!")

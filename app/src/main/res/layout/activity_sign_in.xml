@@ -67,7 +67,8 @@
 
                     <CheckBox
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:checked="@={viewModel.isAgreeTerms}" />
 
                     <TextView
                         android:id="@+id/terms_message"

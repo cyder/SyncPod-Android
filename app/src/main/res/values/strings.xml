@@ -64,6 +64,7 @@
     <string name="login_mistook">メールアドレスもしくはパスワードが間違っています。</string>
     <string name="sign_up_used_email">入力されたメールアドレスは既に使われています。</string>
     <string name="form_not_filled">項目をすべて入力してください。</string>
+    <string name="not_agree_terms">利用規約に同意して下さい。</string>
     <string name="sign_up_invalid_password">パスワードが一致しません。</string>
     <string name="sign_up_min_password_length">パスワードが短すぎます。</string>
     <string name="sign_up_invalid_email">メールアドレスが正しくありません。</string>
