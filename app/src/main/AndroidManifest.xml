@@ -23,6 +23,7 @@
 
                 <data
                     android:host="app.sync-pod.com"
+                    android:path="/room"
                     android:scheme="http" />
                 <data
                     android:host="app.com"
