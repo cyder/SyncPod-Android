@@ -5,6 +5,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.text.method.LinkMovementMethod
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.databinding.ActivitySignUpBinding
 import com.cyder.atsushi.youtubesync.view.helper.hideSoftwareKeyBoard
@@ -30,6 +31,7 @@ class SignUpActivity : BaseActivity() {
         binding.viewModel = viewModel
 
         setUpSnackbar()
+        binding.termsMessage.movementMethod = LinkMovementMethod.getInstance()
     }
 
     override fun onDestroy() {

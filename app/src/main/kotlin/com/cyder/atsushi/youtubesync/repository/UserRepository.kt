@@ -12,6 +12,6 @@ interface UserRepository {
     @CheckResult
     fun signIn(email: String, password: String, isAgreeTerms: Boolean): Completable
     @CheckResult
-    fun signUp(email: String, name: String, password:String, passwordConfirm: String): Completable
+    fun signUp(email: String, name: String, password:String, passwordConfirm: String, isAgreeTerms: Boolean): Completable
     fun getAccessToken(): Single<String>
 }

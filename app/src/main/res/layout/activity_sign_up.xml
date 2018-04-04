@@ -81,6 +81,24 @@
                     android:inputType="textPassword"
                     android:text="@={viewModel.passwordConfirm}" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="@={viewModel.isAgreeTerms}" />
+
+                    <TextView
+                        android:id="@+id/terms_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/terms_message" />
+
+                </LinearLayout>
+
                 <Button
                     android:id="@+id/sign_up_submit"
                     android:layout_width="match_parent"

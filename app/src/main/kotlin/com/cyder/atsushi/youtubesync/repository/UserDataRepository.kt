@@ -28,8 +28,8 @@ class UserDataRepository @Inject constructor(
                 .toCompletable()
     }
 
-    override fun signUp(email: String, name: String, password: String, passwordConfirm: String): Completable {
-        return signUpValidate(email, name, password, passwordConfirm)
+    override fun signUp(email: String, name: String, password: String, passwordConfirm: String, isAgreeTerms: Boolean): Completable {
+        return signUpValidate(email, name, password, passwordConfirm, isAgreeTerms)
                 .andThen(syncPodApi.signUp(SignUp(email, name, password)))
                 .doOnSuccess { response ->
                     sharedPreferences.edit {
@@ -64,10 +64,12 @@ class UserDataRepository @Inject constructor(
         }
     }
 
-    private fun signUpValidate(email: String, name: String, password: String, passwordConfirm: String): Completable {
+    private fun signUpValidate(email: String, name: String, password: String, passwordConfirm: String, isAgreeTerms: Boolean): Completable {
         return Completable.create { emitter ->
             if (email.isBlank() || name.isBlank() || password.isBlank() || passwordConfirm.isBlank()) {
                 emitter.onError(NotFilledFormsException())
+            } else if (!isAgreeTerms) {
+                emitter.onError(NotAgreeTermsException())
             } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 emitter.onError(NotValidEmailException())
             } else if (password.length < 6) {
