@@ -32,9 +32,11 @@ class RoomDataRepository @Inject constructor(
             }
             subscription.onRejected = {
                 emitter.onError(CannotJoinRoomException())
+                consumer.disconnect()
             }
             subscription.onFailed = {
                 emitter.onError(it)
+                consumer.disconnect()
             }
         }
     }
