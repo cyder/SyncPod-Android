@@ -50,14 +50,20 @@ class TopActivityViewModel @Inject constructor(
         roomRepository.fetchJoinedRooms()
                 .map { convertToViewModel(it) }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe ({ response ->
-                    this.roomViewModels.clear()
-                    this.roomViewModels.addAll(response)
+                .subscribe({ response ->
+                    response.forEachIndexed { index, viewModel ->
+                        if (this.roomViewModels.size - 1 >= index
+                                && this.roomViewModels[index].room.get().id != viewModel.room.get().id) {
+                            this.roomViewModels[index] = viewModel
+                        } else if (this.roomViewModels.size <= index) {
+                            this.roomViewModels.add(viewModel)
+                        }
+                    }
                     isLoading.set(false)
-                    if(response.isNotEmpty()){
+                    if (response.isNotEmpty()) {
                         hasEntered.set(true)
                     }
-                },{
+                }, {
                     isLoading.set(false)
                 })
     }
