@@ -38,4 +38,23 @@ data class Room(
             }
     val isPlaying: Boolean
             get() = nowPlayingVideo is Video
+
+    fun isSameState(room: Room): Boolean {
+        if (this.id != room.id) {
+            return false
+        }
+        if (this.onlineUsers != room.onlineUsers) {
+            return false
+        }
+        if (this.hasThumbnail != room.hasThumbnail) {
+            return false
+        }
+        if (this.thumbnailUrl != room.thumbnailUrl) {
+            return false
+        }
+        if (this.isPlaying != room.isPlaying) {
+            return false
+        }
+        return true
+    }
 }

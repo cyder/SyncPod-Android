@@ -52,11 +52,12 @@ class TopActivityViewModel @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response ->
                     response.forEachIndexed { index, viewModel ->
-                        if (this.roomViewModels.size - 1 >= index
-                                && this.roomViewModels[index].room.get().id != viewModel.room.get().id) {
-                            this.roomViewModels[index] = viewModel
-                        } else if (this.roomViewModels.size <= index) {
-                            this.roomViewModels.add(viewModel)
+                        when (index) {
+                            in 0..(this.roomViewModels.size - 1) ->
+                                if (isChanged(this.roomViewModels[index], viewModel)) {
+                                    this.roomViewModels[index] = viewModel
+                                }
+                            else -> this.roomViewModels.add(viewModel)
                         }
                     }
                     isLoading.set(false)
@@ -70,5 +71,9 @@ class TopActivityViewModel @Inject constructor(
 
     private fun convertToViewModel(rooms: List<Room>): List<RoomViewModel> {
         return rooms.map { RoomViewModel(roomRepository, navigator, ObservableField(it)) }
+    }
+
+    private fun isChanged(a: RoomViewModel, b: RoomViewModel): Boolean {
+        return !a.room.get().isSameState(b.room.get())
     }
 }
