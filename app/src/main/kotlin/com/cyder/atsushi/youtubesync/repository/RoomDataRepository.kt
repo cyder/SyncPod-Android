@@ -21,7 +21,7 @@ class RoomDataRepository @Inject constructor(
         private val consumer: Consumer,
         private val token: String
 ) : RoomRepository {
-    lateinit var subscription: Subscription
+    private lateinit var subscription: Subscription
     override fun joinRoom(roomKey: String): Completable {
         val channel = Channel(CHANNEL_NAME, mapOf(ROOM_KEY to roomKey))
         subscription = consumer.subscriptions.create(channel)
