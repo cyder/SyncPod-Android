@@ -50,19 +50,30 @@ class TopActivityViewModel @Inject constructor(
         roomRepository.fetchJoinedRooms()
                 .map { convertToViewModel(it) }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe ({ response ->
-                    this.roomViewModels.clear()
-                    this.roomViewModels.addAll(response)
+                .subscribe({ response ->
+                    response.forEachIndexed { index, viewModel ->
+                        when (index) {
+                            in 0..(this.roomViewModels.size - 1) ->
+                                if (isChanged(this.roomViewModels[index], viewModel)) {
+                                    this.roomViewModels[index] = viewModel
+                                }
+                            else -> this.roomViewModels.add(viewModel)
+                        }
+                    }
                     isLoading.set(false)
-                    if(response.isNotEmpty()){
+                    if (response.isNotEmpty()) {
                         hasEntered.set(true)
                     }
-                },{
+                }, {
                     isLoading.set(false)
                 })
     }
 
     private fun convertToViewModel(rooms: List<Room>): List<RoomViewModel> {
         return rooms.map { RoomViewModel(roomRepository, navigator, ObservableField(it)) }
+    }
+
+    private fun isChanged(a: RoomViewModel, b: RoomViewModel): Boolean {
+        return a.room.get() != b.room.get()
     }
 }

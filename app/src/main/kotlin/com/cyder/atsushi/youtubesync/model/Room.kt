@@ -38,4 +38,24 @@ data class Room(
             }
     val isPlaying: Boolean
             get() = nowPlayingVideo is Video
+
+    override fun equals(other: Any?): Boolean {
+        val room = other as Room
+        if (this.id != room.id) {
+            return false
+        }
+        if (this.onlineUsers != room.onlineUsers) {
+            return false
+        }
+        if (this.hasThumbnail != room.hasThumbnail) {
+            return false
+        }
+        if (this.thumbnailUrl != room.thumbnailUrl) {
+            return false
+        }
+        if (this.isPlaying != room.isPlaying) {
+            return false
+        }
+        return true
+    }
 }
