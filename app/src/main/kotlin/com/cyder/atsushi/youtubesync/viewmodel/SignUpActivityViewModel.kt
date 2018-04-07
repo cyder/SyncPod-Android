@@ -19,7 +19,7 @@ class SignUpActivityViewModel @Inject constructor(
     var name: ObservableField<String?> = ObservableField()
     var password: ObservableField<String?> = ObservableField()
     var passwordConfirm: ObservableField<String?> = ObservableField()
-    var isAgreeTerms: ObservableField<Boolean?> = ObservableField()
+    var isAgreeTerms: ObservableField<Boolean> = ObservableField()
     var callback: SnackbarCallback? = null
 
     override fun onStart() {
