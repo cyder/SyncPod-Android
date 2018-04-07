@@ -39,7 +39,7 @@ class SignInActivityViewModel @Inject constructor(
     fun onBackButtonClicked() = navigator.closeActivity()
 
     fun onSignIn() {
-        repository.signIn(mailAddress.get() ?: "", password.get() ?: "", isAgreeTerms.get() ?: false)
+        repository.signIn(mailAddress.get() ?: "", password.get() ?: "", isAgreeTerms.get())
                 .subscribe({
                     navigator.navigateToTopActivity()
                 }, { error ->

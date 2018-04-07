@@ -38,7 +38,7 @@ class SignUpActivityViewModel @Inject constructor(
 
     fun onSignUp() {
         repository.signUp(mailAddress.get() ?: "", name.get() ?: "", password.get()
-                ?: "", passwordConfirm.get() ?: "", isAgreeTerms.get() ?: false)
+                ?: "", passwordConfirm.get() ?: "", isAgreeTerms.get())
                 .subscribe({
                     navigator.navigateToTopActivity()
                 }, { error ->
