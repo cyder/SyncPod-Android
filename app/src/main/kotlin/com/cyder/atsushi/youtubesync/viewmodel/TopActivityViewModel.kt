@@ -39,7 +39,7 @@ class TopActivityViewModel @Inject constructor(
     fun onJoinRoom() {
     }
 
-    fun onCreateRoom() = navigator.navigateToCreateRoom()
+    fun onCreateRoom() = navigator.navigateToCreateRoomActivity()
 
     fun onRefresh() {
         isLoading.set(true)
@@ -63,6 +63,6 @@ class TopActivityViewModel @Inject constructor(
     }
 
     private fun convertToViewModel(rooms: List<Room>): List<RoomViewModel> {
-        return rooms.map { RoomViewModel(navigator, ObservableField(it)) }
+        return rooms.map { RoomViewModel(roomRepository, navigator, ObservableField(it)) }
     }
 }

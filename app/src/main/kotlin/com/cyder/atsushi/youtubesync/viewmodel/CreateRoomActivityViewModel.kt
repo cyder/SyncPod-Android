@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
 import android.databinding.ObservableField
+import com.cyder.atsushi.youtubesync.repository.RoomRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
 import javax.inject.Inject
@@ -9,7 +10,8 @@ import javax.inject.Inject
  * Created by atsushi on 2018/03/29.
  */
 class CreateRoomActivityViewModel @Inject constructor(
-        private val navigator: Navigator
+        private val navigator: Navigator,
+        private val repository: RoomRepository
 ) : ActivityViewModel() {
     var roomName: ObservableField<String?> = ObservableField()
     var roomDescription: ObservableField<String?> = ObservableField()
@@ -29,5 +31,15 @@ class CreateRoomActivityViewModel @Inject constructor(
     fun onBackButtonClicked() = navigator.closeActivity()
 
     fun onSubmit() {
+        repository.createNewRoom(roomName.get() ?: "", roomDescription.get() ?: "")
+                .subscribe{ response ->
+                    repository.joinRoom(response.key)
+                            .subscribe({
+                                navigator.closeActivity()
+                                navigator.navigateToRoomActivity(response.key)
+                            },{
+                                //TODO Error handling
+                            })
+                }
     }
 }

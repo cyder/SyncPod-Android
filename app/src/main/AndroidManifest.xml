@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cyder.atsushi.youtubesync">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".BaseApplication"
@@ -35,10 +36,14 @@
         <activity
             android:name=".view.activity.SignUpActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.activity.TopActivity"
+        <activity
+            android:name=".view.activity.TopActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.CreateRoomActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.RoomActivity"
             android:screenOrientation="portrait" />
     </application>
 
