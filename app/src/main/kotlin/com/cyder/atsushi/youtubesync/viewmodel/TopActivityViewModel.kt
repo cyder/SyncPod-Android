@@ -74,6 +74,6 @@ class TopActivityViewModel @Inject constructor(
     }
 
     private fun isChanged(a: RoomViewModel, b: RoomViewModel): Boolean {
-        return !a.room.get().isSameState(b.room.get())
+        return a.room.get() != b.room.get()
     }
 }

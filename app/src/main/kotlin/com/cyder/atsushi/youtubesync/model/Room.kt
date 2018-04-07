@@ -39,7 +39,8 @@ data class Room(
     val isPlaying: Boolean
             get() = nowPlayingVideo is Video
 
-    fun isSameState(room: Room): Boolean {
+    override fun equals(other: Any?): Boolean {
+        val room = other as Room
         if (this.id != room.id) {
             return false
         }
