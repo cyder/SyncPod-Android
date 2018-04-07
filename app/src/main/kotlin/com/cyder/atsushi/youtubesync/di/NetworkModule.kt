@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync.di
 
 import com.cyder.atsushi.youtubesync.api.SyncPodApi
+import com.cyder.atsushi.youtubesync.repository.UserRepository
 import com.hosopy.actioncable.ActionCable
 import com.hosopy.actioncable.Consumer
 import dagger.Module
@@ -46,14 +47,19 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideActionCableConsumer(): Consumer {
-        return ActionCable.createConsumer(URI(WS_URL))
+    fun provideConsumer(
+            repository: UserRepository
+    ): Consumer {
+        val token = repository.getAccessToken().blockingGet()!!
+        val options = Consumer.Options()
+        options.connection.query = mapOf(TOKEN to token)
+        return ActionCable.createConsumer(URI(WS_URL), options)
     }
-
 
     companion object {
         val instance = NetworkModule()
         const val BASE_URL = "http://59.106.220.89:3000/api/v1/"
         const val WS_URL = "ws://59.106.220.89:3000/cable/"
+        const val TOKEN = "token"
     }
 }

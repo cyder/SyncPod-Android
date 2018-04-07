@@ -38,7 +38,7 @@ class CreateRoomActivityViewModel @Inject constructor(
                                 navigator.closeActivity()
                                 navigator.navigateToRoomActivity(response.key)
                             },{
-                                
+                                //TODO Error handling
                             })
                 }
     }
