@@ -31,7 +31,6 @@ class SignUpActivity : BaseActivity() {
         binding.viewModel = viewModel
 
         setUpSnackbar()
-        binding.termsMessage.movementMethod = LinkMovementMethod.getInstance()
     }
 
     override fun onDestroy() {

@@ -74,7 +74,8 @@
                         android:id="@+id/terms_message"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/terms_message" />
+                        android:text="@string/terms_message"
+                        app:linksNavigable="@{true}" />
 
                 </LinearLayout>
 
