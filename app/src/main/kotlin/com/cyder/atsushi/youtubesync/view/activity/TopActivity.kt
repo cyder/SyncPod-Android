@@ -1,5 +1,6 @@
 package com.cyder.atsushi.youtubesync.view.activity
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
@@ -15,6 +16,7 @@ import com.cyder.atsushi.youtubesync.databinding.ItemRoomBinding
 import com.cyder.atsushi.youtubesync.view.adapter.BindingHolder
 import com.cyder.atsushi.youtubesync.view.adapter.ObservableListAdapter
 import com.cyder.atsushi.youtubesync.view.helper.hideSoftwareKeyBoard
+import com.cyder.atsushi.youtubesync.viewmodel.DialogCallback
 import com.cyder.atsushi.youtubesync.viewmodel.RoomViewModel
 import com.cyder.atsushi.youtubesync.viewmodel.SnackbarCallback
 import com.cyder.atsushi.youtubesync.viewmodel.TopActivityViewModel
@@ -35,7 +37,20 @@ class TopActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_top)
         binding.viewModel = viewModel
 
+        setUpDialog(viewModel)
         initRecyclerView()
+    }
+
+    private fun setUpDialog(viewmodel: TopActivityViewModel) {
+        val callback = object : DialogCallback {
+            override fun onAction() {
+                val dialog = AlertDialog.Builder(this@TopActivity)
+                        .setTitle(R.string.join_room)
+                        .create()
+                dialog.show()
+            }
+        }
+        viewmodel.callback = callback
     }
 
     private fun initRecyclerView() {

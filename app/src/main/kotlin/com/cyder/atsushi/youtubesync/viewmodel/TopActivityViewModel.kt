@@ -23,6 +23,8 @@ class TopActivityViewModel @Inject constructor(
     var roomViewModels: ObservableList<RoomViewModel> = ObservableArrayList()
     var isLoading: ObservableBoolean = ObservableBoolean()
     var hasEntered: ObservableBoolean = ObservableBoolean(false)
+    var callback: DialogCallback? = null
+
     override fun onStart() {
     }
 
@@ -37,6 +39,7 @@ class TopActivityViewModel @Inject constructor(
     }
 
     fun onJoinRoom() {
+        callback?.onAction()
     }
 
     fun onCreateRoom() = navigator.navigateToCreateRoomActivity()
