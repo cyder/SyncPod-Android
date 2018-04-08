@@ -1,7 +1,6 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
 import android.databinding.ObservableField
-import android.util.Log
 import com.cyder.atsushi.youtubesync.repository.RoomRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import javax.inject.Inject
@@ -13,6 +12,9 @@ class JoinRoomDialogViewModel @Inject constructor(
     var roomKey: ObservableField<String?> = ObservableField()
 
     fun onClickJoinRoomAlertButton() {
-        Log.d("App", roomKey.get() ?: "failed")
+        repository.joinRoom(roomKey.get() ?: "")
+                .subscribe({
+                    navigator.navigateToRoomActivity(roomKey.get() ?: "")
+                },{})
     }
 }
