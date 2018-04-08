@@ -61,6 +61,24 @@ class TopActivity : BaseActivity() {
             }
         }
         viewModel.callback = callback
+
+        val snackbarCallback = object : SnackbarCallback {
+            override fun onFailed(resId: Int) {
+                currentFocus.hideSoftwareKeyBoard()
+                val snackbar = Snackbar.make(currentFocus,
+                        resId,
+                        Snackbar.LENGTH_LONG).apply {
+                    setAction(R.string.ok) {
+                        dismiss()
+                    }
+                }
+                val snackbarView = snackbar.view
+                val tv = snackbarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
+                tv.maxLines = 3
+                snackbar.show()
+            }
+        }
+        dialogViewModel.callback = snackbarCallback
     }
 
     private fun initRecyclerView() {
