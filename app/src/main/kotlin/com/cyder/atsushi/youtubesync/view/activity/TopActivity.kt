@@ -46,6 +46,9 @@ class TopActivity : BaseActivity() {
             override fun onAction() {
                 val dialog = AlertDialog.Builder(this@TopActivity)
                         .setTitle(R.string.join_room)
+                        .setView(layoutInflater.inflate(R.layout.join_room_dialog, null))
+                        .setPositiveButton(R.string.send_button, null)
+                        .setNegativeButton(R.string.cancel_button, null)
                         .create()
                 dialog.show()
             }
