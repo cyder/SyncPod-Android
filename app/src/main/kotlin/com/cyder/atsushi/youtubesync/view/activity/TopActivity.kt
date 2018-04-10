@@ -8,13 +8,12 @@ import android.databinding.ObservableList
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.databinding.ActivityTopBinding
 import com.cyder.atsushi.youtubesync.databinding.ItemRoomBinding
-import com.cyder.atsushi.youtubesync.databinding.JoinRoomDialogBinding
 import com.cyder.atsushi.youtubesync.view.adapter.BindingHolder
 import com.cyder.atsushi.youtubesync.view.adapter.ObservableListAdapter
 import com.cyder.atsushi.youtubesync.view.helper.hideSoftwareKeyBoard
@@ -28,8 +27,6 @@ import javax.inject.Inject
 class TopActivity : BaseActivity() {
     @Inject
     lateinit var viewModel: TopActivityViewModel
-    @Inject
-    lateinit var dialogViewModel: JoinRoomDialogViewModel
 
     private lateinit var binding: ActivityTopBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,28 +37,31 @@ class TopActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_top)
         binding.viewModel = viewModel
 
-        setUpDialog(viewModel)
+        setUpDialog()
+        setUpSnackBar()
         initRecyclerView()
     }
 
-    private fun setUpDialog(viewModel: TopActivityViewModel) {
+    private fun setUpDialog() {
         val callback = object : DialogCallback {
             override fun onAction() {
+                val layout = layoutInflater.inflate(R.layout.join_room_dialog, null)
                 val dialog = AlertDialog.Builder(this@TopActivity)
-                val dialogBinding = DataBindingUtil.inflate<JoinRoomDialogBinding>(LayoutInflater.from(dialog.context), R.layout.join_room_dialog, null, false)
-                dialogBinding.viewModel = dialogViewModel
-                dialog.setTitle(R.string.join_room)
-                        .setView(dialogBinding.root)
+                        .setTitle(R.string.join_room)
+                        .setView(layout)
                         .setPositiveButton(R.string.send_button) { _, _ ->
-                            dialogViewModel.onClickJoinRoomAlertButton()
+                            val input = layout.findViewById(R.id.room_key) as EditText
+                            viewModel.onClickJoinRoomAlertButton(input.text.toString())
                         }
                         .setNegativeButton(R.string.cancel_button) { _, _ -> }
                         .create()
                 dialog.show()
             }
         }
-        viewModel.callback = callback
+        viewModel.dialogCallback = callback
+    }
 
+    private fun setUpSnackBar() {
         val snackbarCallback = object : SnackbarCallback {
             override fun onFailed(resId: Int) {
                 currentFocus.hideSoftwareKeyBoard()
@@ -78,7 +78,7 @@ class TopActivity : BaseActivity() {
                 snackbar.show()
             }
         }
-        dialogViewModel.callback = snackbarCallback
+        viewModel.snackbarCallback = snackbarCallback
     }
 
     private fun initRecyclerView() {

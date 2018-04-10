@@ -4,7 +4,9 @@ import android.databinding.ObservableArrayList
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.databinding.ObservableList
+import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.model.Room
+import com.cyder.atsushi.youtubesync.repository.RoomDataRepository
 import com.cyder.atsushi.youtubesync.repository.RoomRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
@@ -23,7 +25,8 @@ class TopActivityViewModel @Inject constructor(
     var roomViewModels: ObservableList<RoomViewModel> = ObservableArrayList()
     var isLoading: ObservableBoolean = ObservableBoolean()
     var hasEntered: ObservableBoolean = ObservableBoolean(false)
-    var callback: DialogCallback? = null
+    var dialogCallback: DialogCallback? = null
+    var snackbarCallback: SnackbarCallback? = null
 
     override fun onStart() {
     }
@@ -39,7 +42,7 @@ class TopActivityViewModel @Inject constructor(
     }
 
     fun onJoinRoom() {
-        callback?.onAction()
+        dialogCallback?.onAction()
     }
 
     fun onCreateRoom() = navigator.navigateToCreateRoomActivity()
@@ -47,6 +50,17 @@ class TopActivityViewModel @Inject constructor(
     fun onRefresh() {
         isLoading.set(true)
         getRooms()
+    }
+
+    fun onClickJoinRoomAlertButton(roomKey: String) {
+        roomRepository.joinRoom(roomKey)
+                .subscribe({
+                    navigator.navigateToRoomActivity(roomKey)
+                }, { error ->
+                    when (error) {
+                        is RoomDataRepository.CannotJoinRoomException -> snackbarCallback?.onFailed(R.string.room_enter_reject_message)
+                    }
+                })
     }
 
     private fun getRooms() {
