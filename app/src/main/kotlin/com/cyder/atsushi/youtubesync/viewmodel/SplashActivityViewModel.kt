@@ -32,7 +32,7 @@ class SplashActivityViewModel @Inject constructor(
                     navigator.navigateToTopActivity()
                     navigator.closeActivity()
                 }, {
-                    navigator.navigateToMainActivity()
+                    navigator.navigateToWelcomeActivity()
                     navigator.closeActivity()
                 })
     }
