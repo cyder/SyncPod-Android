@@ -51,7 +51,7 @@ class TopActivity : BaseActivity() {
                         .setView(layout)
                         .setPositiveButton(R.string.send_button) { _, _ ->
                             val input = layout.findViewById(R.id.room_key) as EditText
-                            viewModel.onClickJoinRoomAlertButton(input.text.toString())
+                            viewModel.onClickJoinRoomDialogButton(input.text.toString())
                         }
                         .setNegativeButton(R.string.cancel_button) { _, _ -> }
                         .create()

@@ -52,7 +52,7 @@ class TopActivityViewModel @Inject constructor(
         getRooms()
     }
 
-    fun onClickJoinRoomAlertButton(roomKey: String) {
+    fun onClickJoinRoomDialogButton(roomKey: String) {
         roomRepository.joinRoom(roomKey)
                 .subscribe({
                     navigator.navigateToRoomActivity(roomKey)
