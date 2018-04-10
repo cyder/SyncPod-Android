@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.databinding.ActivityTopBinding
@@ -18,6 +17,7 @@ import com.cyder.atsushi.youtubesync.view.adapter.BindingHolder
 import com.cyder.atsushi.youtubesync.view.adapter.ObservableListAdapter
 import com.cyder.atsushi.youtubesync.view.helper.hideSoftwareKeyBoard
 import com.cyder.atsushi.youtubesync.viewmodel.*
+import kotlinx.android.synthetic.main.join_room_dialog.*
 import javax.inject.Inject
 
 /**
@@ -50,8 +50,7 @@ class TopActivity : BaseActivity() {
                         .setTitle(R.string.join_room)
                         .setView(layout)
                         .setPositiveButton(R.string.send_button) { _, _ ->
-                            val input = layout.findViewById(R.id.room_key) as EditText
-                            viewModel.onClickJoinRoomDialogButton(input.text.toString())
+                            viewModel.onClickJoinRoomDialogButton(room_key.text.toString())
                         }
                         .setNegativeButton(R.string.cancel_button) { _, _ -> }
                         .create()
