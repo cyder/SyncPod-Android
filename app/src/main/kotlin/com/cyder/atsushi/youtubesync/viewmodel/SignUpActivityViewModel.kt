@@ -19,6 +19,7 @@ class SignUpActivityViewModel @Inject constructor(
     var name: ObservableField<String?> = ObservableField()
     var password: ObservableField<String?> = ObservableField()
     var passwordConfirm: ObservableField<String?> = ObservableField()
+    var isAgreeTerms: ObservableField<Boolean> = ObservableField()
     var callback: SnackbarCallback? = null
 
     override fun onStart() {
@@ -37,12 +38,13 @@ class SignUpActivityViewModel @Inject constructor(
 
     fun onSignUp() {
         repository.signUp(mailAddress.get() ?: "", name.get() ?: "", password.get()
-                ?: "", passwordConfirm.get() ?: "")
+                ?: "", passwordConfirm.get() ?: "", isAgreeTerms.get())
                 .subscribe({
                     navigator.navigateToTopActivity()
                 }, { error ->
                     when (error) {
                         is NotFilledFormsException -> callback?.onFailed(R.string.form_not_filled)
+                        is NotAgreeTermsException -> callback?.onFailed(R.string.not_agree_terms)
                         is NotValidEmailException -> callback?.onFailed(R.string.sign_up_invalid_email)
                         is TooShortPasswordException -> callback?.onFailed(R.string.sign_up_min_password_length)
                         is NotSamePasswordException -> callback?.onFailed(R.string.sign_up_invalid_password)

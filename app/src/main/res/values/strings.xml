@@ -64,10 +64,12 @@
     <string name="login_mistook">メールアドレスもしくはパスワードが間違っています。</string>
     <string name="sign_up_used_email">入力されたメールアドレスは既に使われています。</string>
     <string name="form_not_filled">項目をすべて入力してください。</string>
+    <string name="not_agree_terms">利用規約に同意して下さい。</string>
     <string name="sign_up_invalid_password">パスワードが一致しません。</string>
     <string name="sign_up_min_password_length">パスワードが短すぎます。</string>
     <string name="sign_up_invalid_email">メールアドレスが正しくありません。</string>
     <string name="published">公開 : %s</string>
     <string name="view_count">視聴回数 : %s 回</string>
     <string name="network_error">予期せぬエラーが発生しました。間を開けてお試しください。</string>
+    <string name="terms_message"><a href="http://app.sync-pod.com/terms">利用規約</a> に同意する。</string>
 </resources>

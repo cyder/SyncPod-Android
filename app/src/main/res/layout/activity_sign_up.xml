@@ -7,6 +7,8 @@
         <variable
             name="viewModel"
             type="com.cyder.atsushi.youtubesync.viewmodel.SignUpActivityViewModel" />
+
+        <import type="com.cyder.atsushi.youtubesync.util.SafeUnbox" />
     </data>
 
     <LinearLayout
@@ -80,6 +82,25 @@
                     android:hint="@string/confirm_password"
                     android:inputType="textPassword"
                     android:text="@={viewModel.passwordConfirm}" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="@={SafeUnbox.unbox(viewModel.isAgreeTerms)}" />
+
+                    <TextView
+                        android:id="@+id/terms_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/terms_message"
+                        app:linksNavigable="@{true}" />
+
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/sign_up_submit"

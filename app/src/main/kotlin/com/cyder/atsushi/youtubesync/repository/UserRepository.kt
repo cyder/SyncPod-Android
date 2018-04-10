@@ -10,8 +10,8 @@ import io.reactivex.Single
 interface UserRepository {
     //TODO implement val user
     @CheckResult
-    fun signIn(email: String, password:String): Completable
+    fun signIn(email: String, password: String, isAgreeTerms: Boolean): Completable
     @CheckResult
-    fun signUp(email: String, name: String, password:String, passwordConfirm: String): Completable
+    fun signUp(email: String, name: String, password:String, passwordConfirm: String, isAgreeTerms: Boolean): Completable
     fun getAccessToken(): Single<String>
 }

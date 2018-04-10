@@ -17,8 +17,8 @@ class UserDataRepository @Inject constructor(
         private val sharedPreferences: SharedPreferences
 ) : UserRepository {
 
-    override fun signIn(email: String, password: String): Completable {
-        return signInValidate(email, password)
+    override fun signIn(email: String, password: String, isAgreeTerms: Boolean): Completable {
+        return signInValidate(email, password, isAgreeTerms)
                 .andThen(syncPodApi.signIn(email, password))
                 .doOnSuccess { response ->
                     sharedPreferences.edit {
@@ -28,8 +28,8 @@ class UserDataRepository @Inject constructor(
                 .toCompletable()
     }
 
-    override fun signUp(email: String, name: String, password: String, passwordConfirm: String): Completable {
-        return signUpValidate(email, name, password, passwordConfirm)
+    override fun signUp(email: String, name: String, password: String, passwordConfirm: String, isAgreeTerms: Boolean): Completable {
+        return signUpValidate(email, name, password, passwordConfirm, isAgreeTerms)
                 .andThen(syncPodApi.signUp(SignUp(email, name, password)))
                 .doOnSuccess { response ->
                     sharedPreferences.edit {
@@ -52,20 +52,24 @@ class UserDataRepository @Inject constructor(
         }
     }
 
-    private fun signInValidate(email: String, password: String): Completable {
+    private fun signInValidate(email: String, password: String, isAgreeTerms: Boolean): Completable {
         return Completable.create { emitter ->
             if (email.isBlank() || password.isBlank()) {
                 emitter.onError(NotFilledFormsException())
+            } else if (!isAgreeTerms) {
+                emitter.onError(NotAgreeTermsException())
             } else {
                 emitter.onComplete()
             }
         }
     }
 
-    private fun signUpValidate(email: String, name: String, password: String, passwordConfirm: String): Completable {
+    private fun signUpValidate(email: String, name: String, password: String, passwordConfirm: String, isAgreeTerms: Boolean): Completable {
         return Completable.create { emitter ->
             if (email.isBlank() || name.isBlank() || password.isBlank() || passwordConfirm.isBlank()) {
                 emitter.onError(NotFilledFormsException())
+            } else if (!isAgreeTerms) {
+                emitter.onError(NotAgreeTermsException())
             } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 emitter.onError(NotValidEmailException())
             } else if (password.length < 6) {
@@ -84,6 +88,7 @@ class UserDataRepository @Inject constructor(
 }
 
 internal class NotFilledFormsException : Exception("forms are not filled!")
+internal class NotAgreeTermsException : Exception("not agree terms!")
 internal class NotValidEmailException : Exception("email address is not valid!")
 internal class TooShortPasswordException : Exception("password is too short!")
 internal class NotSamePasswordException : Exception("passwords are not same!")
