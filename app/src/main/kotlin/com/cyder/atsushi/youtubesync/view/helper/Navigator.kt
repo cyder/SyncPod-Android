@@ -10,7 +10,7 @@ import javax.inject.Inject
 class Navigator @Inject constructor(
         private val activity: AppCompatActivity
 ) {
-
+    fun navigateToMainActivity() = activity.startActivity(MainActivity.createIntent(activity))
     fun navigateToSignInActivity() = activity.startActivity(SignInActivity.createIntent(activity))
     fun navigateToSignUpActivity() = activity.startActivity(SignUpActivity.createIntent(activity))
     fun navigateToTopActivity() {
