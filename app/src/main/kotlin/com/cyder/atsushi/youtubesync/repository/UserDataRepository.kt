@@ -43,7 +43,7 @@ class UserDataRepository @Inject constructor(
         val token = sharedPreferences.getString(STATE_USER_TOKEN, null)
         return Single.create { emitter ->
             try {
-                token?.run {
+                token.run {
                     emitter.onSuccess(token)
                 }
             } catch (exception: Exception) {
