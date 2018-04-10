@@ -1,5 +1,7 @@
 package com.cyder.atsushi.youtubesync.view.activity
 
+import android.content.Context
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import com.cyder.atsushi.youtubesync.R
@@ -21,5 +23,9 @@ class MainActivity : BaseActivity() {
         bindViewModel(viewModel)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewModel = viewModel
+    }
+
+    companion object {
+        fun createIntent(context: Context): Intent = Intent(context, MainActivity::class.java)
     }
 }

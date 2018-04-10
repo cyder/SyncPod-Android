@@ -6,14 +6,15 @@ import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
 import javax.inject.Inject
 
 /**
- * Created by chigichan24 on 2018/01/12.
+ * Created by atsushi on 2018/04/10.
  */
 
-class MainActivityViewModel @Inject constructor(
+class SplashActivityViewModel @Inject constructor(
         private val navigator: Navigator,
         private val repository: UserRepository
 ) : ActivityViewModel() {
     override fun onStart() {
+        decideLaunchActivity()
     }
 
     override fun onResume() {
@@ -25,7 +26,14 @@ class MainActivityViewModel @Inject constructor(
     override fun onStop() {
     }
 
-    fun onSignInClicked() = navigator.navigateToSignInActivity()
-
-    fun onSignUpClicked() = navigator.navigateToSignUpActivity()
+    private fun decideLaunchActivity() {
+        repository.getAccessToken()
+                .subscribe({
+                    navigator.navigateToTopActivity()
+                    navigator.closeActivity()
+                }, {
+                    navigator.navigateToMainActivity()
+                    navigator.closeActivity()
+                })
+    }
 }
