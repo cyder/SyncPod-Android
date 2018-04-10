@@ -2,6 +2,7 @@ package com.cyder.atsushi.youtubesync.di
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
+import com.cyder.atsushi.youtubesync.di.scope.FragmentScope
 import dagger.Module
 import dagger.Provides
 
@@ -11,5 +12,6 @@ import dagger.Provides
 @Module
 class FragmentModule(val fragment: Fragment) {
     @Provides
+    @FragmentScope
     fun provideFragmentManager(): FragmentManager? = fragment.fragmentManager
 }
