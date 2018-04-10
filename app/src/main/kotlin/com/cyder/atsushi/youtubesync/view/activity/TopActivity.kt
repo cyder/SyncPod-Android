@@ -17,7 +17,7 @@ import com.cyder.atsushi.youtubesync.view.adapter.BindingHolder
 import com.cyder.atsushi.youtubesync.view.adapter.ObservableListAdapter
 import com.cyder.atsushi.youtubesync.view.helper.hideSoftwareKeyBoard
 import com.cyder.atsushi.youtubesync.viewmodel.*
-import kotlinx.android.synthetic.main.join_room_dialog.*
+import kotlinx.android.synthetic.main.join_room_dialog.view.*
 import javax.inject.Inject
 
 /**
@@ -50,7 +50,7 @@ class TopActivity : BaseActivity() {
                         .setTitle(R.string.join_room)
                         .setView(layout)
                         .setPositiveButton(R.string.send_button) { _, _ ->
-                            viewModel.onClickJoinRoomDialogButton(room_key.text.toString())
+                            viewModel.onClickJoinRoomDialogButton(layout.room_key.text.toString())
                         }
                         .setNegativeButton(R.string.cancel_button) { _, _ -> }
                         .create()
