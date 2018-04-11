@@ -65,8 +65,8 @@ class TopActivity : BaseActivity() {
     private fun setUpSnackBar() {
         val snackbarCallback = object : SnackbarCallback {
             override fun onFailed(resId: Int) {
-                currentFocus.hideSoftwareKeyBoard()
-                val snackbar = Snackbar.make(currentFocus,
+                currentFocus?.hideSoftwareKeyBoard()
+                val snackbar = Snackbar.make(binding.root,
                         resId,
                         Snackbar.LENGTH_LONG).apply {
                     setAction(R.string.ok) {
@@ -104,8 +104,8 @@ class TopActivity : BaseActivity() {
         private fun setUpSnackbar(viewmodel: RoomViewModel) {
             val callback = object : SnackbarCallback {
                 override fun onFailed(resId: Int) {
-                    currentFocus.hideSoftwareKeyBoard()
-                    val snackbar = Snackbar.make(currentFocus,
+                    currentFocus?.hideSoftwareKeyBoard()
+                    val snackbar = Snackbar.make(binding.root,
                             resId,
                             Snackbar.LENGTH_LONG).apply {
                         setAction(R.string.ok) {
