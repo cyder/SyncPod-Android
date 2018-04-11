@@ -1,5 +1,6 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
+import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.repository.RoomRepository
 import com.cyder.atsushi.youtubesync.repository.UserRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
@@ -33,16 +34,20 @@ class SplashActivityViewModel @Inject constructor(
     private fun decideLaunchActivity() {
         userRepository.getAccessToken()
                 .subscribe({
-                    navigator.navigateToTopActivity()
                     roomKey?.run {
                         roomRepository.joinRoom(this)
                                 .subscribe({
+                                    navigator.navigateToTopActivity()
                                     navigator.navigateToRoomActivity(this)
+                                    navigator.closeActivity()
                                 }, {
-
+                                    navigator.navigateToTopActivity(R.string.room_enter_reject_message)
+                                    navigator.closeActivity()
                                 })
+                    } ?: apply {
+                        navigator.navigateToTopActivity()
+                        navigator.closeActivity()
                     }
-                    navigator.closeActivity()
                 }, {
                     navigator.navigateToWelcomeActivity()
                     navigator.closeActivity()

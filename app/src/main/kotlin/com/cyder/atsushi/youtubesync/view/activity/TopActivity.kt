@@ -37,6 +37,8 @@ class TopActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_top)
         binding.viewModel = viewModel
 
+        viewModel.errorMessageId = intent.getIntExtra(ERROR_MESSAGE_ID, -1).takeIf { it != -1 }
+
         setUpDialog()
         setUpSnackBar()
         initRecyclerView()
@@ -121,6 +123,7 @@ class TopActivity : BaseActivity() {
     }
 
     companion object {
-        fun createIntent(context: Context): Intent = Intent(context, TopActivity::class.java)
+        const val ERROR_MESSAGE_ID = "error_message_id"
+        fun createIntent(context: Context, errorMessageId: Int?): Intent = Intent(context, TopActivity::class.java).putExtra(ERROR_MESSAGE_ID, errorMessageId)
     }
 }
