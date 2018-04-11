@@ -1,5 +1,6 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
+import com.cyder.atsushi.youtubesync.repository.RoomRepository
 import com.cyder.atsushi.youtubesync.repository.UserRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
@@ -11,8 +12,11 @@ import javax.inject.Inject
 
 class SplashActivityViewModel @Inject constructor(
         private val navigator: Navigator,
-        private val repository: UserRepository
+        private val userRepository: UserRepository,
+        private val roomRepository: RoomRepository
 ) : ActivityViewModel() {
+    var roomKey: String? = null
+
     override fun onStart() {
         decideLaunchActivity()
     }
@@ -27,9 +31,17 @@ class SplashActivityViewModel @Inject constructor(
     }
 
     private fun decideLaunchActivity() {
-        repository.getAccessToken()
+        userRepository.getAccessToken()
                 .subscribe({
                     navigator.navigateToTopActivity()
+                    roomKey?.run {
+                        roomRepository.joinRoom(this)
+                                .subscribe({
+                                    navigator.navigateToRoomActivity(this)
+                                }, {
+
+                                })
+                    }
                     navigator.closeActivity()
                 }, {
                     navigator.navigateToWelcomeActivity()
