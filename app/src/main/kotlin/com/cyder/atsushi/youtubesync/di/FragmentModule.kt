@@ -10,7 +10,7 @@ import dagger.Provides
  * Created by chigichan24 on 2018/01/12.
  */
 @Module
-class FragmentModule(val fragment: Fragment) {
+class FragmentModule(private val fragment: Fragment) {
     @Provides
     @FragmentScope
     fun provideFragmentManager(): FragmentManager? = fragment.fragmentManager

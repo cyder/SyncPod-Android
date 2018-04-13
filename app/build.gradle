@@ -93,6 +93,12 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.22.5'
     implementation 'com.github.hosopy:actioncable-client-kotlin:0.0.2'
     implementation 'com.github.bumptech.glide:glide:4.6.1'
+    implementation('com.google.apis:google-api-services-youtube:v3-rev186-1.23.0'){
+        exclude module: 'httpclient'
+        exclude group: 'org.apache.httpcomponents'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
+    compile files('libs/YouTubeAndroidPlayerApi.jar')
     kapt 'com.github.bumptech.glide:compiler:4.6.1'
 
     kapt 'com.google.dagger:dagger-compiler:2.14.1'
