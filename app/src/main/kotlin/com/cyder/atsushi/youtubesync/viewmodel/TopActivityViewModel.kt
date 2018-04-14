@@ -4,7 +4,6 @@ import android.databinding.ObservableArrayList
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.databinding.ObservableList
-import android.util.Log
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.model.Room
 import com.cyder.atsushi.youtubesync.repository.RoomDataRepository

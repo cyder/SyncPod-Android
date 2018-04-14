@@ -13,8 +13,8 @@ class Navigator @Inject constructor(
     fun navigateToWelcomeActivity() = activity.startActivity(WelcomeActivity.createIntent(activity))
     fun navigateToSignInActivity() = activity.startActivity(SignInActivity.createIntent(activity))
     fun navigateToSignUpActivity() = activity.startActivity(SignUpActivity.createIntent(activity))
-    fun navigateToTopActivity(errorMesageId: Int? = null) {
-        val intent = TopActivity.createIntent(activity, errorMesageId)
+    fun navigateToTopActivity(errorMessageId: Int? = null) {
+        val intent = TopActivity.createIntent(activity, errorMessageId)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         activity.startActivity(intent)
     }

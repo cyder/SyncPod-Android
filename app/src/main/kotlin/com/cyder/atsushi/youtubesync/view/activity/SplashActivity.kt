@@ -19,7 +19,12 @@ class SplashActivity : BaseActivity() {
         val uri = intent?.data
         val path = uri?.path
         if (path == "/room") {
-            viewModel.roomKey = uri.getQueryParameter("room_key")
+            viewModel.roomKey = uri.getQueryParameter(ROOM_KEY)
         }
+    }
+
+    companion object {
+        const val ROOM_KEY = "room_key"
+
     }
 }
