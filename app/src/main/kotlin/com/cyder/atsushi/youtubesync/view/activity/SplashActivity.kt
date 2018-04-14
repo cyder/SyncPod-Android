@@ -11,9 +11,20 @@ import javax.inject.Inject
 class SplashActivity : BaseActivity() {
     @Inject
     lateinit var viewModel: SplashActivityViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getComponent().inject(this)
         bindViewModel(viewModel)
+        val uri = intent?.data
+        val path = uri?.path
+        if (path == "/room") {
+            viewModel.roomKey = uri.getQueryParameter(ROOM_KEY)
+        }
+    }
+
+    companion object {
+        const val ROOM_KEY = "room_key"
+
     }
 }

@@ -25,10 +25,14 @@ class TopActivityViewModel @Inject constructor(
     var roomViewModels: ObservableList<RoomViewModel> = ObservableArrayList()
     var isLoading: ObservableBoolean = ObservableBoolean()
     var hasEntered: ObservableBoolean = ObservableBoolean(false)
+    var errorMessageId: Int? = null
     var dialogCallback: DialogCallback? = null
     var snackbarCallback: SnackbarCallback? = null
 
     override fun onStart() {
+        errorMessageId?.run {
+            snackbarCallback?.onFailed(this)
+        }
     }
 
     override fun onResume() {
