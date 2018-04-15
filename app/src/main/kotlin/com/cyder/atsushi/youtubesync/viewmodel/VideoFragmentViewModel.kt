@@ -48,7 +48,7 @@ class VideoFragmentViewModel @Inject constructor(
     override fun onResume() {
        Observables.combineLatest(
                videoRepository.getNowPlayingVideo(),
-               isInitialiedPlayer.flatMap { Observable.just(it) }
+               isInitializedPlayer.flatMap { Observable.just(it) }
        ){
            video, endedFlag ->
            Pair(video, endedFlag)
