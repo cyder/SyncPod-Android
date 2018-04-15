@@ -34,7 +34,7 @@ android {
         debug {
             applicationIdSuffix ".debug"
             versionNameSuffix '-dev'
-            manifestPlaceholders = [developer_key: System.getenv('YOUTUBE_DEVELOPER_KEY')]
+            buildConfigField "String", "YOUTUBE_DEVELOPER_KEY", "\"${project.property("developerKey")}\""
         }
         release {
             minifyEnabled true
@@ -42,7 +42,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             jniDebuggable false
             renderscriptDebuggable false
-            manifestPlaceholders = [developer_key: System.getenv('YOUTUBE_DEVELOPER_KEY')]
+            buildConfigField "String", "YOUTUBE_DEVELOPER_KEY", "\"${project.property("developerKey")}\""
         }
     }
 

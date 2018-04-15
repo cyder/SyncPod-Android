@@ -21,5 +21,6 @@ class RoomActivityViewModel @Inject constructor(
     }
 
     override fun onStop() {
+        repository.exitRoom(roomKey)
     }
 }

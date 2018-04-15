@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.databinding.FragmentVideoBinding
 import com.cyder.atsushi.youtubesync.viewmodel.VideoFragmentViewModel
+import com.google.android.youtube.player.YouTubePlayerSupportFragment
 import javax.inject.Inject
 
 /**
@@ -26,14 +27,24 @@ class VideoFragment : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_video ,container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_video, container, false)
         binding.viewModel = viewModel
+        initPlayer()
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+    }
+
+    private fun initPlayer() {
+        val fragment = YouTubePlayerSupportFragment.newInstance()
+        fragmentManager
+                ?.beginTransaction()
+                ?.add(R.id.view_player, fragment)
+                ?.commit()
+        viewModel.youtubeFragment = fragment
     }
 
     companion object {

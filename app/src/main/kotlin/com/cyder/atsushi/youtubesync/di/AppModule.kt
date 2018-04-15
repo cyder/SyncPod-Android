@@ -3,10 +3,7 @@ package com.cyder.atsushi.youtubesync.di
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import com.cyder.atsushi.youtubesync.api.SyncPodApi
-import com.cyder.atsushi.youtubesync.repository.RoomDataRepository
-import com.cyder.atsushi.youtubesync.repository.RoomRepository
-import com.cyder.atsushi.youtubesync.repository.UserDataRepository
-import com.cyder.atsushi.youtubesync.repository.UserRepository
+import com.cyder.atsushi.youtubesync.repository.*
 import com.hosopy.actioncable.Consumer
 import dagger.Module
 import dagger.Provides
@@ -40,6 +37,12 @@ class AppModule(private val context: Context) {
             repository: UserRepository
     ) : RoomRepository = RoomDataRepository(api,consumer, repository.getAccessToken().blockingGet()!!)
 
+    @Singleton
+    @Provides
+    fun provideVideoRepository(
+            api: SyncPodApi,
+            consumer: Consumer
+    ) : VideoRepository = VideoDataRepository(api, consumer)
 
     companion object {
         const val APP_NAME = "youtube-sync"
