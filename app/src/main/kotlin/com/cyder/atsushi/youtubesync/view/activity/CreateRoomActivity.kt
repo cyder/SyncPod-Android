@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.databinding.ActivityCreateRoomBinding
+import com.cyder.atsushi.youtubesync.view.helper.setUpSnackbar
 import com.cyder.atsushi.youtubesync.viewmodel.CreateRoomActivityViewModel
 import javax.inject.Inject
 
@@ -24,6 +25,8 @@ class CreateRoomActivity : BaseActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_room)
         binding.viewModel = viewModel
+
+        viewModel.callback = setUpSnackbar()
     }
 
     companion object {

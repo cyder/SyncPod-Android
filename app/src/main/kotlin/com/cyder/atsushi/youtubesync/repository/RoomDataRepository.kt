@@ -42,7 +42,8 @@ class RoomDataRepository @Inject constructor(
     }
 
     override fun createNewRoom(name: String, description: String): Single<Room> {
-        return syncPodApi.createNewRoom(token, CreateRoom(name, description))
+        return createNewRoomValidation(name, description)
+                .andThen(syncPodApi.createNewRoom(token, CreateRoom(name, description)))
                 .map { it.room }
                 .map { it.toModel() }
                 .subscribeOn(Schedulers.computation())
@@ -67,6 +68,16 @@ class RoomDataRepository @Inject constructor(
                 .map { it.toModel() }
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    private fun createNewRoomValidation(name: String, description: String): Completable {
+        return Completable.create { emitter ->
+            if (name.isBlank() || description.isBlank()) {
+                emitter.onError(NotFilledFormsException())
+            } else {
+                emitter.onComplete()
+            }
+        }
     }
 
     companion object {
