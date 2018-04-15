@@ -14,7 +14,7 @@ import javax.inject.Inject
 class SplashActivityViewModel @Inject constructor(
         private val navigator: Navigator,
         private val userRepository: UserRepository,
-        private val roomRepository: RoomRepository
+        private val roomRepository: dagger.Lazy<RoomRepository>
 ) : ActivityViewModel() {
     var roomKey: String? = null
 
@@ -35,7 +35,7 @@ class SplashActivityViewModel @Inject constructor(
         userRepository.getAccessToken()
                 .subscribe({
                     roomKey?.run {
-                        roomRepository.joinRoom(this)
+                        roomRepository.get().joinRoom(this)
                                 .subscribe({
                                     navigator.navigateToTopActivity()
                                     navigator.navigateToRoomActivity(this)
