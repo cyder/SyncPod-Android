@@ -3,6 +3,7 @@ package com.cyder.atsushi.youtubesync.viewmodel
 import android.databinding.ObservableField
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.repository.*
+import com.cyder.atsushi.youtubesync.util.*
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
 import javax.inject.Inject

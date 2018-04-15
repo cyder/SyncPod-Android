@@ -4,6 +4,8 @@ import com.cyder.atsushi.youtubesync.api.SyncPodApi
 import com.cyder.atsushi.youtubesync.api.mapper.toModel
 import com.cyder.atsushi.youtubesync.api.request.CreateRoom
 import com.cyder.atsushi.youtubesync.model.Room
+import com.cyder.atsushi.youtubesync.util.CannotJoinRoomException
+import com.cyder.atsushi.youtubesync.util.NotFilledFormsException
 import com.hosopy.actioncable.Channel
 import com.hosopy.actioncable.Consumer
 import com.hosopy.actioncable.Subscription
@@ -84,6 +86,4 @@ class RoomDataRepository @Inject constructor(
         const val CHANNEL_NAME = "RoomChannel"
         const val ROOM_KEY = "room_key"
     }
-
-    internal class CannotJoinRoomException : Exception("can not join room because of banned or mistook key")
 }

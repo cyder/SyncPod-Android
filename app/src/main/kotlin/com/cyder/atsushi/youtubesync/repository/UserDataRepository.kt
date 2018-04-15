@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import androidx.content.edit
 import com.cyder.atsushi.youtubesync.api.SyncPodApi
 import com.cyder.atsushi.youtubesync.api.request.SignUp
+import com.cyder.atsushi.youtubesync.util.*
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
@@ -86,9 +87,3 @@ class UserDataRepository @Inject constructor(
         const val STATE_USER_TOKEN = "userToken"
     }
 }
-
-internal class NotFilledFormsException : Exception("forms are not filled!")
-internal class NotAgreeTermsException : Exception("not agree terms!")
-internal class NotValidEmailException : Exception("email address is not valid!")
-internal class TooShortPasswordException : Exception("password is too short!")
-internal class NotSamePasswordException : Exception("passwords are not same!")
