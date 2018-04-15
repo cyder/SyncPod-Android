@@ -1,5 +1,6 @@
 package com.cyder.atsushi.youtubesync.view.activity
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
@@ -15,9 +16,8 @@ import com.cyder.atsushi.youtubesync.databinding.ItemRoomBinding
 import com.cyder.atsushi.youtubesync.view.adapter.BindingHolder
 import com.cyder.atsushi.youtubesync.view.adapter.ObservableListAdapter
 import com.cyder.atsushi.youtubesync.view.helper.hideSoftwareKeyBoard
-import com.cyder.atsushi.youtubesync.viewmodel.RoomViewModel
-import com.cyder.atsushi.youtubesync.viewmodel.SnackbarCallback
-import com.cyder.atsushi.youtubesync.viewmodel.TopActivityViewModel
+import com.cyder.atsushi.youtubesync.viewmodel.*
+import kotlinx.android.synthetic.main.join_room_dialog.view.*
 import javax.inject.Inject
 
 /**
@@ -25,7 +25,9 @@ import javax.inject.Inject
  */
 
 class TopActivity : BaseActivity() {
-    @Inject lateinit var viewModel: TopActivityViewModel
+    @Inject
+    lateinit var viewModel: TopActivityViewModel
+
     private lateinit var binding: ActivityTopBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +37,49 @@ class TopActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_top)
         binding.viewModel = viewModel
 
+        viewModel.errorMessageId = intent.getIntExtra(ERROR_MESSAGE_ID, -1).takeIf { it != -1 }
+
+        setUpDialog()
+        setUpSnackBar()
         initRecyclerView()
+    }
+
+    private fun setUpDialog() {
+        val callback = object : DialogCallback {
+            override fun onAction() {
+                val layout = layoutInflater.inflate(R.layout.join_room_dialog, null)
+                val dialog = AlertDialog.Builder(this@TopActivity)
+                        .setTitle(R.string.join_room)
+                        .setView(layout)
+                        .setPositiveButton(R.string.send_button) { _, _ ->
+                            viewModel.onClickJoinRoomDialogButton(layout.room_key.text.toString())
+                        }
+                        .setNegativeButton(R.string.cancel_button) { _, _ -> }
+                        .create()
+                dialog.show()
+            }
+        }
+        viewModel.dialogCallback = callback
+    }
+
+    private fun setUpSnackBar() {
+        val snackbarCallback = object : SnackbarCallback {
+            override fun onFailed(resId: Int) {
+                currentFocus?.hideSoftwareKeyBoard()
+                val snackbar = Snackbar.make(binding.root,
+                        resId,
+                        Snackbar.LENGTH_LONG).apply {
+                    setAction(R.string.ok) {
+                        dismiss()
+                    }
+                }
+                val snackbarView = snackbar.view
+                val tv = snackbarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
+                tv.maxLines = 3
+                snackbar.show()
+            }
+        }
+        viewModel.snackbarCallback = snackbarCallback
     }
 
     private fun initRecyclerView() {
@@ -60,8 +104,8 @@ class TopActivity : BaseActivity() {
         private fun setUpSnackbar(viewmodel: RoomViewModel) {
             val callback = object : SnackbarCallback {
                 override fun onFailed(resId: Int) {
-                    currentFocus.hideSoftwareKeyBoard()
-                    val snackbar = Snackbar.make(currentFocus,
+                    currentFocus?.hideSoftwareKeyBoard()
+                    val snackbar = Snackbar.make(binding.root,
                             resId,
                             Snackbar.LENGTH_LONG).apply {
                         setAction(R.string.ok) {
@@ -79,6 +123,7 @@ class TopActivity : BaseActivity() {
     }
 
     companion object {
-        fun createIntent(context: Context): Intent = Intent(context, TopActivity::class.java)
+        const val ERROR_MESSAGE_ID = "error_message_id"
+        fun createIntent(context: Context, errorMessageId: Int?): Intent = Intent(context, TopActivity::class.java).putExtra(ERROR_MESSAGE_ID, errorMessageId)
     }
 }

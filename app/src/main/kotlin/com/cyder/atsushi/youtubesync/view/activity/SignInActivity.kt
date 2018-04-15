@@ -41,8 +41,8 @@ class SignInActivity : BaseActivity() {
     private fun setUpSnackbar() {
         callback = object : SnackbarCallback {
             override fun onFailed(resId: Int) {
-                currentFocus.hideSoftwareKeyBoard()
-                Snackbar.make(currentFocus,
+                currentFocus?.hideSoftwareKeyBoard()
+                Snackbar.make(binding.root,
                         resId,
                         Snackbar.LENGTH_SHORT).apply {
                     setAction(R.string.ok) {

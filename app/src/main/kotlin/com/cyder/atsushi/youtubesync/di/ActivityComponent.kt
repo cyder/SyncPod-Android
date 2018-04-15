@@ -12,7 +12,8 @@ import dagger.Subcomponent
 @Subcomponent(modules = [ActivityModule::class])
 interface ActivityComponent {
     //TODO when you create Activity, you have to create inject method
-    fun inject(activity: MainActivity)
+    fun inject(activity: SplashActivity)
+    fun inject(activity: WelcomeActivity)
     fun inject(activity: SignInActivity)
     fun inject(activity: SignUpActivity)
     fun inject(activity: TopActivity)
