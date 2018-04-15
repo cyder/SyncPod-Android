@@ -7,7 +7,9 @@ import com.cyder.atsushi.youtubesync.viewmodel.base.FragmentViewModel
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerSupportFragment
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.Observable
+import io.reactivex.rxkotlin.Observables
+import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
 
@@ -22,6 +24,7 @@ class VideoFragmentViewModel @Inject constructor(
 ) : FragmentViewModel() {
     lateinit var youtubeFragment: YouTubePlayerSupportFragment
     private lateinit var player: YouTubePlayer
+    val isInitialiedPlayer: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
     override fun onStart() {
         val key = roomRepository.developerKey.blockingFirst()
         val listener = videoRepository.playerState.blockingFirst()
@@ -33,6 +36,7 @@ class VideoFragmentViewModel @Inject constructor(
                 }
                 player?.apply {
                     this@VideoFragmentViewModel.player = this
+                    isInitialiedPlayer.onNext(true)
                 }
             }
 
@@ -42,12 +46,17 @@ class VideoFragmentViewModel @Inject constructor(
     }
 
     override fun onResume() {
-        videoRepository.getNowPlayingVideo()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    player.loadVideo(it.youtubeVideoId, it.currentTime!! * 1000)
-                },{
-                })
+       Observables.combineLatest(
+               videoRepository.getNowPlayingVideo(),
+               isInitialiedPlayer.flatMap { Observable.just(it) }
+       ){
+           video, endedFlag ->
+           Pair(video, endedFlag)
+       }.filter{
+           it.second == true
+       }.subscribe{
+           player.loadVideo(it.first.youtubeVideoId, it.first.currentTime!! * 1000)
+       }
     }
 
     override fun onPause() {
