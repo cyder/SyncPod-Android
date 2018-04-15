@@ -1,7 +1,7 @@
 package com.cyder.atsushi.youtubesync.websocket
 
-import com.cyder.atsushi.youtubesync.model.Chat
 import com.cyder.atsushi.youtubesync.api.response.Video
+import com.cyder.atsushi.youtubesync.model.Chat
 import com.google.gson.annotations.SerializedName
 
 

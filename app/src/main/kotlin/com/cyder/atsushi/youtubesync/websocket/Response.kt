@@ -9,5 +9,5 @@ import com.google.gson.annotations.SerializedName
 
 data class Response (
         @SerializedName("data_type") val dataType: String,
-        val data: Data
+        val data: Data?
 )

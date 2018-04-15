@@ -46,24 +46,20 @@ class VideoFragmentViewModel @Inject constructor(
     }
 
     override fun onResume() {
-       Observables.combineLatest(
-               videoRepository.getNowPlayingVideo(),
-               isInitializedPlayer.flatMap { Observable.just(it) }
-       ){
-           video, endedFlag ->
-           Pair(video, endedFlag)
-       }.filter{
-           it.second == true
-       }.subscribe{
-           player.loadVideo(it.first.youtubeVideoId, it.first.currentTime!! * 1000)
-       }
+        Observables.combineLatest(
+                videoRepository.getNowPlayingVideo(),
+                isInitializedPlayer.flatMap { Observable.just(it) }) { video, endedFlag -> Pair(video, endedFlag) }
+                .filter { it.second == true }
+                .subscribe {
+                    player.loadVideo(it.first.youtubeVideoId, it.first.currentTime!! * 1000)
+                }
     }
 
     override fun onPause() {
     }
 
     override fun onStop() {
-
+        isInitializedPlayer.onNext(false)
     }
 
 }

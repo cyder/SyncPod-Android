@@ -1,6 +1,5 @@
 package com.cyder.atsushi.youtubesync.repository
 
-import android.util.Log
 import com.cyder.atsushi.youtubesync.api.mapper.toModel
 import com.cyder.atsushi.youtubesync.model.Video
 import com.cyder.atsushi.youtubesync.websocket.Response
@@ -60,18 +59,16 @@ class VideoDataRepository @Inject constructor(
 
     private fun startRouting() {
         subscription.onReceived = {
-            when(it){
+            when (it) {
                 is String -> {
                     val response = it.toResponse()
-                    when(response.dataType){
-                        NOW_PLAYING -> {
-                            Log.d("TAG", response.dataType)
-                            playingVideo.onNext(response.data.video.toModel())
+                    when (response.dataType) {
+                        NOW_PLAYING, START_VIDEO -> {
+                            response.data?.apply {
+                                playingVideo.onNext(this.video.toModel())
+                            }
                         }
                     }
-                }
-                else -> {
-                     Log.d("TAG",it.toString())
                 }
             }
         }
@@ -82,7 +79,8 @@ class VideoDataRepository @Inject constructor(
     }
 
     companion object {
-        const val NOW_PLAYING:String = "now_playing_video"
+        const val NOW_PLAYING: String = "now_playing_video"
+        const val START_VIDEO: String = "start_video"
     }
 }
 
