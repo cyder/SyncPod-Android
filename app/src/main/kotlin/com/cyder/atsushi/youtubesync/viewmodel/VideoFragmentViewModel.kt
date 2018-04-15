@@ -24,7 +24,7 @@ class VideoFragmentViewModel @Inject constructor(
 ) : FragmentViewModel() {
     lateinit var youtubeFragment: YouTubePlayerSupportFragment
     private lateinit var player: YouTubePlayer
-    val isInitialiedPlayer: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
+    val isInitializedPlayer: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
     override fun onStart() {
         val key = roomRepository.developerKey.blockingFirst()
         val listener = videoRepository.playerState.blockingFirst()
@@ -36,7 +36,7 @@ class VideoFragmentViewModel @Inject constructor(
                 }
                 player?.apply {
                     this@VideoFragmentViewModel.player = this
-                    isInitialiedPlayer.onNext(true)
+                    isInitializedPlayer.onNext(true)
                 }
             }
 
@@ -63,6 +63,7 @@ class VideoFragmentViewModel @Inject constructor(
     }
 
     override fun onStop() {
+
     }
 
 }
