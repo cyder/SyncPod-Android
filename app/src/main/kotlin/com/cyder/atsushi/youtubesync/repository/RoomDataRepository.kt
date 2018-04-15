@@ -78,6 +78,10 @@ class RoomDataRepository @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
+    override fun getSubscription(): Single<Subscription> {
+        return Single.just(subscription)
+    }
+
     companion object {
         const val CHANNEL_NAME = "RoomChannel"
         const val ROOM_KEY = "room_key"

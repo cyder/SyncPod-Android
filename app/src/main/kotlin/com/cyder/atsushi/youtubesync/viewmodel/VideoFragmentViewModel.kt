@@ -7,6 +7,7 @@ import com.cyder.atsushi.youtubesync.viewmodel.base.FragmentViewModel
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerSupportFragment
+import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 
@@ -20,6 +21,7 @@ class VideoFragmentViewModel @Inject constructor(
         private val videoRepository: VideoRepository
 ) : FragmentViewModel() {
     lateinit var youtubeFragment: YouTubePlayerSupportFragment
+    private lateinit var player: YouTubePlayer
     override fun onStart() {
         val key = roomRepository.developerKey.blockingFirst()
         val listener = videoRepository.playerState.blockingFirst()
@@ -29,6 +31,9 @@ class VideoFragmentViewModel @Inject constructor(
                     player?.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS)
                     player?.setPlayerStateChangeListener(listener)
                 }
+                player?.apply {
+                    this@VideoFragmentViewModel.player = this
+                }
             }
 
             override fun onInitializationFailure(provider: YouTubePlayer.Provider?, error: YouTubeInitializationResult?) {
@@ -37,7 +42,12 @@ class VideoFragmentViewModel @Inject constructor(
     }
 
     override fun onResume() {
-
+        videoRepository.getNowPlayingVideo()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    player.loadVideo(it.youtubeVideoId, it.currentTime!! * 1000)
+                },{
+                })
     }
 
     override fun onPause() {

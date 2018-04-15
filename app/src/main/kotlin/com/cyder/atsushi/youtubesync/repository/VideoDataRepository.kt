@@ -1,12 +1,17 @@
 package com.cyder.atsushi.youtubesync.repository
 
-import com.cyder.atsushi.youtubesync.api.SyncPodApi
+import android.util.Log
+import com.cyder.atsushi.youtubesync.api.mapper.toModel
 import com.cyder.atsushi.youtubesync.model.Video
+import com.cyder.atsushi.youtubesync.websocket.Response
 import com.google.android.youtube.player.YouTubePlayer
+import com.google.gson.GsonBuilder
 import com.hosopy.actioncable.Consumer
+import com.hosopy.actioncable.Subscription
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.Subject
 import javax.inject.Inject
 
 
@@ -14,11 +19,10 @@ import javax.inject.Inject
  * Created by chigichan24 on 2018/04/15.
  */
 class VideoDataRepository @Inject constructor(
-        private val syncPodApi: SyncPodApi,
-        private val consumer: Consumer
+        private val consumer: Consumer,
+        private val subscription: Subscription
 ) : VideoRepository {
-    private val loadNextVideo: BehaviorSubject<Video> = BehaviorSubject.create()
-    private val playList: List<Video>? = null
+    private val playingVideo: Subject<Video> = BehaviorSubject.create()
     override val playerState: Flowable<YouTubePlayer.PlayerStateChangeListener>
         get() {
             val listener = object : YouTubePlayer.PlayerStateChangeListener {
@@ -35,10 +39,6 @@ class VideoDataRepository @Inject constructor(
                 }
 
                 override fun onVideoEnded() {
-                    playList?.run {
-                        loadNextVideo.onNext(playList[0])
-                    }
-
                 }
 
                 override fun onVideoStarted() {
@@ -47,10 +47,42 @@ class VideoDataRepository @Inject constructor(
             return Flowable.just(listener)
         }
 
-    override fun getNextVideo(): Observable<Video> {
-        return loadNextVideo.flatMap {
+    init {
+        startRouting()
+    }
+
+    override fun getNowPlayingVideo(): Observable<Video> {
+        subscription.perform(NOW_PLAYING)
+        return playingVideo.flatMap {
             Observable.just(it)
         }
+    }
+
+    private fun startRouting() {
+        subscription.onReceived = {
+            when(it){
+                is String -> {
+                    val response = it.toResponse()
+                    when(response.dataType){
+                        NOW_PLAYING -> {
+                            Log.d("TAG", response.dataType)
+                            playingVideo.onNext(response.data.video.toModel())
+                        }
+                    }
+                }
+                else -> {
+                     Log.d("TAG",it.toString())
+                }
+            }
+        }
+    }
+
+    private fun String.toResponse(): Response {
+        return GsonBuilder().create().fromJson(this, Response::class.java)
+    }
+
+    companion object {
+        const val NOW_PLAYING:String = "now_playing_video"
     }
 }
 

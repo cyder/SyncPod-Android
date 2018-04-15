@@ -11,5 +11,5 @@ import io.reactivex.Observable
  */
 interface VideoRepository {
     val playerState: Flowable<YouTubePlayer.PlayerStateChangeListener>
-    fun getNextVideo(): Observable<Video>
+    fun getNowPlayingVideo(): Observable<Video>
 }
