@@ -7,7 +7,6 @@ import com.cyder.atsushi.youtubesync.viewmodel.base.FragmentViewModel
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerSupportFragment
-import io.reactivex.Observable
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
@@ -45,11 +44,11 @@ class VideoFragmentViewModel @Inject constructor(
         })
         Observables.combineLatest(
                 videoRepository.getNowPlayingVideo().toObservable(),
-                isInitializedPlayer.flatMap { Observable.just(it) }) { video, endedFlag -> Pair(video, endedFlag) }
-                .filter { it.second == true }
-                .subscribe {
-                    player.loadVideo(it.first.youtubeVideoId, it.first.currentTime!! * 1000)
-                }
+                isInitializedPlayer.filter { it }
+        ).subscribe {
+            val video = it.first
+            player.loadVideo(video.youtubeVideoId, video.currentTime!! * 1000)
+        }
     }
 
     override fun onResume() {
@@ -59,7 +58,6 @@ class VideoFragmentViewModel @Inject constructor(
     }
 
     override fun onStop() {
-        isInitializedPlayer.onNext(false)
     }
 
 }
