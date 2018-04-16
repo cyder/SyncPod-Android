@@ -12,7 +12,6 @@ import com.cyder.atsushi.youtubesync.view.fragment.ChatFragment
 import com.cyder.atsushi.youtubesync.view.fragment.PlayListFragment
 import com.cyder.atsushi.youtubesync.view.fragment.RoomInfoFragment
 import com.cyder.atsushi.youtubesync.viewmodel.RoomActivityViewModel
-import kotlinx.android.synthetic.main.activity_room.*
 import javax.inject.Inject
 
 class RoomActivity : BaseActivity() {
@@ -33,11 +32,11 @@ class RoomActivity : BaseActivity() {
     }
 
     private fun initViewPager() {
-        view_pager.adapter = pagerAdapter()
-        binding.tabLayout.setupWithViewPager(view_pager)
+        binding.viewPager.adapter = PagerAdapter()
+        binding.tabLayout.setupWithViewPager(binding.viewPager)
     }
 
-    inner class pagerAdapter : FragmentPagerAdapter(supportFragmentManager) {
+    inner class PagerAdapter : FragmentPagerAdapter(this.supportFragmentManager) {
         val fragments: List<Fragment> = listOf(
             PlayListFragment.createInstance(),
             ChatFragment.createInstance(),
@@ -63,9 +62,7 @@ class RoomActivity : BaseActivity() {
                 is RoomInfoFragment -> {
                     getString(R.string.room_information_title)
                 }
-                else -> {
-                    ""
-                }
+                else -> { null }
             }
         }
 
