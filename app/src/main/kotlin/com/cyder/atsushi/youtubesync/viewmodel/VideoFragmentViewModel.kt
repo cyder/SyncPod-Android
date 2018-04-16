@@ -53,7 +53,7 @@ class VideoFragmentViewModel @Inject constructor(
         }
 
         Observables.combineLatest(
-                Observable.interval(1, TimeUnit.SECONDS),
+                Observable.interval(100, TimeUnit.MILLISECONDS),
                 isInitializedPlayer.filter { it }
         ).map { player.currentTimeMillis }
                 .filter { player.durationMillis > .0 }
