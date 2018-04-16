@@ -12,6 +12,7 @@ interface VideoRepository {
     val developerKey: Flowable<String>
     val playerState: Flowable<YouTubePlayer.PlayerStateChangeListener>
     fun obserbleIsPlaying(): Flowable<Boolean>
+    fun obserblePrepareVideo(): Flowable<Video>
     fun obserbleNowPlayingVideo(): Flowable<Video>
     fun getNoewPlayingVideo(): Flowable<Video>
     fun getPlayList(): Flowable<List<Video>>

@@ -48,6 +48,14 @@ class VideoFragmentViewModel @Inject constructor(
             }
         })
         Observables.combineLatest(
+                videoRepository.obserblePrepareVideo().toObservable(),
+                isInitializedPlayer.filter { it }
+        ).subscribe {
+            val video = it.first
+            player.cueVideo(video.youtubeVideoId)
+        }
+
+        Observables.combineLatest(
                 videoRepository.obserbleNowPlayingVideo().toObservable(),
                 isInitializedPlayer.filter { it }
         ).subscribe {

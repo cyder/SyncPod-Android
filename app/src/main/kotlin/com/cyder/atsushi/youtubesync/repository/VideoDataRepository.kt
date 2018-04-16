@@ -22,6 +22,7 @@ class VideoDataRepository @Inject constructor(
         private val consumer: Consumer,
         private val subscription: Subscription
 ) : VideoRepository {
+    private val prepareVideo: Subject<Video> = BehaviorSubject.create()
     private val playingVideo: Subject<Video> = BehaviorSubject.create()
     private val playList: Subject<List<Video>> = BehaviorSubject.createDefault(listOf())
     private val isPlaying: Subject<Boolean> = BehaviorSubject.createDefault(false)
@@ -43,7 +44,7 @@ class VideoDataRepository @Inject constructor(
 
                 override fun onVideoEnded() {
                     getNextVideo()?.apply {
-                        playingVideo.onNext(this)
+                        prepareVideo.onNext(this)
                     } ?: apply {
                         isPlaying.onNext(false)
                     }
@@ -61,6 +62,10 @@ class VideoDataRepository @Inject constructor(
 
     override fun obserbleIsPlaying(): Flowable<Boolean> {
         return isPlaying.distinctUntilChanged().toFlowable(BackpressureStrategy.LATEST)
+    }
+
+    override fun obserblePrepareVideo(): Flowable<Video> {
+        return playingVideo.toFlowable(BackpressureStrategy.LATEST)
     }
 
     override fun obserbleNowPlayingVideo(): Flowable<Video> {
