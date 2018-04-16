@@ -9,6 +9,7 @@ import com.google.android.youtube.player.YouTubePlayerSupportFragment
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -23,7 +24,7 @@ class VideoFragmentViewModel @Inject constructor(
     lateinit var youtubeFragment: YouTubePlayerSupportFragment
     private lateinit var player: YouTubePlayer
     val isInitializedPlayer: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
-    private val onReleaseVideo = BehaviorSubject.create<Boolean>()
+    private val onReleaseVideo = PublishSubject.create<Boolean>()
     var nowProgress = ObservableInt(0)
     var maxProgress = ObservableInt(10000)
 
