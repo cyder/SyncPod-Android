@@ -6,8 +6,10 @@ import com.cyder.atsushi.youtubesync.viewmodel.base.FragmentViewModel
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerSupportFragment
+import io.reactivex.Observable
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.subjects.BehaviorSubject
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -21,7 +23,8 @@ class VideoFragmentViewModel @Inject constructor(
     lateinit var youtubeFragment: YouTubePlayerSupportFragment
     private lateinit var player: YouTubePlayer
     val isInitializedPlayer: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
-    var progress = ObservableInt(0)
+    var nowProgress = ObservableInt(0)
+    var maxProgress = ObservableInt(10000)
 
     override fun onStart() {
         val key = videoRepository.developerKey.blockingFirst()
@@ -48,6 +51,12 @@ class VideoFragmentViewModel @Inject constructor(
             val video = it.first
             player.loadVideo(video.youtubeVideoId, (video.currentTime ?: 0) * 1000)
         }
+
+        Observables.combineLatest(
+                Observable.interval(1, TimeUnit.SECONDS),
+                isInitializedPlayer.filter { it }
+        ).map { player.currentTimeMillis }
+                .subscribe { nowProgress.set((maxProgress.get().toDouble() * it / player.durationMillis).toInt()) }
     }
 
     override fun onResume() {
