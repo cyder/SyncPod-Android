@@ -43,9 +43,6 @@ class VideoFragmentViewModel @Inject constructor(
             override fun onInitializationFailure(provider: YouTubePlayer.Provider?, error: YouTubeInitializationResult?) {
             }
         })
-    }
-
-    override fun onResume() {
         Observables.combineLatest(
                 videoRepository.getNowPlayingVideo(),
                 isInitializedPlayer.flatMap { Observable.just(it) }) { video, endedFlag -> Pair(video, endedFlag) }
@@ -53,6 +50,9 @@ class VideoFragmentViewModel @Inject constructor(
                 .subscribe {
                     player.loadVideo(it.first.youtubeVideoId, it.first.currentTime!! * 1000)
                 }
+    }
+
+    override fun onResume() {
     }
 
     override fun onPause() {

@@ -5,7 +5,6 @@ import android.content.Context.MODE_PRIVATE
 import com.cyder.atsushi.youtubesync.api.SyncPodApi
 import com.cyder.atsushi.youtubesync.repository.*
 import com.hosopy.actioncable.Consumer
-import com.hosopy.actioncable.Subscription
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -38,7 +37,7 @@ class AppModule(private val context: Context) {
             repository: UserRepository
     ) : RoomRepository = RoomDataRepository(api,consumer, repository.getAccessToken().blockingGet()!!)
 
-    @Singleton
+
     @Provides
     fun provideVideoRepository(
             consumer: Consumer,

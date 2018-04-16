@@ -16,5 +16,5 @@ interface RoomRepository {
     fun fetchJoinedRooms(): Single<List<Room>>
     fun fetch(id: Int): Single<Room?>?
     fun joinRoom(roomKey: String): Completable
-    fun exitRoom(roomKey: String): Completable
+    fun exitRoom(): Completable
 }
