@@ -41,17 +41,19 @@ class SignInActivityViewModel @Inject constructor(
     fun onBackButtonClicked() = navigator.closeActivity()
 
     fun onSignIn() {
-        repository.signIn(mailAddress.get() ?: "", password.get() ?: "", isAgreeTerms.get()
-                ?: false)
-                .subscribe({
-                    navigator.navigateToTopActivity()
-                }, { error ->
-                    when (error) {
-                        is NotFilledFormsException -> callback?.onFailed(R.string.form_not_filled)
-                        is NotAgreeTermsException -> callback?.onFailed(R.string.not_agree_terms)
-                        else -> callback?.onFailed(R.string.login_mistook)
-                    }
-                })
+        repository.signIn(
+                mailAddress.get() ?: "",
+                password.get() ?: "",
+                isAgreeTerms.get() ?: false
+        ).subscribe({
+            navigator.navigateToTopActivity()
+        }, { error ->
+            when (error) {
+                is NotFilledFormsException -> callback?.onFailed(R.string.form_not_filled)
+                is NotAgreeTermsException -> callback?.onFailed(R.string.not_agree_terms)
+                else -> callback?.onFailed(R.string.login_mistook)
+            }
+        })
     }
 
 }

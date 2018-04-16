@@ -16,9 +16,7 @@ import javax.inject.Inject
  */
 
 class SignInActivity : BaseActivity() {
-
-    @Inject
-    lateinit var viewModel: SignInActivityViewModel
+    @Inject lateinit var viewModel: SignInActivityViewModel
     private lateinit var binding: ActivitySignInBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
