@@ -1,8 +1,6 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
-import com.cyder.atsushi.youtubesync.repository.RoomRepository
 import com.cyder.atsushi.youtubesync.repository.VideoRepository
-import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.FragmentViewModel
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
@@ -17,8 +15,6 @@ import javax.inject.Inject
  */
 
 class VideoFragmentViewModel @Inject constructor(
-        private val navigator: Navigator,
-        private val roomRepository: RoomRepository,
         private val videoRepository: VideoRepository
 ) : FragmentViewModel() {
     lateinit var youtubeFragment: YouTubePlayerSupportFragment
