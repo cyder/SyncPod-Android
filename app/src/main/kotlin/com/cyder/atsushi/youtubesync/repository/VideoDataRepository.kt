@@ -23,6 +23,7 @@ class VideoDataRepository @Inject constructor(
         private val subscription: Subscription
 ) : VideoRepository {
     private val playingVideo: Subject<Video> = BehaviorSubject.create()
+    private val isPlaying: Subject<Boolean> = BehaviorSubject.createDefault(false)
     override val developerKey: Flowable<String> = Flowable.just(BuildConfig.YOUTUBE_DEVELOPER_KEY)
     override val playerState: Flowable<YouTubePlayer.PlayerStateChangeListener>
         get() {
@@ -40,6 +41,7 @@ class VideoDataRepository @Inject constructor(
                 }
 
                 override fun onVideoEnded() {
+                    isPlaying.onNext(false)
                 }
 
                 override fun onVideoStarted() {
@@ -50,6 +52,10 @@ class VideoDataRepository @Inject constructor(
 
     init {
         startRouting()
+    }
+
+    override fun obserbleIsPlaying(): Flowable<Boolean> {
+        return isPlaying.distinctUntilChanged().toFlowable(BackpressureStrategy.LATEST)
     }
 
     override fun obserbleNowPlayingVideo(): Flowable<Video> {
@@ -69,6 +75,7 @@ class VideoDataRepository @Inject constructor(
                     NOW_PLAYING, START_VIDEO -> {
                         response.data?.apply {
                             playingVideo.onNext(this.video.toModel())
+                            isPlaying.onNext(true)
                         }
                     }
                 }

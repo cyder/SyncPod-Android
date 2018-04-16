@@ -17,13 +17,13 @@ class RoomActivityViewModel @Inject constructor(
     lateinit var roomKey: String
 
     override fun onStart() {
+        videoRepository.obserbleIsPlaying().subscribe {
+            isVideoPlayerVisible.set(it)
+        }
     }
 
     override fun onResume() {
         videoRepository.getNoewPlayingVideo()
-                .subscribe {
-                    isVideoPlayerVisible.set(true)
-                }
     }
 
     override fun onPause() {
