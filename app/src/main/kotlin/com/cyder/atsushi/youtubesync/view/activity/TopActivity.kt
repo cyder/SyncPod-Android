@@ -6,16 +6,14 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.databinding.ObservableList
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.view.ViewGroup
-import android.widget.TextView
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.databinding.ActivityTopBinding
 import com.cyder.atsushi.youtubesync.databinding.ItemRoomBinding
 import com.cyder.atsushi.youtubesync.view.adapter.BindingHolder
 import com.cyder.atsushi.youtubesync.view.adapter.ObservableListAdapter
-import com.cyder.atsushi.youtubesync.view.helper.hideSoftwareKeyBoard
+import com.cyder.atsushi.youtubesync.view.helper.setUpSnackbar
 import com.cyder.atsushi.youtubesync.viewmodel.*
 import kotlinx.android.synthetic.main.join_room_dialog.view.*
 import javax.inject.Inject
@@ -40,7 +38,7 @@ class TopActivity : BaseActivity() {
         viewModel.errorMessageId = intent.getIntExtra(ERROR_MESSAGE_ID, -1).takeIf { it != -1 }
 
         setUpDialog()
-        setUpSnackBar()
+        viewModel.snackbarCallback = setUpSnackbar()
         initRecyclerView()
     }
 
@@ -62,26 +60,6 @@ class TopActivity : BaseActivity() {
         viewModel.dialogCallback = callback
     }
 
-    private fun setUpSnackBar() {
-        val snackbarCallback = object : SnackbarCallback {
-            override fun onFailed(resId: Int) {
-                currentFocus?.hideSoftwareKeyBoard()
-                val snackbar = Snackbar.make(binding.root,
-                        resId,
-                        Snackbar.LENGTH_LONG).apply {
-                    setAction(R.string.ok) {
-                        dismiss()
-                    }
-                }
-                val snackbarView = snackbar.view
-                val tv = snackbarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
-                tv.maxLines = 3
-                snackbar.show()
-            }
-        }
-        viewModel.snackbarCallback = snackbarCallback
-    }
-
     private fun initRecyclerView() {
         binding.joinedRoomRecycler.isNestedScrollingEnabled = false
         val adapter = JoinedRoomAdapter(viewModel.roomViewModels)
@@ -96,29 +74,9 @@ class TopActivity : BaseActivity() {
 
         override fun onBindViewHolder(holder: BindingHolder<ItemRoomBinding>?, position: Int) {
             val viewModel = getItem(position)
-            setUpSnackbar(viewModel)
+            viewModel.callback = setUpSnackbar()
             val binding = holder?.binding
             binding?.viewModel = viewModel
-        }
-
-        private fun setUpSnackbar(viewmodel: RoomViewModel) {
-            val callback = object : SnackbarCallback {
-                override fun onFailed(resId: Int) {
-                    currentFocus?.hideSoftwareKeyBoard()
-                    val snackbar = Snackbar.make(binding.root,
-                            resId,
-                            Snackbar.LENGTH_LONG).apply {
-                        setAction(R.string.ok) {
-                            dismiss()
-                        }
-                    }
-                    val snackbarView = snackbar.view
-                    val tv = snackbarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
-                    tv.maxLines = 3
-                    snackbar.show()
-                }
-            }
-            viewmodel.callback = callback
         }
     }
 

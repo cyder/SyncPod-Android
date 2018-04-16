@@ -1,7 +1,9 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
 import android.databinding.ObservableField
+import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.repository.RoomRepository
+import com.cyder.atsushi.youtubesync.util.NotFilledFormsException
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
 import javax.inject.Inject
@@ -15,6 +17,7 @@ class CreateRoomActivityViewModel @Inject constructor(
 ) : ActivityViewModel() {
     var roomName: ObservableField<String?> = ObservableField()
     var roomDescription: ObservableField<String?> = ObservableField()
+    var callback: SnackbarCallback? = null
 
     override fun onStart() {
     }
@@ -32,14 +35,19 @@ class CreateRoomActivityViewModel @Inject constructor(
 
     fun onSubmit() {
         repository.createNewRoom(roomName.get() ?: "", roomDescription.get() ?: "")
-                .subscribe{ response ->
+                .subscribe({ response ->
                     repository.joinRoom(response.key)
                             .subscribe({
                                 navigator.closeActivity()
                                 navigator.navigateToRoomActivity(response.key)
-                            },{
-                                //TODO Error handling
+                            }, {
+                                callback?.onFailed(R.string.network_error)
                             })
-                }
+                }, { error ->
+                    when (error) {
+                        is NotFilledFormsException -> callback?.onFailed(R.string.form_not_filled)
+                        else -> callback?.onFailed(R.string.network_error)
+                    }
+                })
     }
 }

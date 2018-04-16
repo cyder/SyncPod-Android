@@ -4,6 +4,8 @@ import com.cyder.atsushi.youtubesync.api.SyncPodApi
 import com.cyder.atsushi.youtubesync.api.mapper.toModel
 import com.cyder.atsushi.youtubesync.api.request.CreateRoom
 import com.cyder.atsushi.youtubesync.model.Room
+import com.cyder.atsushi.youtubesync.util.CannotJoinRoomException
+import com.cyder.atsushi.youtubesync.util.NotFilledFormsException
 import com.hosopy.actioncable.Channel
 import com.hosopy.actioncable.Consumer
 import com.hosopy.actioncable.Subscription
@@ -42,7 +44,8 @@ class RoomDataRepository @Inject constructor(
     }
 
     override fun createNewRoom(name: String, description: String): Single<Room> {
-        return syncPodApi.createNewRoom(token, CreateRoom(name, description))
+        return createNewRoomValidation(name, description)
+                .andThen(syncPodApi.createNewRoom(token, CreateRoom(name, description)))
                 .map { it.room }
                 .map { it.toModel() }
                 .subscribeOn(Schedulers.computation())
@@ -69,10 +72,18 @@ class RoomDataRepository @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
+    private fun createNewRoomValidation(name: String, description: String): Completable {
+        return Completable.create { emitter ->
+            if (name.isBlank() || description.isBlank()) {
+                emitter.onError(NotFilledFormsException())
+            } else {
+                emitter.onComplete()
+            }
+        }
+    }
+
     companion object {
         const val CHANNEL_NAME = "RoomChannel"
         const val ROOM_KEY = "room_key"
     }
-
-    internal class CannotJoinRoomException : Exception("can not join room because of banned or mistook key")
 }

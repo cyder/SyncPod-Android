@@ -8,6 +8,7 @@ import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.model.Room
 import com.cyder.atsushi.youtubesync.repository.RoomDataRepository
 import com.cyder.atsushi.youtubesync.repository.RoomRepository
+import com.cyder.atsushi.youtubesync.util.CannotJoinRoomException
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -62,7 +63,7 @@ class TopActivityViewModel @Inject constructor(
                     navigator.navigateToRoomActivity(roomKey)
                 }, { error ->
                     when (error) {
-                        is RoomDataRepository.CannotJoinRoomException -> snackbarCallback?.onFailed(R.string.room_enter_reject_message)
+                        is CannotJoinRoomException -> snackbarCallback?.onFailed(R.string.room_enter_reject_message)
                     }
                 })
     }
