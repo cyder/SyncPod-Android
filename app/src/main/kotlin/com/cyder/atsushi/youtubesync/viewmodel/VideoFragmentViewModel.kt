@@ -30,8 +30,7 @@ class VideoFragmentViewModel @Inject constructor(
     override fun onStart() {
         val key = videoRepository.developerKey.blockingFirst()
         val listener = videoRepository.playerState.blockingFirst()
-
-        isInitializedPlayer.onNext(false)
+        
         youtubeFragment.initialize(key, object : YouTubePlayer.OnInitializedListener {
             override fun onInitializationSuccess(provider: YouTubePlayer.Provider?, player: YouTubePlayer?, wasRestored: Boolean) {
                 if (!wasRestored) {
