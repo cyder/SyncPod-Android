@@ -23,12 +23,15 @@ class VideoFragmentViewModel @Inject constructor(
     lateinit var youtubeFragment: YouTubePlayerSupportFragment
     private lateinit var player: YouTubePlayer
     val isInitializedPlayer: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
+    private val onReleaseVideo: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
     var nowProgress = ObservableInt(0)
     var maxProgress = ObservableInt(10000)
 
     override fun onStart() {
         val key = videoRepository.developerKey.blockingFirst()
         val listener = videoRepository.playerState.blockingFirst()
+
+        isInitializedPlayer.onNext(false)
         youtubeFragment.initialize(key, object : YouTubePlayer.OnInitializedListener {
             override fun onInitializationSuccess(provider: YouTubePlayer.Provider?, player: YouTubePlayer?, wasRestored: Boolean) {
                 if (!wasRestored) {
@@ -56,7 +59,9 @@ class VideoFragmentViewModel @Inject constructor(
                 Observable.interval(100, TimeUnit.MILLISECONDS),
                 isInitializedPlayer.filter { it }
         ).map { player.currentTimeMillis }
+                .map { player.currentTimeMillis }
                 .filter { player.durationMillis > .0 }
+                .takeUntil(onReleaseVideo)
                 .subscribe { nowProgress.set((maxProgress.get().toDouble() * it / player.durationMillis).toInt()) }
     }
 
@@ -67,6 +72,7 @@ class VideoFragmentViewModel @Inject constructor(
     }
 
     override fun onStop() {
+        onReleaseVideo.onNext(true)
     }
 
 }
