@@ -81,7 +81,6 @@ fastlane/readme.md
 *.dmg
 *.gz
 *.iso
-*.jar
 *.rar
 *.tar
 *.zip
