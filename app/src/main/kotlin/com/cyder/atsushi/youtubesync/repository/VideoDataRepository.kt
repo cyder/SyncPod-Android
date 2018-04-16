@@ -60,14 +60,12 @@ class VideoDataRepository @Inject constructor(
 
     private fun startRouting() {
         subscription.onReceived = {
-            when (it) {
-                is String -> {
-                    val response = it.toResponse()
-                    when (response.dataType) {
-                        NOW_PLAYING, START_VIDEO -> {
-                            response.data?.apply {
-                                playingVideo.onNext(this.video.toModel())
-                            }
+            if (it is String) {
+                val response = it.toResponse()
+                when (response.dataType) {
+                    NOW_PLAYING, START_VIDEO -> {
+                        response.data?.apply {
+                            playingVideo.onNext(this.video.toModel())
                         }
                     }
                 }
