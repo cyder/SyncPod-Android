@@ -1,5 +1,6 @@
 package com.cyder.atsushi.youtubesync.repository
 
+import android.util.Log
 import com.cyder.atsushi.youtubesync.BuildConfig
 import com.cyder.atsushi.youtubesync.api.SyncPodApi
 import com.cyder.atsushi.youtubesync.api.mapper.toModel
@@ -24,7 +25,11 @@ class RoomDataRepository @Inject constructor(
         private val token: String
 ) : RoomRepository {
     private lateinit var subscription: Subscription
-    override val developerKey: Flowable<String> = Flowable.just(BuildConfig.YOUTUBE_DEVELOPER_KEY)
+    override val developerKey: Flowable<String>
+        get(){
+            Log.d("TAG", BuildConfig.YOUTUBE_DEVELOPER_KEY)
+            return Flowable.just(BuildConfig.YOUTUBE_DEVELOPER_KEY)
+        }
     override fun joinRoom(roomKey: String): Completable {
         val channel = Channel(CHANNEL_NAME, mapOf(ROOM_KEY to roomKey))
         subscription = consumer.subscriptions.create(channel)

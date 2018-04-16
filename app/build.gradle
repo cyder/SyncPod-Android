@@ -28,13 +28,15 @@ android {
         versionName appVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+        def properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        buildConfigField "String", "YOUTUBE_DEVELOPER_KEY", "\"${properties.getProperty("developerKey")}\""
     }
 
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
             versionNameSuffix '-dev'
-            buildConfigField "String", "YOUTUBE_DEVELOPER_KEY", "\"${project.property("developerKey")}\""
         }
         release {
             minifyEnabled true
@@ -42,7 +44,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             jniDebuggable false
             renderscriptDebuggable false
-            buildConfigField "String", "YOUTUBE_DEVELOPER_KEY", "\"${project.property("developerKey")}\""
         }
     }
 
