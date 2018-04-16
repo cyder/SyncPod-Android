@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync.di
 
 import com.cyder.atsushi.youtubesync.di.scope.FragmentScope
+import com.cyder.atsushi.youtubesync.view.fragment.ChatFragment
 import com.cyder.atsushi.youtubesync.view.fragment.PlayListFragment
 import com.cyder.atsushi.youtubesync.view.fragment.VideoFragment
 import dagger.Subcomponent
@@ -15,4 +16,5 @@ interface FragmentComponent {
     //TODO You have to inject fragment here
     fun inject(fragment: VideoFragment)
     fun inject(fragment: PlayListFragment)
+    fun inject(fragment: ChatFragment)
 }
