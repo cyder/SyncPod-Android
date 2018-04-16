@@ -23,7 +23,7 @@ class VideoFragmentViewModel @Inject constructor(
     lateinit var youtubeFragment: YouTubePlayerSupportFragment
     private lateinit var player: YouTubePlayer
     val isInitializedPlayer: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
-    private val onReleaseVideo: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
+    private val onReleaseVideo = BehaviorSubject.create<Boolean>()
     var nowProgress = ObservableInt(0)
     var maxProgress = ObservableInt(10000)
 
