@@ -2,9 +2,9 @@ package com.cyder.atsushi.youtubesync.viewmodel
 
 import android.databinding.ObservableField
 import com.cyder.atsushi.youtubesync.R
-import com.cyder.atsushi.youtubesync.repository.NotAgreeTermsException
-import com.cyder.atsushi.youtubesync.repository.NotFilledFormsException
 import com.cyder.atsushi.youtubesync.repository.UserRepository
+import com.cyder.atsushi.youtubesync.util.NotAgreeTermsException
+import com.cyder.atsushi.youtubesync.util.NotFilledFormsException
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
 import javax.inject.Inject
@@ -41,16 +41,19 @@ class SignInActivityViewModel @Inject constructor(
     fun onBackButtonClicked() = navigator.closeActivity()
 
     fun onSignIn() {
-        repository.signIn(mailAddress.get() ?: "", password.get() ?: "", isAgreeTerms.get())
-                .subscribe({
-                    navigator.navigateToTopActivity()
-                }, { error ->
-                    when (error) {
-                        is NotFilledFormsException -> callback?.onFailed(R.string.form_not_filled)
-                        is NotAgreeTermsException -> callback?.onFailed(R.string.not_agree_terms)
-                        else -> callback?.onFailed(R.string.login_mistook)
-                    }
-                })
+        repository.signIn(
+                mailAddress.get() ?: "",
+                password.get() ?: "",
+                isAgreeTerms.get() ?: false
+        ).subscribe({
+            navigator.navigateToTopActivity()
+        }, { error ->
+            when (error) {
+                is NotFilledFormsException -> callback?.onFailed(R.string.form_not_filled)
+                is NotAgreeTermsException -> callback?.onFailed(R.string.not_agree_terms)
+                else -> callback?.onFailed(R.string.login_mistook)
+            }
+        })
     }
 
 }
