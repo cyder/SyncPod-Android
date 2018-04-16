@@ -20,7 +20,7 @@ cd YouTubeSync
 2. Android Studioでプロジェクトを開く
 
 3. YouTube Data APIのAPIキーをセットする。
-[Google Cloud Console](https://console.developers.google.com/)にアクセスして、YouTube Data API v3用のAPIキーを取得し、projectファイル直下にある`gradle.properties`に以下のように追記する．
+[Google Cloud Console](https://console.developers.google.com/)にアクセスして、YouTube Data API v3用のAPIキーを取得し、projectファイル直下にある`local.properties`に以下のように追記する．
 
 ```
 developerKey=<取得したdeveloperKey>

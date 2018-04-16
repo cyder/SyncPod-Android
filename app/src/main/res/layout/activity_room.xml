@@ -5,6 +5,7 @@
                 name="viewModel"
                 type="com.cyder.atsushi.youtubesync.viewmodel.RoomActivityViewModel"/>
     </data>
+
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:orientation="vertical">

@@ -43,7 +43,7 @@ class VideoFragmentViewModel @Inject constructor(
                 isInitializedPlayer.filter { it }
         ).subscribe {
             val video = it.first
-            player.loadVideo(video.youtubeVideoId, video.currentTime!! * 1000)
+            player.loadVideo(video.youtubeVideoId, (video.currentTime ?: 0) * 1000)
         }
     }
 
