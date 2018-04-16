@@ -99,6 +99,17 @@ class VideoDataRepository @Inject constructor(
                                     .onNext(this.playList.map { it.toModel() })
                         }
                     }
+                    ADD_VIDEO -> {
+                        response.data?.apply {
+                            if (isPlaying.blockingFirst()) {
+                                this@VideoDataRepository.playList
+                                        .onNext(this@VideoDataRepository.playList.blockingFirst() + video.toModel())
+                            } else {
+                                prepareVideo.onNext(video.toModel())
+                                isPlaying.onNext(true)
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -121,6 +132,7 @@ class VideoDataRepository @Inject constructor(
         const val NOW_PLAYING: String = "now_playing_video"
         const val START_VIDEO: String = "start_video"
         const val PLAY_LIST: String = "play_list"
+        const val ADD_VIDEO: String = "add_video"
     }
 }
 
