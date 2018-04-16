@@ -27,6 +27,7 @@
             android:layout_below="@+id/view_player"
             android:max="10000"
             android:minHeight="3dp"
+            android:progress="@{viewModel.progress}"
             android:progressDrawable="@drawable/progress" />
     </RelativeLayout>
 </layout>

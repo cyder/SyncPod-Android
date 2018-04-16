@@ -1,5 +1,6 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
+import android.databinding.ObservableInt
 import com.cyder.atsushi.youtubesync.repository.VideoRepository
 import com.cyder.atsushi.youtubesync.viewmodel.base.FragmentViewModel
 import com.google.android.youtube.player.YouTubeInitializationResult
@@ -20,6 +21,8 @@ class VideoFragmentViewModel @Inject constructor(
     lateinit var youtubeFragment: YouTubePlayerSupportFragment
     private lateinit var player: YouTubePlayer
     val isInitializedPlayer: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
+    var progress = ObservableInt(0)
+
     override fun onStart() {
         val key = videoRepository.developerKey.blockingFirst()
         val listener = videoRepository.playerState.blockingFirst()
