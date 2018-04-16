@@ -10,7 +10,6 @@ import com.hosopy.actioncable.Consumer
 import com.hosopy.actioncable.Subscription
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
-import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.Subject
 import javax.inject.Inject
@@ -54,9 +53,7 @@ class VideoDataRepository @Inject constructor(
     }
 
     override fun obserbleNowPlayingVideo(): Flowable<Video> {
-        return playingVideo.flatMap {
-            Observable.just(it)
-        }.toFlowable(BackpressureStrategy.LATEST)
+        return playingVideo.toFlowable(BackpressureStrategy.LATEST)
     }
 
     override fun getNoewPlayingVideo(): Flowable<Video> {
