@@ -46,6 +46,9 @@ class TopActivityViewModel @Inject constructor(
     override fun onStop() {
     }
 
+    override fun onDestroy() {
+    }
+
     fun onJoinRoom() {
         dialogCallback?.onAction()
     }

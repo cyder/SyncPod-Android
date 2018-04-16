@@ -31,6 +31,9 @@ class SplashActivityViewModel @Inject constructor(
     override fun onStop() {
     }
 
+    override fun onDestroy() {
+    }
+
     private fun decideLaunchActivity() {
         userRepository.getAccessToken()
                 .subscribe({

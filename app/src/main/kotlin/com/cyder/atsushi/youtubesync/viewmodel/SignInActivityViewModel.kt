@@ -38,6 +38,9 @@ class SignInActivityViewModel @Inject constructor(
 
     }
 
+    override fun onDestroy() {
+    }
+
     fun onBackButtonClicked() = navigator.closeActivity()
 
     fun onSignIn() {

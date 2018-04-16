@@ -31,6 +31,9 @@ class CreateRoomActivityViewModel @Inject constructor(
     override fun onStop() {
     }
 
+    override fun onDestroy() {
+    }
+
     fun onBackButtonClicked() = navigator.closeActivity()
 
     fun onSubmit() {
