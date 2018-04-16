@@ -7,6 +7,7 @@ import com.google.android.youtube.player.YouTubePlayer
 import com.google.gson.GsonBuilder
 import com.hosopy.actioncable.Consumer
 import com.hosopy.actioncable.Subscription
+import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
@@ -50,11 +51,11 @@ class VideoDataRepository @Inject constructor(
         startRouting()
     }
 
-    override fun getNowPlayingVideo(): Observable<Video> {
+    override fun getNowPlayingVideo(): Flowable<Video> {
         subscription.perform(NOW_PLAYING)
         return playingVideo.flatMap {
             Observable.just(it)
-        }
+        }.toFlowable(BackpressureStrategy.LATEST)
     }
 
     private fun startRouting() {

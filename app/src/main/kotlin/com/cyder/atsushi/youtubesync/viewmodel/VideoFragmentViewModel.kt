@@ -44,7 +44,7 @@ class VideoFragmentViewModel @Inject constructor(
             }
         })
         Observables.combineLatest(
-                videoRepository.getNowPlayingVideo(),
+                videoRepository.getNowPlayingVideo().toObservable(),
                 isInitializedPlayer.flatMap { Observable.just(it) }) { video, endedFlag -> Pair(video, endedFlag) }
                 .filter { it.second == true }
                 .subscribe {

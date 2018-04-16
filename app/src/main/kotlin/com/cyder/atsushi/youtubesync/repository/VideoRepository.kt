@@ -3,7 +3,6 @@ package com.cyder.atsushi.youtubesync.repository
 import com.cyder.atsushi.youtubesync.model.Video
 import com.google.android.youtube.player.YouTubePlayer
 import io.reactivex.Flowable
-import io.reactivex.Observable
 
 
 /**
@@ -11,5 +10,5 @@ import io.reactivex.Observable
  */
 interface VideoRepository {
     val playerState: Flowable<YouTubePlayer.PlayerStateChangeListener>
-    fun getNowPlayingVideo(): Observable<Video>
+    fun getNowPlayingVideo(): Flowable<Video>
 }
