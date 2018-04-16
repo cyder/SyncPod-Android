@@ -1,5 +1,6 @@
 package com.cyder.atsushi.youtubesync.repository
 
+import com.cyder.atsushi.youtubesync.BuildConfig
 import com.cyder.atsushi.youtubesync.api.SyncPodApi
 import com.cyder.atsushi.youtubesync.api.mapper.toModel
 import com.cyder.atsushi.youtubesync.api.request.CreateRoom
@@ -10,6 +11,7 @@ import com.hosopy.actioncable.Channel
 import com.hosopy.actioncable.Consumer
 import com.hosopy.actioncable.Subscription
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -26,6 +28,7 @@ class RoomDataRepository @Inject constructor(
     private lateinit var subscription: Subscription
     override fun joinRoom(roomKey: String): Completable {
         val channel = Channel(CHANNEL_NAME, mapOf(ROOM_KEY to roomKey))
+        consumer.disconnect()
         subscription = consumer.subscriptions.create(channel)
         consumer.connect()
         return Completable.create { emitter ->
@@ -41,6 +44,12 @@ class RoomDataRepository @Inject constructor(
                 consumer.disconnect()
             }
         }
+    }
+
+    override fun exitRoom(): Completable {
+        consumer.subscriptions.remove(subscription)
+        consumer.disconnect()
+        return Completable.complete()
     }
 
     override fun createNewRoom(name: String, description: String): Single<Room> {
@@ -70,6 +79,10 @@ class RoomDataRepository @Inject constructor(
                 .map { it.toModel() }
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getSubscription(): Single<Subscription> {
+        return Single.just(subscription)
     }
 
     private fun createNewRoomValidation(name: String, description: String): Completable {

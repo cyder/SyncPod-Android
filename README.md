@@ -17,14 +17,16 @@ Android Studio内のSDK Managerから、デバッグ用実機端末のバージ�
 git clone git@github.com:Mori-Atsushi/YouTubeSync.git
 cd YouTubeSync
 ```
+2. Android Studioでプロジェクトを開く
 
-2. YouTube Data APIのAPIキーをセットする。
-[Google Cloud Console](https://console.developers.google.com/)にアクセスして、YouTube Data API v3用のAPIキーを取得し、以下のコマンドを実行する。
+3. YouTube Data APIのAPIキーをセットする。
+[Google Cloud Console](https://console.developers.google.com/)にアクセスして、YouTube Data API v3用のAPIキーを取得し、projectファイル直下にある`local.properties`に以下のように追記する．
+
 ```
-launchctl setenv YOUTUBE_DEVELOPER_KEY <APIキー>
+developerKey=<取得したdeveloperKey>
 ```
 
-3. Android Studioでプロジェクトを開く
+
 
 4. デバッグ用実機端末を接続し、Runから起動させる。
 

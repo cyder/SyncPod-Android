@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync.view.helper
 
 import android.content.Intent
+import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
 import com.cyder.atsushi.youtubesync.di.scope.ActivityScope
 import com.cyder.atsushi.youtubesync.view.activity.*
@@ -10,6 +11,8 @@ import javax.inject.Inject
 class Navigator @Inject constructor(
         private val activity: AppCompatActivity
 ) {
+    val fragmentManager: FragmentManager = activity.supportFragmentManager
+
     fun navigateToWelcomeActivity() = activity.startActivity(WelcomeActivity.createIntent(activity))
     fun navigateToSignInActivity() = activity.startActivity(SignInActivity.createIntent(activity))
     fun navigateToSignUpActivity() = activity.startActivity(SignUpActivity.createIntent(activity))

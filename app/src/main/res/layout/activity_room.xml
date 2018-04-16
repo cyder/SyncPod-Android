@@ -1,14 +1,50 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-            name="viewModel"
-            type="com.cyder.atsushi.youtubesync.viewmodel.RoomActivityViewModel"  />
+                name="viewModel"
+                type="com.cyder.atsushi.youtubesync.viewmodel.RoomActivityViewModel"/>
     </data>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical">
+
+        <LinearLayout
+                android:id="@+id/video_player"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+            <fragment
+                    android:id="@+id/youtube_fragment"
+                    android:name="com.cyder.atsushi.youtubesync.view.fragment.VideoFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                <android.support.design.widget.TabLayout
+                        android:id="@+id/tab_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@color/roomTab"
+                        android:elevation="2dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </layout>

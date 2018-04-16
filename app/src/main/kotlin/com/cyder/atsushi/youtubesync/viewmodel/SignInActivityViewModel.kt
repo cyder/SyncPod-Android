@@ -2,7 +2,7 @@ package com.cyder.atsushi.youtubesync.viewmodel
 
 import android.databinding.ObservableField
 import com.cyder.atsushi.youtubesync.R
-import com.cyder.atsushi.youtubesync.repository.*
+import com.cyder.atsushi.youtubesync.repository.UserRepository
 import com.cyder.atsushi.youtubesync.util.NotAgreeTermsException
 import com.cyder.atsushi.youtubesync.util.NotFilledFormsException
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
