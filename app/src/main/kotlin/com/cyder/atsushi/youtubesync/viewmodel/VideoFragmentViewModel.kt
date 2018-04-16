@@ -59,7 +59,6 @@ class VideoFragmentViewModel @Inject constructor(
                 Observable.interval(100, TimeUnit.MILLISECONDS),
                 isInitializedPlayer.filter { it }
         ).map { player.currentTimeMillis }
-                .map { player.currentTimeMillis }
                 .filter { player.durationMillis > .0 }
                 .takeUntil(onReleaseVideo)
                 .subscribe { nowProgress.set((maxProgress.get().toDouble() * it / player.durationMillis).toInt()) }
