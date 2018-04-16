@@ -14,4 +14,5 @@ interface VideoRepository {
     fun obserbleIsPlaying(): Flowable<Boolean>
     fun obserbleNowPlayingVideo(): Flowable<Video>
     fun getNoewPlayingVideo(): Flowable<Video>
+    fun getPlayList(): Flowable<List<Video>>
 }
