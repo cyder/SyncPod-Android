@@ -26,7 +26,7 @@ class VideoFragmentViewModel @Inject constructor(
     private lateinit var player: YouTubePlayer
     val isInitializedPlayer: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
     override fun onStart() {
-        val key = roomRepository.developerKey.blockingFirst()
+        val key = videoRepository.developerKey.blockingFirst()
         val listener = videoRepository.playerState.blockingFirst()
         youtubeFragment.initialize(key, object : YouTubePlayer.OnInitializedListener {
             override fun onInitializationSuccess(provider: YouTubePlayer.Provider?, player: YouTubePlayer?, wasRestored: Boolean) {

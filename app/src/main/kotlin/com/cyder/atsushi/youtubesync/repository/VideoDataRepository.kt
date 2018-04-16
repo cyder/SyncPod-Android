@@ -1,5 +1,6 @@
 package com.cyder.atsushi.youtubesync.repository
 
+import com.cyder.atsushi.youtubesync.BuildConfig
 import com.cyder.atsushi.youtubesync.api.mapper.toModel
 import com.cyder.atsushi.youtubesync.model.Video
 import com.cyder.atsushi.youtubesync.websocket.Response
@@ -23,6 +24,7 @@ class VideoDataRepository @Inject constructor(
         private val subscription: Subscription
 ) : VideoRepository {
     private val playingVideo: Subject<Video> = BehaviorSubject.create()
+    override val developerKey: Flowable<String> = Flowable.just(BuildConfig.YOUTUBE_DEVELOPER_KEY)
     override val playerState: Flowable<YouTubePlayer.PlayerStateChangeListener>
         get() {
             val listener = object : YouTubePlayer.PlayerStateChangeListener {

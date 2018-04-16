@@ -24,7 +24,6 @@ class RoomDataRepository @Inject constructor(
         private val token: String
 ) : RoomRepository {
     private lateinit var subscription: Subscription
-    override val developerKey: Flowable<String> = Flowable.just(BuildConfig.YOUTUBE_DEVELOPER_KEY)
     override fun joinRoom(roomKey: String): Completable {
         val channel = Channel(CHANNEL_NAME, mapOf(ROOM_KEY to roomKey))
         consumer.disconnect()
