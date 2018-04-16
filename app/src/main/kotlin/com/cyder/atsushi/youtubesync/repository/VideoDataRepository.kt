@@ -53,11 +53,15 @@ class VideoDataRepository @Inject constructor(
         startRouting()
     }
 
-    override fun getNowPlayingVideo(): Flowable<Video> {
-        subscription.perform(NOW_PLAYING)
+    override fun obserbleNowPlayingVideo(): Flowable<Video> {
         return playingVideo.flatMap {
             Observable.just(it)
         }.toFlowable(BackpressureStrategy.LATEST)
+    }
+
+    override fun getNoewPlayingVideo(): Flowable<Video> {
+        subscription.perform(NOW_PLAYING)
+        return obserbleNowPlayingVideo()
     }
 
     private fun startRouting() {
