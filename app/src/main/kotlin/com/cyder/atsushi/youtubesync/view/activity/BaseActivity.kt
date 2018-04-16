@@ -48,4 +48,9 @@ abstract class BaseActivity : AppCompatActivity() {
         viewModel?.onStop()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel?.onDestroy()
+    }
+
 }

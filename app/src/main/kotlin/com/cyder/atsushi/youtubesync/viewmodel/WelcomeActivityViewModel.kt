@@ -23,6 +23,9 @@ class WelcomeActivityViewModel @Inject constructor(
     override fun onStop() {
     }
 
+    override fun onDestroy() {
+    }
+
     fun onSignInClicked() = navigator.navigateToSignInActivity()
 
     fun onSignUpClicked() = navigator.navigateToSignUpActivity()

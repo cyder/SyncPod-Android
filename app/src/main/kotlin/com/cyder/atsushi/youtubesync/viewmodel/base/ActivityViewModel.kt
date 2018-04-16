@@ -12,4 +12,6 @@ abstract class ActivityViewModel {
     abstract fun onPause()
 
     abstract fun onStop()
+
+    abstract fun onDestroy()
 }
