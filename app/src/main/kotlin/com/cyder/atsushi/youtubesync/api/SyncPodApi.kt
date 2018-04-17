@@ -27,5 +27,9 @@ interface SyncPodApi {
     fun createNewRoom(@Header("Authorization") token: String, @Body room: CreateRoom): Single<Response>
 
     @GET("youtube/search")
-    fun getYouTubeSearch(@Header("Authorization") token: String, @Query("keyword") keyword: String): Single<SearchResponse>
+    fun getYouTubeSearch(
+            @Header("Authorization") token: String,
+            @Query("keyword") keyword: String,
+            @Query("page_token") pageToken: String?
+    ): Single<SearchResponse>
 }
