@@ -5,6 +5,7 @@ import com.cyder.atsushi.youtubesync.api.mapper.toModel
 import com.cyder.atsushi.youtubesync.model.Video
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.Singles
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
@@ -17,16 +18,23 @@ class YouTubeDataRepository @Inject constructor(
     private var keyword: BehaviorSubject<String> = BehaviorSubject.createDefault("")
 
     override fun getYouTubeSearch(keyword: String): Single<List<Video>> {
-        this.keyword.onNext(keyword)
-        return getYouTubeSearch(keyword, null)
+        return Single.just(keyword)
+                .filter { it.isNotBlank() }
+                .toSingle()
+                .doOnSuccess {
+                    this.keyword.onNext(it)
+                }
+                .flatMap {
+                    getYouTubeSearch(it, null)
+                }
     }
 
     override fun getNextYouTubeSearch(): Single<List<Video>> {
-        return nextToken.first("")
-                .filter { it.isNotBlank() }
+        return Singles.zip(keyword.first(""), nextToken.first(""))
+                .filter { it.first.isNotBlank() && it.second.isNotBlank() }
                 .toSingle()
                 .flatMap {
-                    getYouTubeSearch(keyword.blockingFirst(), it)
+                    getYouTubeSearch(it.first, it.second)
                 }
     }
 
