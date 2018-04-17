@@ -5,6 +5,7 @@ import com.cyder.atsushi.youtubesync.api.SyncPodApi
 import com.cyder.atsushi.youtubesync.api.mapper.toModel
 import com.cyder.atsushi.youtubesync.api.request.CreateRoom
 import com.cyder.atsushi.youtubesync.model.Room
+import com.cyder.atsushi.youtubesync.model.User
 import com.cyder.atsushi.youtubesync.util.CannotJoinRoomException
 import com.cyder.atsushi.youtubesync.util.NotFilledFormsException
 import com.hosopy.actioncable.Channel
@@ -61,16 +62,12 @@ class RoomDataRepository @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun fetch(id: Int): Single<Room?>? {
-        return try {
-            syncPodApi.getEnteredRooms(token)
-                    .map { it.joinedRooms?.last() }
-                    .map { it.toModel() }
-                    .subscribeOn(Schedulers.computation())
-                    .observeOn(AndroidSchedulers.mainThread())
-        } catch (e: Exception) {
-            null
-        }
+    override fun fetch(roomKey: String): Single<Room> {
+        return syncPodApi.getRoom(token, roomKey)
+                .map { it.room }
+                .map { it.toModel() }
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun fetchJoinedRooms(): Single<List<Room>> {
@@ -83,6 +80,10 @@ class RoomDataRepository @Inject constructor(
 
     override fun getSubscription(): Single<Subscription> {
         return Single.just(subscription)
+    }
+
+    override fun exitForce(user: User) {
+        subscription.perform(EXIT_FORCE, mapOf(USER_ID to user.id ))
     }
 
     private fun createNewRoomValidation(name: String, description: String): Completable {
@@ -98,5 +99,7 @@ class RoomDataRepository @Inject constructor(
     companion object {
         const val CHANNEL_NAME = "RoomChannel"
         const val ROOM_KEY = "room_key"
+        const val EXIT_FORCE = "exit_force"
+        const val USER_ID = "user_id"
     }
 }
