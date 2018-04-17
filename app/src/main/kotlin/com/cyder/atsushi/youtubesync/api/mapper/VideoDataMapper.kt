@@ -22,3 +22,8 @@ fun VideoResponse.toModel(): Video =
                 this.published,
                 this.viewCount
         )
+
+fun List<VideoResponse>.toModel(): List<Video> =
+        this.map {
+            it.toModel()
+        }
