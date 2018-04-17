@@ -12,7 +12,7 @@ interface RoomRepository {
     fun createNewRoom(name: String, description: String): Single<Room>
     fun getSubscription(): Single<Subscription>
     fun fetchJoinedRooms(): Single<List<Room>>
-    fun fetch(id: Int): Single<Room?>?
+    fun fetch(roomKey: String): Single<Room>
     fun joinRoom(roomKey: String): Completable
     fun exitRoom(): Completable
 }

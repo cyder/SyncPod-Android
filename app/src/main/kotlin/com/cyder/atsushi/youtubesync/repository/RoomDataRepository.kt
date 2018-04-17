@@ -61,16 +61,12 @@ class RoomDataRepository @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun fetch(id: Int): Single<Room?>? {
-        return try {
-            syncPodApi.getEnteredRooms(token)
-                    .map { it.joinedRooms?.last() }
-                    .map { it.toModel() }
-                    .subscribeOn(Schedulers.computation())
-                    .observeOn(AndroidSchedulers.mainThread())
-        } catch (e: Exception) {
-            null
-        }
+    override fun fetch(roomKey: String): Single<Room> {
+        return syncPodApi.getRoom(token, roomKey)
+                .map { it.room }
+                .map { it.toModel() }
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun fetchJoinedRooms(): Single<List<Room>> {
