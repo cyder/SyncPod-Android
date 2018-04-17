@@ -5,6 +5,7 @@ import com.cyder.atsushi.youtubesync.api.SyncPodApi
 import com.cyder.atsushi.youtubesync.api.mapper.toModel
 import com.cyder.atsushi.youtubesync.api.request.CreateRoom
 import com.cyder.atsushi.youtubesync.model.Room
+import com.cyder.atsushi.youtubesync.model.User
 import com.cyder.atsushi.youtubesync.util.CannotJoinRoomException
 import com.cyder.atsushi.youtubesync.util.NotFilledFormsException
 import com.hosopy.actioncable.Channel
@@ -81,6 +82,10 @@ class RoomDataRepository @Inject constructor(
         return Single.just(subscription)
     }
 
+    override fun exitForce(user: User) {
+        subscription.perform(EXIT_FORCE, mapOf(USER_ID to user.id ))
+    }
+
     private fun createNewRoomValidation(name: String, description: String): Completable {
         return Completable.create { emitter ->
             if (name.isBlank() || description.isBlank()) {
@@ -94,5 +99,7 @@ class RoomDataRepository @Inject constructor(
     companion object {
         const val CHANNEL_NAME = "RoomChannel"
         const val ROOM_KEY = "room_key"
+        const val EXIT_FORCE = "exit_force"
+        const val USER_ID = "user_id"
     }
 }
