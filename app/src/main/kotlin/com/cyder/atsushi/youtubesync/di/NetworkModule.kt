@@ -58,8 +58,8 @@ class NetworkModule {
 
     companion object {
         val instance = NetworkModule()
-        const val BASE_URL = "http://59.106.220.89:3000/api/v1/"
-        const val WS_URL = "ws://59.106.220.89:3000/cable/"
+        const val BASE_URL = "https://api.sync-pod.com/api/v1/"
+        const val WS_URL = "https://api.sync-pod.com/cable/"
         const val TOKEN = "token"
     }
 }
