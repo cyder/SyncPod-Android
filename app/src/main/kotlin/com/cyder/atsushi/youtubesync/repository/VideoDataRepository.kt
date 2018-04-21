@@ -102,8 +102,8 @@ class VideoDataRepository @Inject constructor(
                     ADD_VIDEO -> {
                         response.data?.apply {
                             if (isPlaying.blockingFirst()) {
-                                this@VideoDataRepository.playList
-                                        .onNext(this@VideoDataRepository.playList.blockingFirst() + video.toModel())
+                                val newPlayList = this@VideoDataRepository.playList.blockingFirst() + video.toModel()
+                                this@VideoDataRepository.playList.onNext(newPlayList)
                             } else {
                                 prepareVideo.onNext(video.toModel())
                                 isPlaying.onNext(true)
