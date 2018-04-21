@@ -119,7 +119,7 @@ class VideoDataRepository @Inject constructor(
         val playlist = playList.blockingFirst()
         val video = playlist.firstOrNull()
         video?.apply {
-            playList.onNext(playlist.drop(1))
+            this@VideoDataRepository.playList.onNext(playlist.drop(1))
         }
         return video
     }
