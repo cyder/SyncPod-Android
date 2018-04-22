@@ -24,8 +24,7 @@ import javax.inject.Inject
 
 class RoomInfoFragment : BaseFragment() {
     private lateinit var binding: FragmentRoominfoBinding
-    @Inject
-    lateinit var viewModel: RoomInfoFragmentViewModel
+    @Inject lateinit var viewModel: RoomInfoFragmentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

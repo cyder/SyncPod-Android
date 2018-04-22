@@ -40,11 +40,9 @@ fun Activity.setUpSnackbar(): SnackbarCallback {
 }
 
 fun Activity.setUpShareCompat(): ShareCompatCallback {
-    val activity = this
-
     return object : ShareCompatCallback {
         override fun onStart(message: String) {
-            ShareCompat.IntentBuilder.from(activity)
+            ShareCompat.IntentBuilder.from(this@setUpShareCompat)
                     .setText(message)
                     .setType("text/plain")
                     .startChooser()
