@@ -1,7 +1,6 @@
 package com.cyder.atsushi.youtubesync.di
 
 import com.cyder.atsushi.youtubesync.api.SyncPodApi
-import com.cyder.atsushi.youtubesync.repository.RoomRepository
 import com.cyder.atsushi.youtubesync.repository.UserRepository
 import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
 import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApiImpl
@@ -62,8 +61,8 @@ class NetworkModule {
     @Singleton
     @Provides
     fun provideSyncPodWsApi(
-            roomRepository: RoomRepository
-    ) : SyncPodWsApi = SyncPodWsApiImpl(roomRepository.getSubscription().blockingGet()!!)
+            consumer: Consumer
+    ) : SyncPodWsApi = SyncPodWsApiImpl(consumer)
 
     companion object {
         val instance = NetworkModule()

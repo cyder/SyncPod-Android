@@ -1,5 +1,7 @@
 package com.cyder.atsushi.youtubesync.websocket
 
+import com.cyder.atsushi.youtubesync.model.User
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import javax.inject.Singleton
 
@@ -14,5 +16,8 @@ interface SyncPodWsApi {
     val playListResponse: Flowable<Response>
     val addVideoResponse: Flowable<Response>
     val chatResponse: Flowable<Response>
+    fun enterRoom(roomKey: String): Completable
+    fun exitRoom(): Completable
+    fun exitForce(user: User)
     fun perform(request: String)
 }
