@@ -1,17 +1,17 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
-import com.cyder.atsushi.youtubesync.viewmodel.base.FragmentViewModel
+import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
 import javax.inject.Inject
 
 
 /**
- * Created by chigichan24 on 2018/04/17.
+ * Created by chigichan24 on 2018/04/23.
  */
 
-class PlayListFragmentViewModel @Inject constructor(
+class SearchVideoActivityViewModel @Inject constructor(
         private val navigator: Navigator
-) : FragmentViewModel() {
+) : ActivityViewModel() {
     override fun onStart() {
     }
 
@@ -24,6 +24,8 @@ class PlayListFragmentViewModel @Inject constructor(
     override fun onStop() {
     }
 
-    fun searchVideo() = navigator.navigateToSearchVideoActivity()
+    override fun onDestroy() {
+    }
 
+    fun onBackButtonClicked() = navigator.closeActivity()
 }
