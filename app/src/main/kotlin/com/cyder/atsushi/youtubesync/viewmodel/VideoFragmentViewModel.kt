@@ -47,6 +47,29 @@ class VideoFragmentViewModel @Inject constructor(
             override fun onInitializationFailure(provider: YouTubePlayer.Provider?, error: YouTubeInitializationResult?) {
             }
         })
+
+        observerWithInitPlayer()
+    }
+
+    override fun onResume() {
+    }
+
+    override fun onPause() {
+    }
+
+    override fun onStop() {
+        onReleaseVideo.onNext(true)
+    }
+
+    private fun observerWithInitPlayer() {
+        Observables.combineLatest(
+                videoRepository.obserblePrepareVideo().toObservable(),
+                isInitializedPlayer.filter { it }
+        ).subscribe {
+            val video = it.first
+            player.cueVideo(video.youtubeVideoId)
+        }
+
         Observables.combineLatest(
                 videoRepository.obserbleNowPlayingVideo().toObservable(),
                 isInitializedPlayer.filter { it }
@@ -62,16 +85,6 @@ class VideoFragmentViewModel @Inject constructor(
                 .filter { player.durationMillis > .0 }
                 .takeUntil(onReleaseVideo)
                 .subscribe { nowProgress.set((maxProgress.get().toDouble() * it / player.durationMillis).toInt()) }
-    }
-
-    override fun onResume() {
-    }
-
-    override fun onPause() {
-    }
-
-    override fun onStop() {
-        onReleaseVideo.onNext(true)
     }
 
 }
