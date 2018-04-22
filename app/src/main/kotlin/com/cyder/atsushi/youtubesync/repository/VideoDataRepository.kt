@@ -85,21 +85,21 @@ class VideoDataRepository @Inject constructor(
                 }
     }
 
-    override fun obserbleIsPlaying(): Flowable<Boolean> {
+    override fun observeIsPlaying(): Flowable<Boolean> {
         return isPlaying.distinctUntilChanged().toFlowable(BackpressureStrategy.LATEST)
     }
 
-    override fun obserblePrepareVideo(): Flowable<Video> {
+    override fun observePrepareVideo(): Flowable<Video> {
         return playingVideo.toFlowable(BackpressureStrategy.LATEST)
     }
 
-    override fun obserbleNowPlayingVideo(): Flowable<Video> {
+    override fun observeNowPlayingVideo(): Flowable<Video> {
         return playingVideo.toFlowable(BackpressureStrategy.LATEST)
     }
 
-    override fun getNoewPlayingVideo(): Flowable<Video> {
+    override fun getNowPlayingVideo(): Flowable<Video> {
         syncPodWsApi.perform(NOW_PLAYING)
-        return obserbleNowPlayingVideo()
+        return observeNowPlayingVideo()
     }
 
     override fun getPlayList(): Flowable<List<Video>> {
