@@ -6,7 +6,6 @@ import android.databinding.ObservableField
 import android.databinding.ObservableList
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.model.Room
-import com.cyder.atsushi.youtubesync.repository.RoomDataRepository
 import com.cyder.atsushi.youtubesync.repository.RoomRepository
 import com.cyder.atsushi.youtubesync.util.CannotJoinRoomException
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
