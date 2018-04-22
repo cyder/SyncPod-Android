@@ -1,6 +1,8 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
 import android.databinding.ObservableBoolean
+import android.databinding.ObservableField
+import com.cyder.atsushi.youtubesync.model.Room
 import com.cyder.atsushi.youtubesync.repository.RoomRepository
 import com.cyder.atsushi.youtubesync.viewmodel.base.FragmentViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,6 +17,7 @@ class RoomInfoFragmentViewModel @Inject constructor(
 ) : FragmentViewModel() {
     lateinit var roomKey: String
     var isLoading: ObservableBoolean = ObservableBoolean()
+    var room: ObservableField<Room> = ObservableField()
 
     override fun onStart() {
     }
@@ -39,6 +42,7 @@ class RoomInfoFragmentViewModel @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response ->
                     isLoading.set(false)
+                    room.set(response)
                 }, {
                     isLoading.set(false)
                 })
