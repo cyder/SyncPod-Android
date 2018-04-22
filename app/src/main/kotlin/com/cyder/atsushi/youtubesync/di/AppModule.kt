@@ -39,6 +39,7 @@ class AppModule(private val context: Context) {
             repository: UserRepository
     ): RoomRepository = RoomDataRepository(api, wsApi, consumer, repository.getAccessToken().blockingGet()!!)
 
+    @Singleton
     @Provides
     fun provideVideoRepository(
             consumer: Consumer,

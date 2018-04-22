@@ -16,4 +16,5 @@ interface VideoRepository {
     fun observeNowPlayingVideo(): Flowable<Video>
     fun getNowPlayingVideo(): Flowable<Video>
     fun getPlayList(): Flowable<List<Video>>
+    fun resetStatus()
 }

@@ -39,11 +39,7 @@ class SyncPodWsApiImpl @Inject constructor(
         get() = chatEvent.toFlowable(BackpressureStrategy.LATEST)
 
     override fun enterRoom(roomKey: String): Completable {
-        nowPlayingEvent = BehaviorSubject.create()
-        startVideoEvent = BehaviorSubject.create()
-        playListEvent = BehaviorSubject.create()
-        addVideoEvent = BehaviorSubject.create()
-        chatEvent = BehaviorSubject.create()
+
         val channel = Channel(CHANNEL_NAME, mapOf(ROOM_KEY to roomKey))
         consumer.disconnect()
         subscription = consumer.subscriptions.create(channel)
@@ -72,6 +68,11 @@ class SyncPodWsApiImpl @Inject constructor(
         playListEvent.onComplete()
         addVideoEvent.onComplete()
         chatEvent.onComplete()
+        nowPlayingEvent = BehaviorSubject.create()
+        startVideoEvent = BehaviorSubject.create()
+        playListEvent = BehaviorSubject.create()
+        addVideoEvent = BehaviorSubject.create()
+        chatEvent = BehaviorSubject.create()
         return Completable.complete()
     }
 

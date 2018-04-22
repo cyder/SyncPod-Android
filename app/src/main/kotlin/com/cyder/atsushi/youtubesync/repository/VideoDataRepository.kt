@@ -1,5 +1,6 @@
 package com.cyder.atsushi.youtubesync.repository
 
+import android.util.Log
 import com.cyder.atsushi.youtubesync.BuildConfig
 import com.cyder.atsushi.youtubesync.api.mapper.toModel
 import com.cyder.atsushi.youtubesync.model.Video
@@ -22,10 +23,10 @@ class VideoDataRepository @Inject constructor(
         private val consumer: Consumer,
         private val syncPodWsApi: SyncPodWsApi
 ) : VideoRepository {
-    private val prepareVideo: Subject<Video> = BehaviorSubject.create()
-    private val playingVideo: Subject<Video> = BehaviorSubject.create()
-    private val playList: Subject<List<Video>> = BehaviorSubject.createDefault(listOf())
-    private val isPlaying: Subject<Boolean> = BehaviorSubject.createDefault(false)
+    private var prepareVideo: Subject<Video> = BehaviorSubject.create()
+    private var playingVideo: Subject<Video> = BehaviorSubject.create()
+    private var playList: Subject<List<Video>> = BehaviorSubject.createDefault(listOf())
+    private var isPlaying: Subject<Boolean> = BehaviorSubject.createDefault(false)
     override val developerKey: Flowable<String> = Flowable.just(BuildConfig.YOUTUBE_DEVELOPER_KEY)
     override val playerState: Flowable<YouTubePlayer.PlayerStateChangeListener>
         get() {
@@ -57,6 +58,60 @@ class VideoDataRepository @Inject constructor(
         }
 
     init {
+        startObserve()
+    }
+
+    override fun observeIsPlaying(): Flowable<Boolean> {
+        isPlaying.subscribe {
+        }
+        return isPlaying.distinctUntilChanged().toFlowable(BackpressureStrategy.LATEST)
+    }
+
+    override fun observePrepareVideo(): Flowable<Video> {
+        return playingVideo.toFlowable(BackpressureStrategy.LATEST)
+    }
+
+    override fun observeNowPlayingVideo(): Flowable<Video> {
+        return playingVideo.toFlowable(BackpressureStrategy.LATEST)
+    }
+
+    override fun getNowPlayingVideo(): Flowable<Video> {
+        syncPodWsApi.requestNowPlayingVideo()
+        return observeNowPlayingVideo()
+    }
+
+    override fun getPlayList(): Flowable<List<Video>> {
+        syncPodWsApi.requestPlayList()
+        return Flowable.empty()
+    }
+
+    override fun resetStatus() {
+        prepareVideo.onComplete()
+        playingVideo.onComplete()
+        playList.onComplete()
+        isPlaying.onComplete()
+        prepareVideo = BehaviorSubject.create()
+        playingVideo = BehaviorSubject.create()
+        playList = BehaviorSubject.createDefault(listOf())
+        isPlaying = BehaviorSubject.createDefault(false)
+        syncPodWsApi.exitRoom()
+        startObserve()
+    }
+
+    private fun getNextVideo(): Video? {
+        val playlist = playList.blockingFirst()
+        val video = playlist.firstOrNull()
+        video?.apply {
+            this@VideoDataRepository.playList.onNext(playlist.drop(1))
+        }
+        return video
+    }
+
+    private fun String.toResponse(): Response {
+        return GsonBuilder().create().fromJson(this, Response::class.java)
+    }
+
+    private fun startObserve() {
         syncPodWsApi.nowPlayingResponse
                 .subscribe {
                     it.data?.apply {
@@ -83,41 +138,6 @@ class VideoDataRepository @Inject constructor(
                         }
                     }
                 }
-    }
-
-    override fun observeIsPlaying(): Flowable<Boolean> {
-        return isPlaying.distinctUntilChanged().toFlowable(BackpressureStrategy.LATEST)
-    }
-
-    override fun observePrepareVideo(): Flowable<Video> {
-        return playingVideo.toFlowable(BackpressureStrategy.LATEST)
-    }
-
-    override fun observeNowPlayingVideo(): Flowable<Video> {
-        return playingVideo.toFlowable(BackpressureStrategy.LATEST)
-    }
-
-    override fun getNowPlayingVideo(): Flowable<Video> {
-        syncPodWsApi.requestNowPlayingVideo()
-        return observeNowPlayingVideo()
-    }
-
-    override fun getPlayList(): Flowable<List<Video>> {
-        syncPodWsApi.requestPlayList()
-        return Flowable.empty()
-    }
-
-    private fun getNextVideo(): Video? {
-        val playlist = playList.blockingFirst()
-        val video = playlist.firstOrNull()
-        video?.apply {
-            this@VideoDataRepository.playList.onNext(playlist.drop(1))
-        }
-        return video
-    }
-
-    private fun String.toResponse(): Response {
-        return GsonBuilder().create().fromJson(this, Response::class.java)
     }
 
     companion object {
