@@ -1,6 +1,5 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
-import com.cyder.atsushi.youtubesync.model.Chat
 import com.cyder.atsushi.youtubesync.repository.ChatRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.FragmentViewModel
@@ -16,7 +15,6 @@ class ChatFragmentViewModel @Inject constructor(
         private val repository: ChatRepository
 ) : FragmentViewModel() {
     override fun onStart() {
-        repository.emitNewChat(Chat(0,0,"","","",null))
     }
 
     override fun onResume() {

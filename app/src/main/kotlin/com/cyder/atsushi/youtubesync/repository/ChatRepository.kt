@@ -9,5 +9,5 @@ import io.reactivex.Flowable
  */
 
 interface ChatRepository {
-    fun emitNewChat(chat: Chat): Flowable<Chat>
+    val observeChat: Flowable<Chat>
 }
