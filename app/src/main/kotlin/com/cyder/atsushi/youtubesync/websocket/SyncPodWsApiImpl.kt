@@ -1,6 +1,5 @@
 package com.cyder.atsushi.youtubesync.websocket
 
-import android.util.Log
 import com.cyder.atsushi.youtubesync.model.User
 import com.cyder.atsushi.youtubesync.util.CannotJoinRoomException
 import com.google.gson.GsonBuilder
@@ -66,9 +65,12 @@ class SyncPodWsApiImpl @Inject constructor(
         subscription.perform(EXIT_FORCE, mapOf(USER_ID to user.id))
     }
 
-    override fun perform(request: String) {
-        Log.d("TAG", request)
-        subscription.perform(request)
+    override fun requestNowPlayingVideo() {
+        subscription.perform(NOW_PLAYING)
+    }
+
+    override fun requestPlayList() {
+        subscription.perform(PLAY_LIST)
     }
 
     private fun startRouting() {

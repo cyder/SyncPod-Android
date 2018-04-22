@@ -98,12 +98,12 @@ class VideoDataRepository @Inject constructor(
     }
 
     override fun getNowPlayingVideo(): Flowable<Video> {
-        syncPodWsApi.perform(NOW_PLAYING)
+        syncPodWsApi.requestNowPlayingVideo()
         return observeNowPlayingVideo()
     }
 
     override fun getPlayList(): Flowable<List<Video>> {
-        syncPodWsApi.perform(PLAY_LIST)
+        syncPodWsApi.requestPlayList()
         return Flowable.empty()
     }
 

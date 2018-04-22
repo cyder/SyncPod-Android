@@ -19,5 +19,6 @@ interface SyncPodWsApi {
     fun enterRoom(roomKey: String): Completable
     fun exitRoom(): Completable
     fun exitForce(user: User)
-    fun perform(request: String)
+    fun requestNowPlayingVideo()
+    fun requestPlayList()
 }
