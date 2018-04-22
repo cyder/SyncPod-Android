@@ -4,10 +4,10 @@ import com.cyder.atsushi.youtubesync.BuildConfig
 import com.cyder.atsushi.youtubesync.api.mapper.toModel
 import com.cyder.atsushi.youtubesync.model.Video
 import com.cyder.atsushi.youtubesync.websocket.Response
+import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.gson.GsonBuilder
 import com.hosopy.actioncable.Consumer
-import com.hosopy.actioncable.Subscription
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.subjects.BehaviorSubject
@@ -20,12 +20,12 @@ import javax.inject.Inject
  */
 class VideoDataRepository @Inject constructor(
         private val consumer: Consumer,
-        private val subscription: Subscription
+        private val syncPodWsApi: SyncPodWsApi
 ) : VideoRepository {
-    private val prepareVideo: Subject<Video> = BehaviorSubject.create()
-    private val playingVideo: Subject<Video> = BehaviorSubject.create()
-    private val playList: Subject<List<Video>> = BehaviorSubject.createDefault(listOf())
-    private val isPlaying: Subject<Boolean> = BehaviorSubject.createDefault(false)
+    private lateinit var prepareVideo: Subject<Video>
+    private lateinit var playingVideo: Subject<Video>
+    private lateinit var playList: Subject<List<Video>>
+    private lateinit var isPlaying: Subject<Boolean>
     override val developerKey: Flowable<String> = Flowable.just(BuildConfig.YOUTUBE_DEVELOPER_KEY)
     override val playerState: Flowable<YouTubePlayer.PlayerStateChangeListener>
         get() {
@@ -57,62 +57,29 @@ class VideoDataRepository @Inject constructor(
         }
 
     init {
-        startRouting()
+        initSubjects()
     }
 
-    override fun obserbleIsPlaying(): Flowable<Boolean> {
+    override fun observeIsPlaying(): Flowable<Boolean> {
         return isPlaying.distinctUntilChanged().toFlowable(BackpressureStrategy.LATEST)
     }
 
-    override fun obserblePrepareVideo(): Flowable<Video> {
+    override fun observePrepareVideo(): Flowable<Video> {
         return playingVideo.toFlowable(BackpressureStrategy.LATEST)
     }
 
-    override fun obserbleNowPlayingVideo(): Flowable<Video> {
+    override fun observeNowPlayingVideo(): Flowable<Video> {
         return playingVideo.toFlowable(BackpressureStrategy.LATEST)
     }
 
-    override fun getNoewPlayingVideo(): Flowable<Video> {
-        subscription.perform(NOW_PLAYING)
-        return obserbleNowPlayingVideo()
+    override fun getNowPlayingVideo(): Flowable<Video> {
+        syncPodWsApi.requestNowPlayingVideo()
+        return observeNowPlayingVideo()
     }
 
     override fun getPlayList(): Flowable<List<Video>> {
-        subscription.perform(PLAY_LIST)
+        syncPodWsApi.requestPlayList()
         return Flowable.empty()
-    }
-
-    private fun startRouting() {
-        subscription.onReceived = {
-            if (it is String) {
-                val response = it.toResponse()
-                when (response.dataType) {
-                    NOW_PLAYING, START_VIDEO -> {
-                        response.data?.apply {
-                            playingVideo.onNext(this.video.toModel())
-                            isPlaying.onNext(true)
-                        }
-                    }
-                    PLAY_LIST -> {
-                        response.data?.apply {
-                            this@VideoDataRepository.playList
-                                    .onNext(this.playList.map { it.toModel() })
-                        }
-                    }
-                    ADD_VIDEO -> {
-                        response.data?.apply {
-                            if (isPlaying.blockingFirst()) {
-                                val newPlayList = this@VideoDataRepository.playList.blockingFirst() + video.toModel()
-                                this@VideoDataRepository.playList.onNext(newPlayList)
-                            } else {
-                                prepareVideo.onNext(video.toModel())
-                                isPlaying.onNext(true)
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private fun getNextVideo(): Video? {
@@ -126,6 +93,55 @@ class VideoDataRepository @Inject constructor(
 
     private fun String.toResponse(): Response {
         return GsonBuilder().create().fromJson(this, Response::class.java)
+    }
+
+    private fun startObserve() {
+        syncPodWsApi.nowPlayingResponse
+                .subscribe {
+                    it.data?.apply {
+                        playingVideo.onNext(this.video.toModel())
+                        isPlaying.onNext(true)
+                    }
+                }
+        syncPodWsApi.playListResponse
+                .subscribe {
+                    it.data?.apply {
+                        this@VideoDataRepository.playList
+                                .onNext(this.playList.map { it.toModel() })
+                    }
+                }
+        syncPodWsApi.addVideoResponse
+                .subscribe {
+                    it.data?.apply {
+                        if (isPlaying.blockingFirst()) {
+                            val newPlayList = this@VideoDataRepository.playList.blockingFirst() + video.toModel()
+                            this@VideoDataRepository.playList.onNext(newPlayList)
+                        } else {
+                            prepareVideo.onNext(video.toModel())
+                            isPlaying.onNext(true)
+                        }
+                    }
+                }
+    }
+    private fun initSubjects() {
+        syncPodWsApi.isEntered
+                .filter { it }
+                .subscribe {
+                    prepareVideo = BehaviorSubject.create()
+                    playingVideo = BehaviorSubject.create()
+                    playList = BehaviorSubject.createDefault(listOf())
+                    isPlaying = BehaviorSubject.createDefault(false)
+                    startObserve()
+                }
+
+        syncPodWsApi.isEntered
+                .filter { !it }
+                .subscribe {
+                    prepareVideo.onComplete()
+                    playingVideo.onComplete()
+                    playList.onComplete()
+                    isPlaying.onComplete()
+                }
     }
 
     companion object {

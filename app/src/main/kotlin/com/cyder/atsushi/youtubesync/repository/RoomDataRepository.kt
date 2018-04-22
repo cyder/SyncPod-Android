@@ -1,18 +1,14 @@
 package com.cyder.atsushi.youtubesync.repository
 
-import com.cyder.atsushi.youtubesync.BuildConfig
 import com.cyder.atsushi.youtubesync.api.SyncPodApi
 import com.cyder.atsushi.youtubesync.api.mapper.toModel
 import com.cyder.atsushi.youtubesync.api.request.CreateRoom
 import com.cyder.atsushi.youtubesync.model.Room
 import com.cyder.atsushi.youtubesync.model.User
-import com.cyder.atsushi.youtubesync.util.CannotJoinRoomException
 import com.cyder.atsushi.youtubesync.util.NotFilledFormsException
-import com.hosopy.actioncable.Channel
+import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
 import com.hosopy.actioncable.Consumer
-import com.hosopy.actioncable.Subscription
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -23,34 +19,16 @@ import javax.inject.Inject
  */
 class RoomDataRepository @Inject constructor(
         private val syncPodApi: SyncPodApi,
+        private val syncPodWsApi: SyncPodWsApi,
         private val consumer: Consumer,
         private val token: String
 ) : RoomRepository {
-    private lateinit var subscription: Subscription
     override fun joinRoom(roomKey: String): Completable {
-        val channel = Channel(CHANNEL_NAME, mapOf(ROOM_KEY to roomKey))
-        consumer.disconnect()
-        subscription = consumer.subscriptions.create(channel)
-        consumer.connect()
-        return Completable.create { emitter ->
-            subscription.onConnected = {
-                emitter.onComplete()
-            }
-            subscription.onRejected = {
-                emitter.onError(CannotJoinRoomException())
-                consumer.disconnect()
-            }
-            subscription.onFailed = {
-                emitter.onError(it)
-                consumer.disconnect()
-            }
-        }
+        return syncPodWsApi.enterRoom(roomKey)
     }
 
     override fun exitRoom(): Completable {
-        consumer.subscriptions.remove(subscription)
-        consumer.disconnect()
-        return Completable.complete()
+        return syncPodWsApi.exitRoom()
     }
 
     override fun createNewRoom(name: String, description: String): Single<Room> {
@@ -78,12 +56,8 @@ class RoomDataRepository @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getSubscription(): Single<Subscription> {
-        return Single.just(subscription)
-    }
-
     override fun exitForce(user: User) {
-        subscription.perform(EXIT_FORCE, mapOf(USER_ID to user.id ))
+        syncPodWsApi.exitForce(user)
     }
 
     private fun createNewRoomValidation(name: String, description: String): Completable {
@@ -94,12 +68,5 @@ class RoomDataRepository @Inject constructor(
                 emitter.onComplete()
             }
         }
-    }
-
-    companion object {
-        const val CHANNEL_NAME = "RoomChannel"
-        const val ROOM_KEY = "room_key"
-        const val EXIT_FORCE = "exit_force"
-        const val USER_ID = "user_id"
     }
 }

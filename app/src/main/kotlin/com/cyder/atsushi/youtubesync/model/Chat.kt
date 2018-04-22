@@ -10,5 +10,5 @@ data class Chat(
         val chat_type: String,
         val message: String,
         val created_at: String,
-        val user: User
+        val user: User?
 )

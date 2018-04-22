@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import com.cyder.atsushi.youtubesync.api.SyncPodApi
 import com.cyder.atsushi.youtubesync.repository.*
+import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
 import com.hosopy.actioncable.Consumer
 import dagger.Module
 import dagger.Provides
@@ -33,16 +34,23 @@ class AppModule(private val context: Context) {
     @Provides
     fun provideRoomRepository(
             api: SyncPodApi,
+            wsApi: SyncPodWsApi,
             consumer: Consumer,
             repository: UserRepository
-    ) : RoomRepository = RoomDataRepository(api,consumer, repository.getAccessToken().blockingGet()!!)
+    ): RoomRepository = RoomDataRepository(api, wsApi, consumer, repository.getAccessToken().blockingGet()!!)
 
     @Singleton
     @Provides
     fun provideVideoRepository(
             consumer: Consumer,
-            repository: RoomRepository
-    ) : VideoRepository = VideoDataRepository(consumer, repository.getSubscription().blockingGet()!!)
+            syncPodWsApi: SyncPodWsApi
+    ): VideoRepository = VideoDataRepository(consumer, syncPodWsApi)
+
+    @Singleton
+    @Provides
+    fun provideChatRepository(
+            syncPodWsApi: SyncPodWsApi
+    ): ChatRepository = ChatDataRepository(syncPodWsApi)
 
     @Singleton
     @Provides
