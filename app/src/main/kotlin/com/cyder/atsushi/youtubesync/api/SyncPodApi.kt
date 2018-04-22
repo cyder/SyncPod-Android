@@ -3,6 +3,7 @@ package com.cyder.atsushi.youtubesync.api
 import com.cyder.atsushi.youtubesync.api.request.CreateRoom
 import com.cyder.atsushi.youtubesync.api.request.SignUp
 import com.cyder.atsushi.youtubesync.api.response.Response
+import com.cyder.atsushi.youtubesync.api.response.SearchResponse
 import io.reactivex.Single
 import retrofit2.http.*
 import javax.inject.Singleton
@@ -27,4 +28,11 @@ interface SyncPodApi {
 
     @POST("rooms")
     fun createNewRoom(@Header("Authorization") token: String, @Body room: CreateRoom): Single<Response>
+
+    @GET("youtube/search")
+    fun getYouTubeSearch(
+            @Header("Authorization") token: String,
+            @Query("keyword") keyword: String,
+            @Query("page_token") pageToken: String?
+    ): Single<SearchResponse>
 }
