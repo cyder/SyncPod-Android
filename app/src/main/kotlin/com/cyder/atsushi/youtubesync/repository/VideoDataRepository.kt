@@ -1,6 +1,5 @@
 package com.cyder.atsushi.youtubesync.repository
 
-import android.util.Log
 import com.cyder.atsushi.youtubesync.BuildConfig
 import com.cyder.atsushi.youtubesync.api.mapper.toModel
 import com.cyder.atsushi.youtubesync.model.Video
@@ -94,7 +93,6 @@ class VideoDataRepository @Inject constructor(
         playingVideo = BehaviorSubject.create()
         playList = BehaviorSubject.createDefault(listOf())
         isPlaying = BehaviorSubject.createDefault(false)
-        syncPodWsApi.exitRoom()
         startObserve()
     }
 
