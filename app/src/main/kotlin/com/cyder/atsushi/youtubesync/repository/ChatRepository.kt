@@ -10,5 +10,4 @@ import io.reactivex.Flowable
 
 interface ChatRepository {
     val observeChat: Flowable<Chat>
-    fun resetStatus()
 }

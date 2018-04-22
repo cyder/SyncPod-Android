@@ -22,11 +22,12 @@ class SyncPodWsApiImpl @Inject constructor(
 ) : SyncPodWsApi {
     private lateinit var subscription: Subscription
 
-    private var nowPlayingEvent: Subject<Response> = BehaviorSubject.create()
-    private var startVideoEvent: Subject<Response> = BehaviorSubject.create()
-    private var playListEvent: Subject<Response> = BehaviorSubject.create()
-    private var addVideoEvent: Subject<Response> = BehaviorSubject.create()
-    private var chatEvent: Subject<Response> = BehaviorSubject.create()
+    private lateinit var nowPlayingEvent: Subject<Response>
+    private lateinit var startVideoEvent: Subject<Response>
+    private lateinit var playListEvent: Subject<Response>
+    private lateinit var addVideoEvent: Subject<Response>
+    private lateinit var chatEvent: Subject<Response>
+    private val manageEnteredStream: Subject<Boolean> = BehaviorSubject.createDefault(false)
     private var pastChatsEvent: Subject<Response> = BehaviorSubject.create()
     override val nowPlayingResponse: Flowable<Response>
         get() = nowPlayingEvent.toFlowable(BackpressureStrategy.LATEST)
@@ -41,7 +42,16 @@ class SyncPodWsApiImpl @Inject constructor(
     override val pastChatsResponse: Flowable<Response>
         get() = pastChatsEvent.toFlowable(BackpressureStrategy.LATEST)
 
+    override val isEntered: Flowable<Boolean> = manageEnteredStream.toFlowable(BackpressureStrategy.LATEST)
+
     override fun enterRoom(roomKey: String): Completable {
+
+        nowPlayingEvent = BehaviorSubject.create()
+        startVideoEvent = BehaviorSubject.create()
+        playListEvent = BehaviorSubject.create()
+        addVideoEvent = BehaviorSubject.create()
+        chatEvent = BehaviorSubject.create()
+        pastChatsEvent = BehaviorSubject.create()
 
         val channel = Channel(CHANNEL_NAME, mapOf(ROOM_KEY to roomKey))
         consumer.disconnect()
@@ -50,6 +60,7 @@ class SyncPodWsApiImpl @Inject constructor(
         return Completable.create { emitter ->
             subscription.onConnected = {
                 emitter.onComplete()
+                manageEnteredStream.onNext(true)
                 startRouting()
             }
             subscription.onRejected = {
@@ -72,12 +83,7 @@ class SyncPodWsApiImpl @Inject constructor(
         addVideoEvent.onComplete()
         chatEvent.onComplete()
         pastChatsEvent.onComplete()
-        nowPlayingEvent = BehaviorSubject.create()
-        startVideoEvent = BehaviorSubject.create()
-        playListEvent = BehaviorSubject.create()
-        addVideoEvent = BehaviorSubject.create()
-        chatEvent = BehaviorSubject.create()
-        pastChatsEvent = BehaviorSubject.create() 
+        manageEnteredStream.onNext(false)
         return Completable.complete()
     }
 

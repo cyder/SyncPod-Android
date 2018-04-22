@@ -15,10 +15,10 @@ import javax.inject.Inject
 class ChatDataRepository @Inject constructor(
         private val syncPodWsApi: SyncPodWsApi
 ) : ChatRepository {
-    private var chatStream: Subject<Chat> = BehaviorSubject.create()
+    private lateinit var chatStream: Subject<Chat>
 
     init {
-        startObserve()
+        initSubjects()
     }
 
     private fun startObserve() {
@@ -30,11 +30,20 @@ class ChatDataRepository @Inject constructor(
                 }
     }
 
-    override val observeChat: Flowable<Chat> = chatStream.toFlowable(BackpressureStrategy.LATEST)
-
-    override fun resetStatus() {
-        chatStream.onComplete()
-        chatStream = BehaviorSubject.create()
+    private fun initSubjects() {
+        syncPodWsApi.isEntered
+                .filter { it }
+                .subscribe {
+                    chatStream = BehaviorSubject.create()
+                    startObserve()
+                }
+        syncPodWsApi.isEntered
+                .filter { !it }
+                .subscribe {
+                    chatStream.onComplete()
+                }
     }
+
+    override val observeChat: Flowable<Chat> = chatStream.toFlowable(BackpressureStrategy.LATEST)
 
 }

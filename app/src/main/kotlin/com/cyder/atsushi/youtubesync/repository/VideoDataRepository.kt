@@ -22,10 +22,10 @@ class VideoDataRepository @Inject constructor(
         private val consumer: Consumer,
         private val syncPodWsApi: SyncPodWsApi
 ) : VideoRepository {
-    private var prepareVideo: Subject<Video> = BehaviorSubject.create()
-    private var playingVideo: Subject<Video> = BehaviorSubject.create()
-    private var playList: Subject<List<Video>> = BehaviorSubject.createDefault(listOf())
-    private var isPlaying: Subject<Boolean> = BehaviorSubject.createDefault(false)
+    private lateinit var prepareVideo: Subject<Video>
+    private lateinit var playingVideo: Subject<Video>
+    private lateinit var playList: Subject<List<Video>>
+    private lateinit var isPlaying: Subject<Boolean>
     override val developerKey: Flowable<String> = Flowable.just(BuildConfig.YOUTUBE_DEVELOPER_KEY)
     override val playerState: Flowable<YouTubePlayer.PlayerStateChangeListener>
         get() {
@@ -57,7 +57,7 @@ class VideoDataRepository @Inject constructor(
         }
 
     init {
-        startObserve()
+        initSubjects()
     }
 
     override fun observeIsPlaying(): Flowable<Boolean> {
@@ -80,18 +80,6 @@ class VideoDataRepository @Inject constructor(
     override fun getPlayList(): Flowable<List<Video>> {
         syncPodWsApi.requestPlayList()
         return Flowable.empty()
-    }
-
-    override fun resetStatus() {
-        prepareVideo.onComplete()
-        playingVideo.onComplete()
-        playList.onComplete()
-        isPlaying.onComplete()
-        prepareVideo = BehaviorSubject.create()
-        playingVideo = BehaviorSubject.create()
-        playList = BehaviorSubject.createDefault(listOf())
-        isPlaying = BehaviorSubject.createDefault(false)
-        startObserve()
     }
 
     private fun getNextVideo(): Video? {
@@ -133,6 +121,26 @@ class VideoDataRepository @Inject constructor(
                             isPlaying.onNext(true)
                         }
                     }
+                }
+    }
+    private fun initSubjects() {
+        syncPodWsApi.isEntered
+                .filter { it }
+                .subscribe {
+                    prepareVideo = BehaviorSubject.create()
+                    playingVideo = BehaviorSubject.create()
+                    playList = BehaviorSubject.createDefault(listOf())
+                    isPlaying = BehaviorSubject.createDefault(false)
+                    startObserve()
+                }
+
+        syncPodWsApi.isEntered
+                .filter { !it }
+                .subscribe {
+                    prepareVideo.onComplete()
+                    playingVideo.onComplete()
+                    playList.onComplete()
+                    isPlaying.onComplete()
                 }
     }
 

@@ -35,6 +35,5 @@ class RoomActivityViewModel @Inject constructor(
 
     override fun onDestroy() {
         roomRepository.exitRoom()
-        videoRepository.resetStatus()
     }
 }
