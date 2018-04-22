@@ -1,24 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
-        <variable name="viewModel" type="com.cyder.atsushi.youtubesync.viewmodel.RoomInfoFragmentViewModel"/>
+
+        <variable
+            name="viewModel"
+            type="com.cyder.atsushi.youtubesync.viewmodel.RoomInfoFragmentViewModel" />
     </data>
+
     <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/swipe_refresh_room_info"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            android:id="@+id/swipe_refresh_room_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:onRefreshListener="@{() -> viewModel.onRefresh()}"
+            app:refreshing="@{viewModel.isLoading}">
 
             <ListView
-                    android:id="@+id/online_users_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:divider="@null"
-                    android:paddingBottom="10dp"/>
+                android:id="@+id/online_users_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:divider="@null"
+                android:paddingBottom="10dp" />
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
