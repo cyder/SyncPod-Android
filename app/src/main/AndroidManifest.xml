@@ -53,8 +53,8 @@
             android:name=".view.activity.RoomActivity"
             android:screenOrientation="portrait" />
         <activity
-                android:name=".view.activity.SearchVideoActivity"
-                android:screenOrientation="portrait" />
+            android:name=".view.activity.SearchVideoActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 
