@@ -13,4 +13,5 @@ interface SyncPodWsApi {
     val startVideoResponse: Flowable<Response>
     val playListResponse: Flowable<Response>
     val addVideoResponse: Flowable<Response>
+    fun perform(request: String)
 }

@@ -24,7 +24,9 @@ class SyncPodWsApiImpl @Inject constructor(
     override val startVideoResponse: Flowable<Response> = startVideoEvent.toFlowable(BackpressureStrategy.LATEST)
     override val playListResponse: Flowable<Response> = playListEvent.toFlowable(BackpressureStrategy.LATEST)
     override val addVideoResponse: Flowable<Response> = addVideoEvent.toFlowable(BackpressureStrategy.LATEST)
-
+    override fun perform(request: String) {
+        subscription.perform(request)
+    }
 
     init {
         subscription.onReceived = {
