@@ -22,7 +22,9 @@ class VideoDataRepository @Inject constructor(
         private val consumer: Consumer,
         private val subscription: Subscription
 ) : VideoRepository {
+    private val prepareVideo: Subject<Video> = BehaviorSubject.create()
     private val playingVideo: Subject<Video> = BehaviorSubject.create()
+    private val playList: Subject<List<Video>> = BehaviorSubject.createDefault(listOf())
     private val isPlaying: Subject<Boolean> = BehaviorSubject.createDefault(false)
     override val developerKey: Flowable<String> = Flowable.just(BuildConfig.YOUTUBE_DEVELOPER_KEY)
     override val playerState: Flowable<YouTubePlayer.PlayerStateChangeListener>
@@ -41,7 +43,11 @@ class VideoDataRepository @Inject constructor(
                 }
 
                 override fun onVideoEnded() {
-                    isPlaying.onNext(false)
+                    getNextVideo()?.apply {
+                        prepareVideo.onNext(this)
+                    } ?: apply {
+                        isPlaying.onNext(false)
+                    }
                 }
 
                 override fun onVideoStarted() {
@@ -58,6 +64,10 @@ class VideoDataRepository @Inject constructor(
         return isPlaying.distinctUntilChanged().toFlowable(BackpressureStrategy.LATEST)
     }
 
+    override fun obserblePrepareVideo(): Flowable<Video> {
+        return playingVideo.toFlowable(BackpressureStrategy.LATEST)
+    }
+
     override fun obserbleNowPlayingVideo(): Flowable<Video> {
         return playingVideo.toFlowable(BackpressureStrategy.LATEST)
     }
@@ -65,6 +75,11 @@ class VideoDataRepository @Inject constructor(
     override fun getNoewPlayingVideo(): Flowable<Video> {
         subscription.perform(NOW_PLAYING)
         return obserbleNowPlayingVideo()
+    }
+
+    override fun getPlayList(): Flowable<List<Video>> {
+        subscription.perform(PLAY_LIST)
+        return Flowable.empty()
     }
 
     private fun startRouting() {
@@ -78,9 +93,35 @@ class VideoDataRepository @Inject constructor(
                             isPlaying.onNext(true)
                         }
                     }
+                    PLAY_LIST -> {
+                        response.data?.apply {
+                            this@VideoDataRepository.playList
+                                    .onNext(this.playList.map { it.toModel() })
+                        }
+                    }
+                    ADD_VIDEO -> {
+                        response.data?.apply {
+                            if (isPlaying.blockingFirst()) {
+                                val newPlayList = this@VideoDataRepository.playList.blockingFirst() + video.toModel()
+                                this@VideoDataRepository.playList.onNext(newPlayList)
+                            } else {
+                                prepareVideo.onNext(video.toModel())
+                                isPlaying.onNext(true)
+                            }
+                        }
+                    }
                 }
             }
         }
+    }
+
+    private fun getNextVideo(): Video? {
+        val playlist = playList.blockingFirst()
+        val video = playlist.firstOrNull()
+        video?.apply {
+            this@VideoDataRepository.playList.onNext(playlist.drop(1))
+        }
+        return video
     }
 
     private fun String.toResponse(): Response {
@@ -90,6 +131,8 @@ class VideoDataRepository @Inject constructor(
     companion object {
         const val NOW_PLAYING: String = "now_playing_video"
         const val START_VIDEO: String = "start_video"
+        const val PLAY_LIST: String = "play_list"
+        const val ADD_VIDEO: String = "add_video"
     }
 }
 

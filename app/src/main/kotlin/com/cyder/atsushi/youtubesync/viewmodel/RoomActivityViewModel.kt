@@ -24,6 +24,7 @@ class RoomActivityViewModel @Inject constructor(
 
     override fun onResume() {
         videoRepository.getNoewPlayingVideo()
+        videoRepository.getPlayList()
     }
 
     override fun onPause() {
