@@ -17,12 +17,14 @@ import javax.inject.Inject
 
 class RoomInfoFragment : BaseFragment() {
     private lateinit var binding: FragmentRoominfoBinding
-    @Inject lateinit var viewModel: RoomInfoFragmentViewModel
+    @Inject
+    lateinit var viewModel: RoomInfoFragmentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fragmentComponent.inject(this)
         bindViewModel(viewModel)
+        viewModel.roomKey = arguments!!.getString(ROOM_KEY)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -32,6 +34,14 @@ class RoomInfoFragment : BaseFragment() {
     }
 
     companion object {
-        fun createInstance() = RoomInfoFragment()
+        fun createInstance(roomKey: String): RoomInfoFragment {
+            val bundle = Bundle()
+            bundle.putString(ROOM_KEY, roomKey)
+            val fragment = RoomInfoFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
+
+        private const val ROOM_KEY = "room_key"
     }
 }

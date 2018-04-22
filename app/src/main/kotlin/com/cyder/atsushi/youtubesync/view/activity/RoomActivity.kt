@@ -40,7 +40,7 @@ class RoomActivity : BaseActivity() {
         val fragments: List<Fragment> = listOf(
             PlayListFragment.createInstance(),
             ChatFragment.createInstance(),
-            RoomInfoFragment.createInstance()
+            RoomInfoFragment.createInstance(intent.getStringExtra(ROOM_KEY))
         )
 
         override fun getItem(position: Int): Fragment {
