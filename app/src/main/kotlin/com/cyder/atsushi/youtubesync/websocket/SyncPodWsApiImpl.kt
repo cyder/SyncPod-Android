@@ -27,6 +27,7 @@ class SyncPodWsApiImpl @Inject constructor(
     private var playListEvent: Subject<Response> = BehaviorSubject.create()
     private var addVideoEvent: Subject<Response> = BehaviorSubject.create()
     private var chatEvent: Subject<Response> = BehaviorSubject.create()
+    private var pastChatsEvent: Subject<Response> = BehaviorSubject.create()
     override val nowPlayingResponse: Flowable<Response>
         get() = nowPlayingEvent.toFlowable(BackpressureStrategy.LATEST)
     override val startVideoResponse: Flowable<Response>
@@ -37,6 +38,8 @@ class SyncPodWsApiImpl @Inject constructor(
         get() = addVideoEvent.toFlowable(BackpressureStrategy.LATEST)
     override val chatResponse: Flowable<Response>
         get() = chatEvent.toFlowable(BackpressureStrategy.LATEST)
+    override val pastChatsResponse: Flowable<Response>
+        get() = pastChatsEvent.toFlowable(BackpressureStrategy.LATEST)
 
     override fun enterRoom(roomKey: String): Completable {
 
@@ -68,11 +71,13 @@ class SyncPodWsApiImpl @Inject constructor(
         playListEvent.onComplete()
         addVideoEvent.onComplete()
         chatEvent.onComplete()
+        pastChatsEvent.onComplete()
         nowPlayingEvent = BehaviorSubject.create()
         startVideoEvent = BehaviorSubject.create()
         playListEvent = BehaviorSubject.create()
         addVideoEvent = BehaviorSubject.create()
         chatEvent = BehaviorSubject.create()
+        pastChatsEvent = BehaviorSubject.create() 
         return Completable.complete()
     }
 
@@ -100,6 +105,9 @@ class SyncPodWsApiImpl @Inject constructor(
                     CHAT -> {
                         chatEvent.onNext(response)
                     }
+                    PAST_CHATS -> {
+                        pastChatsEvent.onNext(response)
+                    }
                     PLAY_LIST -> {
                         playListEvent.onNext(response)
                     }
@@ -125,6 +133,7 @@ class SyncPodWsApiImpl @Inject constructor(
         const val ROOM_KEY = "room_key"
         const val EXIT_FORCE = "exit_force"
         const val USER_ID = "user_id"
+        const val PAST_CHATS = "past_chats"
     }
 
 }

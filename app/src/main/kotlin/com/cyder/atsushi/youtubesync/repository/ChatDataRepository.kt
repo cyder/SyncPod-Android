@@ -17,9 +17,13 @@ class ChatDataRepository @Inject constructor(
         private val consumer: Consumer,
         private val syncPodWsApi: SyncPodWsApi
 ) : ChatRepository {
-    private val chatStream: Subject<Chat> = BehaviorSubject.create()
+    private var chatStream: Subject<Chat> = BehaviorSubject.create()
 
     init {
+        startObserve()
+    }
+
+    private fun startObserve(){
         syncPodWsApi.chatResponse
                 .subscribe {
                     it.data?.apply {
@@ -30,6 +34,9 @@ class ChatDataRepository @Inject constructor(
 
     override val observeChat: Flowable<Chat> = chatStream.toFlowable(BackpressureStrategy.LATEST)
 
-
+    override fun resetStatus() {
+        chatStream.onComplete()
+        chatStream = BehaviorSubject.create()
+    }
 
 }
