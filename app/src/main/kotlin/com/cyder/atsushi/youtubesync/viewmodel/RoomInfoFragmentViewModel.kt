@@ -7,7 +7,6 @@ import android.databinding.ObservableField
 import android.databinding.ObservableList
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.model.Room
-import com.cyder.atsushi.youtubesync.model.User
 import com.cyder.atsushi.youtubesync.repository.RoomRepository
 import com.cyder.atsushi.youtubesync.viewmodel.base.FragmentViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -24,6 +23,7 @@ class RoomInfoFragmentViewModel @Inject constructor(
     lateinit var resources: Resources
     var isLoading: ObservableBoolean = ObservableBoolean()
     var room: ObservableField<Room> = ObservableField()
+    var onlineUserTitle: ObservableField<String> = ObservableField()
     var shareCompatCallback: ShareCompatCallback? = null
     var userViewModels: ObservableList<UserViewModel> = ObservableArrayList()
 
@@ -57,10 +57,17 @@ class RoomInfoFragmentViewModel @Inject constructor(
                 .subscribe({ response ->
                     isLoading.set(false)
                     room.set(response)
-                    userViewModels.clear()
-                    response.onlineUsers?.forEach({
-                        userViewModels.add(UserViewModel(ObservableField(it)))
-                    })
+
+                    response.onlineUsers?.apply {
+                        val title = resources.getString(R.string.online_users_title)
+                                .format(this.size)
+                        onlineUserTitle.set(title)
+
+                        userViewModels.clear()
+                        this.forEach({
+                            userViewModels.add(UserViewModel(ObservableField(it)))
+                        })
+                    }
                 }, {
                     isLoading.set(false)
                 })
