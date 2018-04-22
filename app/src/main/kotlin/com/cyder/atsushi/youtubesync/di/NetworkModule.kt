@@ -2,8 +2,11 @@ package com.cyder.atsushi.youtubesync.di
 
 import com.cyder.atsushi.youtubesync.api.SyncPodApi
 import com.cyder.atsushi.youtubesync.repository.UserRepository
+import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
+import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApiImpl
 import com.hosopy.actioncable.ActionCable
 import com.hosopy.actioncable.Consumer
+import com.hosopy.actioncable.Subscription
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -55,6 +58,12 @@ class NetworkModule {
         options.connection.query = mapOf(TOKEN to token)
         return ActionCable.createConsumer(URI(WS_URL), options)
     }
+
+    @Singleton
+    @Provides
+    fun provideSyncPodWsApi(
+            subscription: Subscription
+    ) : SyncPodWsApi = SyncPodWsApiImpl(subscription)
 
     companion object {
         val instance = NetworkModule()
