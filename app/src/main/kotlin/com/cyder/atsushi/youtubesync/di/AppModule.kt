@@ -37,21 +37,19 @@ class AppModule(private val context: Context) {
             wsApi: SyncPodWsApi,
             consumer: Consumer,
             repository: UserRepository
-    ) : RoomRepository = RoomDataRepository(api, wsApi, consumer, repository.getAccessToken().blockingGet()!!)
+    ): RoomRepository = RoomDataRepository(api, wsApi, consumer, repository.getAccessToken().blockingGet()!!)
 
-    @Singleton
     @Provides
     fun provideVideoRepository(
             consumer: Consumer,
             syncPodWsApi: SyncPodWsApi
-    ) : VideoRepository = VideoDataRepository(consumer, syncPodWsApi)
+    ): VideoRepository = VideoDataRepository(consumer, syncPodWsApi)
 
-    @Singleton
     @Provides
     fun provideChatRepository(
             consumer: Consumer,
             syncPodWsApi: SyncPodWsApi
-    ) : ChatRepository = ChatDataRepository(consumer, syncPodWsApi)
+    ): ChatRepository = ChatDataRepository(consumer, syncPodWsApi)
 
     companion object {
         const val APP_NAME = "youtube-sync"

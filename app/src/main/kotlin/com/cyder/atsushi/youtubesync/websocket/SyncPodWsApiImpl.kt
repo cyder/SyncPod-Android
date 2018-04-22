@@ -22,27 +22,36 @@ class SyncPodWsApiImpl @Inject constructor(
 ) : SyncPodWsApi {
     private lateinit var subscription: Subscription
 
-    private val nowPlayingEvent: Subject<Response> = BehaviorSubject.create()
-    private val startVideoEvent: Subject<Response> = BehaviorSubject.create()
-    private val playListEvent: Subject<Response> = BehaviorSubject.create()
-    private val addVideoEvent: Subject<Response> = BehaviorSubject.create()
-    private val chatEvent: Subject<Response> = BehaviorSubject.create()
-
-    override val nowPlayingResponse: Flowable<Response> = nowPlayingEvent.toFlowable(BackpressureStrategy.LATEST)
-    override val startVideoResponse: Flowable<Response> = startVideoEvent.toFlowable(BackpressureStrategy.LATEST)
-    override val playListResponse: Flowable<Response> = playListEvent.toFlowable(BackpressureStrategy.LATEST)
-    override val addVideoResponse: Flowable<Response> = addVideoEvent.toFlowable(BackpressureStrategy.LATEST)
-    override val chatResponse: Flowable<Response> = chatEvent.toFlowable(BackpressureStrategy.LATEST)
+    private var nowPlayingEvent: Subject<Response> = BehaviorSubject.create()
+    private var startVideoEvent: Subject<Response> = BehaviorSubject.create()
+    private var playListEvent: Subject<Response> = BehaviorSubject.create()
+    private var addVideoEvent: Subject<Response> = BehaviorSubject.create()
+    private var chatEvent: Subject<Response> = BehaviorSubject.create()
+    override val nowPlayingResponse: Flowable<Response>
+        get() = nowPlayingEvent.toFlowable(BackpressureStrategy.LATEST)
+    override val startVideoResponse: Flowable<Response>
+        get() = startVideoEvent.toFlowable(BackpressureStrategy.LATEST)
+    override val playListResponse: Flowable<Response>
+        get() = playListEvent.toFlowable(BackpressureStrategy.LATEST)
+    override val addVideoResponse: Flowable<Response>
+        get() = addVideoEvent.toFlowable(BackpressureStrategy.LATEST)
+    override val chatResponse: Flowable<Response>
+        get() = chatEvent.toFlowable(BackpressureStrategy.LATEST)
 
     override fun enterRoom(roomKey: String): Completable {
+        nowPlayingEvent = BehaviorSubject.create()
+        startVideoEvent = BehaviorSubject.create()
+        playListEvent = BehaviorSubject.create()
+        addVideoEvent = BehaviorSubject.create()
+        chatEvent = BehaviorSubject.create()
         val channel = Channel(CHANNEL_NAME, mapOf(ROOM_KEY to roomKey))
         consumer.disconnect()
         subscription = consumer.subscriptions.create(channel)
-        startRouting()
         consumer.connect()
         return Completable.create { emitter ->
             subscription.onConnected = {
                 emitter.onComplete()
+                startRouting()
             }
             subscription.onRejected = {
                 emitter.onError(CannotJoinRoomException())
@@ -58,6 +67,11 @@ class SyncPodWsApiImpl @Inject constructor(
     override fun exitRoom(): Completable {
         consumer.subscriptions.remove(subscription)
         consumer.disconnect()
+        nowPlayingEvent.onComplete()
+        startVideoEvent.onComplete()
+        playListEvent.onComplete()
+        addVideoEvent.onComplete()
+        chatEvent.onComplete()
         return Completable.complete()
     }
 
