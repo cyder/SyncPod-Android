@@ -57,7 +57,15 @@ class AppModule(private val context: Context) {
     fun provideYouTubeRepository(
             api: SyncPodApi,
             repository: UserRepository
-    ) : YouTubeRepository = YouTubeDataRepository(api, repository.getAccessToken().blockingGet()!!)
+    ): YouTubeRepository = YouTubeDataRepository(api, repository.getAccessToken().blockingGet()!!)
+
+    @Singleton
+    @Provides
+    fun provideUserReportRepository(
+            api: SyncPodApi,
+            repository: UserRepository
+    ): UserReportRepository = UserReportDataRepository(api, repository.getAccessToken().blockingGet()!!)
+
 
     companion object {
         const val APP_NAME = "youtube-sync"
