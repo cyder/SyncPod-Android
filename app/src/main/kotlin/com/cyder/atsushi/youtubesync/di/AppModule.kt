@@ -44,6 +44,13 @@ class AppModule(private val context: Context) {
             repository: RoomRepository
     ) : VideoRepository = VideoDataRepository(consumer, repository.getSubscription().blockingGet()!!)
 
+    @Singleton
+    @Provides
+    fun provideChatRepository(
+            consumer: Consumer,
+            repository: RoomRepository
+    ) : ChatRepository = ChatDataRepository(consumer, repository.getSubscription().blockingGet()!!)
+
     companion object {
         const val APP_NAME = "youtube-sync"
     }

@@ -77,6 +77,9 @@ class VideoDataRepository @Inject constructor(
                             playingVideo.onNext(this.video.toModel())
                             isPlaying.onNext(true)
                         }
+
+                    }
+                    CHAT -> {
                     }
                 }
             }
@@ -90,6 +93,7 @@ class VideoDataRepository @Inject constructor(
     companion object {
         const val NOW_PLAYING: String = "now_playing_video"
         const val START_VIDEO: String = "start_video"
+        const val CHAT: String = "add_chat"
     }
 }
 
