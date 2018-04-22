@@ -56,6 +56,7 @@
         こちらのURLからも入室できます。\n
         http://app.sync-pod.com/room?room_key=%2$s
     </string>
+    <string name="user_report_button">違反報告</string>
     <string name="playlist">プレイリスト</string>
     <string name="online_users_title">オンライン（%d人）</string>
     <string name="confirm">確認</string>

@@ -51,6 +51,10 @@ class RoomInfoFragmentViewModel @Inject constructor(
         shareCompatCallback?.onStart(shareMessage)
     }
 
+    fun userReport() {
+
+    }
+
     private fun getRoomInfo() {
         repository.fetch(roomKey)
                 .observeOn(AndroidSchedulers.mainThread())
