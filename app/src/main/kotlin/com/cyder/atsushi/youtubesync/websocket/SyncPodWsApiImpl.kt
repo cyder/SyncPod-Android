@@ -100,7 +100,6 @@ class SyncPodWsApiImpl @Inject constructor(
                 when (response.dataType) {
                     NOW_PLAYING, START_VIDEO -> {
                         nowPlayingEvent.onNext(response)
-                        startVideoEvent.onNext(response)
                     }
                     CHAT -> {
                         chatEvent.onNext(response)

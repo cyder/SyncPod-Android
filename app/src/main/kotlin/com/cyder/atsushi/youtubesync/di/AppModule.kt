@@ -46,11 +46,11 @@ class AppModule(private val context: Context) {
             syncPodWsApi: SyncPodWsApi
     ): VideoRepository = VideoDataRepository(consumer, syncPodWsApi)
 
+    @Singleton
     @Provides
     fun provideChatRepository(
-            consumer: Consumer,
             syncPodWsApi: SyncPodWsApi
-    ): ChatRepository = ChatDataRepository(consumer, syncPodWsApi)
+    ): ChatRepository = ChatDataRepository(syncPodWsApi)
 
     companion object {
         const val APP_NAME = "youtube-sync"

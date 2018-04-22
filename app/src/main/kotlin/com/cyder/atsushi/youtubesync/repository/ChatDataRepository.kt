@@ -2,7 +2,6 @@ package com.cyder.atsushi.youtubesync.repository
 
 import com.cyder.atsushi.youtubesync.model.Chat
 import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
-import com.hosopy.actioncable.Consumer
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.subjects.BehaviorSubject
@@ -14,7 +13,6 @@ import javax.inject.Inject
  * Created by chigichan24 on 2018/04/19.
  */
 class ChatDataRepository @Inject constructor(
-        private val consumer: Consumer,
         private val syncPodWsApi: SyncPodWsApi
 ) : ChatRepository {
     private var chatStream: Subject<Chat> = BehaviorSubject.create()
@@ -23,7 +21,7 @@ class ChatDataRepository @Inject constructor(
         startObserve()
     }
 
-    private fun startObserve(){
+    private fun startObserve() {
         syncPodWsApi.chatResponse
                 .subscribe {
                     it.data?.apply {

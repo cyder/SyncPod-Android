@@ -61,8 +61,6 @@ class VideoDataRepository @Inject constructor(
     }
 
     override fun observeIsPlaying(): Flowable<Boolean> {
-        isPlaying.subscribe {
-        }
         return isPlaying.distinctUntilChanged().toFlowable(BackpressureStrategy.LATEST)
     }
 
