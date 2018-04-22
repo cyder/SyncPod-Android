@@ -3,6 +3,7 @@ package com.cyder.atsushi.youtubesync.repository
 import com.cyder.atsushi.youtubesync.api.SyncPodApi
 import com.cyder.atsushi.youtubesync.api.mapper.toModel
 import com.cyder.atsushi.youtubesync.model.Video
+import com.cyder.atsushi.youtubesync.util.CallSequenceException
 import com.cyder.atsushi.youtubesync.util.NotFilledFormsException
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,12 +16,14 @@ class YouTubeDataRepository @Inject constructor(
         private val syncPodApi: SyncPodApi,
         private val token: String
 ) : YouTubeRepository {
-    private var nextToken: BehaviorSubject<String> = BehaviorSubject.create()
+    private var nextToken: BehaviorSubject<String>? = null
     private var keyword: BehaviorSubject<String> = BehaviorSubject.create()
 
     override fun getYouTubeSearch(keyword: String): Single<List<Video>> {
-        this.keyword = BehaviorSubject.create()
-        this.nextToken = BehaviorSubject.create()
+        nextToken?.apply {
+            this.onComplete()
+        }
+        nextToken = BehaviorSubject.create()
 
         return Single.create<String> { emitter ->
             if (keyword.isNotBlank()) {
@@ -28,15 +31,20 @@ class YouTubeDataRepository @Inject constructor(
             } else {
                 emitter.onError(NotFilledFormsException())
             }
-        }.doOnSuccess {
-            this.keyword.onNext(it)
-        }.flatMap {
-            getYouTubeSearch(it, null)
         }
+                .flatMap {
+                    getYouTubeSearch(it, null)
+                }
+                .doOnSuccess {
+                    this.keyword.onNext(keyword)
+                }
     }
 
     override fun getNextYouTubeSearch(): Single<List<Video>> {
-        return Singles.zip(keyword.firstOrError(), nextToken.firstOrError())
+        return Singles.zip(
+                keyword.firstOrError(),
+                nextToken?.firstOrError() ?: Single.error(CallSequenceException())
+        )
                 .flatMap {
                     getYouTubeSearch(it.first, it.second)
                 }
@@ -46,9 +54,9 @@ class YouTubeDataRepository @Inject constructor(
         return syncPodApi.getYouTubeSearch(token, keyword, pageToken)
                 .doOnSuccess {
                     it.nextPageToken?.apply {
-                        nextToken.onNext(this)
+                        nextToken?.onNext(this)
                     } ?: apply {
-                        nextToken.onComplete()
+                        nextToken?.onComplete()
                     }
                 }
                 .map { it.items }
