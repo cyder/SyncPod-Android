@@ -1,7 +1,9 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
+import android.content.res.Resources
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
+import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.model.Room
 import com.cyder.atsushi.youtubesync.repository.RoomRepository
 import com.cyder.atsushi.youtubesync.viewmodel.base.FragmentViewModel
@@ -16,8 +18,10 @@ class RoomInfoFragmentViewModel @Inject constructor(
         private val repository: RoomRepository
 ) : FragmentViewModel() {
     lateinit var roomKey: String
+    lateinit var resources: Resources
     var isLoading: ObservableBoolean = ObservableBoolean()
     var room: ObservableField<Room> = ObservableField()
+    var shareCompatCallback: ShareCompatCallback? = null
 
     override fun onStart() {
     }
@@ -35,6 +39,12 @@ class RoomInfoFragmentViewModel @Inject constructor(
     fun onRefresh() {
         isLoading.set(true)
         getRoom()
+    }
+
+    fun shareRoom() {
+        val shareMessage = resources.getString(R.string.share_room_key_message)
+                .format(room.get().name, room.get().key)
+        shareCompatCallback?.onStart(shareMessage)
     }
 
     private fun getRoom() {

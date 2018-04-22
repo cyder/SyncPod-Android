@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.databinding.FragmentRoominfoBinding
+import com.cyder.atsushi.youtubesync.view.helper.setUpShareCompat
 import com.cyder.atsushi.youtubesync.viewmodel.RoomInfoFragmentViewModel
 import javax.inject.Inject
 
@@ -25,6 +26,8 @@ class RoomInfoFragment : BaseFragment() {
         fragmentComponent.inject(this)
         bindViewModel(viewModel)
         viewModel.roomKey = arguments!!.getString(ROOM_KEY)
+        viewModel.shareCompatCallback = activity?.setUpShareCompat()
+        viewModel.resources = resources
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
