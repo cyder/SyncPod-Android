@@ -61,6 +61,7 @@ class TopActivity : BaseActivity() {
     }
 
     private fun initRecyclerView() {
+        binding.joinedRoomRecycler.isNestedScrollingEnabled = false
         val adapter = JoinedRoomAdapter(viewModel.roomViewModels)
         binding.joinedRoomRecycler.adapter = adapter
         binding.joinedRoomRecycler.layoutManager = LinearLayoutManager(this)

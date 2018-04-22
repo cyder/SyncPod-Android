@@ -56,6 +56,7 @@ class RoomInfoFragment : BaseFragment() {
     }
 
     private fun initRecyclerView() {
+        binding.onlineUserRecycler.isNestedScrollingEnabled = false
         val adapter = OnlineUsersAdapter(viewModel.userViewModels)
         binding.onlineUserRecycler.adapter = adapter
         binding.onlineUserRecycler.layoutManager = LinearLayoutManager(activity)
