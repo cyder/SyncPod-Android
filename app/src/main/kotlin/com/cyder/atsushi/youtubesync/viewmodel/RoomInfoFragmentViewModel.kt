@@ -31,7 +31,7 @@ class RoomInfoFragmentViewModel @Inject constructor(
     }
 
     override fun onResume() {
-        getRoom()
+        getRoomInfo()
     }
 
     override fun onPause() {
@@ -42,7 +42,7 @@ class RoomInfoFragmentViewModel @Inject constructor(
 
     fun onRefresh() {
         isLoading.set(true)
-        getRoom()
+        getRoomInfo()
     }
 
     fun shareRoom() {
@@ -51,22 +51,21 @@ class RoomInfoFragmentViewModel @Inject constructor(
         shareCompatCallback?.onStart(shareMessage)
     }
 
-    private fun getRoom() {
+    private fun getRoomInfo() {
         repository.fetch(roomKey)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response ->
                     isLoading.set(false)
                     room.set(response)
-
                     response.onlineUsers?.apply {
                         val title = resources.getString(R.string.online_users_title)
                                 .format(this.size)
                         onlineUserTitle.set(title)
 
                         userViewModels.clear()
-                        this.forEach({
+                        this.forEach {
                             userViewModels.add(UserViewModel(ObservableField(it)))
-                        })
+                        }
                     }
                 }, {
                     isLoading.set(false)
