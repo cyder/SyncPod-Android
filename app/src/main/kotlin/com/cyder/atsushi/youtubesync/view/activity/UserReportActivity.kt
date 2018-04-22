@@ -21,6 +21,7 @@ class UserReportActivity: BaseActivity() {
             binding = DataBindingUtil.setContentView(this, R.layout.activity_user_report)
             binding.viewModel = viewModel
 
+            viewModel.roomKey = intent.getStringExtra(ROOM_KEY)
             viewModel.callback = setUpSnackbar()
         }
 
@@ -31,6 +32,7 @@ class UserReportActivity: BaseActivity() {
 
 
         companion object {
-            fun createIntent(context: Context): Intent = Intent(context, UserReportActivity::class.java)
+            private const val ROOM_KEY = "room_key"
+            fun createIntent(context: Context, roomKey: String): Intent = Intent(context, UserReportActivity::class.java).putExtra(ROOM_KEY, roomKey)
         }
     }

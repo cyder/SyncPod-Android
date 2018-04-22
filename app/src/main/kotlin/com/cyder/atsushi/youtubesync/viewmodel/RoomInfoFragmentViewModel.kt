@@ -54,7 +54,7 @@ class RoomInfoFragmentViewModel @Inject constructor(
     }
 
     fun userReport() {
-        navigator.navigateToUserReportActivity()
+        navigator.navigateToUserReportActivity(roomKey)
     }
 
     private fun getRoomInfo() {
