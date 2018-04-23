@@ -99,6 +99,10 @@ class SyncPodWsApiImpl @Inject constructor(
         subscription.perform(PLAY_LIST)
     }
 
+    override fun requestAddVideo(videoId: String) {
+        subscription.perform(ADD_VIDEO, mapOf(VIDEO_ID to videoId))
+    }
+
     private fun startRouting() {
         subscription.onReceived = {
             if (it is String) {
@@ -139,6 +143,7 @@ class SyncPodWsApiImpl @Inject constructor(
         const val EXIT_FORCE = "exit_force"
         const val USER_ID = "user_id"
         const val PAST_CHATS = "past_chats"
+        const val VIDEO_ID = "youtube_video_id"
     }
 
 }
