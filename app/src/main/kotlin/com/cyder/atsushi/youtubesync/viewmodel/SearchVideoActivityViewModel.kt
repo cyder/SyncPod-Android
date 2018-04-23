@@ -4,7 +4,6 @@ import android.databinding.ObservableArrayList
 import android.databinding.ObservableField
 import android.databinding.ObservableList
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import com.cyder.atsushi.youtubesync.model.Video
 import com.cyder.atsushi.youtubesync.repository.YouTubeRepository
@@ -58,9 +57,8 @@ class SearchVideoActivityViewModel @Inject constructor(
         return false
     }
 
-    fun onScrolled(isBottom: Boolean) {
-        if (isBottom) {
-            Log.d("TAG", "scrolled")
+    fun onScrolled(isBottom: Boolean, lastPosition: Int) {
+        if (isBottom && lastPosition == videoViewModels.size-1) {
             repository.getNextYouTubeSearch()
                     .map { convertToViewModel(it) }
                     .subscribe { result, _ ->
