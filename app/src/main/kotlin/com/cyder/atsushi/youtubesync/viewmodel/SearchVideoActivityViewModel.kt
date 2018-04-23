@@ -3,6 +3,8 @@ package com.cyder.atsushi.youtubesync.viewmodel
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableField
 import android.databinding.ObservableList
+import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.inputmethod.EditorInfo
 import com.cyder.atsushi.youtubesync.model.Video
 import com.cyder.atsushi.youtubesync.repository.YouTubeRepository
@@ -19,6 +21,11 @@ class SearchVideoActivityViewModel @Inject constructor(
         private val navigator: Navigator,
         private val repository: YouTubeRepository
 ) : ActivityViewModel() {
+    val listener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+        }
+    }
     var searchWord: ObservableField<String> = ObservableField()
     var videoViewModels: ObservableList<VideoViewModel> = ObservableArrayList()
     override fun onStart() {
@@ -49,6 +56,17 @@ class SearchVideoActivityViewModel @Inject constructor(
                     }
         }
         return false
+    }
+
+    fun onScrolled(isBottom: Boolean) {
+        if (isBottom) {
+            Log.d("TAG", "scrolled")
+            repository.getNextYouTubeSearch()
+                    .map { convertToViewModel(it) }
+                    .subscribe { result, _ ->
+                        result.forEach { videoViewModels.add(it) }
+                    }
+        }
     }
 
     private fun convertToViewModel(videos: List<Video>): List<VideoViewModel> {
