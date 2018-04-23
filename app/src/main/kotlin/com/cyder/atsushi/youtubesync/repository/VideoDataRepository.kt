@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder
 import com.hosopy.actioncable.Consumer
 import com.hosopy.actioncable.Subscription
 import io.reactivex.BackpressureStrategy
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.Subject
@@ -80,6 +81,17 @@ class VideoDataRepository @Inject constructor(
     override fun getPlayList(): Flowable<List<Video>> {
         subscription.perform(PLAY_LIST)
         return Flowable.empty()
+    }
+
+    override fun addPlayList(video: Video): Completable {
+        if (isPlaying.blockingFirst()) {
+            val newPlayList = this.playList.blockingFirst() + video
+            this.playList.onNext(newPlayList)
+        } else {
+            prepareVideo.onNext(video)
+            isPlaying.onNext(true)
+        }
+        return Completable.complete()
     }
 
     private fun startRouting() {
