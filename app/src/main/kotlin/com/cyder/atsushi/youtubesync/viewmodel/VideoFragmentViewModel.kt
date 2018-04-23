@@ -63,7 +63,7 @@ class VideoFragmentViewModel @Inject constructor(
 
     private fun observerWithInitPlayer() {
         Observables.combineLatest(
-                videoRepository.obserblePrepareVideo().toObservable(),
+                videoRepository.observePrepareVideo().toObservable(),
                 isInitializedPlayer.filter { it }
         ).subscribe {
             val video = it.first
@@ -71,7 +71,7 @@ class VideoFragmentViewModel @Inject constructor(
         }
 
         Observables.combineLatest(
-                videoRepository.obserbleNowPlayingVideo().toObservable(),
+                videoRepository.observeNowPlayingVideo().toObservable(),
                 isInitializedPlayer.filter { it }
         ).subscribe {
             val video = it.first

@@ -3,10 +3,12 @@ package com.cyder.atsushi.youtubesync.view.helper
 import android.app.Activity
 import android.content.Context
 import android.support.design.widget.Snackbar
+import android.support.v4.app.ShareCompat
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import com.cyder.atsushi.youtubesync.R
+import com.cyder.atsushi.youtubesync.viewmodel.ShareCompatCallback
 import com.cyder.atsushi.youtubesync.viewmodel.SnackbarCallback
 
 /**
@@ -33,6 +35,17 @@ fun Activity.setUpSnackbar(): SnackbarCallback {
             val tv = snackbarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
             tv.maxLines = 3
             snackbar.show()
+        }
+    }
+}
+
+fun Activity.setUpShareCompat(): ShareCompatCallback {
+    return object : ShareCompatCallback {
+        override fun onStart(message: String) {
+            ShareCompat.IntentBuilder.from(this@setUpShareCompat)
+                    .setText(message)
+                    .setType("text/plain")
+                    .startChooser()
         }
     }
 }

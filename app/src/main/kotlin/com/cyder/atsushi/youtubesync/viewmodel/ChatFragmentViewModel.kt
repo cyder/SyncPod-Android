@@ -1,5 +1,6 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
+import com.cyder.atsushi.youtubesync.repository.ChatRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.FragmentViewModel
 import javax.inject.Inject
@@ -10,7 +11,8 @@ import javax.inject.Inject
  */
 
 class ChatFragmentViewModel @Inject constructor(
-        private val navigator: Navigator
+        private val navigator: Navigator,
+        private val repository: ChatRepository
 ) : FragmentViewModel() {
     override fun onStart() {
     }
