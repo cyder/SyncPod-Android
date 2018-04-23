@@ -4,6 +4,7 @@ import android.databinding.BindingAdapter
 import android.support.v7.widget.Toolbar
 import android.text.method.LinkMovementMethod
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -24,3 +25,6 @@ fun ImageView.loadImage(url: String?) {
 fun TextView.setLinksNavigable(flag: Boolean) {
     movementMethod = if (flag) LinkMovementMethod.getInstance() else null
 }
+
+@BindingAdapter("onEnterClick")
+fun EditText.setKeyboardClick(listener: TextView.OnEditorActionListener) = setOnEditorActionListener(listener)
