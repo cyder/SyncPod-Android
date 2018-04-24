@@ -102,7 +102,7 @@ class SyncPodWsApiImpl @Inject constructor(
     }
 
     override fun requestAddVideo(videoId: String) {
-        subscription.perform(ADD_VIDEO, mapOf(VIDEO_ID to videoId))
+        subscription?.perform(ADD_VIDEO, mapOf(VIDEO_ID to videoId))
     }
 
     private fun startRouting() {

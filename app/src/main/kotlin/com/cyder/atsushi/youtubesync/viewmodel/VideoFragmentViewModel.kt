@@ -28,6 +28,10 @@ class VideoFragmentViewModel @Inject constructor(
     var nowProgress = ObservableInt(0)
     var maxProgress = ObservableInt(10000)
 
+    init {
+        observerWithInitPlayer()
+    }
+
     override fun onStart() {
         val key = videoRepository.developerKey.blockingFirst()
         val listener = videoRepository.playerState.blockingFirst()
@@ -47,8 +51,6 @@ class VideoFragmentViewModel @Inject constructor(
             override fun onInitializationFailure(provider: YouTubePlayer.Provider?, error: YouTubeInitializationResult?) {
             }
         })
-
-        observerWithInitPlayer()
     }
 
     override fun onResume() {
