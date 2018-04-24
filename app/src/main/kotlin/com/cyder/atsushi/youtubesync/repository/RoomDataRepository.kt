@@ -20,7 +20,6 @@ import javax.inject.Inject
 class RoomDataRepository @Inject constructor(
         private val syncPodApi: SyncPodApi,
         private val syncPodWsApi: SyncPodWsApi,
-        private val consumer: Consumer,
         private val token: String
 ) : RoomRepository {
     override fun joinRoom(roomKey: String): Completable {

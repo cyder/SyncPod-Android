@@ -15,7 +15,7 @@ import javax.inject.Inject
 class ChatDataRepository @Inject constructor(
         private val syncPodWsApi: SyncPodWsApi
 ) : ChatRepository {
-    private lateinit var chatStream: Subject<Chat>
+    private var chatStream: Subject<Chat> = BehaviorSubject.create()
 
     init {
         initSubjects()

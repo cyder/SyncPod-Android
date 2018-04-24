@@ -35,16 +35,14 @@ class AppModule(private val context: Context) {
     fun provideRoomRepository(
             api: SyncPodApi,
             wsApi: SyncPodWsApi,
-            consumer: Consumer,
             repository: UserRepository
-    ): RoomRepository = RoomDataRepository(api, wsApi, consumer, repository.getAccessToken().blockingGet()!!)
+    ): RoomRepository = RoomDataRepository(api, wsApi, repository.getAccessToken().blockingGet()!!)
 
     @Singleton
     @Provides
     fun provideVideoRepository(
-            consumer: Consumer,
             syncPodWsApi: SyncPodWsApi
-    ): VideoRepository = VideoDataRepository(consumer, syncPodWsApi)
+    ): VideoRepository = VideoDataRepository(syncPodWsApi)
 
     @Singleton
     @Provides

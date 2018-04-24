@@ -5,11 +5,13 @@ import com.cyder.atsushi.youtubesync.repository.RoomRepository
 import com.cyder.atsushi.youtubesync.repository.VideoRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
+import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
 import javax.inject.Inject
 
 class RoomActivityViewModel @Inject constructor(
         private val roomRepository: RoomRepository,
         private val videoRepository: VideoRepository,
+        private val wsApi: SyncPodWsApi,
         private val navigator: Navigator
 ) : ActivityViewModel() {
     var isVideoPlayerVisible = ObservableBoolean(false)
@@ -17,6 +19,10 @@ class RoomActivityViewModel @Inject constructor(
     lateinit var roomKey: String
 
     override fun onStart() {
+        if (!wsApi.isEntered.blockingFirst()) {
+            navigator.navigateToTopActivity()
+            navigator.closeActivity()
+        }
         videoRepository.observeIsPlaying().subscribe {
             isVideoPlayerVisible.set(it)
         }

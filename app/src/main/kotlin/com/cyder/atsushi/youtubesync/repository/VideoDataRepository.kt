@@ -19,13 +19,12 @@ import javax.inject.Inject
  * Created by chigichan24 on 2018/04/15.
  */
 class VideoDataRepository @Inject constructor(
-        private val consumer: Consumer,
         private val syncPodWsApi: SyncPodWsApi
 ) : VideoRepository {
-    private lateinit var prepareVideo: Subject<Video>
-    private lateinit var playingVideo: Subject<Video>
-    private lateinit var playList: Subject<List<Video>>
-    private lateinit var isPlaying: Subject<Boolean>
+    private var prepareVideo: Subject<Video> = BehaviorSubject.create()
+    private var playingVideo: Subject<Video> = BehaviorSubject.create()
+    private var playList: Subject<List<Video>> = BehaviorSubject.create()
+    private var isPlaying: Subject<Boolean> = BehaviorSubject.create()
     override val developerKey: Flowable<String> = Flowable.just(BuildConfig.YOUTUBE_DEVELOPER_KEY)
     override val playerState: Flowable<YouTubePlayer.PlayerStateChangeListener>
         get() {
