@@ -11,6 +11,7 @@ import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Singles
+import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
 class UserReportActivityViewModel @Inject constructor(
@@ -20,6 +21,7 @@ class UserReportActivityViewModel @Inject constructor(
 ) : ActivityViewModel() {
     var callback: SnackbarCallback? = null
     var message: ObservableField<String> = ObservableField()
+    var room: BehaviorSubject<Room> = BehaviorSubject.create()
     lateinit var roomKey: String
 
     override fun onStart() {
@@ -27,7 +29,12 @@ class UserReportActivityViewModel @Inject constructor(
     }
 
     override fun onResume() {
-
+        roomRepository.fetch(roomKey)
+                .subscribe({
+                    room.onNext(it)
+                }, {
+                    room.onError(it)
+                })
     }
 
     override fun onPause() {
@@ -45,7 +52,7 @@ class UserReportActivityViewModel @Inject constructor(
 
     fun onSubmit() {
         Singles.zip(
-                roomRepository.fetch(roomKey),
+                room.firstOrError(),
                 Single.create<String> { emitter ->
                     if ((message.get() ?: "").isNotBlank()) {
                         emitter.onSuccess(message.get())
