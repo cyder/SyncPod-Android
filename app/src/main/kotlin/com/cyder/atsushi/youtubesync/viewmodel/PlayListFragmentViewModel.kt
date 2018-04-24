@@ -1,9 +1,11 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
+import android.content.res.Resources
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.databinding.ObservableList
+import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.model.Video
 import com.cyder.atsushi.youtubesync.repository.VideoRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
@@ -20,10 +22,13 @@ class PlayListFragmentViewModel @Inject constructor(
         private val repository: VideoRepository,
         private val navigator: Navigator
 ) : FragmentViewModel() {
-    var videoViewModels: ObservableList<VideoViewModel> = ObservableArrayList()
-    var nowPlayVideo: ObservableField<Video> = ObservableField()
-    var isPlaying: ObservableBoolean = ObservableBoolean(false)
-    var hasPlayList: ObservableBoolean = ObservableBoolean(true)
+    lateinit var resources: Resources
+    val videoViewModels: ObservableList<VideoViewModel> = ObservableArrayList()
+    val nowPlayVideo: ObservableField<Video> = ObservableField()
+    val published: ObservableField<String> = ObservableField()
+    val viewCount: ObservableField<String> = ObservableField()
+    val isPlaying: ObservableBoolean = ObservableBoolean(false)
+    val hasPlayList: ObservableBoolean = ObservableBoolean(true)
 
     init {
         repository.playListObservable
@@ -38,6 +43,8 @@ class PlayListFragmentViewModel @Inject constructor(
         repository.observeNowPlayingVideo()
                 .subscribe {
                     nowPlayVideo.set(it)
+                    published.set(resources.getString(R.string.published).format(it.published))
+                    viewCount.set(resources.getString(R.string.view_count).format(it.viewCount))
                 }
 
         repository.observeIsPlaying()

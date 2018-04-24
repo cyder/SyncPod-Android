@@ -35,6 +35,7 @@ class PlayListFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_playlist, container, false)
         binding.viewModel = viewModel
+        viewModel.resources = activity!!.resources
         initRecyclerView()
         return binding.root
     }
