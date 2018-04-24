@@ -54,6 +54,19 @@ class UserDataRepository @Inject constructor(
         }
     }
 
+    override fun getMyselfId(): Single<Int> {
+        val id = sharedPreferences.getInt(STATE_USER_ID, -1)
+        return Single.create { emitter ->
+            try {
+                if (id != -1) {
+                    emitter.onSuccess(id)
+                }
+            } catch (exception: Exception) {
+                emitter.onError(exception)
+            }
+        }
+    }
+
     private fun signInValidate(email: String, password: String, isAgreeTerms: Boolean): Completable {
         return Completable.create { emitter ->
             if (email.isBlank() || password.isBlank()) {
