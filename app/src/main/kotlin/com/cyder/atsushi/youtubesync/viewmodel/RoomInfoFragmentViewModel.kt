@@ -8,6 +8,7 @@ import android.databinding.ObservableList
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.model.Room
 import com.cyder.atsushi.youtubesync.repository.RoomRepository
+import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.FragmentViewModel
 import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,7 +20,8 @@ import javax.inject.Inject
  */
 class RoomInfoFragmentViewModel @Inject constructor(
         private val repository: RoomRepository,
-        private val syncPodWsApi: SyncPodWsApi
+        private val syncPodWsApi: SyncPodWsApi,
+        private val navigator: Navigator
 ) : FragmentViewModel() {
     lateinit var roomKey: String
     lateinit var resources: Resources
@@ -51,6 +53,10 @@ class RoomInfoFragmentViewModel @Inject constructor(
         val shareMessage = resources.getString(R.string.share_room_key_message)
                 .format(room.get().name, room.get().key)
         shareCompatCallback?.onStart(shareMessage)
+    }
+
+    fun userReport() {
+        navigator.navigateToUserReportActivity(roomKey)
     }
 
     private fun getRoomInfo() {
