@@ -55,11 +55,11 @@ class UserDataRepository @Inject constructor(
     }
 
     override fun getMyselfId(): Single<Int> {
-        val id = sharedPreferences.getInt(STATE_USER_ID, -1)
+        val id = sharedPreferences.getInt(STATE_USER_ID, -1).takeIf { it != -1 }
         return Single.create { emitter ->
             try {
-                if (id != -1) {
-                    emitter.onSuccess(id)
+                id?.apply {
+                    emitter.onSuccess(this)
                 }
             } catch (exception: Exception) {
                 emitter.onError(exception)
