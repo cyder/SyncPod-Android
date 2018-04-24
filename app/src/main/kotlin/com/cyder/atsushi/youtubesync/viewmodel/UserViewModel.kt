@@ -11,7 +11,7 @@ import javax.inject.Inject
 class UserViewModel @Inject constructor(
         val user: ObservableField<User>,
         val repository: UserRepository,
-        private val syncPodWsApi: SyncPodWsApi
+        private val wsApi: SyncPodWsApi
 ) {
     lateinit var menuDialogCallback: DialogCallback
     lateinit var forceExitDialogCallback: DialogCallback
@@ -34,6 +34,6 @@ class UserViewModel @Inject constructor(
     }
 
     fun onConfirmForceExit() {
-        syncPodWsApi.exitForce(user.get())
+        wsApi.exitForce(user.get())
     }
 }
