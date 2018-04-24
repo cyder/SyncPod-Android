@@ -19,7 +19,6 @@ import javax.inject.Inject
  * Created by chigichan24 on 2018/04/15.
  */
 class VideoDataRepository @Inject constructor(
-        private val consumer: Consumer,
         private val syncPodWsApi: SyncPodWsApi
 ) : VideoRepository {
     private lateinit var prepareVideo: Subject<Video>
