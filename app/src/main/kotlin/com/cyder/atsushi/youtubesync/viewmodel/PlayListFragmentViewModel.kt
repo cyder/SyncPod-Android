@@ -25,7 +25,7 @@ class PlayListFragmentViewModel @Inject constructor(
     var isPlaying: ObservableBoolean = ObservableBoolean(false)
     var hasPlayList: ObservableBoolean = ObservableBoolean(true)
 
-    override fun onStart() {
+    init {
         repository.playListObservable
                 .map { convertToViewModel(it) }
                 .observeOn(AndroidSchedulers.mainThread())
@@ -44,6 +44,9 @@ class PlayListFragmentViewModel @Inject constructor(
                 .subscribe {
                     isPlaying.set(it)
                 }
+    }
+
+    override fun onStart() {
     }
 
     override fun onResume() {
