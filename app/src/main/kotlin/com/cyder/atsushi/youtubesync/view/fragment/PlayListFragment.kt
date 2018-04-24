@@ -40,6 +40,7 @@ class PlayListFragment : BaseFragment() {
     }
 
     private fun initRecyclerView() {
+        binding.playList.isNestedScrollingEnabled = false
         val adapter= PlayListAdapter(viewModel.videoViewModels)
         binding.playList.adapter = adapter
         binding.playList.layoutManager = LinearLayoutManager(activity)
