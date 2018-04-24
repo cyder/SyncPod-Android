@@ -47,12 +47,11 @@ class YouTubeDataRepository @Inject constructor(
                 nextToken?.firstOrError() ?: Single.error(CallSequenceException())
         )
                 .flatMap {
-                    if(prevNextToken == it.second){
+                    if (prevNextToken == it.second) {
                         Single.error(CallSequenceException())
-                    }else{
+                    } else {
                         prevNextToken = it.second
                         getYouTubeSearch(it.first, it.second)
-
                     }
                 }
     }
