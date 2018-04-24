@@ -27,7 +27,8 @@ import javax.inject.Inject
 
 class RoomInfoFragment : BaseFragment() {
     private lateinit var binding: FragmentRoominfoBinding
-    @Inject lateinit var viewModel: RoomInfoFragmentViewModel
+    @Inject
+    lateinit var viewModel: RoomInfoFragmentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,9 +73,11 @@ class RoomInfoFragment : BaseFragment() {
             val viewModel = getItem(position)
             val binding = holder?.binding
 
-            val forceExitMenu = Pair("○○を退出させる", object : MenuCallback {
+            viewModel.resources = activity!!.resources
+
+            val forceExitMenu = Pair(viewModel.forceExitMenuTitle, object : MenuCallback {
                 override fun onClick() {
-                    Log.d("App", "test")
+                    viewModel.onSelectForceExit()
                 }
             })
 
