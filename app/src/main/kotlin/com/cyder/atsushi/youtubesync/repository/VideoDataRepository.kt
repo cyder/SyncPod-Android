@@ -5,7 +5,6 @@ import com.cyder.atsushi.youtubesync.api.mapper.toModel
 import com.cyder.atsushi.youtubesync.model.Video
 import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
 import com.google.android.youtube.player.YouTubePlayer
-import com.hosopy.actioncable.Consumer
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -22,11 +21,12 @@ class VideoDataRepository @Inject constructor(
 ) : VideoRepository {
     private var prepareVideo: Subject<Video> = BehaviorSubject.create()
     private var playingVideo: Subject<Video> = BehaviorSubject.create()
-    private var playList: Subject<List<Video>> = BehaviorSubject.create()
+    private var playListSubject: Subject<List<Video>> = BehaviorSubject.create()
     private var isPlaying: Subject<Boolean> = BehaviorSubject.create()
+    private var playList: MutableList<Video> = mutableListOf()
     override val developerKey: Flowable<String> = Flowable.just(BuildConfig.YOUTUBE_DEVELOPER_KEY)
     override val playListObservable: Flowable<List<Video>>
-        get() = playList.toFlowable(BackpressureStrategy.LATEST)
+        get() = playListSubject.toFlowable(BackpressureStrategy.LATEST)
     override val playerState: Flowable<YouTubePlayer.PlayerStateChangeListener>
         get() {
             val listener = object : YouTubePlayer.PlayerStateChangeListener {
@@ -88,10 +88,10 @@ class VideoDataRepository @Inject constructor(
     }
 
     private fun getNextVideo(): Video? {
-        val playlist = playList.blockingFirst()
-        val video = playlist.firstOrNull()
+        val video = playList.firstOrNull()
         video?.apply {
-            this@VideoDataRepository.playList.onNext(playlist.drop(1))
+            playList.drop(1)
+            this@VideoDataRepository.playListSubject.onNext(playList)
         }
         return video
     }
@@ -107,16 +107,18 @@ class VideoDataRepository @Inject constructor(
         syncPodWsApi.playListResponse
                 .subscribe {
                     it.data?.apply {
-                        this@VideoDataRepository.playList
-                                .onNext(this.playList.map { it.toModel() })
+                        this@VideoDataRepository.playList = this.playList.map { it.toModel() }.toMutableList()
+                        this@VideoDataRepository.playListSubject
+                                .onNext(this@VideoDataRepository.playList)
                     }
                 }
         syncPodWsApi.addVideoResponse
                 .subscribe {
                     it.data?.apply {
                         if (isPlaying.blockingFirst()) {
-                            val newPlayList = this@VideoDataRepository.playList.blockingFirst() + video.toModel()
-                            this@VideoDataRepository.playList.onNext(newPlayList)
+                            this@VideoDataRepository.playList.add(this.video.toModel())
+                            this@VideoDataRepository.playListSubject
+                                    .onNext(this@VideoDataRepository.playList)
                         } else {
                             prepareVideo.onNext(video.toModel())
                             isPlaying.onNext(true)
@@ -131,7 +133,7 @@ class VideoDataRepository @Inject constructor(
                 .subscribe {
                     prepareVideo = BehaviorSubject.create()
                     playingVideo = BehaviorSubject.create()
-                    playList = BehaviorSubject.createDefault(listOf())
+                    playListSubject = BehaviorSubject.createDefault(listOf())
                     isPlaying = BehaviorSubject.createDefault(false)
                     startObserve()
                 }
@@ -141,7 +143,7 @@ class VideoDataRepository @Inject constructor(
                 .subscribe {
                     prepareVideo.onComplete()
                     playingVideo.onComplete()
-                    playList.onComplete()
+                    playListSubject.onComplete()
                     isPlaying.onComplete()
                 }
     }
