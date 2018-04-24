@@ -72,5 +72,7 @@
     <string name="view_count">視聴回数 : %s 回</string>
     <string name="network_error">予期せぬエラーが発生しました。間を開けてお試しください。</string>
     <string name="terms_message"><a href="http://app.sync-pod.com/terms">利用規約</a> に同意する。</string>
-    <string name="force_exit_menu">%sさんを退出させる</string>
+    <string name="force_exit_title">%sさんを退出させる</string>
+    <string name="force_exit_description">%sさんは24時間このルームに入室できなくなります。本当によろしいですか？</string>
+    <string name="force_exit">退出させる</string>
 </resources>

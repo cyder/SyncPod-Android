@@ -69,3 +69,20 @@ fun Activity.setUpMenuDialog(items: List<Pair<String, MenuCallback>>): DialogCal
         }
     }
 }
+
+fun Activity.setUpConfirmationDialog(title: String, description: String, positiveButton: Pair<String, MenuCallback>): DialogCallback {
+    val builder = AlertDialog.Builder(this)
+            .setTitle(title)
+            .setMessage(description)
+            .setPositiveButton(positiveButton.first) { _, _ ->
+                positiveButton.second.onClick()
+            }
+            .setNegativeButton(R.string.cancel_button) { _, _ ->
+            }
+
+    return object : DialogCallback {
+        override fun onAction() {
+            builder.show()
+        }
+    }
+}

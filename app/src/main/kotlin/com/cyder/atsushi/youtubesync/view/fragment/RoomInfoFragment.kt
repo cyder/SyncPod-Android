@@ -4,7 +4,6 @@ import android.databinding.DataBindingUtil
 import android.databinding.ObservableList
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import com.cyder.atsushi.youtubesync.databinding.FragmentRoominfoBinding
 import com.cyder.atsushi.youtubesync.view.adapter.BindingHolder
 import com.cyder.atsushi.youtubesync.databinding.ItemUserBinding
 import com.cyder.atsushi.youtubesync.view.adapter.ObservableListAdapter
+import com.cyder.atsushi.youtubesync.view.helper.setUpConfirmationDialog
 import com.cyder.atsushi.youtubesync.view.helper.setUpMenuDialog
 import com.cyder.atsushi.youtubesync.view.helper.setUpShareCompat
 import com.cyder.atsushi.youtubesync.viewmodel.MenuCallback
@@ -75,15 +75,22 @@ class RoomInfoFragment : BaseFragment() {
 
             viewModel.resources = activity!!.resources
 
-            val forceExitMenu = Pair(viewModel.forceExitMenuTitle, object : MenuCallback {
+            val forceExitMenu = Pair(viewModel.forceExitTitle, object : MenuCallback {
                 override fun onClick() {
                     viewModel.onSelectForceExit()
                 }
             })
 
+            val confirmForceExit = Pair(resources.getString(R.string.force_exit), object : MenuCallback {
+                override fun onClick() {
+                    viewModel.onConfirmForceExit()
+                }
+            })
+
             val items = listOf(forceExitMenu)
 
-            viewModel.callback = activity!!.setUpMenuDialog(items)
+            viewModel.menuDialogCallback = activity!!.setUpMenuDialog(items)
+            viewModel.forceExitDialogCallback = activity!!.setUpConfirmationDialog(viewModel.forceExitTitle, viewModel.forceExitDescription, confirmForceExit)
             binding?.viewModel = viewModel
         }
     }
