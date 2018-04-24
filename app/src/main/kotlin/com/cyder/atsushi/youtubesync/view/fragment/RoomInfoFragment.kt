@@ -74,17 +74,19 @@ class RoomInfoFragment : BaseFragment() {
 
             viewModel.resources = activity!!.resources
 
-            val forceExitMenu = Pair(viewModel.forceExitTitle, object : ButtonCallback {
+            val forceExitMenu = object : ButtonCallback {
+                override val name = viewModel.forceExitTitle
                 override fun onClick() {
                     viewModel.onSelectForceExit()
                 }
-            })
+            }
 
-            val confirmForceExit = Pair(resources.getString(R.string.force_exit), object : ButtonCallback {
+            val confirmForceExit = object : ButtonCallback {
+                override val name = resources.getString(R.string.force_exit)
                 override fun onClick() {
                     viewModel.onConfirmForceExit()
                 }
-            })
+            }
 
             val items = listOf(forceExitMenu)
 

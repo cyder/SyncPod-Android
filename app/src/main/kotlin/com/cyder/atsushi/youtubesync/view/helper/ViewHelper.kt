@@ -53,12 +53,12 @@ fun Activity.setUpShareCompat(): ShareCompatCallback {
     }
 }
 
-fun Activity.setUpMenuDialog(items: List<Pair<String, ButtonCallback>>): DialogCallback {
-    val names = items.map { it.first }.toTypedArray()
+fun Activity.setUpMenuDialog(items: List<ButtonCallback>): DialogCallback {
+    val names = items.map { it.name }.toTypedArray()
 
     val builder = AlertDialog.Builder(this)
             .setItems(names) { _, index ->
-                items[index].second.onClick()
+                items[index].onClick()
             }
             .create()
 
@@ -69,12 +69,12 @@ fun Activity.setUpMenuDialog(items: List<Pair<String, ButtonCallback>>): DialogC
     }
 }
 
-fun Activity.setUpConfirmationDialog(title: String, description: String, positiveButton: Pair<String, ButtonCallback>): DialogCallback {
+fun Activity.setUpConfirmationDialog(title: String, description: String, positiveButton: ButtonCallback): DialogCallback {
     val builder = AlertDialog.Builder(this)
             .setTitle(title)
             .setMessage(description)
-            .setPositiveButton(positiveButton.first) { _, _ ->
-                positiveButton.second.onClick()
+            .setPositiveButton(positiveButton.name) { _, _ ->
+                positiveButton.onClick()
             }
             .setNegativeButton(R.string.cancel_button) { _, _ ->
             }
