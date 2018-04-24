@@ -23,6 +23,7 @@ class PlayListFragmentViewModel @Inject constructor(
     var videoViewModels: ObservableList<VideoViewModel> = ObservableArrayList()
     var nowPlayVideo: ObservableField<Video> = ObservableField()
     var isPlaying: ObservableBoolean = ObservableBoolean(false)
+    var hasPlayList: ObservableBoolean = ObservableBoolean(true)
 
     override fun onStart() {
         repository.playListObservable
@@ -31,6 +32,7 @@ class PlayListFragmentViewModel @Inject constructor(
                 .subscribe {
                     videoViewModels.clear()
                     videoViewModels.addAll(it)
+                    hasPlayList.set(videoViewModels.isNotEmpty())
                 }
 
         repository.observeNowPlayingVideo()

@@ -101,6 +101,16 @@
                     android:textColor="@color/subtext"
                     android:textSize="12sp" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:lineSpacingMultiplier="1.5"
+                    android:text="@string/play_list_empty_description"
+                    android:textColor="@color/subtext"
+                    android:textSize="16sp"
+                    android:visibility="@{viewModel.hasPlayList ? View.GONE : View.VISIBLE}" />
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/play_list"
                     android:layout_width="match_parent"
