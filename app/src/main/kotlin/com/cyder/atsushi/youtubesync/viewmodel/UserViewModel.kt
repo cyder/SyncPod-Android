@@ -4,11 +4,13 @@ import android.content.res.Resources
 import android.databinding.ObservableField
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.model.User
+import com.cyder.atsushi.youtubesync.repository.UserRepository
 import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
 import javax.inject.Inject
 
 class UserViewModel @Inject constructor(
         val user: ObservableField<User>,
+        val repository: UserRepository,
         private val syncPodWsApi: SyncPodWsApi
 ) {
     lateinit var menuDialogCallback: DialogCallback
@@ -22,7 +24,9 @@ class UserViewModel @Inject constructor(
     }
 
     fun onClick() {
-        menuDialogCallback.onAction()
+        if (repository.getMyselfId().blockingGet() != user.get().id) {
+            menuDialogCallback.onAction()
+        }
     }
 
     fun onSelectForceExit() {

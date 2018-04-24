@@ -8,6 +8,7 @@ import android.databinding.ObservableList
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.model.Room
 import com.cyder.atsushi.youtubesync.repository.RoomRepository
+import com.cyder.atsushi.youtubesync.repository.UserRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.FragmentViewModel
 import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
@@ -19,7 +20,8 @@ import javax.inject.Inject
  * Created by chigichan24 on 2018/04/17.
  */
 class RoomInfoFragmentViewModel @Inject constructor(
-        private val repository: RoomRepository,
+        private val roomRepository: RoomRepository,
+        private val userRepository: UserRepository,
         private val syncPodWsApi: SyncPodWsApi,
         private val navigator: Navigator
 ) : FragmentViewModel() {
@@ -60,7 +62,7 @@ class RoomInfoFragmentViewModel @Inject constructor(
     }
 
     private fun getRoomInfo() {
-        repository.fetch(roomKey)
+        roomRepository.fetch(roomKey)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response ->
                     isLoading.set(false)
@@ -72,7 +74,7 @@ class RoomInfoFragmentViewModel @Inject constructor(
 
                         userViewModels.clear()
                         this.forEach {
-                            userViewModels.add(UserViewModel(ObservableField(it), syncPodWsApi))
+                            userViewModels.add(UserViewModel(ObservableField(it), userRepository, syncPodWsApi))
                         }
                     }
                 }, {
