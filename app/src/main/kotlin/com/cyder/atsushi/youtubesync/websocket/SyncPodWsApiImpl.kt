@@ -28,7 +28,7 @@ class SyncPodWsApiImpl @Inject constructor(
     private lateinit var addVideoEvent: Subject<Response>
     private lateinit var chatEvent: Subject<Response>
     private val manageEnteredStream: Subject<Boolean> = BehaviorSubject.createDefault(false)
-    private var pastChatsEvent: Subject<Response> = BehaviorSubject.create()
+    private lateinit var pastChatsEvent: Subject<Response>
     override val nowPlayingResponse: Flowable<Response>
         get() = nowPlayingEvent.toFlowable(BackpressureStrategy.LATEST)
     override val startVideoResponse: Flowable<Response>
@@ -97,6 +97,10 @@ class SyncPodWsApiImpl @Inject constructor(
 
     override fun requestPlayList() {
         subscription.perform(PLAY_LIST)
+    }
+
+    override fun requestPastChat() {
+        subscription.perform(PAST_CHATS)
     }
 
     private fun startRouting() {

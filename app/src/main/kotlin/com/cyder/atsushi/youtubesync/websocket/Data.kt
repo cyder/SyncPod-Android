@@ -13,5 +13,5 @@ data class Data(
         val video: Video,
         val chat: Chat,
         @SerializedName("play_list") val playList: List<Video>,
-        @SerializedName("past_chat") val pastChat: List<Chat>
+        @SerializedName("past_chats") val pastChat: List<Chat>
 )
