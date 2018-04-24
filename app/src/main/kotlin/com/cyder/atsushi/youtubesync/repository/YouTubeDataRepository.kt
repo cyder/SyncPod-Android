@@ -18,14 +18,14 @@ class YouTubeDataRepository @Inject constructor(
 ) : YouTubeRepository {
     private var nextToken: BehaviorSubject<String>? = null
     private var keyword: BehaviorSubject<String> = BehaviorSubject.create()
-    private var prevNextToken: String? = null
+    private var lastNextToken: String? = null
 
     override fun getYouTubeSearch(keyword: String): Single<List<Video>> {
         nextToken?.apply {
             this.onComplete()
         }
         nextToken = BehaviorSubject.create()
-        prevNextToken = null
+        lastNextToken = null
         return Single.create<String> { emitter ->
             if (keyword.isNotBlank()) {
                 emitter.onSuccess(keyword)
@@ -47,10 +47,10 @@ class YouTubeDataRepository @Inject constructor(
                 nextToken?.firstOrError() ?: Single.error(CallSequenceException())
         )
                 .flatMap {
-                    if (prevNextToken == it.second) {
+                    if (lastNextToken == it.second) {
                         Single.error(CallSequenceException())
                     } else {
-                        prevNextToken = it.second
+                        lastNextToken = it.second
                         getYouTubeSearch(it.first, it.second)
                     }
                 }
