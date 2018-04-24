@@ -24,4 +24,6 @@ class PlayListFragmentViewModel @Inject constructor(
     override fun onStop() {
     }
 
+    fun searchVideo() = navigator.navigateToSearchVideoActivity()
+
 }

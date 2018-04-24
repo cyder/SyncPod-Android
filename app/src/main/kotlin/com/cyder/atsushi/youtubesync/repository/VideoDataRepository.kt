@@ -3,12 +3,11 @@ package com.cyder.atsushi.youtubesync.repository
 import com.cyder.atsushi.youtubesync.BuildConfig
 import com.cyder.atsushi.youtubesync.api.mapper.toModel
 import com.cyder.atsushi.youtubesync.model.Video
-import com.cyder.atsushi.youtubesync.websocket.Response
 import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
 import com.google.android.youtube.player.YouTubePlayer
-import com.google.gson.GsonBuilder
 import com.hosopy.actioncable.Consumer
 import io.reactivex.BackpressureStrategy
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.Subject
@@ -81,6 +80,11 @@ class VideoDataRepository @Inject constructor(
         return Flowable.empty()
     }
 
+    override fun addPlayList(video: Video): Completable {
+        syncPodWsApi.requestAddVideo(video.youtubeVideoId)
+        return Completable.complete()
+    }
+
     private fun getNextVideo(): Video? {
         val playlist = playList.blockingFirst()
         val video = playlist.firstOrNull()
@@ -88,10 +92,6 @@ class VideoDataRepository @Inject constructor(
             this@VideoDataRepository.playList.onNext(playlist.drop(1))
         }
         return video
-    }
-
-    private fun String.toResponse(): Response {
-        return GsonBuilder().create().fromJson(this, Response::class.java)
     }
 
     private fun startObserve() {
@@ -122,6 +122,7 @@ class VideoDataRepository @Inject constructor(
                     }
                 }
     }
+
     private fun initSubjects() {
         syncPodWsApi.isEntered
                 .filter { it }
@@ -143,11 +144,5 @@ class VideoDataRepository @Inject constructor(
                 }
     }
 
-    companion object {
-        const val NOW_PLAYING: String = "now_playing_video"
-        const val START_VIDEO: String = "start_video"
-        const val PLAY_LIST: String = "play_list"
-        const val ADD_VIDEO: String = "add_video"
-    }
 }
 

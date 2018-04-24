@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync.api.mapper
 
 import com.cyder.atsushi.youtubesync.model.Video
+import com.cyder.atsushi.youtubesync.model.toCommaStyle
 import com.cyder.atsushi.youtubesync.api.response.Video as VideoResponse
 
 /**
@@ -20,7 +21,7 @@ fun VideoResponse.toModel(): Video =
                 this.videoStartTime,
                 this.currentTime,
                 this.published,
-                this.viewCount
+                this.viewCount.toCommaStyle()
         )
 
 fun List<VideoResponse>.toModel(): List<Video> =
