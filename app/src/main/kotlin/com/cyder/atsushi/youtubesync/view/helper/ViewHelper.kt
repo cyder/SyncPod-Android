@@ -5,13 +5,12 @@ import android.app.AlertDialog
 import android.content.Context
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ShareCompat
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.viewmodel.DialogCallback
-import com.cyder.atsushi.youtubesync.viewmodel.MenuCallback
+import com.cyder.atsushi.youtubesync.viewmodel.ButtonCallback
 import com.cyder.atsushi.youtubesync.viewmodel.ShareCompatCallback
 import com.cyder.atsushi.youtubesync.viewmodel.SnackbarCallback
 
@@ -54,7 +53,7 @@ fun Activity.setUpShareCompat(): ShareCompatCallback {
     }
 }
 
-fun Activity.setUpMenuDialog(items: List<Pair<String, MenuCallback>>): DialogCallback {
+fun Activity.setUpMenuDialog(items: List<Pair<String, ButtonCallback>>): DialogCallback {
     val names = items.map { it.first }.toTypedArray()
 
     val builder = AlertDialog.Builder(this)
@@ -70,7 +69,7 @@ fun Activity.setUpMenuDialog(items: List<Pair<String, MenuCallback>>): DialogCal
     }
 }
 
-fun Activity.setUpConfirmationDialog(title: String, description: String, positiveButton: Pair<String, MenuCallback>): DialogCallback {
+fun Activity.setUpConfirmationDialog(title: String, description: String, positiveButton: Pair<String, ButtonCallback>): DialogCallback {
     val builder = AlertDialog.Builder(this)
             .setTitle(title)
             .setMessage(description)

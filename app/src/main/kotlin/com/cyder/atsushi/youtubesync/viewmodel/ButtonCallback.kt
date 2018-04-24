@@ -1,5 +1,5 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
-interface MenuCallback {
+interface ButtonCallback {
     fun onClick()
 }

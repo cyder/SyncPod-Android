@@ -15,7 +15,7 @@ import com.cyder.atsushi.youtubesync.view.adapter.ObservableListAdapter
 import com.cyder.atsushi.youtubesync.view.helper.setUpConfirmationDialog
 import com.cyder.atsushi.youtubesync.view.helper.setUpMenuDialog
 import com.cyder.atsushi.youtubesync.view.helper.setUpShareCompat
-import com.cyder.atsushi.youtubesync.viewmodel.MenuCallback
+import com.cyder.atsushi.youtubesync.viewmodel.ButtonCallback
 import com.cyder.atsushi.youtubesync.viewmodel.RoomInfoFragmentViewModel
 import com.cyder.atsushi.youtubesync.viewmodel.UserViewModel
 import javax.inject.Inject
@@ -75,13 +75,13 @@ class RoomInfoFragment : BaseFragment() {
 
             viewModel.resources = activity!!.resources
 
-            val forceExitMenu = Pair(viewModel.forceExitTitle, object : MenuCallback {
+            val forceExitMenu = Pair(viewModel.forceExitTitle, object : ButtonCallback {
                 override fun onClick() {
                     viewModel.onSelectForceExit()
                 }
             })
 
-            val confirmForceExit = Pair(resources.getString(R.string.force_exit), object : MenuCallback {
+            val confirmForceExit = Pair(resources.getString(R.string.force_exit), object : ButtonCallback {
                 override fun onClick() {
                     viewModel.onConfirmForceExit()
                 }
