@@ -83,13 +83,6 @@ class VideoDataRepository @Inject constructor(
 
     override fun addPlayList(video: Video): Completable {
         syncPodWsApi.requestAddVideo(video.youtubeVideoId)
-        if (isPlaying.blockingFirst()) {
-            val newPlayList = this.playList.blockingFirst() + video
-            this.playList.onNext(newPlayList)
-        } else {
-            prepareVideo.onNext(video)
-            isPlaying.onNext(true)
-        }
         return Completable.complete()
     }
 
