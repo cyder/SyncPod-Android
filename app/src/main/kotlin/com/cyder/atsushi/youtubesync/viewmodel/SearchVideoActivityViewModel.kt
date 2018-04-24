@@ -43,10 +43,10 @@ class SearchVideoActivityViewModel @Inject constructor(
     fun onEnterKeyClicked(actionId: Int): Boolean {
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
             val word = searchWord.get() ?: ""
+            videoViewModels.removeAll(videoViewModels)
             repository.getYouTubeSearch(word)
                     .map { convertToViewModel(it) }
                     .subscribe { result, _ ->
-                        videoViewModels.clear()
                         videoViewModels.addAll(result)
                     }
         }
@@ -57,9 +57,11 @@ class SearchVideoActivityViewModel @Inject constructor(
         if (isBottom) {
             repository.getNextYouTubeSearch()
                     .map { convertToViewModel(it) }
-                    .subscribe { result, _ ->
-                        videoViewModels.addAll(result)
-                    }
+                    .subscribe({
+                        videoViewModels.addAll(it)
+                    }, {
+
+                    })
         }
     }
 
