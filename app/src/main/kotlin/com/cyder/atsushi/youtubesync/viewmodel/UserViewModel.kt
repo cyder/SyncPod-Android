@@ -4,10 +4,12 @@ import android.content.res.Resources
 import android.databinding.ObservableField
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.model.User
+import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
 import javax.inject.Inject
 
 class UserViewModel @Inject constructor(
-        val user: ObservableField<User>
+        val user: ObservableField<User>,
+        private val syncPodWsApi: SyncPodWsApi
 ) {
     lateinit var menuDialogCallback: DialogCallback
     lateinit var forceExitDialogCallback: DialogCallback
@@ -28,6 +30,6 @@ class UserViewModel @Inject constructor(
     }
 
     fun onConfirmForceExit() {
-
+        syncPodWsApi.exitForce(user.get())
     }
 }
