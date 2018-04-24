@@ -8,7 +8,12 @@ import javax.inject.Inject
 class UserViewModel @Inject constructor(
         val user: ObservableField<User>
 ) {
+    lateinit var callback: DialogCallback
+
     fun onClick() {
-        Log.d("App", user.get().name)
+        callback.onAction()
+    }
+
+    fun onSelectForceExit() {
     }
 }

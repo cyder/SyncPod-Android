@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil
 import android.databinding.ObservableList
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,9 @@ import com.cyder.atsushi.youtubesync.databinding.FragmentRoominfoBinding
 import com.cyder.atsushi.youtubesync.view.adapter.BindingHolder
 import com.cyder.atsushi.youtubesync.databinding.ItemUserBinding
 import com.cyder.atsushi.youtubesync.view.adapter.ObservableListAdapter
+import com.cyder.atsushi.youtubesync.view.helper.setUpMenuDialog
 import com.cyder.atsushi.youtubesync.view.helper.setUpShareCompat
+import com.cyder.atsushi.youtubesync.viewmodel.MenuCallback
 import com.cyder.atsushi.youtubesync.viewmodel.RoomInfoFragmentViewModel
 import com.cyder.atsushi.youtubesync.viewmodel.UserViewModel
 import javax.inject.Inject
@@ -68,6 +71,16 @@ class RoomInfoFragment : BaseFragment() {
         override fun onBindViewHolder(holder: BindingHolder<ItemUserBinding>?, position: Int) {
             val viewModel = getItem(position)
             val binding = holder?.binding
+
+            val forceExitMenu = Pair("○○を退出させる", object : MenuCallback {
+                override fun onClick() {
+                    Log.d("App", "test")
+                }
+            })
+
+            val items = listOf(forceExitMenu)
+
+            viewModel.callback = activity!!.setUpMenuDialog(items)
             binding?.viewModel = viewModel
         }
     }
