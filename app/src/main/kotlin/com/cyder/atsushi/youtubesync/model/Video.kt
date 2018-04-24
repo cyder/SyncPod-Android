@@ -19,3 +19,5 @@ data class Video(
         val published: String?,
         val viewCount: String?
 )
+
+fun String?.toCommaStyle() = "%,d".format(this?.toBigInteger())
