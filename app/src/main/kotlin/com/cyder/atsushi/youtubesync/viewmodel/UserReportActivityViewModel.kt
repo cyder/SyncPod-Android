@@ -3,6 +3,7 @@ package com.cyder.atsushi.youtubesync.viewmodel
 import android.databinding.ObservableField
 import android.os.Build
 import com.cyder.atsushi.youtubesync.R
+import com.cyder.atsushi.youtubesync.model.Room
 import com.cyder.atsushi.youtubesync.repository.RoomRepository
 import com.cyder.atsushi.youtubesync.repository.UserReportRepository
 import com.cyder.atsushi.youtubesync.util.NotFilledFormsException
@@ -53,16 +54,7 @@ class UserReportActivityViewModel @Inject constructor(
                     }
                 }
         )
-                .map {
-                    """${it.second}
-
-----------------------------------------
-ルームキー： ${it.first.key}
-ルーム名： ${it.first.name}
-ルーム説明： ${it.first.description}
-オンラインメンバー： ${it.first.onlineUsers?.map { "${it.name} (ID: ${it.id})" }.toString()}
-端末： Android ${Build.VERSION.RELEASE}"""
-                }
+                .map { createDetailMessage(it.first, it.second) }
                 .flatMapCompletable { userReportRepository.sendUserReport(it) }
                 .subscribe({
                     navigator.closeActivity()
@@ -72,5 +64,16 @@ class UserReportActivityViewModel @Inject constructor(
                         else -> callback?.onFailed(R.string.network_error)
                     }
                 })
+    }
+
+    private fun createDetailMessage(room: Room, message: String): String {
+        return """$message
+
+----------------------------------------
+ルームキー： ${room.key}
+ルーム名： ${room.name}
+ルーム説明： ${room.description}
+オンラインメンバー： ${room.onlineUsers?.map { "${it.name} (ID: ${it.id})" }.toString()}
+端末： Android ${Build.VERSION.RELEASE}"""
     }
 }
