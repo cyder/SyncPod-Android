@@ -47,7 +47,7 @@ fun RecyclerView.setOnScrollChangedListeners(
             val layoutManager = layoutManager as LinearLayoutManager
             val nowHeadPos = layoutManager.findFirstVisibleItemPosition()
             val lastPos = layoutManager.findLastCompletelyVisibleItemPosition()
-            onScrolled?.onScrolled(totalCount == childCount + nowHeadPos, lastPos)
+            onScrolled?.onScrolled(totalCount== childCount + nowHeadPos && totalCount-1 == lastPos)
         }
     }
 
@@ -55,7 +55,7 @@ fun RecyclerView.setOnScrollChangedListeners(
 }
 
 interface OnScrolledListener {
-    fun onScrolled(isBottom: Boolean, nowPosition: Int)
+    fun onScrolled(isBottom: Boolean)
 }
 
 interface OnScrollStateChangedListener {
