@@ -67,7 +67,6 @@ class UserReportActivityViewModel @Inject constructor(
                 .subscribe({
                     navigator.closeActivity()
                 }, { error ->
-                    Log.d("App", error.toString())
                     when (error) {
                         is NotFilledFormsException -> callback?.onFailed(R.string.form_not_filled)
                         else -> callback?.onFailed(R.string.network_error)
