@@ -56,10 +56,6 @@ class RoomDataRepository @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun exitForce(user: User) {
-        syncPodWsApi.exitForce(user)
-    }
-
     private fun createNewRoomValidation(name: String, description: String): Completable {
         return Completable.create { emitter ->
             if (name.isBlank() || description.isBlank()) {
