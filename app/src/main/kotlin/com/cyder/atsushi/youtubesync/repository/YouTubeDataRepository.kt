@@ -25,7 +25,7 @@ class YouTubeDataRepository @Inject constructor(
             this.onComplete()
         }
         nextToken = BehaviorSubject.create()
-
+        prevNextToken = null
         return Single.create<String> { emitter ->
             if (keyword.isNotBlank()) {
                 emitter.onSuccess(keyword)
