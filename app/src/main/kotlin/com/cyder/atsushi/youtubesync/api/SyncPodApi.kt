@@ -35,4 +35,7 @@ interface SyncPodApi {
             @Query("keyword") keyword: String,
             @Query("page_token") pageToken: String?
     ): Single<SearchResponse>
+
+    @POST("user_report")
+    fun sendUserReport(@Header("Authorization") token: String, @Query("message") message: String): Single<Response>
 }
