@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
 import android.databinding.ObservableArrayList
+import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.databinding.ObservableList
 import com.cyder.atsushi.youtubesync.model.Video
@@ -20,6 +21,8 @@ class PlayListFragmentViewModel @Inject constructor(
         private val navigator: Navigator
 ) : FragmentViewModel() {
     var videoViewModels: ObservableList<VideoViewModel> = ObservableArrayList()
+    var nowPlayVideo: ObservableField<Video> = ObservableField()
+    var isPlaying: ObservableBoolean = ObservableBoolean(false)
 
     override fun onStart() {
         repository.playListObservable
@@ -28,6 +31,16 @@ class PlayListFragmentViewModel @Inject constructor(
                 .subscribe {
                     videoViewModels.clear()
                     videoViewModels.addAll(it)
+                }
+
+        repository.observeNowPlayingVideo()
+                .subscribe {
+                    nowPlayVideo.set(it)
+                }
+
+        repository.observeIsPlaying()
+                .subscribe {
+                    isPlaying.set(it)
                 }
     }
 
