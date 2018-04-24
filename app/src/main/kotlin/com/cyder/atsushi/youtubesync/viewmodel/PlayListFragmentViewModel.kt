@@ -43,6 +43,6 @@ class PlayListFragmentViewModel @Inject constructor(
     fun searchVideo() = navigator.navigateToSearchVideoActivity()
 
     private fun convertToViewModel(videos: List<Video>): List<VideoViewModel> {
-        return videos.map { VideoViewModel(navigator, repository, ObservableField(it)) }
+        return videos.map { VideoViewModel(repository, ObservableField(it)) }
     }
 }

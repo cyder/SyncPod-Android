@@ -40,12 +40,12 @@ class PlayListFragment : BaseFragment() {
     }
 
     private fun initRecyclerView() {
-        val adapter= SearchResultAdapter(viewModel.videoViewModels)
+        val adapter= PlayListAdapter(viewModel.videoViewModels)
         binding.playList.adapter = adapter
         binding.playList.layoutManager = LinearLayoutManager(activity)
     }
 
-    inner class SearchResultAdapter(list: ObservableList<VideoViewModel>) : ObservableListAdapter<VideoViewModel, BindingHolder<ItemVideoBinding>>(list) {
+    inner class PlayListAdapter(list: ObservableList<VideoViewModel>) : ObservableListAdapter<VideoViewModel, BindingHolder<ItemVideoBinding>>(list) {
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemVideoBinding>  = BindingHolder(parent, R.layout.item_video)
 
         override fun onBindViewHolder(holder: BindingHolder<ItemVideoBinding>?, position: Int) {
