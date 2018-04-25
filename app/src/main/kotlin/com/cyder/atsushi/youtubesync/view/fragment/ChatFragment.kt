@@ -3,6 +3,7 @@ package com.cyder.atsushi.youtubesync.view.fragment
 import android.databinding.DataBindingUtil
 import android.databinding.ObservableList
 import android.os.Bundle
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -44,6 +45,7 @@ class ChatFragment : BaseFragment() {
         val manager = LinearLayoutManager(activity)
         manager.stackFromEnd = true
         binding.chatList.layoutManager = manager
+        binding.chatList.addItemDecoration(DividerItemDecoration(binding.chatList.context, manager.orientation))
     }
 
     inner class ChatAdapter(list: ObservableList<ChatViewModel>) : ObservableListAdapter<ChatViewModel, BindingHolder<ItemChatBinding>>(list) {

@@ -24,4 +24,5 @@ interface SyncPodWsApi {
     fun requestNowPlayingVideo()
     fun requestPlayList()
     fun requestPastChat()
+    fun sendMessage(message: String)
 }

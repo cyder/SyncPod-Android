@@ -2,6 +2,7 @@ package com.cyder.atsushi.youtubesync.repository
 
 import com.cyder.atsushi.youtubesync.model.Chat
 import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
+import com.cyder.atsushi.youtubesync.websocket.mapper.toModel
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.subjects.BehaviorSubject
@@ -26,13 +27,13 @@ class ChatDataRepository @Inject constructor(
         syncPodWsApi.chatResponse
                 .subscribe {
                     it.data?.apply {
-                        this@ChatDataRepository.chatStream.onNext(this.chat)
+                        this@ChatDataRepository.chatStream.onNext(this.chat.toModel())
                     }
                 }
         syncPodWsApi.pastChatsResponse
                 .subscribe {
                     it.data?.apply {
-                        this@ChatDataRepository.pastChatStream.onNext(this.pastChat)
+                        this@ChatDataRepository.pastChatStream.onNext(this.pastChat.toModel())
                     }
                 }
     }

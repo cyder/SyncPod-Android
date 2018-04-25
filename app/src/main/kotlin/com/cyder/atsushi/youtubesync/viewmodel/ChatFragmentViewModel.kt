@@ -7,6 +7,8 @@ import com.cyder.atsushi.youtubesync.model.Chat
 import com.cyder.atsushi.youtubesync.repository.ChatRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.FragmentViewModel
+import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
+import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 
@@ -16,11 +18,15 @@ import javax.inject.Inject
 
 class ChatFragmentViewModel @Inject constructor(
         private val navigator: Navigator,
+        private val syncPodWsApi: SyncPodWsApi,
         private val repository: ChatRepository
 ) : FragmentViewModel() {
     var chatViewModels: ObservableList<ChatViewModel> = ObservableArrayList()
-    override fun onStart() {
+    var chat: ObservableField<String> = ObservableField()
+
+    init {
         repository.getPastChats()
+                .observeOn(AndroidSchedulers.mainThread())
                 .map { convertToViewModel(it) }
                 .subscribe({
                     chatViewModels.clear()
@@ -28,6 +34,19 @@ class ChatFragmentViewModel @Inject constructor(
                 }, {
 
                 })
+        repository.observeChat
+                .observeOn(AndroidSchedulers.mainThread())
+                .map{ ChatViewModel(ObservableField(it))}
+                .subscribe {
+                    chatViewModels.add(it)
+                    val cpy = chatViewModels.toMutableList()
+                    chatViewModels.clear()
+                    chatViewModels.addAll(cpy)
+                }
+    }
+
+
+    override fun onStart() {
     }
 
     override fun onResume() {
@@ -37,6 +56,12 @@ class ChatFragmentViewModel @Inject constructor(
     }
 
     override fun onStop() {
+    }
+
+    fun sendChat() {
+        syncPodWsApi.sendMessage(chat.get() ?: "")
+        chat.set("")
+
     }
 
     private fun convertToViewModel(chats: List<Chat>): List<ChatViewModel> {

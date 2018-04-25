@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <data>
+
         <variable
             name="viewModel"
             type="com.cyder.atsushi.youtubesync.viewmodel.ChatViewModel" />
     </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,18 +30,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:textColor="@color/text"
-                android:textSize="14sp"
-                android:text="@{viewModel.chat.user.name}"/>
+                android:text="@{viewModel.chat.isUser ? viewModel.chat.user.name : @string/notice}"
+                android:textColor="@{viewModel.chat.isUser ? @color/text : @color/notice_message}"
+                android:textSize="14sp" />
 
 
             <TextView
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{viewModel.chat.created_at}"
                 android:textColor="@color/gray_text"
-                android:textSize="12sp"
-                android:text="@{viewModel.chat.created_at}"/>
+                android:textSize="12sp" />
         </LinearLayout>
 
         <TextView
@@ -48,8 +51,9 @@
             android:layout_marginBottom="1dp"
             android:layout_marginTop="1dp"
             android:lineSpacingMultiplier="1.1"
-            android:textSize="14sp"
-            android:text="@{viewModel.chat.message}"/>
+            android:text="@{viewModel.chat.message}"
+            android:textColor="@{viewModel.chat.isUser ? @color/text : @color/gray_text}"
+            android:textSize="14sp" />
 
     </LinearLayout>
 </layout>
