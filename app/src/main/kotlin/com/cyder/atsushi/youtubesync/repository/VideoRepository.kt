@@ -2,6 +2,7 @@ package com.cyder.atsushi.youtubesync.repository
 
 import com.cyder.atsushi.youtubesync.model.Video
 import com.google.android.youtube.player.YouTubePlayer
+import io.reactivex.Completable
 import io.reactivex.Flowable
 
 
@@ -16,4 +17,5 @@ interface VideoRepository {
     fun observeNowPlayingVideo(): Flowable<Video>
     fun getNowPlayingVideo(): Flowable<Video>
     fun getPlayList(): Flowable<List<Video>>
+    fun addPlayList(video: Video): Completable
 }

@@ -106,6 +106,31 @@
                         android:layout_height="wrap_content"
                         android:divider="@null"
                         android:paddingBottom="10dp" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/border" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp"
+                        android:paddingTop="10dp">
+
+                        <Button
+                            android:id="@+id/user_report_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:onClick="@{(v) -> viewModel.userReport()}"
+                            android:text="@string/user_report_button"
+                            android:textColor="@color/appBlue"
+                            android:textSize="14sp" />
+                    </LinearLayout>
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
 

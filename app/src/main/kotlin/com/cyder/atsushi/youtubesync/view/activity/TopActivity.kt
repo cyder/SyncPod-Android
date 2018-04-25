@@ -14,7 +14,9 @@ import com.cyder.atsushi.youtubesync.databinding.ItemRoomBinding
 import com.cyder.atsushi.youtubesync.view.adapter.BindingHolder
 import com.cyder.atsushi.youtubesync.view.adapter.ObservableListAdapter
 import com.cyder.atsushi.youtubesync.view.helper.setUpSnackbar
-import com.cyder.atsushi.youtubesync.viewmodel.*
+import com.cyder.atsushi.youtubesync.viewmodel.DialogCallback
+import com.cyder.atsushi.youtubesync.viewmodel.RoomViewModel
+import com.cyder.atsushi.youtubesync.viewmodel.TopActivityViewModel
 import kotlinx.android.synthetic.main.join_room_dialog.view.*
 import javax.inject.Inject
 

@@ -1,9 +1,12 @@
 package com.cyder.atsushi.youtubesync.util
 
 import android.databinding.BindingAdapter
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.text.method.LinkMovementMethod
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -24,3 +27,39 @@ fun ImageView.loadImage(url: String?) {
 fun TextView.setLinksNavigable(flag: Boolean) {
     movementMethod = if (flag) LinkMovementMethod.getInstance() else null
 }
+
+@BindingAdapter("onEnterClick")
+fun EditText.setKeyboardClick(listener: TextView.OnEditorActionListener) = setOnEditorActionListener(listener)
+
+@BindingAdapter(value = ["onScrolled", "onScrollStateChanged"], requireAll = false)
+fun RecyclerView.setOnScrollChangedListeners(
+        onScrolled: OnScrolledListener?,
+        onScrollStateChanged: OnScrollStateChangedListener?
+) {
+    val OFFSET = 5
+    val listener = object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recycler: RecyclerView, newState: Int) {
+            onScrollStateChanged?.onScrollStateChanged(recycler, newState)
+        }
+
+        override fun onScrolled(recycler: RecyclerView, dx: Int, dy: Int) {
+            val totalCount = recycler.adapter.itemCount
+            val childCount = recycler.childCount
+            val layoutManager = layoutManager as LinearLayoutManager
+            val nowHeadPos = layoutManager.findFirstVisibleItemPosition()
+            val lastPos = layoutManager.findLastCompletelyVisibleItemPosition()
+            onScrolled?.onScrolled(totalCount <= childCount + nowHeadPos + OFFSET)
+        }
+    }
+
+    addOnScrollListener(listener)
+}
+
+interface OnScrolledListener {
+    fun onScrolled(isBottom: Boolean)
+}
+
+interface OnScrollStateChangedListener {
+    fun onScrollStateChanged(recycler: RecyclerView, newState: Int)
+}
+

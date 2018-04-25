@@ -35,16 +35,14 @@ class AppModule(private val context: Context) {
     fun provideRoomRepository(
             api: SyncPodApi,
             wsApi: SyncPodWsApi,
-            consumer: Consumer,
             repository: UserRepository
-    ): RoomRepository = RoomDataRepository(api, wsApi, consumer, repository.getAccessToken().blockingGet()!!)
+    ): RoomRepository = RoomDataRepository(api, wsApi, repository.getAccessToken().blockingGet()!!)
 
     @Singleton
     @Provides
     fun provideVideoRepository(
-            consumer: Consumer,
             syncPodWsApi: SyncPodWsApi
-    ): VideoRepository = VideoDataRepository(consumer, syncPodWsApi)
+    ): VideoRepository = VideoDataRepository(syncPodWsApi)
 
     @Singleton
     @Provides
@@ -57,7 +55,15 @@ class AppModule(private val context: Context) {
     fun provideYouTubeRepository(
             api: SyncPodApi,
             repository: UserRepository
-    ) : YouTubeRepository = YouTubeDataRepository(api, repository.getAccessToken().blockingGet()!!)
+    ): YouTubeRepository = YouTubeDataRepository(api, repository.getAccessToken().blockingGet()!!)
+
+    @Singleton
+    @Provides
+    fun provideUserReportRepository(
+            api: SyncPodApi,
+            repository: UserRepository
+    ): UserReportRepository = UserReportDataRepository(api, repository.getAccessToken().blockingGet()!!)
+
 
     companion object {
         const val APP_NAME = "youtube-sync"

@@ -20,13 +20,13 @@ import javax.inject.Inject
 class SyncPodWsApiImpl @Inject constructor(
         private val consumer: Consumer
 ) : SyncPodWsApi {
-    private lateinit var subscription: Subscription
+    private var subscription: Subscription? = null
 
-    private lateinit var nowPlayingEvent: Subject<Response>
-    private lateinit var startVideoEvent: Subject<Response>
-    private lateinit var playListEvent: Subject<Response>
-    private lateinit var addVideoEvent: Subject<Response>
-    private lateinit var chatEvent: Subject<Response>
+    private var nowPlayingEvent: Subject<Response> = BehaviorSubject.create()
+    private var startVideoEvent: Subject<Response> = BehaviorSubject.create()
+    private var playListEvent: Subject<Response> = BehaviorSubject.create()
+    private var addVideoEvent: Subject<Response> = BehaviorSubject.create()
+    private var chatEvent: Subject<Response> = BehaviorSubject.create()
     private val manageEnteredStream: Subject<Boolean> = BehaviorSubject.createDefault(false)
     private lateinit var pastChatsEvent: Subject<Response>
     override val nowPlayingResponse: Flowable<Response>
@@ -58,16 +58,16 @@ class SyncPodWsApiImpl @Inject constructor(
         subscription = consumer.subscriptions.create(channel)
         consumer.connect()
         return Completable.create { emitter ->
-            subscription.onConnected = {
+            subscription?.onConnected = {
                 emitter.onComplete()
                 manageEnteredStream.onNext(true)
                 startRouting()
             }
-            subscription.onRejected = {
+            subscription?.onRejected = {
                 emitter.onError(CannotJoinRoomException())
                 consumer.disconnect()
             }
-            subscription.onFailed = {
+            subscription?.onFailed = {
                 emitter.onError(it)
                 consumer.disconnect()
             }
@@ -75,7 +75,9 @@ class SyncPodWsApiImpl @Inject constructor(
     }
 
     override fun exitRoom(): Completable {
-        consumer.subscriptions.remove(subscription)
+        subscription?.apply {
+            consumer.subscriptions.remove(this)
+        }
         consumer.disconnect()
         nowPlayingEvent.onComplete()
         startVideoEvent.onComplete()
@@ -88,27 +90,31 @@ class SyncPodWsApiImpl @Inject constructor(
     }
 
     override fun exitForce(user: User) {
-        subscription.perform(EXIT_FORCE, mapOf(USER_ID to user.id))
+        subscription?.perform(EXIT_FORCE, mapOf(USER_ID to user.id))
     }
 
     override fun requestNowPlayingVideo() {
-        subscription.perform(NOW_PLAYING)
+        subscription?.perform(NOW_PLAYING)
     }
 
     override fun requestPlayList() {
-        subscription.perform(PLAY_LIST)
+        subscription?.perform(PLAY_LIST)
+    }
+
+    override fun requestAddVideo(videoId: String) {
+        subscription?.perform(ADD_VIDEO, mapOf(VIDEO_ID to videoId))
     }
 
     override fun requestPastChat() {
-        subscription.perform(PAST_CHATS)
+        subscription?.perform(PAST_CHATS)
     }
 
     override fun sendMessage(message: String) {
-        subscription.perform(MESSAGE, mapOf(MESSAGE to message))
+        subscription?.perform(MESSAGE, mapOf(MESSAGE to message))
     }
 
     private fun startRouting() {
-        subscription.onReceived = {
+        subscription?.onReceived = {
             if (it is String) {
                 val response = it.toResponse()
                 when (response.dataType) {
@@ -148,6 +154,7 @@ class SyncPodWsApiImpl @Inject constructor(
         const val USER_ID = "user_id"
         const val PAST_CHATS = "past_chats"
         const val MESSAGE = "message"
+        const val VIDEO_ID = "youtube_video_id"
     }
 
 }
