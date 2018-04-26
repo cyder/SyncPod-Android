@@ -1,6 +1,6 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
-interface ButtonCallback {
+interface ButtonInterface {
     val name: String
     fun onClick()
 }

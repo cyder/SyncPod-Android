@@ -10,7 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.viewmodel.DialogCallback
-import com.cyder.atsushi.youtubesync.viewmodel.ButtonCallback
+import com.cyder.atsushi.youtubesync.viewmodel.ButtonInterface
 import com.cyder.atsushi.youtubesync.viewmodel.ShareCompatCallback
 import com.cyder.atsushi.youtubesync.viewmodel.SnackbarCallback
 
@@ -53,7 +53,7 @@ fun Activity.setUpShareCompat(): ShareCompatCallback {
     }
 }
 
-fun Activity.setUpMenuDialog(items: List<ButtonCallback>): DialogCallback {
+fun Activity.setUpMenuDialog(items: List<ButtonInterface>): DialogCallback {
     val names = items.map { it.name }.toTypedArray()
 
     val builder = AlertDialog.Builder(this)
@@ -69,7 +69,7 @@ fun Activity.setUpMenuDialog(items: List<ButtonCallback>): DialogCallback {
     }
 }
 
-fun Activity.setUpConfirmationDialog(title: String, description: String, positiveButton: ButtonCallback): DialogCallback {
+fun Activity.setUpConfirmationDialog(title: String, description: String, positiveButton: ButtonInterface): DialogCallback {
     val builder = AlertDialog.Builder(this)
             .setTitle(title)
             .setMessage(description)
