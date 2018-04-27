@@ -35,8 +35,7 @@ class RoomActivityViewModel @Inject constructor(
     override fun onResume() {
         videoRepository.getNowPlayingVideo()
         videoRepository.getPlayList()
-        roomRepository.isReceiveForceExit()
-                .filter { it }
+        roomRepository.receiveForceExit()
                 .takeUntil(onPause.toFlowable(BackpressureStrategy.LATEST))
                 .subscribe {
                     roomRepository.exitRoom()

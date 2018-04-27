@@ -60,10 +60,10 @@ class RoomDataRepository @Inject constructor(
         syncPodWsApi.exitForce(user)
     }
 
-    override fun isReceiveForceExit(): Flowable<Boolean> {
+    override fun receiveForceExit(): Flowable<Unit> {
         return syncPodWsApi.errorResponse
                 .filter { it.data?.message == FORCE_EXIT }
-                .map { true }
+                .map { Unit }
     }
 
     private fun createNewRoomValidation(name: String, description: String): Completable {

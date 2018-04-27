@@ -16,5 +16,5 @@ interface RoomRepository {
     fun joinRoom(roomKey: String): Completable
     fun exitRoom(): Completable
     fun exitForce(user: User)
-    fun isReceiveForceExit(): Flowable<Boolean>
+    fun receiveForceExit(): Flowable<Unit>
 }
