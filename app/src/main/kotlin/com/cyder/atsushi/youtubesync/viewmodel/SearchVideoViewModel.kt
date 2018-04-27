@@ -11,8 +11,15 @@ import javax.inject.Inject
  * Created by chigichan24 on 2018/04/23.
  */
 
-class VideoViewModel @Inject constructor(
+class SearchVideoViewModel @Inject constructor(
+        val navigator: Navigator,
         val repository: VideoRepository,
         val video: ObservableField<Video>
 ) {
+    fun onItemClick() {
+        repository.addPlayList(video.get())
+                .subscribe {
+                    navigator.closeActivity()
+                }
+    }
 }

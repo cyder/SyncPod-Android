@@ -9,11 +9,11 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.ViewGroup
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.databinding.ActivitySearchVideoBinding
-import com.cyder.atsushi.youtubesync.databinding.ItemVideoBinding
+import com.cyder.atsushi.youtubesync.databinding.ItemSearchVideoBinding
 import com.cyder.atsushi.youtubesync.view.adapter.BindingHolder
 import com.cyder.atsushi.youtubesync.view.adapter.ObservableListAdapter
 import com.cyder.atsushi.youtubesync.viewmodel.SearchVideoActivityViewModel
-import com.cyder.atsushi.youtubesync.viewmodel.VideoViewModel
+import com.cyder.atsushi.youtubesync.viewmodel.SearchVideoViewModel
 import javax.inject.Inject
 
 
@@ -41,10 +41,10 @@ class SearchVideoActivity : BaseActivity() {
         binding.resultList.layoutManager = LinearLayoutManager(this)
     }
 
-    inner class SearchResultAdapter(list: ObservableList<VideoViewModel>) : ObservableListAdapter<VideoViewModel, BindingHolder<ItemVideoBinding>>(list) {
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemVideoBinding>  = BindingHolder(parent, R.layout.item_video)
+    inner class SearchResultAdapter(list: ObservableList<SearchVideoViewModel>) : ObservableListAdapter<SearchVideoViewModel, BindingHolder<ItemSearchVideoBinding>>(list) {
+        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemSearchVideoBinding>  = BindingHolder(parent, R.layout.item_search_video)
 
-        override fun onBindViewHolder(holder: BindingHolder<ItemVideoBinding>?, position: Int) {
+        override fun onBindViewHolder(holder: BindingHolder<ItemSearchVideoBinding>?, position: Int) {
             val viewModel = getItem(position)
             val binding = holder?.binding
             binding?.viewModel = viewModel

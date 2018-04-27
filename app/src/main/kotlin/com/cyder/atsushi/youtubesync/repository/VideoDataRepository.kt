@@ -25,6 +25,8 @@ class VideoDataRepository @Inject constructor(
     private var playList: Subject<List<Video>> = BehaviorSubject.create()
     private var isPlaying: Subject<Boolean> = BehaviorSubject.create()
     override val developerKey: Flowable<String> = Flowable.just(BuildConfig.YOUTUBE_DEVELOPER_KEY)
+    override val playListObservable: Flowable<List<Video>>
+        get() = playList.toFlowable(BackpressureStrategy.LATEST)
     override val playerState: Flowable<YouTubePlayer.PlayerStateChangeListener>
         get() {
             val listener = object : YouTubePlayer.PlayerStateChangeListener {

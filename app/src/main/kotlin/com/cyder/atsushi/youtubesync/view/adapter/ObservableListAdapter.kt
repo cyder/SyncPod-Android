@@ -17,7 +17,7 @@ abstract class ObservableListAdapter<T, VH : RecyclerView.ViewHolder>(
             }
 
             override fun onItemRangeRemoved(p0: ObservableList<T>?, p1: Int, p2: Int) {
-                notifyItemRangeChanged(p1, p2)
+                notifyItemRangeRemoved(p1, p2)
             }
 
             override fun onItemRangeMoved(p0: ObservableList<T>?, p1: Int, p2: Int, p3: Int) {
