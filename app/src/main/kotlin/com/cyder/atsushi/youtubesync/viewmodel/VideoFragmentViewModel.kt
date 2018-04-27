@@ -54,7 +54,7 @@ class VideoFragmentViewModel @Inject constructor(
     }
 
     override fun onPause() {
-        onPauseSubject.onNext(Unit)
+        onPauseSubject.onNext(INVOCATION)
     }
 
     override fun onStop() {
@@ -91,4 +91,7 @@ class VideoFragmentViewModel @Inject constructor(
                 .subscribe { nowProgress.set((maxProgress.get().toDouble() * it / player.durationMillis).toInt()) }
     }
 
+    companion object {
+        val INVOCATION = Unit
+    }
 }

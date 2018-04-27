@@ -39,7 +39,7 @@ class RoomActivityViewModel @Inject constructor(
     }
 
     override fun onPause() {
-        onPauseSubject.onNext(Unit)
+        onPauseSubject.onNext(INVOCATION)
     }
 
     override fun onStop() {
@@ -47,5 +47,9 @@ class RoomActivityViewModel @Inject constructor(
 
     override fun onDestroy() {
         roomRepository.exitRoom()
+    }
+
+    companion object {
+        val INVOCATION = Unit
     }
 }

@@ -63,7 +63,7 @@ class PlayListFragmentViewModel @Inject constructor(
     }
 
     override fun onPause() {
-        onPauseSubject.onNext(Unit)
+        onPauseSubject.onNext(INVOCATION)
     }
 
     override fun onStop() {
@@ -73,5 +73,9 @@ class PlayListFragmentViewModel @Inject constructor(
 
     private fun convertToViewModel(videos: List<Video>): List<VideoViewModel> {
         return videos.map { VideoViewModel(repository, ObservableField(it)) }
+    }
+
+    companion object {
+        val INVOCATION = Unit
     }
 }
