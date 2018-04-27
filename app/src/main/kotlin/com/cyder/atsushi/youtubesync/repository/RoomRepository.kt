@@ -3,6 +3,7 @@ package com.cyder.atsushi.youtubesync.repository
 import com.cyder.atsushi.youtubesync.model.Room
 import com.cyder.atsushi.youtubesync.model.User
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Single
 
 /**
@@ -15,4 +16,5 @@ interface RoomRepository {
     fun joinRoom(roomKey: String): Completable
     fun exitRoom(): Completable
     fun exitForce(user: User)
+    fun isReceiveForceExit(): Flowable<Boolean>
 }

@@ -17,6 +17,7 @@ interface SyncPodWsApi {
     val addVideoResponse: Flowable<Response>
     val chatResponse: Flowable<Response>
     val pastChatsResponse: Flowable<Response>
+    val errorResponse: Flowable<Response>
     val isEntered: Flowable<Boolean>
     fun enterRoom(roomKey: String): Completable
     fun exitRoom(): Completable
