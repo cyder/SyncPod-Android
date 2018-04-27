@@ -24,18 +24,14 @@ class VideoFragmentViewModel @Inject constructor(
     lateinit var youtubeFragment: YouTubePlayerSupportFragment
     private lateinit var player: YouTubePlayer
     val isInitializedPlayer: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
-    private val onReleaseVideo = PublishSubject.create<Boolean>()
+    private val onPause = PublishSubject.create<Boolean>()
     var nowProgress = ObservableInt(0)
     var maxProgress = ObservableInt(10000)
-
-    init {
-        observerWithInitPlayer()
-    }
 
     override fun onStart() {
         val key = videoRepository.developerKey.blockingFirst()
         val listener = videoRepository.playerState.blockingFirst()
-        
+
         youtubeFragment.initialize(key, object : YouTubePlayer.OnInitializedListener {
             override fun onInitializationSuccess(provider: YouTubePlayer.Provider?, player: YouTubePlayer?, wasRestored: Boolean) {
                 if (!wasRestored) {
@@ -54,38 +50,44 @@ class VideoFragmentViewModel @Inject constructor(
     }
 
     override fun onResume() {
+        observerWithInitPlayer()
     }
 
     override fun onPause() {
+        onPause.onNext(true)
     }
 
     override fun onStop() {
-        onReleaseVideo.onNext(true)
     }
 
     private fun observerWithInitPlayer() {
         Observables.combineLatest(
                 videoRepository.observePrepareVideo().toObservable(),
                 isInitializedPlayer.filter { it }
-        ).subscribe {
-            val video = it.first
-            player.cueVideo(video.youtubeVideoId)
-        }
+        )
+                .takeUntil(onPause)
+                .subscribe {
+                    val video = it.first
+                    player.cueVideo(video.youtubeVideoId)
+                }
 
         Observables.combineLatest(
                 videoRepository.observeNowPlayingVideo().toObservable(),
                 isInitializedPlayer.filter { it }
-        ).subscribe {
-            val video = it.first
-            player.loadVideo(video.youtubeVideoId, (video.currentTime ?: 0) * 1000)
-        }
+        )
+                .takeUntil(onPause)
+                .subscribe {
+                    val video = it.first
+                    player.loadVideo(video.youtubeVideoId, (video.currentTime ?: 0) * 1000)
+                }
 
         Observables.combineLatest(
                 Observable.interval(100, TimeUnit.MILLISECONDS),
                 isInitializedPlayer.filter { it }
-        ).map { player.currentTimeMillis }
+        )
+                .takeUntil(onPause)
+                .map { player.currentTimeMillis }
                 .filter { player.durationMillis > .0 }
-                .takeUntil(onReleaseVideo)
                 .subscribe { nowProgress.set((maxProgress.get().toDouble() * it / player.durationMillis).toInt()) }
     }
 
