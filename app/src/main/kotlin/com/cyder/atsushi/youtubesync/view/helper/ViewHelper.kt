@@ -23,8 +23,9 @@ fun View.hideSoftwareKeyBoard() {
 fun Activity.setUpSnackbar(): SnackbarCallback {
     return object : SnackbarCallback {
         override fun onFailed(resId: Int) {
-            currentFocus.hideSoftwareKeyBoard()
-            val snackbar = Snackbar.make(currentFocus,
+            currentFocus?.hideSoftwareKeyBoard()
+            val view = findViewById<View>(android.R.id.content)
+            val snackbar = Snackbar.make(view,
                     resId,
                     Snackbar.LENGTH_LONG).apply {
                 setAction(R.string.ok) {
