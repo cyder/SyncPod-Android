@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import androidx.content.edit
 import com.cyder.atsushi.youtubesync.api.SyncPodApi
 import com.cyder.atsushi.youtubesync.api.request.SignUp
+import com.cyder.atsushi.youtubesync.api.response.User
 import com.cyder.atsushi.youtubesync.util.*
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -22,8 +23,8 @@ class UserDataRepository @Inject constructor(
         return signInValidate(email, password, isAgreeTerms)
                 .andThen(syncPodApi.signIn(email, password))
                 .doOnSuccess { response ->
-                    sharedPreferences.edit {
-                        putString(STATE_USER_TOKEN, response.user?.accessToken)
+                    response.user?.apply {
+                        saveSharedPreferences(this)
                     }
                 }.subscribeOn(Schedulers.computation())
                 .toCompletable()
@@ -33,8 +34,8 @@ class UserDataRepository @Inject constructor(
         return signUpValidate(email, name, password, passwordConfirm, isAgreeTerms)
                 .andThen(syncPodApi.signUp(SignUp(email, name, password)))
                 .doOnSuccess { response ->
-                    sharedPreferences.edit {
-                        putString(STATE_USER_TOKEN, response.user?.accessToken)
+                    response.user?.apply {
+                        saveSharedPreferences(this)
                     }
                 }.subscribeOn(Schedulers.computation())
                 .toCompletable()
@@ -46,6 +47,19 @@ class UserDataRepository @Inject constructor(
             try {
                 token.run {
                     emitter.onSuccess(token)
+                }
+            } catch (exception: Exception) {
+                emitter.onError(exception)
+            }
+        }
+    }
+
+    override fun getMyselfId(): Single<Int> {
+        val id = sharedPreferences.getInt(STATE_USER_ID, -1).takeIf { it != -1 }
+        return Single.create { emitter ->
+            try {
+                id?.apply {
+                    emitter.onSuccess(this)
                 }
             } catch (exception: Exception) {
                 emitter.onError(exception)
@@ -83,7 +97,15 @@ class UserDataRepository @Inject constructor(
         }
     }
 
+    private fun saveSharedPreferences(user: User) {
+        sharedPreferences.edit {
+            putString(STATE_USER_TOKEN, user.accessToken)
+            putInt(STATE_USER_ID, user.id)
+        }
+    }
+
     companion object {
         const val STATE_USER_TOKEN = "userToken"
+        const val STATE_USER_ID = "userId"
     }
 }

@@ -75,5 +75,8 @@
     <string name="network_error">予期せぬエラーが発生しました。間を開けてお試しください。</string>
     <string name="terms_message"><a href="http://app.sync-pod.com/terms">利用規約</a> に同意する。</string>
     <string name="user_report_description">報告内容を詳細に記述して下さい。</string>
+    <string name="force_exit_title">%sさんを退出させる</string>
+    <string name="force_exit_description">%sさんは24時間このルームに入室できなくなります。本当によろしいですか？</string>
+    <string name="force_exit">退出させる</string>
     <string name="receive_force_exit">他のユーザから強制退室を受けました。今後しばらくこのルームには入室できません。</string>
 </resources>
