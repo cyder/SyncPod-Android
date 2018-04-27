@@ -24,7 +24,7 @@ class VideoFragmentViewModel @Inject constructor(
     lateinit var youtubeFragment: YouTubePlayerSupportFragment
     private lateinit var player: YouTubePlayer
     val isInitializedPlayer: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
-    private val onPause = PublishSubject.create<Unit>()
+    private val onPauseSubject = PublishSubject.create<Unit>()
     var nowProgress = ObservableInt(0)
     var maxProgress = ObservableInt(10000)
 
@@ -54,7 +54,7 @@ class VideoFragmentViewModel @Inject constructor(
     }
 
     override fun onPause() {
-        onPause.onNext(Unit)
+        onPauseSubject.onNext(Unit)
     }
 
     override fun onStop() {
@@ -65,7 +65,7 @@ class VideoFragmentViewModel @Inject constructor(
                 videoRepository.observePrepareVideo().toObservable(),
                 isInitializedPlayer.filter { it }
         )
-                .takeUntil(onPause)
+                .takeUntil(onPauseSubject)
                 .subscribe {
                     val video = it.first
                     player.cueVideo(video.youtubeVideoId)
@@ -75,7 +75,7 @@ class VideoFragmentViewModel @Inject constructor(
                 videoRepository.observeNowPlayingVideo().toObservable(),
                 isInitializedPlayer.filter { it }
         )
-                .takeUntil(onPause)
+                .takeUntil(onPauseSubject)
                 .subscribe {
                     val video = it.first
                     player.loadVideo(video.youtubeVideoId, (video.currentTime ?: 0) * 1000)
@@ -85,7 +85,7 @@ class VideoFragmentViewModel @Inject constructor(
                 Observable.interval(100, TimeUnit.MILLISECONDS),
                 isInitializedPlayer.filter { it }
         )
-                .takeUntil(onPause)
+                .takeUntil(onPauseSubject)
                 .map { player.currentTimeMillis }
                 .filter { player.durationMillis > .0 }
                 .subscribe { nowProgress.set((maxProgress.get().toDouble() * it / player.durationMillis).toInt()) }

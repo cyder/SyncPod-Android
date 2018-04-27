@@ -25,7 +25,7 @@ class PlayListFragmentViewModel @Inject constructor(
         private val navigator: Navigator
 ) : FragmentViewModel() {
     lateinit var resources: Resources
-    private val onPause = PublishSubject.create<Unit>()
+    private val onPauseSubject = PublishSubject.create<Unit>()
     val videoViewModels: ObservableList<VideoViewModel> = ObservableArrayList()
     val nowPlayVideo: ObservableField<Video> = ObservableField()
     val published: ObservableField<String> = ObservableField()
@@ -38,7 +38,7 @@ class PlayListFragmentViewModel @Inject constructor(
 
     override fun onResume() {
         repository.playListObservable
-                .takeUntil(onPause.toFlowable(BackpressureStrategy.LATEST))
+                .takeUntil(onPauseSubject.toFlowable(BackpressureStrategy.LATEST))
                 .map { convertToViewModel(it) }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -48,7 +48,7 @@ class PlayListFragmentViewModel @Inject constructor(
                 }
 
         repository.observeNowPlayingVideo()
-                .takeUntil(onPause.toFlowable(BackpressureStrategy.LATEST))
+                .takeUntil(onPauseSubject.toFlowable(BackpressureStrategy.LATEST))
                 .subscribe {
                     nowPlayVideo.set(it)
                     published.set(resources.getString(R.string.published).format(it.published))
@@ -56,14 +56,14 @@ class PlayListFragmentViewModel @Inject constructor(
                 }
 
         repository.observeIsPlaying()
-                .takeUntil(onPause.toFlowable(BackpressureStrategy.LATEST))
+                .takeUntil(onPauseSubject.toFlowable(BackpressureStrategy.LATEST))
                 .subscribe {
                     isPlaying.set(it)
                 }
     }
 
     override fun onPause() {
-        onPause.onNext(Unit)
+        onPauseSubject.onNext(Unit)
     }
 
     override fun onStop() {
