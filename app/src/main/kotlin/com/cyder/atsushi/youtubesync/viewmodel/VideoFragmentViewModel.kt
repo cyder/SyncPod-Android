@@ -24,7 +24,7 @@ class VideoFragmentViewModel @Inject constructor(
     lateinit var youtubeFragment: YouTubePlayerSupportFragment
     private lateinit var player: YouTubePlayer
     val isInitializedPlayer: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
-    private val onPause = PublishSubject.create<Boolean>()
+    private val onPause = PublishSubject.create<Unit>()
     var nowProgress = ObservableInt(0)
     var maxProgress = ObservableInt(10000)
 
@@ -54,7 +54,7 @@ class VideoFragmentViewModel @Inject constructor(
     }
 
     override fun onPause() {
-        onPause.onNext(true)
+        onPause.onNext(Unit)
     }
 
     override fun onStop() {
