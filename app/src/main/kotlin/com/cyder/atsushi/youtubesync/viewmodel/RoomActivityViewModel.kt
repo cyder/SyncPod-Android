@@ -18,6 +18,15 @@ class RoomActivityViewModel @Inject constructor(
 
     lateinit var roomKey: String
 
+    init {
+        roomRepository.isReceiveForceExit()
+                .filter { it }
+                .subscribe {
+                    roomRepository.exitRoom()
+                    navigator.closeActivity()
+                }
+    }
+
     override fun onStart() {
         if (!wsApi.isEntered.blockingFirst()) {
             navigator.navigateToTopActivity()
