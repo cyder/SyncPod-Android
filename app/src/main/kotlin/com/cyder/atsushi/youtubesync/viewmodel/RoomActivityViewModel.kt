@@ -18,7 +18,7 @@ class RoomActivityViewModel @Inject constructor(
         private val navigator: Navigator
 ) : ActivityViewModel() {
     var isVideoPlayerVisible = ObservableBoolean(false)
-    private val onPause = PublishSubject.create<Boolean>()
+    private val onPause = PublishSubject.create<Unit>()
 
     lateinit var roomKey: String
 
@@ -46,7 +46,7 @@ class RoomActivityViewModel @Inject constructor(
     }
 
     override fun onPause() {
-        onPause.onNext(true)
+        onPause.onNext(Unit)
     }
 
     override fun onStop() {
