@@ -63,7 +63,7 @@ class RoomDataRepository @Inject constructor(
     override fun receiveForceExit(): Flowable<Unit> {
         return syncPodWsApi.errorResponse
                 .filter { it.data?.message == FORCE_EXIT }
-                .map { Unit }
+                .map { INVOCATION }
     }
 
     private fun createNewRoomValidation(name: String, description: String): Completable {
@@ -78,5 +78,6 @@ class RoomDataRepository @Inject constructor(
 
     companion object {
         const val FORCE_EXIT: String = "force exit"
+        val INVOCATION = Unit
     }
 }
