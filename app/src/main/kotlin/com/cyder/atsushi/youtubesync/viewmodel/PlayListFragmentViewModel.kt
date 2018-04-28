@@ -11,6 +11,7 @@ import com.cyder.atsushi.youtubesync.repository.VideoRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.FragmentViewModel
 import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
@@ -47,7 +48,10 @@ class PlayListFragmentViewModel @Inject constructor(
                     hasPlayList.set(videoViewModels.isNotEmpty())
                 }
 
-        repository.observeNowPlayingVideo()
+        Flowable.merge(
+                repository.observePrepareVideo(),
+                repository.observeNowPlayingVideo()
+        )
                 .takeUntil(onPauseSubject.toFlowable(BackpressureStrategy.LATEST))
                 .subscribe {
                     nowPlayVideo.set(it)
