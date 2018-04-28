@@ -10,7 +10,9 @@ import com.cyder.atsushi.youtubesync.model.Video
 import com.cyder.atsushi.youtubesync.repository.VideoRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.FragmentViewModel
+import io.reactivex.BackpressureStrategy
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 
@@ -23,6 +25,7 @@ class PlayListFragmentViewModel @Inject constructor(
         private val navigator: Navigator
 ) : FragmentViewModel() {
     lateinit var resources: Resources
+    private val onPauseSubject = PublishSubject.create<Unit>()
     val videoViewModels: ObservableList<VideoViewModel> = ObservableArrayList()
     val nowPlayVideo: ObservableField<Video> = ObservableField()
     val published: ObservableField<String> = ObservableField()
@@ -30,8 +33,12 @@ class PlayListFragmentViewModel @Inject constructor(
     val isPlaying: ObservableBoolean = ObservableBoolean(false)
     val hasPlayList: ObservableBoolean = ObservableBoolean(true)
 
-    init {
+    override fun onStart() {
+    }
+
+    override fun onResume() {
         repository.playListObservable
+                .takeUntil(onPauseSubject.toFlowable(BackpressureStrategy.LATEST))
                 .map { convertToViewModel(it) }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -41,6 +48,7 @@ class PlayListFragmentViewModel @Inject constructor(
                 }
 
         repository.observeNowPlayingVideo()
+                .takeUntil(onPauseSubject.toFlowable(BackpressureStrategy.LATEST))
                 .subscribe {
                     nowPlayVideo.set(it)
                     published.set(resources.getString(R.string.published).format(it.published))
@@ -48,18 +56,14 @@ class PlayListFragmentViewModel @Inject constructor(
                 }
 
         repository.observeIsPlaying()
+                .takeUntil(onPauseSubject.toFlowable(BackpressureStrategy.LATEST))
                 .subscribe {
                     isPlaying.set(it)
                 }
     }
 
-    override fun onStart() {
-    }
-
-    override fun onResume() {
-    }
-
     override fun onPause() {
+        onPauseSubject.onNext(INVOCATION)
     }
 
     override fun onStop() {
@@ -69,5 +73,9 @@ class PlayListFragmentViewModel @Inject constructor(
 
     private fun convertToViewModel(videos: List<Video>): List<VideoViewModel> {
         return videos.map { VideoViewModel(repository, ObservableField(it)) }
+    }
+
+    companion object {
+        val INVOCATION = Unit
     }
 }
