@@ -5,7 +5,6 @@ import com.cyder.atsushi.youtubesync.api.mapper.toModel
 import com.cyder.atsushi.youtubesync.model.Video
 import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
 import com.google.android.youtube.player.YouTubePlayer
-import com.hosopy.actioncable.Consumer
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -25,6 +24,8 @@ class VideoDataRepository @Inject constructor(
     private var playList: Subject<List<Video>> = BehaviorSubject.create()
     private var isPlaying: Subject<Boolean> = BehaviorSubject.create()
     override val developerKey: Flowable<String> = Flowable.just(BuildConfig.YOUTUBE_DEVELOPER_KEY)
+    override val playListObservable: Flowable<List<Video>>
+        get() = playList.toFlowable(BackpressureStrategy.LATEST)
     override val playerState: Flowable<YouTubePlayer.PlayerStateChangeListener>
         get() {
             val listener = object : YouTubePlayer.PlayerStateChangeListener {

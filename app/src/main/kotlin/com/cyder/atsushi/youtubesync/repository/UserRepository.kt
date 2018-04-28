@@ -14,4 +14,5 @@ interface UserRepository {
     @CheckResult
     fun signUp(email: String, name: String, password:String, passwordConfirm: String, isAgreeTerms: Boolean): Completable
     fun getAccessToken(): Single<String>
+    fun getMyselfId(): Single<Int>
 }

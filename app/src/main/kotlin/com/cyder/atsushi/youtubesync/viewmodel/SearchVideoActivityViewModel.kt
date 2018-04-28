@@ -7,6 +7,7 @@ import android.view.inputmethod.EditorInfo
 import com.cyder.atsushi.youtubesync.model.Video
 import com.cyder.atsushi.youtubesync.repository.VideoRepository
 import com.cyder.atsushi.youtubesync.repository.YouTubeRepository
+import com.cyder.atsushi.youtubesync.view.activity.SearchVideoActivity
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
 import javax.inject.Inject
@@ -22,7 +23,7 @@ class SearchVideoActivityViewModel @Inject constructor(
         private val repository: YouTubeRepository
 ) : ActivityViewModel() {
     var searchWord: ObservableField<String> = ObservableField()
-    var videoViewModels: ObservableList<VideoViewModel> = ObservableArrayList()
+    var videoViewModels: ObservableList<SearchVideoViewModel> = ObservableArrayList()
     override fun onStart() {
     }
 
@@ -66,7 +67,7 @@ class SearchVideoActivityViewModel @Inject constructor(
         }
     }
 
-    private fun convertToViewModel(videos: List<Video>): List<VideoViewModel> {
-        return videos.map { VideoViewModel(navigator, videoRepository, ObservableField(it)) }
+    private fun convertToViewModel(videos: List<Video>): List<SearchVideoViewModel> {
+        return videos.map { SearchVideoViewModel(navigator, videoRepository, ObservableField(it)) }
     }
 }
