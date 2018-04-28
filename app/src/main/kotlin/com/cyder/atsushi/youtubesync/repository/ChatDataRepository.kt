@@ -54,10 +54,15 @@ class ChatDataRepository @Inject constructor(
                 }
     }
 
-    override val observeChat: Flowable<Chat> = chatStream.toFlowable(BackpressureStrategy.LATEST)
+    override val observeChat: Flowable<Chat>
+            get() = chatStream.toFlowable(BackpressureStrategy.LATEST)
 
     override fun getPastChats(): Flowable<List<Chat>> {
         syncPodWsApi.requestPastChat()
         return pastChatStream.toFlowable(BackpressureStrategy.LATEST)
+    }
+
+    override fun sendChat(message: String) {
+        syncPodWsApi.sendMessage(message)
     }
 }

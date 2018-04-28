@@ -11,4 +11,5 @@ import io.reactivex.Flowable
 interface ChatRepository {
     val observeChat: Flowable<Chat>
     fun getPastChats(): Flowable<List<Chat>>
+    fun sendChat(message: String)
 }
