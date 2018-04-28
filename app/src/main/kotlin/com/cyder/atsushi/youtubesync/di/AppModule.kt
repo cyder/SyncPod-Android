@@ -5,7 +5,6 @@ import android.content.Context.MODE_PRIVATE
 import com.cyder.atsushi.youtubesync.api.SyncPodApi
 import com.cyder.atsushi.youtubesync.repository.*
 import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
-import com.hosopy.actioncable.Consumer
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
