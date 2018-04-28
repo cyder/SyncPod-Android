@@ -65,7 +65,7 @@ class VideoDataRepository @Inject constructor(
     }
 
     override fun observePrepareVideo(): Flowable<Video> {
-        return playingVideo.toFlowable(BackpressureStrategy.LATEST)
+        return prepareVideo.toFlowable(BackpressureStrategy.LATEST)
     }
 
     override fun observeNowPlayingVideo(): Flowable<Video> {
