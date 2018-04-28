@@ -29,7 +29,7 @@ class ChatFragmentViewModel @Inject constructor(
     }
 
     override fun onResume() {
-        repository.getPastChats()
+        repository.observePastChat
                 .observeOn(AndroidSchedulers.mainThread())
                 .takeUntil(onPauseSubject.toFlowable(BackpressureStrategy.LATEST))
                 .map { convertToViewModel(it) }
