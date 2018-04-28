@@ -16,4 +16,5 @@ interface RoomRepository {
     fun fetch(roomKey: String): Single<Room>
     fun joinRoom(roomKey: String): Completable
     fun exitRoom(): Completable
+    fun exitForce(user: User)
 }

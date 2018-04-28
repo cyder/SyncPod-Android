@@ -11,7 +11,6 @@ import com.cyder.atsushi.youtubesync.repository.RoomRepository
 import com.cyder.atsushi.youtubesync.repository.UserRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.FragmentViewModel
-import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
@@ -22,7 +21,6 @@ import javax.inject.Inject
 class RoomInfoFragmentViewModel @Inject constructor(
         private val roomRepository: RoomRepository,
         private val userRepository: UserRepository,
-        private val syncPodWsApi: SyncPodWsApi,
         private val navigator: Navigator
 ) : FragmentViewModel() {
     lateinit var roomKey: String
@@ -74,7 +72,7 @@ class RoomInfoFragmentViewModel @Inject constructor(
 
                         userViewModels.clear()
                         this.forEach {
-                            userViewModels.add(UserViewModel(ObservableField(it), userRepository, syncPodWsApi))
+                            userViewModels.add(UserViewModel(ObservableField(it), userRepository, roomRepository))
                         }
                     }
                 }, {
