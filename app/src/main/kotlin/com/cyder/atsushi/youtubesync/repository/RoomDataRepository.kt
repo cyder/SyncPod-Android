@@ -22,6 +22,9 @@ class RoomDataRepository @Inject constructor(
         private val syncPodWsApi: SyncPodWsApi,
         private val token: String
 ) : RoomRepository {
+    override val isEntered = syncPodWsApi.isEntered
+
+
     override fun joinRoom(roomKey: String): Completable {
         return syncPodWsApi.enterRoom(roomKey)
     }
