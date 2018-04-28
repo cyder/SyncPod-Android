@@ -16,17 +16,17 @@
             android:id="@+id/chat_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/chat_form_area"/>
+            android:layout_alignParentTop="true" />
 
         <LinearLayout
             android:id="@+id/chat_form_area"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:background="@color/chat_background"
             android:elevation="15dp"
             android:orientation="horizontal"
-            android:visibility="visible"
-            android:layout_alignParentBottom="true">
+            android:visibility="visible">
 
             <EditText
                 android:id="@+id/chat_form"
@@ -38,17 +38,17 @@
                 android:background="@null"
                 android:ems="10"
                 android:inputType="textMultiLine"
-                android:textSize="14sp"
-                android:text="@={viewModel.chat}"/>
+                android:text="@={viewModel.chat}"
+                android:textSize="14sp" />
 
             <ImageButton
                 android:id="@+id/chat_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
+                android:onClick="@{(v) -> viewModel.sendChat()}"
                 android:padding="12dp"
-                android:src="@drawable/ic_send_white_24dp"
-                android:onClick="@{(v) -> viewModel.sendChat()}"/>
+                android:src="@drawable/ic_send_white_24dp" />
         </LinearLayout>
     </RelativeLayout>
 </layout>
