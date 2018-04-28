@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync.websocket.response
 
 import com.cyder.atsushi.youtubesync.model.User
+import com.google.gson.annotations.SerializedName
 
 
 /**
@@ -9,9 +10,9 @@ import com.cyder.atsushi.youtubesync.model.User
 
 data class Chat(
         val id: Int,
-        val room_id: Int,
-        val chat_type: String,
+        @SerializedName("room_id") val roomId: Int,
+        @SerializedName("chat_type") val type: String,
         val message: String,
-        val created_at: String,
+        @SerializedName("created_at") val time: String,
         val user: User?
 )

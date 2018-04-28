@@ -17,8 +17,8 @@ fun List<ChatResponse>.toModel(): List<Chat> =
 fun ChatResponse.toModel(): Chat =
         Chat(
                 this.id,
-                this.room_id,
-                this.chat_type,
+                this.roomId,
+                this.type,
                 this.message,
-                this.created_at.formatTime(),
+                this.time.formatTime(),
                 this.user)

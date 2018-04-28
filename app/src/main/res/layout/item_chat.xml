@@ -39,7 +39,7 @@
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.chat.created_at}"
+                android:text="@{viewModel.chat.time}"
                 android:textColor="@color/gray_text"
                 android:textSize="12sp" />
         </LinearLayout>

@@ -28,7 +28,7 @@ class SyncPodWsApiImpl @Inject constructor(
     private var addVideoEvent: Subject<Response> = BehaviorSubject.create()
     private var chatEvent: Subject<Response> = BehaviorSubject.create()
     private val manageEnteredStream: Subject<Boolean> = BehaviorSubject.createDefault(false)
-    private lateinit var pastChatsEvent: Subject<Response>
+    private var pastChatsEvent: Subject<Response> = BehaviorSubject.create()
     override val nowPlayingResponse: Flowable<Response>
         get() = nowPlayingEvent.toFlowable(BackpressureStrategy.LATEST)
     override val startVideoResponse: Flowable<Response>

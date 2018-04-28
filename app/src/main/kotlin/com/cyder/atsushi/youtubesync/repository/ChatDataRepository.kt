@@ -16,8 +16,8 @@ import javax.inject.Inject
 class ChatDataRepository @Inject constructor(
         private val syncPodWsApi: SyncPodWsApi
 ) : ChatRepository {
-    private lateinit var chatStream: Subject<Chat>
-    private lateinit var pastChatStream: Subject<List<Chat>>
+    private var chatStream: Subject<Chat> = BehaviorSubject.create()
+    private var pastChatStream: Subject<List<Chat>> = BehaviorSubject.createDefault(emptyList())
 
     init {
         initSubjects()
@@ -55,7 +55,7 @@ class ChatDataRepository @Inject constructor(
     }
 
     override val observeChat: Flowable<Chat>
-            get() = chatStream.toFlowable(BackpressureStrategy.LATEST)
+        get() = chatStream.toFlowable(BackpressureStrategy.LATEST)
 
     override fun getPastChats(): Flowable<List<Chat>> {
         syncPodWsApi.requestPastChat()
@@ -63,6 +63,8 @@ class ChatDataRepository @Inject constructor(
     }
 
     override fun sendChat(message: String) {
-        syncPodWsApi.sendMessage(message)
+        message.takeUnless { it.isBlank() }?.apply {
+            syncPodWsApi.sendMessage(this)
+        }
     }
 }
