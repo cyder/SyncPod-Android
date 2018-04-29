@@ -7,8 +7,6 @@ import com.cyder.atsushi.youtubesync.model.Room
 import com.cyder.atsushi.youtubesync.model.User
 import com.cyder.atsushi.youtubesync.util.NotFilledFormsException
 import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
-import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApiImpl
-import com.hosopy.actioncable.Consumer
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
