@@ -91,6 +91,5 @@ fun Activity.setUpConfirmationDialog(title: String, description: String, positiv
 }
 
 fun Resources.dpToPx(dp: Int): Int {
-    val displayMetrics = this.displayMetrics
     return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
 }
