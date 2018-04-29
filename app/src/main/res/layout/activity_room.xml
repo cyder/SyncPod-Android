@@ -61,7 +61,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:animatedVisibility="@{viewModel.isChatFragment ? View.VISIBLE : View.GONE}">
+                android:visibility="gone"
+                app:animatedVisibility="@{viewModel.isChatFragment ? View.VISIBLE : View.GONE}"
+                app:animationDuration="@{100}"
+                app:originalHeight="@{48}">
 
                 <fragment
                     android:id="@+id/chat_form_fragment"

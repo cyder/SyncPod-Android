@@ -3,6 +3,7 @@ package com.cyder.atsushi.youtubesync.view.helper
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.res.Resources
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ShareCompat
 import android.view.View
@@ -13,6 +14,8 @@ import com.cyder.atsushi.youtubesync.viewmodel.DialogCallback
 import com.cyder.atsushi.youtubesync.viewmodel.ButtonInterface
 import com.cyder.atsushi.youtubesync.viewmodel.ShareCompatCallback
 import com.cyder.atsushi.youtubesync.viewmodel.SnackbarCallback
+import android.util.DisplayMetrics
+
 
 /**
  * Created by chigichan24 on 2018/02/23.
@@ -85,4 +88,9 @@ fun Activity.setUpConfirmationDialog(title: String, description: String, positiv
             builder.show()
         }
     }
+}
+
+fun Resources.dpToPx(dp: Int): Int {
+    val displayMetrics = this.displayMetrics
+    return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
 }

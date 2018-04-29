@@ -12,11 +12,8 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
-import android.opengl.ETC1.getHeight
-import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
-import com.cyder.atsushi.youtubesync.R
-import com.cyder.atsushi.youtubesync.view.fragment.ChatFragment
 import com.cyder.atsushi.youtubesync.view.helper.ResizeAnimation
+import com.cyder.atsushi.youtubesync.view.helper.dpToPx
 
 
 /**
@@ -71,12 +68,17 @@ interface OnScrollStateChangedListener {
     fun onScrollStateChanged(recycler: RecyclerView, newState: Int)
 }
 
-@BindingAdapter("animatedVisibility")
-fun View.setAnimatedVisibility(visibility: Int) {
+@BindingAdapter(value = ["animatedVisibility", "originalHeight", "animationDuration"])
+fun View.setAnimatedVisibility(
+        visibility: Int,
+        originalHeight: Int,
+        duration: Long
+) {
     val animation: ResizeAnimation
+    val originalPxHeight = resources.dpToPx(originalHeight)
     if (visibility == View.VISIBLE) {
         this.visibility = View.VISIBLE
-        animation = ResizeAnimation(this, 100, 0)
+        animation = ResizeAnimation(this, originalPxHeight, 0)
     } else {
         animation = ResizeAnimation(this, -this.height, this.height)
         animation.setAnimationListener(object : Animation.AnimationListener {
@@ -89,7 +91,7 @@ fun View.setAnimatedVisibility(visibility: Int) {
             override fun onAnimationRepeat(animation: Animation) {}
         })
     }
-    animation.duration = 100
+    animation.duration = duration
     animation.interpolator = AccelerateDecelerateInterpolator()
     this.startAnimation(animation)
 }
