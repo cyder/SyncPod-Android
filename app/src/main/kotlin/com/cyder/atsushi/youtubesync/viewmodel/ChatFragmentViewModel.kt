@@ -46,10 +46,9 @@ class ChatFragmentViewModel @Inject constructor(
                     ChatViewModel(ObservableField(it))
                 }
                 .subscribe {
-                    chatViewModels.add(it)
                     val cpy = chatViewModels.toMutableList()
                     chatViewModels.clear()
-                    chatViewModels.addAll(cpy)
+                    chatViewModels.addAll(cpy + it)
                 }
     }
 
