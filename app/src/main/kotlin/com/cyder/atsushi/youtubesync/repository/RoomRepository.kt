@@ -10,6 +10,7 @@ import io.reactivex.Single
  * Created by chigichan24 on 2018/02/22.
  */
 interface RoomRepository {
+    val isEntered: Flowable<Boolean>
     fun createNewRoom(name: String, description: String): Single<Room>
     fun fetchJoinedRooms(): Single<List<Room>>
     fun fetch(roomKey: String): Single<Room>

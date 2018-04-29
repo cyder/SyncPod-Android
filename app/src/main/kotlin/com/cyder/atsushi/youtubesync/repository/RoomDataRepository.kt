@@ -7,7 +7,6 @@ import com.cyder.atsushi.youtubesync.model.Room
 import com.cyder.atsushi.youtubesync.model.User
 import com.cyder.atsushi.youtubesync.util.NotFilledFormsException
 import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
-import com.hosopy.actioncable.Consumer
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -23,6 +22,9 @@ class RoomDataRepository @Inject constructor(
         private val syncPodWsApi: SyncPodWsApi,
         private val token: String
 ) : RoomRepository {
+    override val isEntered = syncPodWsApi.isEntered
+
+
     override fun joinRoom(roomKey: String): Completable {
         return syncPodWsApi.enterRoom(roomKey)
     }
