@@ -47,9 +47,11 @@ class SearchVideoActivityViewModel @Inject constructor(
             videoViewModels.removeAll(videoViewModels)
             repository.getYouTubeSearch(word)
                     .map { convertToViewModel(it) }
-                    .subscribe { result, _ ->
-                        videoViewModels.addAll(result)
-                    }
+                    .subscribe({
+                        videoViewModels.addAll(it)
+                    }, {
+                        
+                    })
         }
         return false
     }

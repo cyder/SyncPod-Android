@@ -29,6 +29,7 @@ class SyncPodWsApiImpl @Inject constructor(
     private var chatEvent: Subject<Response> = BehaviorSubject.create()
     private val manageEnteredStream: Subject<Boolean> = BehaviorSubject.createDefault(false)
     private var pastChatsEvent: Subject<Response> = BehaviorSubject.create()
+    private var errorEvent: Subject<Response> = BehaviorSubject.create()
     override val nowPlayingResponse: Flowable<Response>
         get() = nowPlayingEvent.toFlowable(BackpressureStrategy.LATEST)
     override val startVideoResponse: Flowable<Response>
@@ -41,6 +42,8 @@ class SyncPodWsApiImpl @Inject constructor(
         get() = chatEvent.toFlowable(BackpressureStrategy.LATEST)
     override val pastChatsResponse: Flowable<Response>
         get() = pastChatsEvent.toFlowable(BackpressureStrategy.LATEST)
+    override val errorResponse: Flowable<Response>
+        get() = errorEvent.toFlowable(BackpressureStrategy.LATEST)
 
     override val isEntered: Flowable<Boolean> = manageEnteredStream.toFlowable(BackpressureStrategy.LATEST)
 
@@ -52,6 +55,7 @@ class SyncPodWsApiImpl @Inject constructor(
         addVideoEvent = BehaviorSubject.create()
         chatEvent = BehaviorSubject.create()
         pastChatsEvent = BehaviorSubject.create()
+        errorEvent = BehaviorSubject.create()
 
         val channel = Channel(CHANNEL_NAME, mapOf(ROOM_KEY to roomKey))
         consumer.disconnect()
@@ -85,6 +89,7 @@ class SyncPodWsApiImpl @Inject constructor(
         addVideoEvent.onComplete()
         chatEvent.onComplete()
         pastChatsEvent.onComplete()
+        errorEvent.onComplete()
         manageEnteredStream.onNext(false)
         return Completable.complete()
     }
@@ -103,6 +108,14 @@ class SyncPodWsApiImpl @Inject constructor(
 
     override fun requestAddVideo(videoId: String) {
         subscription?.perform(ADD_VIDEO, mapOf(VIDEO_ID to videoId))
+    }
+
+    override fun requestPastChat() {
+        subscription?.perform(PAST_CHATS)
+    }
+
+    override fun sendMessage(message: String) {
+        subscription?.perform(MESSAGE, mapOf(MESSAGE to message))
     }
 
     private fun startRouting() {
@@ -125,6 +138,9 @@ class SyncPodWsApiImpl @Inject constructor(
                     ADD_VIDEO -> {
                         addVideoEvent.onNext(response)
                     }
+                    ERROR -> {
+                        errorEvent.onNext(response)
+                    }
                 }
             }
         }
@@ -145,7 +161,9 @@ class SyncPodWsApiImpl @Inject constructor(
         const val EXIT_FORCE = "exit_force"
         const val USER_ID = "user_id"
         const val PAST_CHATS = "past_chats"
+        const val MESSAGE = "message"
         const val VIDEO_ID = "youtube_video_id"
+        const val ERROR = "error"
     }
 
 }

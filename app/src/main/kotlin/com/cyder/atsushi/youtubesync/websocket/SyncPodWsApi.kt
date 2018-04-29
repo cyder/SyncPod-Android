@@ -17,11 +17,14 @@ interface SyncPodWsApi {
     val addVideoResponse: Flowable<Response>
     val chatResponse: Flowable<Response>
     val pastChatsResponse: Flowable<Response>
+    val errorResponse: Flowable<Response>
     val isEntered: Flowable<Boolean>
     fun enterRoom(roomKey: String): Completable
     fun exitRoom(): Completable
     fun exitForce(user: User)
     fun requestNowPlayingVideo()
     fun requestPlayList()
+    fun requestPastChat()
+    fun sendMessage(message: String)
     fun requestAddVideo(videoId: String)
 }
