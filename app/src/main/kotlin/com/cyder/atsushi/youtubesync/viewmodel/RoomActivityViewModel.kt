@@ -15,7 +15,6 @@ class RoomActivityViewModel @Inject constructor(
         private val roomRepository: RoomRepository,
         private val videoRepository: VideoRepository,
         private val chatRepository: ChatRepository,
-        private val wsApi: SyncPodWsApi,
         private val navigator: Navigator
 ) : ActivityViewModel() {
     var isVideoPlayerVisible = ObservableBoolean(false)
