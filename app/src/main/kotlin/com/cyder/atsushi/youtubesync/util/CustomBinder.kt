@@ -1,6 +1,5 @@
 package com.cyder.atsushi.youtubesync.util
 
-import android.app.Activity
 import android.databinding.BindingAdapter
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
