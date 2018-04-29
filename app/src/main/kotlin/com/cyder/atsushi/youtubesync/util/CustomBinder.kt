@@ -10,6 +10,14 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.Animation
+import android.opengl.ETC1.getHeight
+import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
+import com.cyder.atsushi.youtubesync.R
+import com.cyder.atsushi.youtubesync.view.fragment.ChatFragment
+import com.cyder.atsushi.youtubesync.view.helper.ResizeAnimation
+
 
 /**
  * Created by chigichan24 on 2018/01/26.
@@ -63,3 +71,25 @@ interface OnScrollStateChangedListener {
     fun onScrollStateChanged(recycler: RecyclerView, newState: Int)
 }
 
+@BindingAdapter("animatedVisibility")
+fun View.setAnimatedVisibility(visibility: Int) {
+    val animation: ResizeAnimation
+    if (visibility == View.VISIBLE) {
+        this.visibility = View.VISIBLE
+        animation = ResizeAnimation(this, 100, 0)
+    } else {
+        animation = ResizeAnimation(this, -this.height, this.height)
+        animation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation) {}
+
+            override fun onAnimationEnd(arg0: Animation) {
+                this@setAnimatedVisibility.visibility = View.GONE
+            }
+
+            override fun onAnimationRepeat(animation: Animation) {}
+        })
+    }
+    animation.duration = 100
+    animation.interpolator = AccelerateDecelerateInterpolator()
+    this.startAnimation(animation)
+}
