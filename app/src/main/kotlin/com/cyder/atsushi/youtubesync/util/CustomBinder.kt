@@ -97,7 +97,7 @@ fun View.setAnimatedVisibility(
     this.startAnimation(animation)
 }
 
-@BindingAdapter("hideSoftwareKeyboard")
+@BindingAdapter("isHideSoftwareKeyboard")
 fun View.hideSoftwareKeyboard(flag: Boolean) {
     if (flag) {
         hideSoftwareKeyBoard()

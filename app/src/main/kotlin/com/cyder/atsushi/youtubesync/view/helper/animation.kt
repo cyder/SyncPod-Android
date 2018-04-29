@@ -12,7 +12,5 @@ class ResizeAnimation(var view: View, private val addHeight: Int, var startHeigh
         view.requestLayout()
     }
 
-    override fun willChangeBounds(): Boolean {
-        return true
-    }
+    override fun willChangeBounds() = true
 }
