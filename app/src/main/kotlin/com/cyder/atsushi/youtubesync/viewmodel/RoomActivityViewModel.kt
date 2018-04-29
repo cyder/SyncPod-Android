@@ -23,6 +23,7 @@ class RoomActivityViewModel @Inject constructor(
 ) : ActivityViewModel() {
     var isVideoPlayerVisible = ObservableBoolean(false)
     var isChatFragment = ObservableBoolean(false)
+    var hideSoftwareKeyboard = ObservableBoolean(false)
     private val onPauseSubject = PublishSubject.create<Unit>()
 
     lateinit var roomKey: String
@@ -65,6 +66,7 @@ class RoomActivityViewModel @Inject constructor(
 
     fun onPageSelected(fragment: Fragment) {
         isChatFragment.set(fragment is ChatFragment)
+        hideSoftwareKeyboard.set(fragment !is ChatFragment)
     }
 
     companion object {

@@ -1,5 +1,6 @@
 package com.cyder.atsushi.youtubesync.util
 
+import android.app.Activity
 import android.databinding.BindingAdapter
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -14,6 +15,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import com.cyder.atsushi.youtubesync.view.helper.ResizeAnimation
 import com.cyder.atsushi.youtubesync.view.helper.dpToPx
+import com.cyder.atsushi.youtubesync.view.helper.hideSoftwareKeyBoard
 
 
 /**
@@ -94,4 +96,11 @@ fun View.setAnimatedVisibility(
     animation.duration = duration
     animation.interpolator = AccelerateDecelerateInterpolator()
     this.startAnimation(animation)
+}
+
+@BindingAdapter("hideSoftwareKeyboard")
+fun View.hideSoftwareKeyboard(flag: Boolean) {
+    if (flag) {
+        hideSoftwareKeyBoard()
+    }
 }
