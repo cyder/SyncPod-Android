@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync.viewmodel.base
 
 import android.content.res.Resources
+import io.reactivex.subjects.PublishSubject
 
 
 /**
@@ -9,12 +10,20 @@ import android.content.res.Resources
 
 abstract class FragmentViewModel {
     lateinit var resources: Resources
+    protected val onPauseSubject = PublishSubject.create<Unit>()!!
 
     abstract fun onStart()
 
     abstract fun onResume()
 
-    abstract fun onPause()
+    open fun onPause() {
+        onPauseSubject.onNext(INVOCATION)
+    }
 
     abstract fun onStop()
+
+
+    companion object {
+        val INVOCATION = Unit
+    }
 }

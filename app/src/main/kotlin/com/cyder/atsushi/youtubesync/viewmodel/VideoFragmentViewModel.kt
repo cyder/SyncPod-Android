@@ -9,7 +9,6 @@ import com.google.android.youtube.player.YouTubePlayerSupportFragment
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -24,7 +23,6 @@ class VideoFragmentViewModel @Inject constructor(
     lateinit var youtubeFragment: YouTubePlayerSupportFragment
     private lateinit var player: YouTubePlayer
     val isInitializedPlayer: BehaviorSubject<Boolean> = BehaviorSubject.createDefault(false)
-    private val onPauseSubject = PublishSubject.create<Unit>()
     var nowProgress = ObservableInt(0)
     var maxProgress = ObservableInt(10000)
 
@@ -54,7 +52,7 @@ class VideoFragmentViewModel @Inject constructor(
     }
 
     override fun onPause() {
-        onPauseSubject.onNext(INVOCATION)
+        super.onPause()
     }
 
     override fun onStop() {
@@ -89,9 +87,5 @@ class VideoFragmentViewModel @Inject constructor(
                 .map { player.currentTimeMillis }
                 .filter { player.durationMillis > .0 }
                 .subscribe { nowProgress.set((maxProgress.get().toDouble() * it / player.durationMillis).toInt()) }
-    }
-
-    companion object {
-        val INVOCATION = Unit
     }
 }

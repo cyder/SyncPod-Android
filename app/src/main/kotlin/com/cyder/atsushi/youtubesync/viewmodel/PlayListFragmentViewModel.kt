@@ -12,7 +12,6 @@ import com.cyder.atsushi.youtubesync.viewmodel.base.FragmentViewModel
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 
@@ -24,7 +23,6 @@ class PlayListFragmentViewModel @Inject constructor(
         private val repository: VideoRepository,
         private val navigator: Navigator
 ) : FragmentViewModel() {
-    private val onPauseSubject = PublishSubject.create<Unit>()
     val videoViewModels: ObservableList<VideoViewModel> = ObservableArrayList()
     val nowPlayVideo: ObservableField<Video> = ObservableField()
     val published: ObservableField<String> = ObservableField()
@@ -65,7 +63,7 @@ class PlayListFragmentViewModel @Inject constructor(
     }
 
     override fun onPause() {
-        onPauseSubject.onNext(INVOCATION)
+        super.onPause()
     }
 
     override fun onStop() {
@@ -75,9 +73,5 @@ class PlayListFragmentViewModel @Inject constructor(
 
     private fun convertToViewModel(videos: List<Video>): List<VideoViewModel> {
         return videos.map { VideoViewModel(repository, ObservableField(it)) }
-    }
-
-    companion object {
-        val INVOCATION = Unit
     }
 }

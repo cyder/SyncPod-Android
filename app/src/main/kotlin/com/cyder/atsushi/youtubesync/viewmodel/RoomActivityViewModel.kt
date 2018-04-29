@@ -8,7 +8,6 @@ import com.cyder.atsushi.youtubesync.repository.VideoRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
 import io.reactivex.BackpressureStrategy
-import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class RoomActivityViewModel @Inject constructor(
@@ -18,7 +17,6 @@ class RoomActivityViewModel @Inject constructor(
         private val navigator: Navigator
 ) : ActivityViewModel() {
     var isVideoPlayerVisible = ObservableBoolean(false)
-    private val onPauseSubject = PublishSubject.create<Unit>()
 
     lateinit var roomKey: String
 
@@ -48,7 +46,7 @@ class RoomActivityViewModel @Inject constructor(
     }
 
     override fun onPause() {
-        onPauseSubject.onNext(INVOCATION)
+        super.onPause()
     }
 
     override fun onStop() {
@@ -56,9 +54,5 @@ class RoomActivityViewModel @Inject constructor(
 
     override fun onDestroy() {
         roomRepository.exitRoom()
-    }
-
-    companion object {
-        val INVOCATION = Unit
     }
 }
