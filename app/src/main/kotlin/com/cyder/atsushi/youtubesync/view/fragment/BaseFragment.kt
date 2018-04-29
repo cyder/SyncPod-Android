@@ -26,6 +26,7 @@ abstract class BaseFragment : Fragment() {
 
     protected fun bindViewModel(viewModel: FragmentViewModel) {
         this.viewModel = viewModel
+        viewModel.resources = resources
     }
 
     override fun onStart() {

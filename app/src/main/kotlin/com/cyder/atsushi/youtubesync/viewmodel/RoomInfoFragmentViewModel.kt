@@ -24,7 +24,6 @@ class RoomInfoFragmentViewModel @Inject constructor(
         private val navigator: Navigator
 ) : FragmentViewModel() {
     lateinit var roomKey: String
-    lateinit var resources: Resources
     var isLoading: ObservableBoolean = ObservableBoolean()
     var room: ObservableField<Room> = ObservableField()
     var onlineUserTitle: ObservableField<String> = ObservableField()

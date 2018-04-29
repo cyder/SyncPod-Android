@@ -25,6 +25,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     protected fun bindViewModel(viewModel: ActivityViewModel) {
         this.viewModel = viewModel
+        viewModel.resources = resources
     }
 
 

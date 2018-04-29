@@ -35,7 +35,6 @@ class RoomInfoFragment : BaseFragment() {
         bindViewModel(viewModel)
         viewModel.roomKey = arguments!!.getString(ROOM_KEY)
         viewModel.shareCompatCallback = activity?.setUpShareCompat()
-        viewModel.resources = resources
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
