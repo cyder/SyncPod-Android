@@ -22,7 +22,6 @@ class ChatFragmentViewModel @Inject constructor(
         private val repository: ChatRepository
 ) : FragmentViewModel() {
     var chatViewModels: ObservableList<ChatViewModel> = ObservableArrayList()
-    var chat: ObservableField<String> = ObservableField()
     private val onPauseSubject = PublishSubject.create<Unit>()
 
     override fun onStart() {
@@ -57,11 +56,6 @@ class ChatFragmentViewModel @Inject constructor(
     }
 
     override fun onStop() {
-    }
-
-    fun sendChat() {
-        repository.sendChat(chat.get() ?: "")
-        chat.set("")
     }
 
     private fun convertToViewModel(chats: List<Chat>): List<ChatViewModel> {
