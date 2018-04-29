@@ -9,6 +9,7 @@ import com.cyder.atsushi.youtubesync.util.NotFilledFormsException
 import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
 import com.hosopy.actioncable.Consumer
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -55,6 +56,16 @@ class RoomDataRepository @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
+    override fun exitForce(user: User) {
+        syncPodWsApi.exitForce(user)
+    }
+
+    override fun receiveForceExit(): Flowable<Unit> {
+        return syncPodWsApi.errorResponse
+                .filter { it.data?.message == FORCE_EXIT }
+                .map { INVOCATION }
+    }
+
     private fun createNewRoomValidation(name: String, description: String): Completable {
         return Completable.create { emitter ->
             if (name.isBlank() || description.isBlank()) {
@@ -63,5 +74,10 @@ class RoomDataRepository @Inject constructor(
                 emitter.onComplete()
             }
         }
+    }
+
+    companion object {
+        const val FORCE_EXIT: String = "force exit"
+        val INVOCATION = Unit
     }
 }

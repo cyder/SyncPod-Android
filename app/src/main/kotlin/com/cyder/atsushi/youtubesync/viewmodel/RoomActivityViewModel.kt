@@ -2,6 +2,7 @@ package com.cyder.atsushi.youtubesync.viewmodel
 
 import android.databinding.ObservableBoolean
 import com.cyder.atsushi.youtubesync.repository.ChatRepository
+import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.repository.RoomRepository
 import com.cyder.atsushi.youtubesync.repository.VideoRepository
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
@@ -33,6 +34,13 @@ class RoomActivityViewModel @Inject constructor(
     override fun onResume() {
         videoRepository.getNowPlayingVideo()
         videoRepository.getPlayList()
+        roomRepository.receiveForceExit()
+                .takeUntil(onPauseSubject.toFlowable(BackpressureStrategy.LATEST))
+                .subscribe {
+                    roomRepository.exitRoom()
+                    navigator.navigateToTopActivity(R.string.receive_force_exit)
+                    navigator.closeActivity()
+                }
         videoRepository.observeIsPlaying()
                 .takeUntil(onPauseSubject.toFlowable(BackpressureStrategy.LATEST))
                 .subscribe {

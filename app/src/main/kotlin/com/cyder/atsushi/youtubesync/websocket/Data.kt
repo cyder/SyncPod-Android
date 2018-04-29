@@ -12,6 +12,7 @@ import com.google.gson.annotations.SerializedName
 data class Data(
         val video: Video,
         val chat: Chat,
+        val message: String,
         @SerializedName("play_list") val playList: List<Video>,
         @SerializedName("past_chats") val pastChat: List<Chat>
 )
