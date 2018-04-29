@@ -1,10 +1,12 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
 import android.databinding.ObservableBoolean
+import android.support.v4.app.Fragment
 import com.cyder.atsushi.youtubesync.repository.ChatRepository
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.repository.RoomRepository
 import com.cyder.atsushi.youtubesync.repository.VideoRepository
+import com.cyder.atsushi.youtubesync.view.fragment.ChatFragment
 import com.cyder.atsushi.youtubesync.view.helper.Navigator
 import com.cyder.atsushi.youtubesync.viewmodel.base.ActivityViewModel
 import com.cyder.atsushi.youtubesync.websocket.SyncPodWsApi
@@ -20,6 +22,7 @@ class RoomActivityViewModel @Inject constructor(
         private val navigator: Navigator
 ) : ActivityViewModel() {
     var isVideoPlayerVisible = ObservableBoolean(false)
+    var isChatFragment = ObservableBoolean(false)
     private val onPauseSubject = PublishSubject.create<Unit>()
 
     lateinit var roomKey: String
@@ -58,6 +61,10 @@ class RoomActivityViewModel @Inject constructor(
 
     override fun onDestroy() {
         roomRepository.exitRoom()
+    }
+
+    fun onPageSelected(fragment: Fragment) {
+        isChatFragment.set(fragment is ChatFragment)
     }
 
     companion object {
