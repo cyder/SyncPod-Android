@@ -1,7 +1,7 @@
 package com.cyder.atsushi.youtubesync.websocket
 
 import com.cyder.atsushi.youtubesync.api.response.Video
-import com.cyder.atsushi.youtubesync.model.Chat
+import com.cyder.atsushi.youtubesync.websocket.response.Chat
 import com.google.gson.annotations.SerializedName
 
 
@@ -14,5 +14,5 @@ data class Data(
         val chat: Chat,
         val message: String,
         @SerializedName("play_list") val playList: List<Video>,
-        @SerializedName("past_chat") val pastChat: List<Chat>
+        @SerializedName("past_chats") val pastChat: List<Chat>
 )

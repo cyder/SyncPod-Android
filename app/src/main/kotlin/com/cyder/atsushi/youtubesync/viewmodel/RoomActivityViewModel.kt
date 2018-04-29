@@ -1,6 +1,7 @@
 package com.cyder.atsushi.youtubesync.viewmodel
 
 import android.databinding.ObservableBoolean
+import com.cyder.atsushi.youtubesync.repository.ChatRepository
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.repository.RoomRepository
 import com.cyder.atsushi.youtubesync.repository.VideoRepository
@@ -14,6 +15,7 @@ import javax.inject.Inject
 class RoomActivityViewModel @Inject constructor(
         private val roomRepository: RoomRepository,
         private val videoRepository: VideoRepository,
+        private val chatRepository: ChatRepository,
         private val wsApi: SyncPodWsApi,
         private val navigator: Navigator
 ) : ActivityViewModel() {
@@ -44,6 +46,7 @@ class RoomActivityViewModel @Inject constructor(
                 .subscribe {
                     isVideoPlayerVisible.set(it)
                 }
+        chatRepository.getPastChats()
     }
 
     override fun onPause() {

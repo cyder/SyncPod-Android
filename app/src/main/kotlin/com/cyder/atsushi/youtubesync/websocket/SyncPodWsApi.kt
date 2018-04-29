@@ -24,5 +24,7 @@ interface SyncPodWsApi {
     fun exitForce(user: User)
     fun requestNowPlayingVideo()
     fun requestPlayList()
+    fun requestPastChat()
+    fun sendMessage(message: String)
     fun requestAddVideo(videoId: String)
 }

@@ -110,6 +110,14 @@ class SyncPodWsApiImpl @Inject constructor(
         subscription?.perform(ADD_VIDEO, mapOf(VIDEO_ID to videoId))
     }
 
+    override fun requestPastChat() {
+        subscription?.perform(PAST_CHATS)
+    }
+
+    override fun sendMessage(message: String) {
+        subscription?.perform(MESSAGE, mapOf(MESSAGE to message))
+    }
+
     private fun startRouting() {
         subscription?.onReceived = {
             if (it is String) {
@@ -153,6 +161,7 @@ class SyncPodWsApiImpl @Inject constructor(
         const val EXIT_FORCE = "exit_force"
         const val USER_ID = "user_id"
         const val PAST_CHATS = "past_chats"
+        const val MESSAGE = "message"
         const val VIDEO_ID = "youtube_video_id"
         const val ERROR = "error"
     }
