@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="com.cyder.atsushi.youtubesync.viewmodel.ChatViewModel" />
+            type="com.cyder.android.syncpod.viewmodel.ChatViewModel" />
     </data>
 
     <LinearLayout

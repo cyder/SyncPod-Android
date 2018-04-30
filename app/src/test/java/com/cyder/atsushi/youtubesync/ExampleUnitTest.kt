@@ -1,4 +1,4 @@
-package com.cyder.atsushi.youtubesync
+package com.cyder.android.syncpod
 
 import org.junit.Test
 

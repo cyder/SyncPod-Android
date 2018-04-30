@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.cyder.atsushi.youtubesync.viewmodel.TopActivityViewModel" />
+            type="com.cyder.android.syncpod.viewmodel.TopActivityViewModel" />
 
         <import type="android.view.View" />
     </data>

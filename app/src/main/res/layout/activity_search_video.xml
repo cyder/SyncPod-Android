@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.cyder.atsushi.youtubesync.viewmodel.SearchVideoActivityViewModel" />
+            type="com.cyder.android.syncpod.viewmodel.SearchVideoActivityViewModel" />
     </data>
 
     <LinearLayout

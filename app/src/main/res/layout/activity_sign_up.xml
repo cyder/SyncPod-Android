@@ -6,9 +6,9 @@
 
         <variable
             name="viewModel"
-            type="com.cyder.atsushi.youtubesync.viewmodel.SignUpActivityViewModel" />
+            type="com.cyder.android.syncpod.viewmodel.SignUpActivityViewModel" />
 
-        <import type="com.cyder.atsushi.youtubesync.util.SafeUnbox" />
+        <import type="com.cyder.android.syncpod.util.SafeUnbox" />
     </data>
 
     <LinearLayout
