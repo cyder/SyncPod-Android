@@ -5,6 +5,7 @@ import android.databinding.ObservableList
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,6 +42,12 @@ class ChatFragment : BaseFragment() {
 
     private fun initRecyclerView() {
         val adapter = ChatAdapter(viewModel.chatViewModels)
+        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                binding.chatList.smoothScrollToPosition(adapter.itemCount - 1)
+            }
+        })
         binding.chatList.adapter = adapter
         val manager = LinearLayoutManager(activity)
         manager.stackFromEnd = true
