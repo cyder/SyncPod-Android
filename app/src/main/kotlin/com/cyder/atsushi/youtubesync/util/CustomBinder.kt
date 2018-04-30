@@ -10,6 +10,12 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.Animation
+import com.cyder.atsushi.youtubesync.view.helper.ResizeAnimation
+import com.cyder.atsushi.youtubesync.view.helper.dpToPx
+import com.cyder.atsushi.youtubesync.view.helper.hideSoftwareKeyBoard
+
 
 /**
  * Created by chigichan24 on 2018/01/26.
@@ -63,3 +69,37 @@ interface OnScrollStateChangedListener {
     fun onScrollStateChanged(recycler: RecyclerView, newState: Int)
 }
 
+@BindingAdapter(value = ["animatedVisibility", "originalHeight", "animationDuration"])
+fun View.setAnimatedVisibility(
+        visibility: Int,
+        originalHeight: Int,
+        duration: Long
+) {
+    val animation: ResizeAnimation
+    val originalPxHeight = resources.dpToPx(originalHeight)
+    if (visibility == View.VISIBLE) {
+        this.visibility = View.VISIBLE
+        animation = ResizeAnimation(this, originalPxHeight, 0)
+    } else {
+        animation = ResizeAnimation(this, -this.height, this.height)
+        animation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation) {}
+
+            override fun onAnimationEnd(arg0: Animation) {
+                this@setAnimatedVisibility.visibility = View.GONE
+            }
+
+            override fun onAnimationRepeat(animation: Animation) {}
+        })
+    }
+    animation.duration = duration
+    animation.interpolator = AccelerateDecelerateInterpolator()
+    this.startAnimation(animation)
+}
+
+@BindingAdapter("isHideSoftwareKeyboard")
+fun View.hideSoftwareKeyboard(flag: Boolean) {
+    if (flag) {
+        hideSoftwareKeyBoard()
+    }
+}
