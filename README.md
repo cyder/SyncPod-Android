@@ -16,7 +16,7 @@ Android Studio内のSDK Managerから、デバッグ用実機端末のバージ�
 ## セットアップ
 1. 次のコマンドを実行する。
 ```sh
-git clone https://github.com/cyder/SyncPod-Android.git
+git clone git@github.com:cyder/SyncPod-Android.git
 cd SyncPod-Android
 ```
 2. Android Studioでプロジェクトを開く
