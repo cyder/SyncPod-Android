@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.cyder.atsushi.youtubesync.viewmodel.RoomActivityViewModel" />
+            type="com.cyder.android.syncpod.viewmodel.RoomActivityViewModel" />
     </data>
 
     <LinearLayout
@@ -26,7 +26,7 @@
 
             <fragment
                 android:id="@+id/youtube_fragment"
-                android:name="com.cyder.atsushi.youtubesync.view.fragment.VideoFragment"
+                android:name="com.cyder.android.syncpod.view.fragment.VideoFragment"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
@@ -51,7 +51,7 @@
                     android:background="@color/roomTab"
                     android:elevation="2dp" />
 
-                <com.cyder.atsushi.youtubesync.view.components.WithoutKeyEventViewPager
+                <com.cyder.android.syncpod.view.components.WithoutKeyEventViewPager
                         android:id="@+id/view_pager"
                         android:layout_height="match_parent"
                         android:layout_width="match_parent"/>
@@ -69,7 +69,7 @@
 
                 <fragment
                     android:id="@+id/chat_form_fragment"
-                    android:name="com.cyder.atsushi.youtubesync.view.fragment.ChatFormFragment"
+                    android:name="com.cyder.android.syncpod.view.fragment.ChatFormFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>

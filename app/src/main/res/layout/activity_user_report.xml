@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.cyder.atsushi.youtubesync.viewmodel.UserReportActivityViewModel" />
+            type="com.cyder.android.syncpod.viewmodel.UserReportActivityViewModel" />
     </data>
 
     <LinearLayout

@@ -12,7 +12,7 @@ def appVersionName = "${versionMajor}.${versionMinor}.${versionPatch}"
 
 def appCompileSdkVersion = 26
 def appBuildToolsVersion = "27.0.2"
-def appPackageName = "com.cyder.atsushi.youtubesync"
+def appPackageName = "com.cyder.android.syncpod"
 def appMinSdkVersion = 19
 def appTargetSdkVersion = 26
 
