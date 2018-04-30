@@ -41,16 +41,20 @@ class ChatFragment : BaseFragment() {
     }
 
     private fun initRecyclerView() {
+        val manager = LinearLayoutManager(activity)
+        manager.stackFromEnd = true
         val adapter = ChatAdapter(viewModel.chatViewModels)
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
-                binding.chatList.smoothScrollToPosition(adapter.itemCount - 1)
+                val lastVisiblePosition = manager.findLastVisibleItemPosition()
+                val lastListPosition = adapter.itemCount - 1
+                if (lastListPosition - 1 == lastVisiblePosition) {
+                    binding.chatList.smoothScrollToPosition(lastListPosition)
+                }
             }
         })
         binding.chatList.adapter = adapter
-        val manager = LinearLayoutManager(activity)
-        manager.stackFromEnd = true
         binding.chatList.layoutManager = manager
         binding.chatList.addItemDecoration(DividerItemDecoration(binding.chatList.context, manager.orientation))
     }
