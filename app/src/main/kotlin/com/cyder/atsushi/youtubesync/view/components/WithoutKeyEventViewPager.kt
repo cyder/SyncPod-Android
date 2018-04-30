@@ -6,7 +6,5 @@ import android.util.AttributeSet
 import android.view.KeyEvent
 
 class WithoutKeyEventViewPager(context: Context, attributeSet: AttributeSet): ViewPager(context, attributeSet) {
-    override fun executeKeyEvent(event: KeyEvent): Boolean {
-        return false
-    }
+    override fun executeKeyEvent(event: KeyEvent) = false
 }
