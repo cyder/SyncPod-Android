@@ -44,16 +44,8 @@ class ChatFragment : BaseFragment() {
         val manager = LinearLayoutManager(activity)
         manager.stackFromEnd = true
         val adapter = ChatAdapter(viewModel.chatViewModels)
-        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                super.onItemRangeInserted(positionStart, itemCount)
-                val lastVisiblePosition = manager.findLastVisibleItemPosition()
-                val lastListPosition = adapter.itemCount - 1
-                if (lastListPosition - 1 == lastVisiblePosition) {
-                    binding.chatList.smoothScrollToPosition(lastListPosition)
-                }
-            }
-        })
+        val dataObserver = AutoScrollDataObserver(manager, adapter)
+        adapter.registerAdapterDataObserver(dataObserver)
         binding.chatList.adapter = adapter
         binding.chatList.layoutManager = manager
         binding.chatList.addItemDecoration(DividerItemDecoration(binding.chatList.context, manager.orientation))
@@ -66,6 +58,20 @@ class ChatFragment : BaseFragment() {
             val viewModel = getItem(position)
             val binding = holder?.binding
             binding?.viewModel = viewModel
+        }
+    }
+
+    inner class AutoScrollDataObserver(
+            private val manager: LinearLayoutManager,
+            private val adapter: ChatAdapter
+    ) : RecyclerView.AdapterDataObserver() {
+        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+            super.onItemRangeInserted(positionStart, itemCount)
+            val lastVisiblePosition = manager.findLastVisibleItemPosition()
+            val lastListPosition = adapter.itemCount - 1
+            if (lastListPosition - 1 == lastVisiblePosition) {
+                binding.chatList.smoothScrollToPosition(lastListPosition)
+            }
         }
     }
 
