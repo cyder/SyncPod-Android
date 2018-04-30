@@ -65,6 +65,6 @@ class AppModule(private val context: Context) {
 
 
     companion object {
-        const val APP_NAME = "youtube-sync"
+        const val APP_NAME = "sync-pod"
     }
 }
