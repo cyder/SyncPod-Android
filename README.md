@@ -1,11 +1,13 @@
-# YouTubeSync
-YouTubeSyncのAndroidアプリ用のリポジトリです。
+# SyncPod-Android
+SyncPodcのAndroidアプリ用のリポジトリです。
 
 ## 必要環境
-* Android Studio 3.0.1
-* Android SDK
+* Android Studio 3.1
+* Android SDK 26
+* gradle 4.1
 
-### Android Studio 3.0.1
+
+### Android Studio 3.1
 [ここ](https://developer.android.com/studio/archive.html)からインストールする。
 
 ### Android SDK
