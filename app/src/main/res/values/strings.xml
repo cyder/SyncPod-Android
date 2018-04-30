@@ -7,6 +7,7 @@
     <string name="register_account_title">アカウント登録</string>
     <string name="create_new_room">新規ルーム作成</string>
     <string name="title">SyncPod</string>
+    <string name="user_report_title">違反報告</string>
 
     <!--layout-->
     <string name="email">メールアドレス</string>
@@ -40,7 +41,7 @@
     <string name="online_users_num">オンライン：%d人</string>
     <string name="now_playing_video_info">再生中：%s</string>
     <string name="last_played_video_info">再生終了：%s</string>
-    <string name="reject_message">入室できません。\nルームIDが間違っている可能性があります。</string>
+    <string name="room_enter_reject_message">入室できません。\nルームIDが間違っているか\n他ユーザーからバンされた可能性があります。</string>
     <string name="ok">OK</string>
     <string name="notice">おしらせ</string>
     <string name="room_name">ルーム名</string>
@@ -56,6 +57,7 @@
         こちらのURLからも入室できます。\n
         http://app.sync-pod.com/room?room_key=%2$s
     </string>
+    <string name="user_report_button">違反報告</string>
     <string name="playlist">プレイリスト</string>
     <string name="online_users_title">オンライン（%d人）</string>
     <string name="confirm">確認</string>
@@ -64,10 +66,17 @@
     <string name="login_mistook">メールアドレスもしくはパスワードが間違っています。</string>
     <string name="sign_up_used_email">入力されたメールアドレスは既に使われています。</string>
     <string name="form_not_filled">項目をすべて入力してください。</string>
+    <string name="not_agree_terms">利用規約に同意して下さい。</string>
     <string name="sign_up_invalid_password">パスワードが一致しません。</string>
     <string name="sign_up_min_password_length">パスワードが短すぎます。</string>
     <string name="sign_up_invalid_email">メールアドレスが正しくありません。</string>
     <string name="published">公開 : %s</string>
     <string name="view_count">視聴回数 : %s 回</string>
     <string name="network_error">予期せぬエラーが発生しました。間を開けてお試しください。</string>
+    <string name="terms_message"><a href="http://app.sync-pod.com/terms">利用規約</a> に同意する。</string>
+    <string name="user_report_description">報告内容を詳細に記述して下さい。</string>
+    <string name="force_exit_title">%sさんを退出させる</string>
+    <string name="force_exit_description">%sさんは24時間このルームに入室できなくなります。本当によろしいですか？</string>
+    <string name="force_exit">退出させる</string>
+    <string name="receive_force_exit">他のユーザから強制退室を受けました。今後しばらくこのルームには入室できません。</string>
 </resources>

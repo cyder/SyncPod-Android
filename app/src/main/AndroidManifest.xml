@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cyder.atsushi.youtubesync">\
+    package="com.cyder.android.syncpod">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <application
+        android:name=".BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".view.activity.SplashActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
                     android:host="app.sync-pod.com"
+                    android:path="/room"
                     android:scheme="http" />
                 <data
                     android:host="app.com"
@@ -34,30 +35,30 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CreateRoomActivity"
+            android:name=".view.activity.WelcomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".TopActivity"
+            android:name=".view.activity.SignInActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RoomActivity"
+            android:name=".view.activity.SignUpActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SearchVideoActivity"
+            android:name=".view.activity.TopActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".FirstStartActivity"
+            android:name=".view.activity.CreateRoomActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SignInActivity"
+            android:name=".view.activity.RoomActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SignUpActivity"
+            android:name=".view.activity.SearchVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.UserReportActivity"
             android:screenOrientation="portrait" />
 
-        <meta-data
-            android:name="developer_key"
-            android:value="${developer_key}" />
     </application>
 
 </manifest>

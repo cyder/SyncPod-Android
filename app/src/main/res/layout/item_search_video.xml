@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.cyder.android.syncpod.viewmodel.SearchVideoViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="@{(v) -> viewModel.onItemClick()}"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <RelativeLayout
+            android:layout_width="160dp"
+            android:layout_height="90dp">
+
+            <ImageView
+                android:id="@+id/thumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{viewModel.video.thumbnailUrl}" />
+
+            <TextView
+                android:id="@+id/video_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/thumbnail"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="5dp"
+                android:background="@color/duration_background"
+                android:paddingEnd="2dp"
+                android:paddingStart="1dp"
+                android:text="@{viewModel.video.duration}"
+                android:textColor="@color/duration_text"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lineSpacingExtra="2sp"
+                android:maxLines="2"
+                android:scrollHorizontally="true"
+                android:text="@{viewModel.video.title}"
+                android:textColor="@color/text"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/channel_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{viewModel.video.channelTitle}"
+                android:textColor="@color/subtext"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/published"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="@{@string/published(viewModel.video.published)}"
+                android:textColor="@color/subtext"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/view_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="@{@string/view_count(viewModel.video.viewCount)}"
+                android:textColor="@color/subtext"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>
