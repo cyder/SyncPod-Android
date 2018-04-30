@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.view.ViewPager
 import com.cyder.atsushi.youtubesync.R
 import com.cyder.atsushi.youtubesync.databinding.ActivityRoomBinding
 import com.cyder.atsushi.youtubesync.view.fragment.ChatFragment
@@ -32,15 +33,17 @@ class RoomActivity : BaseActivity() {
     }
 
     private fun initViewPager() {
-        binding.viewPager.adapter = PagerAdapter()
+        val adapter = PagerAdapter()
+        binding.viewPager.adapter = adapter
+        binding.viewPager.addOnPageChangeListener(OnPageChangeListener(adapter))
         binding.tabLayout.setupWithViewPager(binding.viewPager)
     }
 
     inner class PagerAdapter : FragmentPagerAdapter(this.supportFragmentManager) {
         val fragments: List<Fragment> = listOf(
-            PlayListFragment.createInstance(),
-            ChatFragment.createInstance(),
-            RoomInfoFragment.createInstance(intent.getStringExtra(ROOM_KEY))
+                PlayListFragment.createInstance(),
+                ChatFragment.createInstance(),
+                RoomInfoFragment.createInstance(intent.getStringExtra(ROOM_KEY))
         )
 
         override fun getItem(position: Int): Fragment {
@@ -52,7 +55,7 @@ class RoomActivity : BaseActivity() {
         }
 
         override fun getPageTitle(position: Int): CharSequence? {
-            return when(fragments[position]) {
+            return when (fragments[position]) {
                 is PlayListFragment -> {
                     getString(R.string.playlist_title)
                 }
@@ -62,10 +65,18 @@ class RoomActivity : BaseActivity() {
                 is RoomInfoFragment -> {
                     getString(R.string.room_information_title)
                 }
-                else -> { null }
+                else -> {
+                    null
+                }
             }
         }
 
+    }
+
+    inner class OnPageChangeListener(val adapter: FragmentPagerAdapter) : ViewPager.SimpleOnPageChangeListener() {
+        override fun onPageSelected(position: Int) {
+            viewModel.onPageSelected(adapter.getItem(position))
+        }
     }
 
     companion object {
