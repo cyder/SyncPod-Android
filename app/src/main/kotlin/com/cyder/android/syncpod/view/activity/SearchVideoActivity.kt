@@ -42,12 +42,12 @@ class SearchVideoActivity : BaseActivity() {
     }
 
     inner class SearchResultAdapter(list: ObservableList<SearchVideoViewModel>) : ObservableListAdapter<SearchVideoViewModel, BindingHolder<ItemSearchVideoBinding>>(list) {
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemSearchVideoBinding>  = BindingHolder(parent, R.layout.item_search_video)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemSearchVideoBinding>  = BindingHolder(parent, R.layout.item_search_video)
 
-        override fun onBindViewHolder(holder: BindingHolder<ItemSearchVideoBinding>?, position: Int) {
+        override fun onBindViewHolder(holder: BindingHolder<ItemSearchVideoBinding>, position: Int) {
             val viewModel = getItem(position)
-            val binding = holder?.binding
-            binding?.viewModel = viewModel
+            val binding = holder.binding
+            binding.viewModel = viewModel
         }
 
     }

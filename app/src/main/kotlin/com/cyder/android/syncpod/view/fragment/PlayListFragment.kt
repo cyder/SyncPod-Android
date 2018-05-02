@@ -48,12 +48,12 @@ class PlayListFragment : BaseFragment() {
     }
 
     inner class PlayListAdapter(list: ObservableList<VideoViewModel>) : ObservableListAdapter<VideoViewModel, BindingHolder<ItemVideoBinding>>(list) {
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemVideoBinding>  = BindingHolder(parent, R.layout.item_video)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemVideoBinding>  = BindingHolder(parent, R.layout.item_video)
 
-        override fun onBindViewHolder(holder: BindingHolder<ItemVideoBinding>?, position: Int) {
+        override fun onBindViewHolder(holder: BindingHolder<ItemVideoBinding>, position: Int) {
             val viewModel = getItem(position)
-            val binding = holder?.binding
-            binding?.viewModel = viewModel
+            val binding = holder.binding
+            binding.viewModel = viewModel
         }
 
     }
