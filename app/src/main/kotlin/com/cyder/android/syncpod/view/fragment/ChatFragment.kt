@@ -52,12 +52,12 @@ class ChatFragment : BaseFragment() {
     }
 
     inner class ChatAdapter(list: ObservableList<ChatViewModel>) : ObservableListAdapter<ChatViewModel, BindingHolder<ItemChatBinding>>(list) {
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemChatBinding> = BindingHolder(parent, R.layout.item_chat)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemChatBinding> = BindingHolder(parent, R.layout.item_chat)
 
-        override fun onBindViewHolder(holder: BindingHolder<ItemChatBinding>?, position: Int) {
+        override fun onBindViewHolder(holder: BindingHolder<ItemChatBinding>, position: Int) {
             val viewModel = getItem(position)
-            val binding = holder?.binding
-            binding?.viewModel = viewModel
+            val binding = holder.binding
+            binding.viewModel = viewModel
         }
     }
 

@@ -72,13 +72,13 @@ class TopActivity : BaseActivity() {
 
     inner class JoinedRoomAdapter(list: ObservableList<RoomViewModel>) : ObservableListAdapter<RoomViewModel, BindingHolder<ItemRoomBinding>>(list) {
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemRoomBinding> = BindingHolder(parent, R.layout.item_room)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemRoomBinding> = BindingHolder(parent, R.layout.item_room)
 
-        override fun onBindViewHolder(holder: BindingHolder<ItemRoomBinding>?, position: Int) {
+        override fun onBindViewHolder(holder: BindingHolder<ItemRoomBinding>, position: Int) {
             val viewModel = getItem(position)
             viewModel.callback = setUpSnackbar()
-            val binding = holder?.binding
-            binding?.viewModel = viewModel
+            val binding = holder.binding
+            binding.viewModel = viewModel
         }
     }
 

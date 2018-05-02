@@ -9,8 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.cyder.android.syncpod.R
 import com.cyder.android.syncpod.databinding.FragmentRoominfoBinding
-import com.cyder.android.syncpod.view.adapter.BindingHolder
 import com.cyder.android.syncpod.databinding.ItemUserBinding
+import com.cyder.android.syncpod.view.adapter.BindingHolder
 import com.cyder.android.syncpod.view.adapter.ObservableListAdapter
 import com.cyder.android.syncpod.view.helper.setUpConfirmationDialog
 import com.cyder.android.syncpod.view.helper.setUpMenuDialog
@@ -66,11 +66,11 @@ class RoomInfoFragment : BaseFragment() {
 
     inner class OnlineUsersAdapter(list: ObservableList<UserViewModel>) : ObservableListAdapter<UserViewModel, BindingHolder<ItemUserBinding>>(list) {
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemUserBinding> = BindingHolder(parent, R.layout.item_user)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemUserBinding> = BindingHolder(parent, R.layout.item_user)
 
-        override fun onBindViewHolder(holder: BindingHolder<ItemUserBinding>?, position: Int) {
+        override fun onBindViewHolder(holder: BindingHolder<ItemUserBinding>, position: Int) {
             val viewModel = getItem(position)
-            val binding = holder?.binding
+            val binding = holder.binding
 
             viewModel.resources = activity!!.resources
 
@@ -92,7 +92,7 @@ class RoomInfoFragment : BaseFragment() {
 
             viewModel.menuDialogCallback = activity!!.setUpMenuDialog(items)
             viewModel.forceExitDialogCallback = activity!!.setUpConfirmationDialog(viewModel.forceExitTitle, viewModel.forceExitDescription, confirmForceExit)
-            binding?.viewModel = viewModel
+            binding.viewModel = viewModel
         }
     }
 }
