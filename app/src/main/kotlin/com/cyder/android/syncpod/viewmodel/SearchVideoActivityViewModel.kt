@@ -3,11 +3,9 @@ package com.cyder.android.syncpod.viewmodel
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableField
 import android.databinding.ObservableList
-import android.view.inputmethod.EditorInfo
 import com.cyder.android.syncpod.model.Video
 import com.cyder.android.syncpod.repository.VideoRepository
 import com.cyder.android.syncpod.repository.YouTubeRepository
-import com.cyder.android.syncpod.view.activity.SearchVideoActivity
 import com.cyder.android.syncpod.view.helper.Navigator
 import com.cyder.android.syncpod.viewmodel.base.ActivityViewModel
 import javax.inject.Inject
@@ -42,17 +40,15 @@ class SearchVideoActivityViewModel @Inject constructor(
     fun onBackButtonClicked() = navigator.closeActivity()
 
     fun onEnterKeyClicked(actionId: Int): Boolean {
-        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-            val word = searchWord.get() ?: ""
-            videoViewModels.removeAll(videoViewModels)
-            repository.getYouTubeSearch(word)
-                    .map { convertToViewModel(it) }
-                    .subscribe({
-                        videoViewModels.addAll(it)
-                    }, {
-                        
-                    })
-        }
+        val word = searchWord.get() ?: ""
+        videoViewModels.clear()
+        repository.getYouTubeSearch(word)
+                .map { convertToViewModel(it) }
+                .subscribe({
+                    videoViewModels.addAll(it)
+                }, {
+
+                })
         return false
     }
 
