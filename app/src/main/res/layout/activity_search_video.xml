@@ -34,7 +34,7 @@
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:text="@={viewModel.searchWord}"
-                app:onEnterClick="@{(v, id, event) -> viewModel.onEnterKeyClicked(id)}">
+                app:onEnterClick="@{(v, id, event) -> viewModel.onEnterKeyClicked()}">
 
                 <requestFocus />
             </EditText>
