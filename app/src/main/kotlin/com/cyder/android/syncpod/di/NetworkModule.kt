@@ -53,9 +53,7 @@ class NetworkModule {
             repository: UserRepository
     ): Consumer {
         val token = repository.getAccessToken().blockingGet()!!
-        val options = Consumer.Options()
-        options.connection.query = mapOf(TOKEN to token)
-        return ActionCable.createConsumer(URI(WS_URL), options)
+        return ActionCable.createConsumer(URI("$WS_URL?$TOKEN=$token"))
     }
 
     @Singleton
