@@ -39,7 +39,7 @@ class SearchVideoActivityViewModel @Inject constructor(
 
     fun onBackButtonClicked() = navigator.closeActivity()
 
-    fun onEnterKeyClicked(actionId: Int): Boolean {
+    fun onEnterKeyClicked(): Boolean {
         val word = searchWord.get() ?: ""
         videoViewModels.clear()
         repository.getYouTubeSearch(word)
