@@ -11,6 +11,7 @@ data class Room(
         val name: String,
         val description: String,
         val key: String,
+        @SerializedName("public") val isPublic: Boolean,
         @SerializedName("now_playing_video") val nowPlayingVideo: Video?,
         @SerializedName("last_played_video") val lastPlayedVideo: Video?,
         @SerializedName("online_users") val onlineUsers: List<User>?

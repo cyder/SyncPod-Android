@@ -3,15 +3,17 @@ package com.cyder.android.syncpod.util
 import android.databinding.BindingAdapter
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SwitchCompat
 import android.support.v7.widget.Toolbar
 import android.text.method.LinkMovementMethod
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.Animation
+import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.Animation
 import com.cyder.android.syncpod.view.helper.ResizeAnimation
 import com.cyder.android.syncpod.view.helper.dpToPx
 import com.cyder.android.syncpod.view.helper.hideSoftwareKeyBoard
@@ -102,4 +104,9 @@ fun View.hideSoftwareKeyboard(flag: Boolean) {
     if (flag) {
         hideSoftwareKeyBoard()
     }
+}
+
+@BindingAdapter("isChecked")
+fun SwitchCompat.setCheck(listener: CompoundButton.OnCheckedChangeListener) {
+    setOnCheckedChangeListener(listener)
 }

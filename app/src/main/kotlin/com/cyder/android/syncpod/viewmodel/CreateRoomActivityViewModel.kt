@@ -1,6 +1,7 @@
 package com.cyder.android.syncpod.viewmodel
 
 import android.databinding.ObservableField
+import android.util.Log
 import com.cyder.android.syncpod.R
 import com.cyder.android.syncpod.repository.RoomRepository
 import com.cyder.android.syncpod.util.NotFilledFormsException
@@ -17,6 +18,7 @@ class CreateRoomActivityViewModel @Inject constructor(
 ) : ActivityViewModel() {
     var roomName: ObservableField<String?> = ObservableField()
     var roomDescription: ObservableField<String?> = ObservableField()
+    var isPublic: ObservableField<Boolean> = ObservableField()
     var callback: SnackbarCallback? = null
 
     override fun onStart() {
@@ -36,8 +38,12 @@ class CreateRoomActivityViewModel @Inject constructor(
 
     fun onBackButtonClicked() = navigator.closeActivity()
 
+    fun onChecked(isChecked: Boolean){
+        isPublic.set(isChecked)
+    }
+
     fun onSubmit() {
-        repository.createNewRoom(roomName.get() ?: "", roomDescription.get() ?: "", false)
+        repository.createNewRoom(roomName.get() ?: "", roomDescription.get() ?: "", isPublic.get() ?: false)
                 .subscribe({ response ->
                     repository.joinRoom(response.key)
                             .subscribe({
