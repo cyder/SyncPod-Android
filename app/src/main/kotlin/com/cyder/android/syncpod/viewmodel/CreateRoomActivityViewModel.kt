@@ -37,7 +37,7 @@ class CreateRoomActivityViewModel @Inject constructor(
     fun onBackButtonClicked() = navigator.closeActivity()
 
     fun onSubmit() {
-        repository.createNewRoom(roomName.get() ?: "", roomDescription.get() ?: "")
+        repository.createNewRoom(roomName.get() ?: "", roomDescription.get() ?: "", false)
                 .subscribe({ response ->
                     repository.joinRoom(response.key)
                             .subscribe({
