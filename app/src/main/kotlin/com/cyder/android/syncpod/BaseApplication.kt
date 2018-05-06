@@ -1,6 +1,8 @@
 package com.cyder.android.syncpod
 
 import android.app.Application
+import android.content.Context
+import android.support.multidex.MultiDex
 import com.cyder.android.syncpod.di.AppComponent
 import com.cyder.android.syncpod.di.AppModule
 import com.cyder.android.syncpod.di.DaggerAppComponent
@@ -21,5 +23,10 @@ class BaseApplication : Application() {
                 .build()
         component.inject(this)
 
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 }
