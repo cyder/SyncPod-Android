@@ -157,6 +157,13 @@
                         android:layout_marginTop="5dp"
                         android:orientation="vertical" />
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/contact_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contact_us"
+                    android:onClick="@{(v) -> viewModel.onContactUs()}"/>
             </android.support.v4.widget.NestedScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
