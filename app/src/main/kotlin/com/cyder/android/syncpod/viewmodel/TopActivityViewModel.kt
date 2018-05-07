@@ -26,6 +26,7 @@ class TopActivityViewModel @Inject constructor(
     var populardRoomViewModels: ObservableList<RoomViewModel> = ObservableArrayList()
     var isLoading: ObservableBoolean = ObservableBoolean()
     var hasEntered: ObservableBoolean = ObservableBoolean(false)
+    var hasPopularRoom: ObservableBoolean = ObservableBoolean(false)
     var errorMessageId: Int? = null
     var dialogCallback: DialogCallback? = null
     var snackbarCallback: SnackbarCallback? = null
@@ -101,7 +102,9 @@ class TopActivityViewModel @Inject constructor(
                     populardRoomViewModels.addAll(response)
                     isLoading.set(false)
                     if (response.isNotEmpty()) {
-                        hasEntered.set(true)
+                        hasPopularRoom.set(true)
+                    } else {
+                        hasPopularRoom.set(false)
                     }
                 }, {
                     isLoading.set(false)

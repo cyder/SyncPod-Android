@@ -146,7 +146,7 @@
                         android:text="@string/popular_rooms"
                         android:textColor="@color/text"
                         android:textSize="18sp"
-                        android:visibility="@{viewModel.hasEntered ? View.VISIBLE : View.GONE}" />
+                        android:visibility="@{viewModel.hasPopularRoom ? View.VISIBLE : View.GONE}" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/popular_room_recycler"
