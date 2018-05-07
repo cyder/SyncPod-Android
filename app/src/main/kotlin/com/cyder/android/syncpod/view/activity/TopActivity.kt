@@ -63,14 +63,23 @@ class TopActivity : BaseActivity() {
     }
 
     private fun initRecyclerView() {
-        binding.joinedRoomRecycler.isNestedScrollingEnabled = false
-        val adapter = JoinedRoomAdapter(viewModel.roomViewModels)
-        binding.joinedRoomRecycler.adapter = adapter
-        binding.joinedRoomRecycler.layoutManager = LinearLayoutManager(this)
+        binding.joinedRoomRecycler.run {
+            this.isNestedScrollingEnabled = false
+            val adapter = RoomAdapter(viewModel.joinedRoomViewModels)
+            this.adapter = adapter
+            this.layoutManager = LinearLayoutManager(this@TopActivity)
+        }
+
+        binding.popularRoomRecycler.run {
+            this.isNestedScrollingEnabled = false
+            val adapter = RoomAdapter(viewModel.populardRoomViewModels)
+            this.adapter = adapter
+            this.layoutManager = LinearLayoutManager(this@TopActivity)
+        }
     }
 
 
-    inner class JoinedRoomAdapter(list: ObservableList<RoomViewModel>) : ObservableListAdapter<RoomViewModel, BindingHolder<ItemRoomBinding>>(list) {
+    inner class RoomAdapter(list: ObservableList<RoomViewModel>) : ObservableListAdapter<RoomViewModel, BindingHolder<ItemRoomBinding>>(list) {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemRoomBinding> = BindingHolder(parent, R.layout.item_room)
 

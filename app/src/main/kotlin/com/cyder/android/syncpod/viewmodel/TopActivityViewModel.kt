@@ -22,7 +22,8 @@ class TopActivityViewModel @Inject constructor(
         private val navigator: Navigator
 ) : ActivityViewModel() {
 
-    var roomViewModels: ObservableList<RoomViewModel> = ObservableArrayList()
+    var joinedRoomViewModels: ObservableList<RoomViewModel> = ObservableArrayList()
+    var populardRoomViewModels: ObservableList<RoomViewModel> = ObservableArrayList()
     var isLoading: ObservableBoolean = ObservableBoolean()
     var hasEntered: ObservableBoolean = ObservableBoolean(false)
     var errorMessageId: Int? = null
@@ -77,13 +78,27 @@ class TopActivityViewModel @Inject constructor(
                 .subscribe({ response ->
                     response.forEachIndexed { index, viewModel ->
                         when (index) {
-                            in 0..(this.roomViewModels.size - 1) ->
-                                if (isChanged(this.roomViewModels[index], viewModel)) {
-                                    this.roomViewModels[index] = viewModel
+                            in 0..(this.joinedRoomViewModels.size - 1) ->
+                                if (isChanged(this.joinedRoomViewModels[index], viewModel)) {
+                                    this.joinedRoomViewModels[index] = viewModel
                                 }
-                            else -> this.roomViewModels.add(viewModel)
+                            else -> this.joinedRoomViewModels.add(viewModel)
                         }
                     }
+                    isLoading.set(false)
+                    if (response.isNotEmpty()) {
+                        hasEntered.set(true)
+                    }
+                }, {
+                    isLoading.set(false)
+                })
+
+        roomRepository.fetchPopularRooms()
+                .map { convertToViewModel(it) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ response ->
+                    populardRoomViewModels.clear()
+                    populardRoomViewModels.addAll(response)
                     isLoading.set(false)
                     if (response.isNotEmpty()) {
                         hasEntered.set(true)
