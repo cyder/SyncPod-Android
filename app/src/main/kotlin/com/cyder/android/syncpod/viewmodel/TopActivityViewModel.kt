@@ -11,6 +11,7 @@ import com.cyder.android.syncpod.util.CannotJoinRoomException
 import com.cyder.android.syncpod.view.helper.Navigator
 import com.cyder.android.syncpod.viewmodel.base.ActivityViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.Singles
 import javax.inject.Inject
 
 /**
@@ -73,39 +74,28 @@ class TopActivityViewModel @Inject constructor(
     }
 
     private fun getRooms() {
-        roomRepository.fetchJoinedRooms()
-                .map { convertToViewModel(it) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ response ->
-                    response.forEachIndexed { index, viewModel ->
-                        when (index) {
-                            in 0..(this.joinedRoomViewModels.size - 1) ->
-                                if (isChanged(this.joinedRoomViewModels[index], viewModel)) {
-                                    this.joinedRoomViewModels[index] = viewModel
-                                }
-                            else -> this.joinedRoomViewModels.add(viewModel)
-                        }
+        Singles.zip(
+                roomRepository.fetchJoinedRooms()
+                        .map { convertToViewModel(it) }
+                        .observeOn(AndroidSchedulers.mainThread()),
+                roomRepository.fetchPopularRooms()
+                        .map { convertToViewModel(it) }
+                        .observeOn(AndroidSchedulers.mainThread())
+        )
+                .subscribe({
+                    it.first.run {
+                        joinedRoomViewModels.clear()
+                        joinedRoomViewModels.addAll(this)
+                        hasEntered.set(this.isNotEmpty())
                     }
-                    isLoading.set(false)
-                    if (response.isNotEmpty()) {
-                        hasEntered.set(true)
-                    }
-                }, {
-                    isLoading.set(false)
-                })
 
-        roomRepository.fetchPopularRooms()
-                .map { convertToViewModel(it) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ response ->
-                    populardRoomViewModels.clear()
-                    populardRoomViewModels.addAll(response)
-                    isLoading.set(false)
-                    if (response.isNotEmpty()) {
-                        hasPopularRoom.set(true)
-                    } else {
-                        hasPopularRoom.set(false)
+                    it.second.run {
+                        populardRoomViewModels.clear()
+                        populardRoomViewModels.addAll(this)
+                        hasPopularRoom.set(this.isNotEmpty())
                     }
+
+                    isLoading.set(false)
                 }, {
                     isLoading.set(false)
                 })
