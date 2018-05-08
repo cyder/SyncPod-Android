@@ -10,6 +10,7 @@ import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 import javax.inject.Inject
 
@@ -22,14 +23,14 @@ class SyncPodWsApiImpl @Inject constructor(
 ) : SyncPodWsApi {
     private var subscription: Subscription? = null
 
-    private var nowPlayingEvent: Subject<Response> = BehaviorSubject.create()
-    private var startVideoEvent: Subject<Response> = BehaviorSubject.create()
-    private var playListEvent: Subject<Response> = BehaviorSubject.create()
-    private var addVideoEvent: Subject<Response> = BehaviorSubject.create()
-    private var chatEvent: Subject<Response> = BehaviorSubject.create()
+    private var nowPlayingEvent: Subject<Response> = PublishSubject.create()
+    private var startVideoEvent: Subject<Response> = PublishSubject.create()
+    private var playListEvent: Subject<Response> = PublishSubject.create()
+    private var addVideoEvent: Subject<Response> = PublishSubject.create()
+    private var chatEvent: Subject<Response> = PublishSubject.create()
     private val manageEnteredStream: Subject<Boolean> = BehaviorSubject.createDefault(false)
-    private var pastChatsEvent: Subject<Response> = BehaviorSubject.create()
-    private var errorEvent: Subject<Response> = BehaviorSubject.create()
+    private var pastChatsEvent: Subject<Response> = PublishSubject.create()
+    private var errorEvent: Subject<Response> = PublishSubject.create()
     override val nowPlayingResponse: Flowable<Response>
         get() = nowPlayingEvent.toFlowable(BackpressureStrategy.LATEST)
     override val startVideoResponse: Flowable<Response>
@@ -49,13 +50,13 @@ class SyncPodWsApiImpl @Inject constructor(
 
     override fun enterRoom(roomKey: String): Completable {
 
-        nowPlayingEvent = BehaviorSubject.create()
-        startVideoEvent = BehaviorSubject.create()
-        playListEvent = BehaviorSubject.create()
-        addVideoEvent = BehaviorSubject.create()
-        chatEvent = BehaviorSubject.create()
-        pastChatsEvent = BehaviorSubject.create()
-        errorEvent = BehaviorSubject.create()
+        nowPlayingEvent = PublishSubject.create()
+        startVideoEvent = PublishSubject.create()
+        playListEvent = PublishSubject.create()
+        addVideoEvent = PublishSubject.create()
+        chatEvent = PublishSubject.create()
+        pastChatsEvent = PublishSubject.create()
+        errorEvent = PublishSubject.create()
 
         val channel = Channel(CHANNEL_NAME, mapOf(ROOM_KEY to roomKey))
         consumer.disconnect()
