@@ -70,7 +70,7 @@ class ChatFragment : BaseFragment() {
             val lastVisiblePosition = manager.findLastVisibleItemPosition()
             val lastListPosition = adapter.itemCount - 1
             if (lastListPosition - 1 == lastVisiblePosition) {
-                binding.chatList.smoothScrollToPosition(lastListPosition)
+                binding.chatList.smoothScrollToPosition(lastListPosition + 1)
             }
         }
     }
