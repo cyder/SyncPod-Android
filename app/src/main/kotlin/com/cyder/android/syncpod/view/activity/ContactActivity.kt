@@ -34,6 +34,7 @@ class ContactActivity: BaseActivity() {
         super.onDestroy()
     }
 
+
     companion object {
         fun createIntent(context: Context): Intent = Intent(context, ContactActivity::class.java)
     }
