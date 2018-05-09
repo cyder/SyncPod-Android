@@ -3,7 +3,7 @@ package com.cyder.android.syncpod.viewmodel
 import android.databinding.ObservableField
 import android.os.Build
 import com.cyder.android.syncpod.R
-import com.cyder.android.syncpod.repository.ContactRepository
+import com.cyder.android.syncpod.repository.UserReportRepository
 import com.cyder.android.syncpod.util.NotFilledFormsException
 import com.cyder.android.syncpod.view.helper.Navigator
 import com.cyder.android.syncpod.viewmodel.base.ActivityViewModel
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class ContactActivityViewModel @Inject constructor(
         private val navigator: Navigator,
-        private val contactRepository: ContactRepository
+        private val userReportRepository: UserReportRepository
 ) : ActivityViewModel() {
     var callback: SnackbarCallback? = null
     var message: ObservableField<String> = ObservableField()
@@ -51,7 +51,7 @@ class ContactActivityViewModel @Inject constructor(
             }
         }
                 .map { createDetailMessage(it) }
-                .flatMapCompletable { contactRepository.sendContact(it) }
+                .flatMapCompletable { userReportRepository.sendUserReport(it) }
                 .subscribe({
                     navigator.closeActivity()
                 }, { error ->
