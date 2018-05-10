@@ -54,6 +54,8 @@ class TopActivityViewModel @Inject constructor(
 
     fun onCreateRoom() = navigator.navigateToCreateRoomActivity()
 
+    fun onContactUs() = navigator.navigateToContactActivity()
+
     fun onRefresh() {
         isLoading.set(true)
         getRooms()

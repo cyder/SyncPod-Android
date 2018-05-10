@@ -21,5 +21,6 @@ interface ActivityComponent {
     fun inject(activity: RoomActivity)
     fun inject(activity: SearchVideoActivity)
     fun inject(activity: UserReportActivity)
+    fun inject(activity: ContactActivity)
     fun plus(module: FragmentModule): FragmentComponent
 }
