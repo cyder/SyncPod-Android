@@ -8,6 +8,7 @@
     <string name="create_new_room">新規ルーム作成</string>
     <string name="title">SyncPod</string>
     <string name="user_report_title">違反報告</string>
+    <string name="contact_title">ご意見・お問い合わせ</string>
 
     <!--layout-->
     <string name="email">メールアドレス</string>
@@ -80,4 +81,6 @@
     <string name="force_exit">退出させる</string>
     <string name="receive_force_exit">他のユーザから強制退室を受けました。今後しばらくこのルームには入室できません。</string>
     <string name="set_public_room">ルーム公開</string>
+    <string name="contact_us">ご意見・お問い合わせ</string>
+    <string name="contact_description">ご意見・お問い合わせ内容を記述して下さい。</string>
 </resources>

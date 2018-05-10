@@ -58,6 +58,9 @@
         <activity
             android:name=".view.activity.UserReportActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.ContactActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 
