@@ -16,49 +16,13 @@ import javax.inject.Inject
 class ChatDataRepository @Inject constructor(
         private val syncPodWsApi: SyncPodWsApi
 ) : ChatRepository {
-    private var chatStream: Subject<Chat> = BehaviorSubject.create()
-    private var pastChatStream: Subject<List<Chat>> = BehaviorSubject.createDefault(emptyList())
-
-    init {
-        initSubjects()
-    }
-
-    private fun startObserve() {
-        syncPodWsApi.chatResponse
-                .subscribe {
-                    it.data?.apply {
-                        this@ChatDataRepository.chatStream.onNext(this.chat.toModel())
-                    }
-                }
-        syncPodWsApi.pastChatsResponse
-                .subscribe {
-                    it.data?.apply {
-                        this@ChatDataRepository.pastChatStream.onNext(this.pastChat.toModel())
-                    }
-                }
-    }
-
-    private fun initSubjects() {
-        syncPodWsApi.isEntered
-                .filter { it }
-                .subscribe {
-                    chatStream = BehaviorSubject.create()
-                    pastChatStream = BehaviorSubject.createDefault(emptyList())
-                    startObserve()
-                }
-        syncPodWsApi.isEntered
-                .filter { !it }
-                .subscribe {
-                    chatStream.onComplete()
-                    pastChatStream.onComplete()
-                }
-    }
-
     override val observePastChat: Flowable<List<Chat>>
-        get() = pastChatStream.toFlowable(BackpressureStrategy.LATEST)
+        get() = syncPodWsApi.pastChatsResponse
+                .map { it.data?.pastChat?.toModel() }
 
     override val observeChat: Flowable<Chat>
-        get() = chatStream.toFlowable(BackpressureStrategy.LATEST)
+        get() = syncPodWsApi.chatResponse
+                .map { it.data?.chat?.toModel() }
 
     override fun getPastChats() {
         syncPodWsApi.requestPastChat()

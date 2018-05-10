@@ -26,5 +26,6 @@ class Navigator @Inject constructor(
     fun navigateToRoomActivity(roomKey: String) = activity.startActivity(RoomActivity.createIntent(activity, roomKey))
     fun navigateToSearchVideoActivity() = activity.startActivity(SearchVideoActivity.createIntent(activity))
     fun navigateToUserReportActivity(roomKey: String) = activity.startActivity(UserReportActivity.createIntent(activity, roomKey))
+    fun navigateToContactActivity() = activity.startActivity(ContactActivity.createIntent(activity))
     fun closeActivity() = activity.finish()
 }
