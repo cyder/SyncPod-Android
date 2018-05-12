@@ -83,17 +83,15 @@ class TopActivityViewModel @Inject constructor(
                         .observeOn(AndroidSchedulers.mainThread())
         )
                 .subscribe({
-                    it.first.run {
-                        joinedRoomViewModels.clear()
-                        joinedRoomViewModels.addAll(this)
-                        hasEntered.set(this.isNotEmpty())
-                    }
+                    val joinedRooms = it.first
+                    joinedRoomViewModels.clear()
+                    joinedRoomViewModels.addAll(joinedRooms)
+                    hasEntered.set(joinedRooms.isNotEmpty())
 
-                    it.second.run {
-                        populardRoomViewModels.clear()
-                        populardRoomViewModels.addAll(this)
-                        hasPopularRoom.set(this.isNotEmpty())
-                    }
+                    val popularRooms = it.second
+                    populardRoomViewModels.clear()
+                    populardRoomViewModels.addAll(popularRooms)
+                    hasPopularRoom.set(popularRooms.isNotEmpty())
 
                     isLoading.set(false)
                 }, {

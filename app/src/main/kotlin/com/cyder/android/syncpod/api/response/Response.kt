@@ -10,6 +10,6 @@ data class Response(
         val result: String,
         val user: User?,
         val room: Room?,
-        val rooms: List<Room>?,
-        @SerializedName("joined_rooms") val joinedRooms: List<Room>?
+        @SerializedName("joined_rooms") val joinedRooms: List<Room>?,
+        @SerializedName("rooms") val popularRooms: List<Room>?
 )

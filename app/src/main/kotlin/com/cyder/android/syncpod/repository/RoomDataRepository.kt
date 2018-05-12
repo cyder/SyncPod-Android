@@ -60,7 +60,7 @@ class RoomDataRepository @Inject constructor(
 
     override fun fetchPopularRooms(): Single<List<Room>> {
         return syncPodApi.getPopularRooms(token)
-                .map { it.rooms }
+                .map { it.popularRooms }
                 .map { it.toModel() }
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
