@@ -104,8 +104,4 @@ class TopActivityViewModel @Inject constructor(
     private fun convertToViewModel(rooms: List<Room>): List<RoomViewModel> {
         return rooms.map { RoomViewModel(roomRepository, navigator, ObservableField(it)) }
     }
-
-    private fun isChanged(a: RoomViewModel, b: RoomViewModel): Boolean {
-        return a.room.get() != b.room.get()
-    }
 }
