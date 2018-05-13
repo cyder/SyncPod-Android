@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.widget.SimpleAdapter
 import com.cyder.android.syncpod.R
 import com.cyder.android.syncpod.databinding.ActivityCreateRoomBinding
 import com.cyder.android.syncpod.view.helper.setUpSnackbar
@@ -27,6 +28,15 @@ class CreateRoomActivity : BaseActivity() {
         binding.viewModel = viewModel
 
         viewModel.callback = setUpSnackbar()
+        setUpSpinner()
+    }
+
+    private fun setUpSpinner() {
+        val item1 = hashMapOf("title" to "title1", "description" to "description1")
+        val item2 = hashMapOf("title" to "title2", "description" to "description2")
+        val items = mutableListOf(item1, item2)
+        val adapter = SimpleAdapter(this, items, R.layout.spinner_item_with_description, arrayOf("title", "description"), intArrayOf(R.id.title, R.id.description))
+        binding.publishingSetting.adapter = adapter
     }
 
     companion object {
