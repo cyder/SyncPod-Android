@@ -33,9 +33,9 @@ class RoomDataRepository @Inject constructor(
         return syncPodWsApi.exitRoom()
     }
 
-    override fun createNewRoom(name: String, description: String): Single<Room> {
+    override fun createNewRoom(name: String, description: String, isPublic: Boolean): Single<Room> {
         return createNewRoomValidation(name, description)
-                .andThen(syncPodApi.createNewRoom(token, CreateRoom(name, description)))
+                .andThen(syncPodApi.createNewRoom(token, CreateRoom(name, description, isPublic)))
                 .map { it.room }
                 .map { it.toModel() }
                 .subscribeOn(Schedulers.computation())

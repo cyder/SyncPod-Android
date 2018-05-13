@@ -60,6 +60,14 @@
                     android:inputType="textMultiLine"
                     android:text="@={viewModel.roomDescription}" />
 
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/is_public"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/set_public_room"
+                    app:isChecked="@{(v, flg) -> viewModel.onChecked(flg)}"/>
+
+
                 <Button
                     android:id="@+id/create_room_submit"
                     android:layout_width="match_parent"

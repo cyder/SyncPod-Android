@@ -9,6 +9,7 @@ data class Room(
         val name: String,
         val description: String,
         val key: String,
+        val isPublic: Boolean,
         val nowPlayingVideo: Video?,
         val lastPlayedVideo: Video?,
         val onlineUsers: List<User>?

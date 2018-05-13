@@ -80,6 +80,7 @@
     <string name="force_exit_description">%sさんは24時間このルームに入室できなくなります。本当によろしいですか？</string>
     <string name="force_exit">退出させる</string>
     <string name="receive_force_exit">他のユーザから強制退室を受けました。今後しばらくこのルームには入室できません。</string>
+    <string name="set_public_room">ルーム公開</string>
     <string name="contact_us">ご意見・お問い合わせ</string>
     <string name="contact_description">ご意見・お問い合わせ内容を記述して下さい。</string>
 </resources>
