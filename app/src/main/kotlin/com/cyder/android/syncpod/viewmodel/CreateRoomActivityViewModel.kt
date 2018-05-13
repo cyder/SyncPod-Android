@@ -1,5 +1,6 @@
 package com.cyder.android.syncpod.viewmodel
 
+import android.content.res.Resources
 import android.databinding.ObservableField
 import android.databinding.ObservableInt
 import com.cyder.android.syncpod.R
@@ -19,6 +20,20 @@ class CreateRoomActivityViewModel @Inject constructor(
     var roomName: ObservableField<String?> = ObservableField()
     var roomDescription: ObservableField<String?> = ObservableField()
     var publishingSetting = ObservableInt()
+    lateinit var resources: Resources
+    val publishingSettingItems: MutableList<HashMap<String, String>> by lazy {
+        val publicRoom = hashMapOf(
+                ID to PUBLIC_ROOM,
+                TITLE to resources.getString(R.string.public_room),
+                DESCRIPTION to resources.getString(R.string.public_room_description))
+        val privateRoom = hashMapOf(
+                ID to PRIVATE_ROOM,
+                TITLE to resources.getString(R.string.private_room),
+                DESCRIPTION to resources.getString(R.string.private_room_description))
+        mutableListOf(publicRoom, privateRoom)
+    }
+
+    val publishingSettingKeys = arrayOf(TITLE, DESCRIPTION)
     var callback: SnackbarCallback? = null
 
     override fun onStart() {
@@ -39,7 +54,8 @@ class CreateRoomActivityViewModel @Inject constructor(
     fun onBackButtonClicked() = navigator.closeActivity()
 
     fun onSubmit() {
-        val isPublic = publishingSetting.get() == 0
+        val isPublic = publishingSettingItems[publishingSetting.get()][ID] == PUBLIC_ROOM
+
         repository.createNewRoom(roomName.get() ?: "", roomDescription.get() ?: "", isPublic)
                 .subscribe({ response ->
                     repository.joinRoom(response.key)
@@ -55,5 +71,13 @@ class CreateRoomActivityViewModel @Inject constructor(
                         else -> callback?.onFailed(R.string.network_error)
                     }
                 })
+    }
+
+    companion object {
+        private const val ID = "id"
+        private const val TITLE = "title"
+        private const val DESCRIPTION = "description"
+        private const val PUBLIC_ROOM = "public_room"
+        private const val PRIVATE_ROOM = "private_room"
     }
 }

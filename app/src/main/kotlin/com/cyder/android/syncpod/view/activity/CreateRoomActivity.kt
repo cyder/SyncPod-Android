@@ -27,26 +27,22 @@ class CreateRoomActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_room)
         binding.viewModel = viewModel
 
+        viewModel.resources = this.resources
         viewModel.callback = setUpSnackbar()
         setUpSpinner()
     }
 
     private fun setUpSpinner() {
-        val publicRoom = hashMapOf(
-                TITLE to resources.getString(R.string.public_room),
-                DESCRIPTION to resources.getString(R.string.public_room_description))
-        val privateRoom = hashMapOf(
-                TITLE to resources.getString(R.string.private_room),
-                DESCRIPTION to resources.getString(R.string.private_room_description))
-        val items = mutableListOf(publicRoom, privateRoom)
-        val keys = arrayOf(TITLE, DESCRIPTION)
-        val adapter = SimpleAdapter(this, items, R.layout.spinner_item_with_description, keys, intArrayOf(R.id.title, R.id.description))
+        val adapter = SimpleAdapter(
+                this,
+                viewModel.publishingSettingItems,
+                R.layout.spinner_item_with_description,
+                viewModel.publishingSettingKeys,
+                intArrayOf(R.id.title, R.id.description))
         binding.publishingSetting.adapter = adapter
     }
 
     companion object {
         fun createIntent(context: Context): Intent = Intent(context, CreateRoomActivity::class.java)
-        private const val TITLE = "title"
-        private const val DESCRIPTION = "description"
     }
 }
