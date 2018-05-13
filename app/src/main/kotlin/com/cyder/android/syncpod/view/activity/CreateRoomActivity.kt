@@ -32,14 +32,21 @@ class CreateRoomActivity : BaseActivity() {
     }
 
     private fun setUpSpinner() {
-        val item1 = hashMapOf("title" to "title1", "description" to "description1")
-        val item2 = hashMapOf("title" to "title2", "description" to "description2")
-        val items = mutableListOf(item1, item2)
-        val adapter = SimpleAdapter(this, items, R.layout.spinner_item_with_description, arrayOf("title", "description"), intArrayOf(R.id.title, R.id.description))
+        val publicRoom = hashMapOf(
+                TITLE to resources.getString(R.string.public_room),
+                DESCRIPTION to resources.getString(R.string.public_room_description))
+        val privateRoom = hashMapOf(
+                TITLE to resources.getString(R.string.private_room),
+                DESCRIPTION to resources.getString(R.string.private_room_description))
+        val items = mutableListOf(publicRoom, privateRoom)
+        val keys = arrayOf(TITLE, DESCRIPTION)
+        val adapter = SimpleAdapter(this, items, R.layout.spinner_item_with_description, keys, intArrayOf(R.id.title, R.id.description))
         binding.publishingSetting.adapter = adapter
     }
 
     companion object {
         fun createIntent(context: Context): Intent = Intent(context, CreateRoomActivity::class.java)
+        private const val TITLE = "title"
+        private const val DESCRIPTION = "description"
     }
 }
