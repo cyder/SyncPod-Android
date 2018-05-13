@@ -13,6 +13,7 @@ interface RoomRepository {
     val isEntered: Flowable<Boolean>
     fun createNewRoom(name: String, description: String, isPublic: Boolean): Single<Room>
     fun fetchJoinedRooms(): Single<List<Room>>
+    fun fetchPopularRooms(): Single<List<Room>>
     fun fetch(roomKey: String): Single<Room>
     fun joinRoom(roomKey: String): Completable
     fun exitRoom(): Completable

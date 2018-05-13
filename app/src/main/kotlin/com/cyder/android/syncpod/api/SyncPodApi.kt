@@ -23,6 +23,9 @@ interface SyncPodApi {
     @GET("joined_rooms")
     fun getEnteredRooms(@Header("Authorization") token: String): Single<Response>
 
+    @GET("rooms/popular")
+    fun getPopularRooms(@Header("Authorization") token: String): Single<Response>
+
     @GET("rooms")
     fun getRoom(@Header("Authorization") token: String, @Query("room_key") roomKey: String): Single<Response>
 

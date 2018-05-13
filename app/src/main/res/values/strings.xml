@@ -38,6 +38,7 @@
     <string name="create_room">ルームを作成する</string>
     <string name="create_room_description">新しいルームを作成します。ルームキーを共有して他の人に参加してもらうことができます。</string>
     <string name="room_key">ルームキー</string>
+    <string name="popular_rooms">今人気のルーム</string>
     <string name="joined_rooms">最近参加したルーム</string>
     <string name="online_users_num">オンライン：%d人</string>
     <string name="now_playing_video_info">再生中：%s</string>
