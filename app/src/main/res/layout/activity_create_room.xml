@@ -60,12 +60,26 @@
                     android:inputType="textMultiLine"
                     android:text="@={viewModel.roomDescription}" />
 
-                <android.support.v7.widget.SwitchCompat
-                    android:id="@+id/is_public"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/set_public_room"
-                    app:isChecked="@{(v, flg) -> viewModel.onChecked(flg)}"/>
+                    android:orientation="vertical"
+                    android:layout_marginVertical="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@string/publishing_setting" />
+
+
+                    <Spinner
+                        android:id="@+id/publishing_setting"
+                        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:dropDownWidth="match_parent"
+                        android:selectedItemPosition="@={viewModel.publishingSetting}" />
+                </LinearLayout>
 
 
                 <Button
