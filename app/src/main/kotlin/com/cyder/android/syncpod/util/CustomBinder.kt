@@ -77,7 +77,9 @@ interface OnScrollStateChangedListener {
 
 @BindingAdapter("scrollToEnd")
 fun RecyclerView.setScrollToEnd(flag: Boolean) {
-    if (flag) smoothScrollToPosition(adapter.itemCount)
+    if (flag && !isScrollToEnd()) {
+        smoothScrollToPosition(adapter.itemCount)
+    }
 }
 
 @InverseBindingAdapter(attribute = "scrollToEnd", event = "scrollAttrChanged")
