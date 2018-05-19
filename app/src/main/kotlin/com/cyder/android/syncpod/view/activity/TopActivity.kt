@@ -7,6 +7,7 @@ import android.databinding.DataBindingUtil
 import android.databinding.ObservableList
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.cyder.android.syncpod.R
 import com.cyder.android.syncpod.databinding.ActivityTopBinding
@@ -41,7 +42,8 @@ class TopActivity : BaseActivity() {
 
         setUpDialog()
         viewModel.snackbarCallback = setUpSnackbar()
-        initRecyclerView()
+        initRecyclerView(binding.joinedRoomRecycler, viewModel.joinedRoomViewModels)
+        initRecyclerView(binding.popularRoomRecycler, viewModel.populardRoomViewModels)
     }
 
     private fun setUpDialog() {
@@ -62,15 +64,15 @@ class TopActivity : BaseActivity() {
         viewModel.dialogCallback = callback
     }
 
-    private fun initRecyclerView() {
-        binding.joinedRoomRecycler.isNestedScrollingEnabled = false
-        val adapter = JoinedRoomAdapter(viewModel.roomViewModels)
-        binding.joinedRoomRecycler.adapter = adapter
-        binding.joinedRoomRecycler.layoutManager = LinearLayoutManager(this)
+    private fun initRecyclerView(recyclerView: RecyclerView, viewModels: ObservableList<RoomViewModel>) {
+        recyclerView.isNestedScrollingEnabled = false
+        val adapter = RoomAdapter(viewModels)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this@TopActivity)
     }
 
 
-    inner class JoinedRoomAdapter(list: ObservableList<RoomViewModel>) : ObservableListAdapter<RoomViewModel, BindingHolder<ItemRoomBinding>>(list) {
+    inner class RoomAdapter(list: ObservableList<RoomViewModel>) : ObservableListAdapter<RoomViewModel, BindingHolder<ItemRoomBinding>>(list) {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemRoomBinding> = BindingHolder(parent, R.layout.item_room)
 

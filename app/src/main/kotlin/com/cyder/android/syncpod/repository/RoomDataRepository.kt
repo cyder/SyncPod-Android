@@ -33,9 +33,9 @@ class RoomDataRepository @Inject constructor(
         return syncPodWsApi.exitRoom()
     }
 
-    override fun createNewRoom(name: String, description: String): Single<Room> {
+    override fun createNewRoom(name: String, description: String, isPublic: Boolean): Single<Room> {
         return createNewRoomValidation(name, description)
-                .andThen(syncPodApi.createNewRoom(token, CreateRoom(name, description)))
+                .andThen(syncPodApi.createNewRoom(token, CreateRoom(name, description, isPublic)))
                 .map { it.room }
                 .map { it.toModel() }
                 .subscribeOn(Schedulers.computation())
@@ -53,6 +53,14 @@ class RoomDataRepository @Inject constructor(
     override fun fetchJoinedRooms(): Single<List<Room>> {
         return syncPodApi.getEnteredRooms(token)
                 .map { it.joinedRooms }
+                .map { it.toModel() }
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun fetchPopularRooms(): Single<List<Room>> {
+        return syncPodApi.getPopularRooms(token)
+                .map { it.popularRooms }
                 .map { it.toModel() }
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())

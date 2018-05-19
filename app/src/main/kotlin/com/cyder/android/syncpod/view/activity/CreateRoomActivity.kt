@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.widget.SimpleAdapter
 import com.cyder.android.syncpod.R
 import com.cyder.android.syncpod.databinding.ActivityCreateRoomBinding
 import com.cyder.android.syncpod.view.helper.setUpSnackbar
@@ -26,7 +27,19 @@ class CreateRoomActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_room)
         binding.viewModel = viewModel
 
+        viewModel.resources = this.resources
         viewModel.callback = setUpSnackbar()
+        setUpSpinner()
+    }
+
+    private fun setUpSpinner() {
+        val adapter = SimpleAdapter(
+                this,
+                viewModel.publishingSettingItems,
+                R.layout.spinner_item_with_description,
+                viewModel.publishingSettingKeys,
+                intArrayOf(R.id.title, R.id.description))
+        binding.publishingSetting.adapter = adapter
     }
 
     companion object {

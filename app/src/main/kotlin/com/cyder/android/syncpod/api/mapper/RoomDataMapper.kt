@@ -17,6 +17,7 @@ fun RoomResponse.toModel(): Room =
                 this.name,
                 this.description,
                 this.key,
+                this.isPublic,
                 this.nowPlayingVideo?.toModel(),
                 this.lastPlayedVideo?.toModel(),
                 this.onlineUsers?.toModel())

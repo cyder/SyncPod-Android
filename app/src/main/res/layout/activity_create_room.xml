@@ -60,6 +60,28 @@
                     android:inputType="textMultiLine"
                     android:text="@={viewModel.roomDescription}" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginVertical="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@string/publishing_setting" />
+
+
+                    <Spinner
+                        android:id="@+id/publishing_setting"
+                        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:dropDownWidth="match_parent"
+                        android:selectedItemPosition="@={viewModel.publishingSetting}" />
+                </LinearLayout>
+
+
                 <Button
                     android:id="@+id/create_room_submit"
                     android:layout_width="match_parent"

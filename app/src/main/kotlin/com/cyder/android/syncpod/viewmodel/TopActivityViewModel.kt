@@ -11,6 +11,7 @@ import com.cyder.android.syncpod.util.CannotJoinRoomException
 import com.cyder.android.syncpod.view.helper.Navigator
 import com.cyder.android.syncpod.viewmodel.base.ActivityViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.Singles
 import javax.inject.Inject
 
 /**
@@ -22,9 +23,11 @@ class TopActivityViewModel @Inject constructor(
         private val navigator: Navigator
 ) : ActivityViewModel() {
 
-    var roomViewModels: ObservableList<RoomViewModel> = ObservableArrayList()
+    var joinedRoomViewModels: ObservableList<RoomViewModel> = ObservableArrayList()
+    var populardRoomViewModels: ObservableList<RoomViewModel> = ObservableArrayList()
     var isLoading: ObservableBoolean = ObservableBoolean()
     var hasEntered: ObservableBoolean = ObservableBoolean(false)
+    var hasPopularRoom: ObservableBoolean = ObservableBoolean(false)
     var errorMessageId: Int? = null
     var dialogCallback: DialogCallback? = null
     var snackbarCallback: SnackbarCallback? = null
@@ -73,23 +76,26 @@ class TopActivityViewModel @Inject constructor(
     }
 
     private fun getRooms() {
-        roomRepository.fetchJoinedRooms()
-                .map { convertToViewModel(it) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ response ->
-                    response.forEachIndexed { index, viewModel ->
-                        when (index) {
-                            in 0..(this.roomViewModels.size - 1) ->
-                                if (isChanged(this.roomViewModels[index], viewModel)) {
-                                    this.roomViewModels[index] = viewModel
-                                }
-                            else -> this.roomViewModels.add(viewModel)
-                        }
-                    }
+        Singles.zip(
+                roomRepository.fetchJoinedRooms()
+                        .map { convertToViewModel(it) }
+                        .observeOn(AndroidSchedulers.mainThread()),
+                roomRepository.fetchPopularRooms()
+                        .map { convertToViewModel(it) }
+                        .observeOn(AndroidSchedulers.mainThread())
+        )
+                .subscribe({
+                    val joinedRooms = it.first
+                    joinedRoomViewModels.clear()
+                    joinedRoomViewModels.addAll(joinedRooms)
+                    hasEntered.set(joinedRooms.isNotEmpty())
+
+                    val popularRooms = it.second
+                    populardRoomViewModels.clear()
+                    populardRoomViewModels.addAll(popularRooms)
+                    hasPopularRoom.set(popularRooms.isNotEmpty())
+
                     isLoading.set(false)
-                    if (response.isNotEmpty()) {
-                        hasEntered.set(true)
-                    }
                 }, {
                     isLoading.set(false)
                 })
@@ -97,9 +103,5 @@ class TopActivityViewModel @Inject constructor(
 
     private fun convertToViewModel(rooms: List<Room>): List<RoomViewModel> {
         return rooms.map { RoomViewModel(roomRepository, navigator, ObservableField(it)) }
-    }
-
-    private fun isChanged(a: RoomViewModel, b: RoomViewModel): Boolean {
-        return a.room.get() != b.room.get()
     }
 }
