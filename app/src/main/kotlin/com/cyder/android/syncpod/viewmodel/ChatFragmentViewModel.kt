@@ -23,7 +23,7 @@ class ChatFragmentViewModel @Inject constructor(
         private val repository: ChatRepository
 ) : FragmentViewModel() {
     var chatViewModels: ObservableList<ChatViewModel> = ObservableArrayList()
-    var isScrolledToEnd = ObservableBoolean()
+    var scrolledToEnd = ObservableBoolean()
     private val onPauseSubject = PublishSubject.create<Unit>()
 
     override fun onStart() {
@@ -47,11 +47,11 @@ class ChatFragmentViewModel @Inject constructor(
                     ChatViewModel(ObservableField(it))
                 }
                 .subscribe {
-                    val flag = isScrolledToEnd.get()
-                    isScrolledToEnd.set(false)
+                    val isScrolledToEnd = scrolledToEnd.get()
+                    scrolledToEnd.set(false)
                     chatViewModels.add(it)
-                    if (flag) {
-                        isScrolledToEnd.set(true)
+                    if (isScrolledToEnd) {
+                        scrolledToEnd.set(true)
                     }
                 }
     }
