@@ -1,6 +1,8 @@
 package com.cyder.android.syncpod.util
 
 import android.databinding.BindingAdapter
+import android.databinding.InverseBindingAdapter
+import android.databinding.InverseBindingListener
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SwitchCompat
@@ -39,10 +41,11 @@ fun TextView.setLinksNavigable(flag: Boolean) {
 @BindingAdapter("onEnterClick")
 fun EditText.setKeyboardClick(listener: TextView.OnEditorActionListener) = setOnEditorActionListener(listener)
 
-@BindingAdapter(value = ["onScrolled", "onScrollStateChanged"], requireAll = false)
+@BindingAdapter(value = ["onScrolled", "onScrollStateChanged", "scrollAttrChanged"], requireAll = false)
 fun RecyclerView.setOnScrollChangedListeners(
         onScrolled: OnScrolledListener?,
-        onScrollStateChanged: OnScrollStateChangedListener?
+        onScrollStateChanged: OnScrollStateChangedListener?,
+        scrollAttrChanged: InverseBindingListener?
 ) {
     val OFFSET = 5
     val listener = object : RecyclerView.OnScrollListener() {
@@ -57,6 +60,7 @@ fun RecyclerView.setOnScrollChangedListeners(
             val nowHeadPos = layoutManager.findFirstVisibleItemPosition()
             val lastPos = layoutManager.findLastCompletelyVisibleItemPosition()
             onScrolled?.onScrolled(totalCount <= childCount + nowHeadPos + OFFSET)
+            scrollAttrChanged?.onChange()
         }
     }
 
@@ -69,6 +73,19 @@ interface OnScrolledListener {
 
 interface OnScrollStateChangedListener {
     fun onScrollStateChanged(recycler: RecyclerView, newState: Int)
+}
+
+@BindingAdapter("scrollToEnd")
+fun RecyclerView.setScrollToEnd(flag: Boolean) {
+    if (flag) smoothScrollToPosition(adapter.itemCount)
+}
+
+@InverseBindingAdapter(attribute = "scrollToEnd", event = "scrollAttrChanged")
+fun RecyclerView.isScrollToEnd(): Boolean {
+    val manager = layoutManager as LinearLayoutManager
+    val lastVisiblePosition = manager.findLastVisibleItemPosition()
+    val lastListPosition = adapter.itemCount - 1
+    return lastListPosition == lastVisiblePosition
 }
 
 @BindingAdapter(value = ["animatedVisibility", "originalHeight", "animationDuration"])
