@@ -47,12 +47,7 @@ class ChatFragmentViewModel @Inject constructor(
                     ChatViewModel(ObservableField(it))
                 }
                 .subscribe {
-                    val isScrolledToEnd = scrolledToEnd.get()
-                    scrolledToEnd.set(false)
-                    chatViewModels.add(it)
-                    if (isScrolledToEnd) {
-                        scrolledToEnd.set(true)
-                    }
+                    addChat(it)
                 }
     }
 
@@ -65,6 +60,15 @@ class ChatFragmentViewModel @Inject constructor(
 
     private fun convertToViewModel(chats: List<Chat>): List<ChatViewModel> {
         return chats.map { ChatViewModel(ObservableField(it)) }
+    }
+
+    private fun addChat(chatViewModel: ChatViewModel) {
+        val isScrolledToEnd = scrolledToEnd.get()
+        scrolledToEnd.set(false)
+        chatViewModels.add(chatViewModel)
+        if (isScrolledToEnd) {
+            scrolledToEnd.set(true)
+        }
     }
 
     companion object {
