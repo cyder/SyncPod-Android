@@ -64,6 +64,7 @@ class PlayListFragmentViewModel @Inject constructor(
                 .subscribe {
                     isPlaying.set(it)
                 }
+        repository.getPlayList()
     }
 
     override fun onPause() {

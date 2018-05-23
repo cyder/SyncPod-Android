@@ -47,6 +47,7 @@ class ChatFragmentViewModel @Inject constructor(
                 .subscribe {
                     chatViewModels.add(it)
                 }
+        repository.getPastChats()
     }
 
     override fun onPause() {

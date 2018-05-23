@@ -51,6 +51,7 @@ class VideoFragmentViewModel @Inject constructor(
 
     override fun onResume() {
         observerWithInitPlayer()
+        videoRepository.getNowPlayingVideo()
     }
 
     override fun onPause() {
