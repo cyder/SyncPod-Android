@@ -65,12 +65,4 @@ class CreateRoomActivityViewModel @Inject constructor(
                     }
                 })
     }
-
-    companion object {
-        private const val ID = "id"
-        private const val TITLE = "title"
-        private const val DESCRIPTION = "description"
-        private const val PUBLIC_ROOM = "public_room"
-        private const val PRIVATE_ROOM = "private_room"
-    }
 }
