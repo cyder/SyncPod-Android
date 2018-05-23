@@ -1,6 +1,7 @@
 package com.cyder.android.syncpod.viewmodel
 
 import android.databinding.ObservableArrayList
+import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.databinding.ObservableList
 import com.cyder.android.syncpod.model.Chat
@@ -22,6 +23,7 @@ class ChatFragmentViewModel @Inject constructor(
         private val repository: ChatRepository
 ) : FragmentViewModel() {
     var chatViewModels: ObservableList<ChatViewModel> = ObservableArrayList()
+    var scrolledToEnd = ObservableBoolean()
     private val onPauseSubject = PublishSubject.create<Unit>()
 
     override fun onStart() {
@@ -45,7 +47,7 @@ class ChatFragmentViewModel @Inject constructor(
                     ChatViewModel(ObservableField(it))
                 }
                 .subscribe {
-                    chatViewModels.add(it)
+                    addChat(it)
                 }
     }
 
@@ -58,6 +60,15 @@ class ChatFragmentViewModel @Inject constructor(
 
     private fun convertToViewModel(chats: List<Chat>): List<ChatViewModel> {
         return chats.map { ChatViewModel(ObservableField(it)) }
+    }
+
+    private fun addChat(chatViewModel: ChatViewModel) {
+        val isScrolledToEnd = scrolledToEnd.get()
+        scrolledToEnd.set(false)
+        chatViewModels.add(chatViewModel)
+        if (isScrolledToEnd) {
+            scrolledToEnd.set(true)
+        }
     }
 
     companion object {
