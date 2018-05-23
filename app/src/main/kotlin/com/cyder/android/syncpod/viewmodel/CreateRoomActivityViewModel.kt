@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.databinding.ObservableField
 import android.databinding.ObservableInt
 import com.cyder.android.syncpod.R
+import com.cyder.android.syncpod.model.PublishingSettingItem
 import com.cyder.android.syncpod.repository.RoomRepository
 import com.cyder.android.syncpod.util.NotFilledFormsException
 import com.cyder.android.syncpod.view.helper.Navigator
@@ -21,19 +22,19 @@ class CreateRoomActivityViewModel @Inject constructor(
     var roomDescription: ObservableField<String?> = ObservableField()
     var publishingSetting = ObservableInt()
     lateinit var resources: Resources
-    val publishingSettingItems: MutableList<HashMap<String, String>> by lazy {
-        val publicRoom = hashMapOf(
-                ID to PUBLIC_ROOM,
-                TITLE to resources.getString(R.string.public_room),
-                DESCRIPTION to resources.getString(R.string.public_room_description))
-        val privateRoom = hashMapOf(
-                ID to PRIVATE_ROOM,
-                TITLE to resources.getString(R.string.private_room),
-                DESCRIPTION to resources.getString(R.string.private_room_description))
-        mutableListOf(publicRoom, privateRoom)
+    val publishingSettingItems by lazy {
+        listOf(
+                PublishingSettingItem(
+                        resources.getString(R.string.public_room),
+                        resources.getString(R.string.public_room_description)
+                ),
+                PublishingSettingItem(
+                        resources.getString(R.string.private_room),
+                        resources.getString(R.string.private_room_description)
+                )
+        )
     }
 
-    val publishingSettingKeys = arrayOf(TITLE, DESCRIPTION)
     var callback: SnackbarCallback? = null
 
     override fun onStart() {
@@ -54,7 +55,7 @@ class CreateRoomActivityViewModel @Inject constructor(
     fun onBackButtonClicked() = navigator.closeActivity()
 
     fun onSubmit() {
-        val isPublic = publishingSettingItems[publishingSetting.get()][ID] == PUBLIC_ROOM
+        val isPublic = publishingSetting.get() == 0
 
         repository.createNewRoom(roomName.get() ?: "", roomDescription.get() ?: "", isPublic)
                 .subscribe({ response ->
