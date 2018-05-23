@@ -1,5 +1,7 @@
 package com.cyder.android.syncpod.repository
 
+import android.content.res.Resources
+import com.cyder.android.syncpod.model.PublishingSettingItem
 import com.cyder.android.syncpod.model.Room
 import com.cyder.android.syncpod.model.User
 import io.reactivex.Completable
@@ -11,6 +13,7 @@ import io.reactivex.Single
  */
 interface RoomRepository {
     val isEntered: Flowable<Boolean>
+    fun getPublishingSettingItems(resources: Resources): List<PublishingSettingItem>
     fun createNewRoom(name: String, description: String, isPublic: Boolean): Single<Room>
     fun fetchJoinedRooms(): Single<List<Room>>
     fun fetchPopularRooms(): Single<List<Room>>

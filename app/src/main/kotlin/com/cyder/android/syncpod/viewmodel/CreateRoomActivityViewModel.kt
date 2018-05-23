@@ -23,16 +23,7 @@ class CreateRoomActivityViewModel @Inject constructor(
     var publishingSetting = ObservableInt()
     lateinit var resources: Resources
     val publishingSettingItems by lazy {
-        listOf(
-                PublishingSettingItem(
-                        resources.getString(R.string.public_room),
-                        resources.getString(R.string.public_room_description)
-                ),
-                PublishingSettingItem(
-                        resources.getString(R.string.private_room),
-                        resources.getString(R.string.private_room_description)
-                )
-        )
+        repository.getPublishingSettingItems(resources)
     }
 
     var callback: SnackbarCallback? = null
@@ -55,7 +46,8 @@ class CreateRoomActivityViewModel @Inject constructor(
     fun onBackButtonClicked() = navigator.closeActivity()
 
     fun onSubmit() {
-        val isPublic = publishingSetting.get() == 0
+        val item = publishingSettingItems[publishingSetting.get()]
+        val isPublic = item.id == PublishingSettingItem.Id.PUBLIC
 
         repository.createNewRoom(roomName.get() ?: "", roomDescription.get() ?: "", isPublic)
                 .subscribe({ response ->
