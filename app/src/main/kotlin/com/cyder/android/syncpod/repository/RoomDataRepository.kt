@@ -1,8 +1,11 @@
 package com.cyder.android.syncpod.repository
 
+import android.content.res.Resources
+import com.cyder.android.syncpod.R
 import com.cyder.android.syncpod.api.SyncPodApi
 import com.cyder.android.syncpod.api.mapper.toModel
 import com.cyder.android.syncpod.api.request.CreateRoom
+import com.cyder.android.syncpod.model.PublishingSettingItem
 import com.cyder.android.syncpod.model.Room
 import com.cyder.android.syncpod.model.User
 import com.cyder.android.syncpod.util.NotFilledFormsException
@@ -24,6 +27,20 @@ class RoomDataRepository @Inject constructor(
 ) : RoomRepository {
     override val isEntered = syncPodWsApi.isEntered
 
+    override fun getPublishingSettingItems(resources: Resources): List<PublishingSettingItem> {
+        return listOf(
+            PublishingSettingItem(
+                    PublishingSettingItem.Id.PUBLIC,
+                    resources.getString(R.string.public_room),
+                    resources.getString(R.string.public_room_description)
+            ),
+            PublishingSettingItem(
+                    PublishingSettingItem.Id.PRIVATE,
+                    resources.getString(R.string.private_room),
+                    resources.getString(R.string.private_room_description)
+            )
+        )
+    }
 
     override fun joinRoom(roomKey: String): Completable {
         return syncPodWsApi.enterRoom(roomKey)
