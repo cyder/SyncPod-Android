@@ -41,6 +41,13 @@ class UserDataRepository @Inject constructor(
                 .toCompletable()
     }
 
+    override fun editUser(email: String, name: String): Completable {
+        return editUserValidate(email, name)
+                .andThen(syncPodApi.editUser(email, name))
+                .subscribeOn(Schedulers.computation())
+                .toCompletable()
+    }
+
     override fun getAccessToken(): Single<String> {
         val token = sharedPreferences.getString(STATE_USER_TOKEN, null)
         return Single.create { emitter ->
@@ -91,6 +98,16 @@ class UserDataRepository @Inject constructor(
                 emitter.onError(TooShortPasswordException())
             } else if (password != passwordConfirm) {
                 emitter.onError(NotSamePasswordException())
+            } else {
+                emitter.onComplete()
+            }
+        }
+    }
+
+    private fun editUserValidate(email: String, name: String): Completable {
+        return Completable.create { emitter ->
+            if (email.isBlank() || name.isBlank()) {
+                emitter.onError(NotFilledFormsException())
             } else {
                 emitter.onComplete()
             }

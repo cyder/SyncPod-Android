@@ -67,9 +67,9 @@
                     android:layout_height="55dp"
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="20dp"
-                    android:background="@color/appGreen"
+                    android:background="@color/appBlue"
                     android:onClick="@{(v) -> viewModel.onSubmit()}"
-                    android:text="@string/send_button"
+                    android:text="@string/update_button"
                     android:textColor="@color/appWhite"
                     android:textSize="18sp" />
             </LinearLayout>

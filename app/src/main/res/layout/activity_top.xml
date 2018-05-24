@@ -28,11 +28,15 @@
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:logo="@drawable/toolbar_logo" >
 
-            <Button
+            <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:id="@+id/setting_button"
+                android:background="@null"
+                android:layout_alignParentEnd="true"
                 android:onClick="@{(v) -> viewModel.onSetting()}"
-                android:src="@mipmap/logo"/>
+                android:src="@drawable/ic_setting_black_32dp" />
         </android.support.v7.widget.Toolbar>
 
         <android.support.v4.widget.SwipeRefreshLayout

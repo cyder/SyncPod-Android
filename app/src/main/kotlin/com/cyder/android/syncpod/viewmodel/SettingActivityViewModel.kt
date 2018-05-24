@@ -1,8 +1,8 @@
 package com.cyder.android.syncpod.viewmodel
 
 import android.databinding.ObservableField
-import android.os.Build
-import com.cyder.android.syncpod.repository.UserReportRepository
+import com.cyder.android.syncpod.R
+import com.cyder.android.syncpod.repository.UserRepository
 import com.cyder.android.syncpod.view.helper.Navigator
 import com.cyder.android.syncpod.viewmodel.base.ActivityViewModel
 import javax.inject.Inject
@@ -13,8 +13,10 @@ import javax.inject.Inject
 
 class SettingActivityViewModel @Inject constructor(
         private val navigator: Navigator,
-        private val userReportRepository: UserReportRepository
+        private val repository: UserRepository
 ) : ActivityViewModel() {
+    var mailAddress: ObservableField<String?> = ObservableField()
+    var name: ObservableField<String?> = ObservableField()
     var callback: SnackbarCallback? = null
     var message: ObservableField<String> = ObservableField()
 
@@ -40,29 +42,13 @@ class SettingActivityViewModel @Inject constructor(
     fun onBackButtonClicked() = navigator.closeActivity()
 
     fun onSubmit() {
-//        Single.create<String> { emitter ->
-//            if ((message.get() ?: "").isNotBlank()) {
-//                emitter.onSuccess(message.get())
-//            } else {
-//                emitter.onError(NotFilledFormsException())
-//            }
-//        }
-//                .map { createDetailMessage(it) }
-//                .flatMapCompletable { userReportRepository.sendUserReport(it) }
-//                .subscribe({
-//                    navigator.closeActivity()
-//                }, { error ->
-//                    when (error) {
-//                        is NotFilledFormsException -> callback?.onFailed(R.string.form_not_filled)
-//                        else -> callback?.onFailed(R.string.network_error)
-//                    }
-//                })
-    }
-
-    private fun createDetailMessage(message: String): String {
-        return """$message
-
-----------------------------------------
-端末： Android ${Build.VERSION.RELEASE}"""
+        repository.editUser(
+                mailAddress.get() ?: "",
+                name.get() ?: ""
+        ).subscribe({
+            navigator.navigateToTopActivity()
+        }, {
+            callback?.onFailed(R.string.sign_up_used_email)
+        })
     }
 }
