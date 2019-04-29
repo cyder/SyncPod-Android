@@ -1,6 +1,6 @@
 package com.cyder.android.syncpod.viewmodel
 
-import android.databinding.ObservableField
+import androidx.databinding.ObservableField
 import com.cyder.android.syncpod.model.Video
 import com.cyder.android.syncpod.repository.VideoRepository
 import com.cyder.android.syncpod.view.helper.Navigator
@@ -17,7 +17,8 @@ class SearchVideoViewModel @Inject constructor(
         val video: ObservableField<Video>
 ) {
     fun onItemClick() {
-        repository.addPlayList(video.get())
+        val video = video.get() ?: return
+        repository.addPlayList(video)
                 .subscribe {
                     navigator.closeActivity()
                 }

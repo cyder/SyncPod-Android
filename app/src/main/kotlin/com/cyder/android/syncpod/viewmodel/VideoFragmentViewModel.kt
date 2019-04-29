@@ -1,6 +1,6 @@
 package com.cyder.android.syncpod.viewmodel
 
-import android.databinding.ObservableInt
+import androidx.databinding.ObservableInt
 import com.cyder.android.syncpod.repository.VideoRepository
 import com.cyder.android.syncpod.viewmodel.base.FragmentViewModel
 import com.google.android.youtube.player.YouTubeInitializationResult

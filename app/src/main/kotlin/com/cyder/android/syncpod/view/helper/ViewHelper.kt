@@ -4,18 +4,17 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.res.Resources
-import android.support.design.widget.Snackbar
-import android.support.v4.app.ShareCompat
+import android.util.DisplayMetrics
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.core.app.ShareCompat
 import com.cyder.android.syncpod.R
-import com.cyder.android.syncpod.viewmodel.DialogCallback
 import com.cyder.android.syncpod.viewmodel.ButtonInterface
+import com.cyder.android.syncpod.viewmodel.DialogCallback
 import com.cyder.android.syncpod.viewmodel.ShareCompatCallback
 import com.cyder.android.syncpod.viewmodel.SnackbarCallback
-import android.util.DisplayMetrics
-
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * Created by chigichan24 on 2018/02/23.
@@ -39,7 +38,7 @@ fun Activity.setUpSnackbar(): SnackbarCallback {
                 }
             }
             val snackbarView = snackbar.view
-            val tv = snackbarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
+            val tv = snackbarView.findViewById<TextView>(R.id.snackbar_text)
             tv.maxLines = 3
             snackbar.show()
         }

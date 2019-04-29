@@ -1,10 +1,5 @@
 package com.cyder.android.syncpod.util
 
-import android.databinding.BindingAdapter
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SwitchCompat
-import android.support.v7.widget.Toolbar
 import android.text.method.LinkMovementMethod
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -13,6 +8,11 @@ import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.SwitchCompat
+import androidx.appcompat.widget.Toolbar
+import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.cyder.android.syncpod.view.helper.ResizeAnimation
 import com.cyder.android.syncpod.view.helper.dpToPx
@@ -51,12 +51,14 @@ fun RecyclerView.setOnScrollChangedListeners(
         }
 
         override fun onScrolled(recycler: RecyclerView, dx: Int, dy: Int) {
-            val totalCount = recycler.adapter.itemCount
+            val totalCount = recycler.adapter?.itemCount
             val childCount = recycler.childCount
             val layoutManager = layoutManager as LinearLayoutManager
             val nowHeadPos = layoutManager.findFirstVisibleItemPosition()
             val lastPos = layoutManager.findLastCompletelyVisibleItemPosition()
-            onScrolled?.onScrolled(totalCount <= childCount + nowHeadPos + OFFSET)
+            if (totalCount != null) {
+                onScrolled?.onScrolled(totalCount <= childCount + nowHeadPos + OFFSET)
+            }
         }
     }
 

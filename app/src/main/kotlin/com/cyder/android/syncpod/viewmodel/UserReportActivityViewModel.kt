@@ -1,6 +1,6 @@
 package com.cyder.android.syncpod.viewmodel
 
-import android.databinding.ObservableField
+import androidx.databinding.ObservableField
 import android.os.Build
 import com.cyder.android.syncpod.R
 import com.cyder.android.syncpod.model.Room
@@ -54,8 +54,9 @@ class UserReportActivityViewModel @Inject constructor(
         Singles.zip(
                 room.firstOrError(),
                 Single.create<String> { emitter ->
-                    if ((message.get() ?: "").isNotBlank()) {
-                        emitter.onSuccess(message.get())
+                    val message = message.get() ?: ""
+                    if ((message).isNotBlank()) {
+                        emitter.onSuccess(message)
                     } else {
                         emitter.onError(NotFilledFormsException())
                     }

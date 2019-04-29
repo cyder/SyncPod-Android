@@ -1,6 +1,6 @@
 package com.cyder.android.syncpod.view.activity
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.cyder.android.syncpod.BaseApplication
 import com.cyder.android.syncpod.di.ActivityComponent
 import com.cyder.android.syncpod.di.ActivityModule

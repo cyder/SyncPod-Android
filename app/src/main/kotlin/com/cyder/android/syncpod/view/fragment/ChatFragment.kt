@@ -1,14 +1,14 @@
 package com.cyder.android.syncpod.view.fragment
 
-import android.databinding.DataBindingUtil
-import android.databinding.ObservableList
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableList
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.cyder.android.syncpod.R
 import com.cyder.android.syncpod.databinding.FragmentChatBinding
 import com.cyder.android.syncpod.databinding.ItemChatBinding
@@ -48,7 +48,8 @@ class ChatFragment : BaseFragment() {
         adapter.registerAdapterDataObserver(dataObserver)
         binding.chatList.adapter = adapter
         binding.chatList.layoutManager = manager
-        binding.chatList.addItemDecoration(DividerItemDecoration(binding.chatList.context, manager.orientation))
+        binding.chatList.addItemDecoration(
+            DividerItemDecoration(binding.chatList.context, manager.orientation))
     }
 
     inner class ChatAdapter(list: ObservableList<ChatViewModel>) : ObservableListAdapter<ChatViewModel, BindingHolder<ItemChatBinding>>(list) {

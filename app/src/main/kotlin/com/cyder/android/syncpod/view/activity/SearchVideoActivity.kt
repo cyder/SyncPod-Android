@@ -2,11 +2,11 @@ package com.cyder.android.syncpod.view.activity
 
 import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
-import android.databinding.ObservableList
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableList
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.cyder.android.syncpod.R
 import com.cyder.android.syncpod.databinding.ActivitySearchVideoBinding
 import com.cyder.android.syncpod.databinding.ItemSearchVideoBinding

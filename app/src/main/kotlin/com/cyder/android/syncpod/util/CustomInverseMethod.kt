@@ -1,6 +1,6 @@
 package com.cyder.android.syncpod.util
 
-import android.databinding.InverseMethod
+import androidx.databinding.InverseMethod
 
 object SafeUnbox {
     @JvmStatic
