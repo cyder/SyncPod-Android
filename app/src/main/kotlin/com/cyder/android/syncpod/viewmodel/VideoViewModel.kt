@@ -1,6 +1,6 @@
 package com.cyder.android.syncpod.viewmodel
 
-import android.databinding.ObservableField
+import androidx.databinding.ObservableField
 import com.cyder.android.syncpod.model.Video
 import com.cyder.android.syncpod.repository.VideoRepository
 import com.cyder.android.syncpod.view.helper.Navigator

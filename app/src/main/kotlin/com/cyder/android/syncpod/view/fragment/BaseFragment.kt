@@ -1,7 +1,7 @@
 package com.cyder.android.syncpod.view.fragment
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import com.cyder.android.syncpod.di.FragmentComponent
 import com.cyder.android.syncpod.di.FragmentModule
 import com.cyder.android.syncpod.view.activity.BaseActivity

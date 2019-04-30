@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/youtube_search_tool_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,10 +39,10 @@
                 <requestFocus />
             </EditText>
 
-        </android.support.v7.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar>
 
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/result_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

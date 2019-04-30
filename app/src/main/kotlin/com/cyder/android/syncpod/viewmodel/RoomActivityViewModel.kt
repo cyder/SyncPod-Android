@@ -1,7 +1,7 @@
 package com.cyder.android.syncpod.viewmodel
 
-import android.databinding.ObservableBoolean
-import android.support.v4.app.Fragment
+import androidx.databinding.ObservableBoolean
+import androidx.fragment.app.Fragment
 import com.cyder.android.syncpod.repository.ChatRepository
 import com.cyder.android.syncpod.R
 import com.cyder.android.syncpod.repository.RoomRepository

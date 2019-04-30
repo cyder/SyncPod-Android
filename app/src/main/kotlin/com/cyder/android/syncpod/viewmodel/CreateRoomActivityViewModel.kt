@@ -1,8 +1,8 @@
 package com.cyder.android.syncpod.viewmodel
 
 import android.content.res.Resources
-import android.databinding.ObservableField
-import android.databinding.ObservableInt
+import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
 import com.cyder.android.syncpod.R
 import com.cyder.android.syncpod.repository.RoomRepository
 import com.cyder.android.syncpod.util.NotFilledFormsException

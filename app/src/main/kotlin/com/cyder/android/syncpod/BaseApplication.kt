@@ -2,7 +2,7 @@ package com.cyder.android.syncpod
 
 import android.app.Application
 import android.content.Context
-import android.support.multidex.MultiDex
+import androidx.multidex.MultiDex
 import com.cyder.android.syncpod.di.AppComponent
 import com.cyder.android.syncpod.di.AppModule
 import com.cyder.android.syncpod.di.DaggerAppComponent

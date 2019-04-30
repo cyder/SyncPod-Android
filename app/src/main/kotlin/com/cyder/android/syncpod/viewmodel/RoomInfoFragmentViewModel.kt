@@ -1,10 +1,10 @@
 package com.cyder.android.syncpod.viewmodel
 
 import android.content.res.Resources
-import android.databinding.ObservableArrayList
-import android.databinding.ObservableBoolean
-import android.databinding.ObservableField
-import android.databinding.ObservableList
+import androidx.databinding.ObservableArrayList
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
+import androidx.databinding.ObservableList
 import com.cyder.android.syncpod.R
 import com.cyder.android.syncpod.model.Room
 import com.cyder.android.syncpod.repository.RoomRepository
@@ -51,7 +51,7 @@ class RoomInfoFragmentViewModel @Inject constructor(
 
     fun shareRoom() {
         val shareMessage = resources.getString(R.string.share_room_key_message)
-                .format(room.get().name, room.get().key)
+                .format(room.get()?.name, room.get()?.key)
         shareCompatCallback?.onStart(shareMessage)
     }
 

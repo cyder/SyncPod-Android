@@ -2,12 +2,12 @@
 SyncPodcのAndroidアプリ用のリポジトリです。
 
 ## 必要環境
-* Android Studio 3.1
-* Android SDK 26
-* gradle 4.1
+* Android Studio 3.4
+* Android SDK 28
+* gradle 5.1.1
 
 
-### Android Studio 3.1
+### Android Studio 3.4
 [ここ](https://developer.android.com/studio/archive.html)からインストールする。
 
 ### Android SDK

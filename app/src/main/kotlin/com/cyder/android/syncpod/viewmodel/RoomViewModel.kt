@@ -1,6 +1,6 @@
 package com.cyder.android.syncpod.viewmodel
 
-import android.databinding.ObservableField
+import androidx.databinding.ObservableField
 import com.cyder.android.syncpod.R
 import com.cyder.android.syncpod.model.Room
 import com.cyder.android.syncpod.repository.RoomRepository
@@ -19,9 +19,10 @@ class RoomViewModel @Inject constructor(
 ) {
     lateinit var callback: SnackbarCallback
     fun onItemClick() {
-        repository.joinRoom(room.get().key)
+        val room = room.get() ?: return
+        repository.joinRoom(room.key)
                 .subscribe({
-                    navigator.navigateToRoomActivity(room.get().key)
+                    navigator.navigateToRoomActivity(room.key)
                 }, { error ->
                     when (error) {
                         is CannotJoinRoomException -> callback.onFailed(R.string.room_enter_reject_message)

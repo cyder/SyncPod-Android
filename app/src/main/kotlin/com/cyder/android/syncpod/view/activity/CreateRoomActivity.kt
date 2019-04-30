@@ -2,9 +2,9 @@ package com.cyder.android.syncpod.view.activity
 
 import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.widget.SimpleAdapter
+import androidx.databinding.DataBindingUtil
 import com.cyder.android.syncpod.R
 import com.cyder.android.syncpod.databinding.ActivityCreateRoomBinding
 import com.cyder.android.syncpod.view.helper.setUpSnackbar

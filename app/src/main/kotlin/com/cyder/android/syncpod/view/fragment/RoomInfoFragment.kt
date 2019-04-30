@@ -1,12 +1,12 @@
 package com.cyder.android.syncpod.view.fragment
 
-import android.databinding.DataBindingUtil
-import android.databinding.ObservableList
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableList
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.cyder.android.syncpod.R
 import com.cyder.android.syncpod.databinding.FragmentRoominfoBinding
 import com.cyder.android.syncpod.databinding.ItemUserBinding

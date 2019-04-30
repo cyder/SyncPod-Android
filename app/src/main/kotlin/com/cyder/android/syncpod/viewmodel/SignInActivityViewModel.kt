@@ -1,6 +1,6 @@
 package com.cyder.android.syncpod.viewmodel
 
-import android.databinding.ObservableField
+import androidx.databinding.ObservableField
 import com.cyder.android.syncpod.R
 import com.cyder.android.syncpod.repository.UserRepository
 import com.cyder.android.syncpod.util.NotAgreeTermsException

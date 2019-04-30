@@ -1,6 +1,6 @@
 package com.cyder.android.syncpod.viewmodel
 
-import android.databinding.ObservableField
+import androidx.databinding.ObservableField
 import com.cyder.android.syncpod.repository.ChatRepository
 import com.cyder.android.syncpod.viewmodel.base.FragmentViewModel
 import javax.inject.Inject

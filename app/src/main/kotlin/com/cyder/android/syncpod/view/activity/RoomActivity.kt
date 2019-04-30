@@ -2,11 +2,11 @@ package com.cyder.android.syncpod.view.activity
 
 import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.cyder.android.syncpod.R
 import com.cyder.android.syncpod.databinding.ActivityRoomBinding
 import com.cyder.android.syncpod.view.fragment.ChatFragment

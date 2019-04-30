@@ -1,6 +1,6 @@
 package com.cyder.android.syncpod.view.adapter
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Created by chigichan24 on 2018/03/17.

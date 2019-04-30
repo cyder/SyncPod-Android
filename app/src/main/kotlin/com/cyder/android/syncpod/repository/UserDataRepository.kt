@@ -1,11 +1,15 @@
 package com.cyder.android.syncpod.repository
 
 import android.content.SharedPreferences
-import androidx.content.edit
+import androidx.core.content.edit
 import com.cyder.android.syncpod.api.SyncPodApi
 import com.cyder.android.syncpod.api.request.SignUp
 import com.cyder.android.syncpod.api.response.User
-import com.cyder.android.syncpod.util.*
+import com.cyder.android.syncpod.util.NotAgreeTermsException
+import com.cyder.android.syncpod.util.NotFilledFormsException
+import com.cyder.android.syncpod.util.NotSamePasswordException
+import com.cyder.android.syncpod.util.NotValidEmailException
+import com.cyder.android.syncpod.util.TooShortPasswordException
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers

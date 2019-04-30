@@ -3,12 +3,12 @@ package com.cyder.android.syncpod.view.activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
-import android.databinding.ObservableList
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableList
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.cyder.android.syncpod.R
 import com.cyder.android.syncpod.databinding.ActivityTopBinding
 import com.cyder.android.syncpod.databinding.ItemRoomBinding

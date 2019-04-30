@@ -1,7 +1,7 @@
 package com.cyder.android.syncpod.viewmodel
 
 import android.content.res.Resources
-import android.databinding.ObservableField
+import androidx.databinding.ObservableField
 import com.cyder.android.syncpod.R
 import com.cyder.android.syncpod.model.User
 import com.cyder.android.syncpod.repository.RoomRepository
@@ -17,14 +17,14 @@ class UserViewModel @Inject constructor(
     lateinit var forceExitDialogCallback: DialogCallback
     lateinit var resources: Resources
     val forceExitTitle by lazy {
-        resources.getString(R.string.force_exit_title).format(user.get().name)
+        resources.getString(R.string.force_exit_title).format(user.get()?.name)
     }
     val forceExitDescription by lazy {
-        resources.getString(R.string.force_exit_description).format(user.get().name)
+        resources.getString(R.string.force_exit_description).format(user.get()?.name)
     }
 
     fun onClick() {
-        if (userRepository.getMyselfId().blockingGet() != user.get().id) {
+        if (userRepository.getMyselfId().blockingGet() != user.get()?.id) {
             menuDialogCallback.onAction()
         }
     }
@@ -34,6 +34,7 @@ class UserViewModel @Inject constructor(
     }
 
     fun onConfirmForceExit() {
-        roomRepository.exitForce(user.get())
+        val user = user.get() ?: return
+        roomRepository.exitForce(user)
     }
 }
