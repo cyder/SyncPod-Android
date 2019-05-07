@@ -59,7 +59,7 @@
                     android:background="@color/appBeige"
                     android:onClick="@{(v) -> viewModel.onSubmit()}"
                     android:text="@string/send_button"
-                    android:textColor="@color/appWhite"
+                    android:textColor="@color/on_beige_text"
                     android:textSize="18sp" />
             </LinearLayout>
         </ScrollView>

@@ -118,7 +118,7 @@
                                 android:layout_marginTop="2dp"
                                 android:text="@string/create_room"
                                 android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:textColor="@color/appWhite"
+                                android:textColor="@color/on_beige_text"
                                 android:textSize="26sp" />
 
                             <TextView
@@ -130,7 +130,7 @@
                                 android:minLines="2"
                                 android:text="@string/create_room_description"
                                 android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:textColor="@color/appWhite"
+                                android:textColor="@color/on_beige_text"
                                 android:textSize="14sp" />
 
                         </LinearLayout>

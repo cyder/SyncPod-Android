@@ -10,6 +10,7 @@
     <color name="appBeige">#ccbb9a</color>
     <color name="appOrange">#F0B459</color>
     <color name="text">#222222</color>
+    <color name="on_beige_text">#3b4043</color>
     <color name="subtext">#666666</color>
     <color name="gray_text">#aaaaaa</color>
     <color name="notice_message">#90CAF9</color>

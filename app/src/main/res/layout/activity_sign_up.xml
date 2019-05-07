@@ -111,7 +111,7 @@
                     android:background="@color/appBeige"
                     android:onClick="@{(v) -> viewModel.onSignUp()}"
                     android:text="@string/register_button"
-                    android:textColor="@color/appWhite"
+                    android:textColor="@color/on_beige_text"
                     android:textSize="18sp" />
             </LinearLayout>
         </ScrollView>
