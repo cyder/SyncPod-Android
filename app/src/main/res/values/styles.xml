@@ -2,6 +2,11 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:colorControlActivated">@color/appOrange</item>
+    </style>
+
+    <style name="SearchVideoTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:colorControlActivated">@color/appOrange</item>
     </style>
 
     <style name="SplashTheme" parent="AppTheme">
