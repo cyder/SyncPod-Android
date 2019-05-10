@@ -21,7 +21,7 @@
             android:background="?attr/colorPrimary"
             android:elevation="4dp"
             android:minHeight="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            android:theme="@style/SearchVideoTheme"
             app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
             app:navigationOnClick="@{(v) -> viewModel.onBackButtonClicked()}">
 

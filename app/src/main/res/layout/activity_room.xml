@@ -49,12 +49,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:background="@color/roomTab"
-                    android:elevation="2dp" />
+                    android:elevation="2dp"
+                    app:tabIndicatorColor="@color/appOrange" />
 
                 <com.cyder.android.syncpod.view.components.WithoutKeyEventViewPager
                         android:id="@+id/view_pager"
                         android:layout_height="match_parent"
-                        android:layout_width="match_parent"/>
+                        android:layout_width="match_parent" />
 
             </LinearLayout>
 

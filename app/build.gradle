@@ -12,7 +12,7 @@ def appVersionName = "${versionMajor}.${versionMinor}.${versionPatch}"
 
 def appCompileSdkVersion = 28
 def appPackageName = "com.cyder.android.syncpod"
-def appMinSdkVersion = 19
+def appMinSdkVersion = 21
 def appTargetSdkVersion = 28
 
 android {
