@@ -13,6 +13,8 @@ interface UserRepository {
     fun signIn(email: String, password: String, isAgreeTerms: Boolean): Completable
     @CheckResult
     fun signUp(email: String, name: String, password:String, passwordConfirm: String, isAgreeTerms: Boolean): Completable
+    @CheckResult
+    fun editUser(email: String, name: String): Completable
     fun getAccessToken(): Single<String>
     fun getMyselfId(): Single<Int>
 }

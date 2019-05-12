@@ -26,7 +26,18 @@
             android:elevation="4dp"
             android:minHeight="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:logo="@drawable/toolbar_logo" />
+            app:logo="@drawable/toolbar_logo" >
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:id="@+id/setting_button"
+                android:background="@null"
+                android:layout_alignParentEnd="true"
+                android:onClick="@{(v) -> viewModel.onSetting()}"
+                android:src="@drawable/ic_setting_black_32dp" />
+        </android.support.v7.widget.Toolbar>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_joined_rooms"
