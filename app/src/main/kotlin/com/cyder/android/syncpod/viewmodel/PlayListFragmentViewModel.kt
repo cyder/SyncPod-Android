@@ -38,6 +38,20 @@ class PlayListFragmentViewModel @Inject constructor(
     }
 
     override fun onResume() {
+        observerWithInitPlayer()
+        repository.getPlayList()
+    }
+
+    override fun onPause() {
+        onPauseSubject.onNext(INVOCATION)
+    }
+
+    override fun onStop() {
+    }
+
+    fun searchVideo() = navigator.navigateToSearchVideoActivity()
+
+    private fun observerWithInitPlayer() {
         repository.playListObservable
                 .takeUntil(onPauseSubject.toFlowable(BackpressureStrategy.LATEST))
                 .map { convertToViewModel(it) }
@@ -65,15 +79,6 @@ class PlayListFragmentViewModel @Inject constructor(
                     isPlaying.set(it)
                 }
     }
-
-    override fun onPause() {
-        onPauseSubject.onNext(INVOCATION)
-    }
-
-    override fun onStop() {
-    }
-
-    fun searchVideo() = navigator.navigateToSearchVideoActivity()
 
     private fun convertToViewModel(videos: List<Video>): List<VideoViewModel> {
         return videos.map { VideoViewModel(repository, ObservableField(it)) }

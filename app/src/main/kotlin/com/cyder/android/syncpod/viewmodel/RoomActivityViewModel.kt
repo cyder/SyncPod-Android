@@ -34,8 +34,6 @@ class RoomActivityViewModel @Inject constructor(
     }
 
     override fun onResume() {
-        videoRepository.getNowPlayingVideo()
-        videoRepository.getPlayList()
         roomRepository.receiveForceExit()
                 .takeUntil(onPauseSubject.toFlowable(BackpressureStrategy.LATEST))
                 .subscribe {
@@ -48,7 +46,6 @@ class RoomActivityViewModel @Inject constructor(
                 .subscribe {
                     isVideoPlayerVisible.set(it)
                 }
-        chatRepository.getPastChats()
     }
 
     override fun onPause() {

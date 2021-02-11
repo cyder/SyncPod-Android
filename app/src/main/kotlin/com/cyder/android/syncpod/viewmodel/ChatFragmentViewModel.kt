@@ -28,6 +28,18 @@ class ChatFragmentViewModel @Inject constructor(
     }
 
     override fun onResume() {
+        observerWithInitPlayer()
+        repository.getPastChats()
+    }
+
+    override fun onPause() {
+        onPauseSubject.onNext(INVOCATION)
+    }
+
+    override fun onStop() {
+    }
+
+    private fun observerWithInitPlayer() {
         repository.observePastChat
                 .observeOn(AndroidSchedulers.mainThread())
                 .takeUntil(onPauseSubject.toFlowable(BackpressureStrategy.LATEST))
@@ -47,13 +59,6 @@ class ChatFragmentViewModel @Inject constructor(
                 .subscribe {
                     chatViewModels.add(it)
                 }
-    }
-
-    override fun onPause() {
-        onPauseSubject.onNext(INVOCATION)
-    }
-
-    override fun onStop() {
     }
 
     private fun convertToViewModel(chats: List<Chat>): List<ChatViewModel> {
